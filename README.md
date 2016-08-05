@@ -2,4 +2,6 @@
 
 男は黙ってindex.html
 
-http://yyyank.github.io/
+
+
+about meなページ→http://yyyank.github.io/
