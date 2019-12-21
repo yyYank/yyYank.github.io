@@ -17,8 +17,24 @@
             </div>
             <div class="panel panel-default">
                  <div class="panel-body">
-                     <div></div>
-                     <pre></pre>
+                     <div>容量確認</div>
+                     <pre>docker system df</pre>
+                     <div>色々消す</div>
+                     <pre>docker system prune -a --volumes</pre>
+                     <div>コンテナ消す</div>
+                     <pre>docker container prune</pre>
+                     <div>イメージ消す</div>
+                     <pre>docker image prune</pre>
+                     <div>ボリューム消す</div>
+                     <pre>docker volume prune</pre>
+                     <div>起動しているコンテナ一覧</div>
+                     <pre>docker ps</pre>
+                     <div>コンテナ一覧</div>
+                     <pre>docker ps -a</pre>
+                     <div>イメージ一覧</div>
+                     <pre>docker images</pre>
+                     <div>イメージ指定して削除</div>
+                     <pre>docker rmi [ImageID]</pre>
                  </div>
              </div>
         </div>
