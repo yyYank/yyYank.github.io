@@ -19,6 +19,8 @@
                  <div class="panel-body">
                      <div>developとmasterにマージ済みのローカルブランチを削除する</div>
                      <pre>git branch --merged|egrep -v '\*|develop|master'|xargs git branch -d</pre>
+                     <div>authorをammendしたいとき</div>
+                     <pre>git commit --amend --author="name <hoge@gmail.com>"</pre>
                  </div>
              </div>
         </div>
