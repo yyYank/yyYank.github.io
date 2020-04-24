@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
-  <title>tmuxメモ - Hugo Whisper Theme</title>
+  <title>Linuxメモ - Hugo Whisper Theme</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   
   <link rel="icon" href="/favicon.png">
@@ -102,7 +102,7 @@
       <a href="/docs/git/">gitメモ</a>
     </li>
     
-    <li class="active ">
+    <li class="">
       <a href="/docs/tmux/">tmuxメモ</a>
     </li>
     
@@ -110,7 +110,7 @@
       <a href="/docs/docker/">Dockerメモ</a>
     </li>
     
-    <li class="">
+    <li class="active ">
       <a href="/docs/linux/">Linuxメモ</a>
     </li>
     
@@ -121,16 +121,20 @@
         </div>
         <div class="col-12 col-md-9">
           
-<h1 class="title">tmuxメモ</h1>
+<h1 class="title">Linuxメモ</h1>
 <div class="content ">
-  <h2 id="tmuxサーバー-kill">tmuxサーバー kill</h2>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">tmux kill-server
-</code></pre></div><h2 id="セッションkill">セッションkill</h2>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">tmux kill-session
-</code></pre></div><h2 id="ウインドウkill">ウインドウkill</h2>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">&amp;
-</code></pre></div><h2 id="ウインドウ検索">ウインドウ検索</h2>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">f
+  <p>想定としてはubuntu、archなど。</p>
+<h2 id="とりあえず色々見たい">とりあえず色々見たい</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">journalctl -f
+</code></pre></div><h2 id="サービス動かしたい">サービス動かしたい</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">systemctl start hoge
+systemctl stop hoge
+systemctl restart hoge
+</code></pre></div><h2 id="サービスの状況を見たい">サービスの状況を見たい</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">systemctl status hoge
+</code></pre></div><h3 id="apt-getのあれ">apt-getのあれ</h3>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">apt-get install hoge
+apt-get remove hoge
 </code></pre></div>
 </div>
 </div>

@@ -12,12 +12,22 @@
     
     
     <item>
+      <title>GitHubメモ</title>
+      <link>/docs/github/</link>
+      <pubDate>Wed, 22 Apr 2020 14:25:44 +0900</pubDate>
+      
+      <guid>/docs/github/</guid>
+      <description>ssh公開鍵を知る https://github.com/${USERNAME}.keys </description>
+    </item>
+    
+    <item>
       <title>vimメモ</title>
       <link>/docs/vim/</link>
       <pubDate>Wed, 01 Apr 2020 16:02:47 +0900</pubDate>
       
       <guid>/docs/vim/</guid>
-      <description>Vim ソートして重複消す sort u たまに使いたくなる smile NERDTREE ウインドウサイズ調整 let g:NERDTreeWinSize=40 :NERDTree :NERDTreeFind ,とかだとWindowサイズがリセットされない。数字は任意
+      <description>Vim ファイルパスジャンプ gf vsplitしてファイルパスジャンプ &amp;lt;C-w&amp;gt;f tabsplitしてファイルパスジャンプ CTRL-W gf ファイルジャンプ系プラグイン https://github.com/kana/vim-altr
+ソートして重複消す sort u たまに使いたくなる smile NERDTREE ウインドウサイズ調整 let g:NERDTreeWinSize=40 :NERDTree :NERDTreeFind ,とかだとWindowサイズがリセットされない。数字は任意
 現在開いてるファイルの位置表示 NERDTreeFind </description>
     </item>
     
@@ -45,7 +55,17 @@
       <pubDate>Wed, 01 Apr 2020 15:57:47 +0900</pubDate>
       
       <guid>/docs/docker/</guid>
-      <description>容量確認 docker system df 色々消す docker system prune -a --volumes コンテナ消す docker container prune イメージ消す docker image prune ボリューム消す docker volume prune 起動しているコンテナ一覧 docker ps コンテナ一覧 docker ps -a イメージ一覧 docker images イメージ指定して削除 docker rmi [ImageID] </description>
+      <description>容量確認 docker system df 色々消す docker system prune -a --volumes コンテナ消す docker container prune イメージ消す docker image prune ボリューム消す docker volume prune 起動しているコンテナ一覧 docker ps コンテナ一覧 docker ps -a イメージ一覧 docker images イメージ指定して削除 docker rmi [ImageID] dockerの諸々の場所(linux) /var/lib/docker docker関連でよく使うコマンド ログ見る</description>
+    </item>
+    
+    <item>
+      <title>Linuxメモ</title>
+      <link>/docs/linux/</link>
+      <pubDate>Wed, 22 Apr 2020 14:43:05 +0900</pubDate>
+      
+      <guid>/docs/linux/</guid>
+      <description>想定としてはubuntu、archなど。
+とりあえず色々見たい journalctl -f サービス動かしたい systemctl start hoge systemctl stop hoge systemctl restart hoge サービスの状況を見たい systemctl status hoge apt-getのあれ apt-get install hoge apt-get remove hoge </description>
     </item>
     
   </channel>

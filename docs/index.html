@@ -91,6 +91,10 @@
   <ul>
     
     <li class="">
+      <a href="/docs/github/">GitHubメモ</a>
+    </li>
+    
+    <li class="">
       <a href="/docs/vim/">vimメモ</a>
     </li>
     
@@ -104,6 +108,10 @@
     
     <li class="">
       <a href="/docs/docker/">Dockerメモ</a>
+    </li>
+    
+    <li class="">
+      <a href="/docs/linux/">Linuxメモ</a>
     </li>
     
   </ul>
@@ -125,8 +133,16 @@
 
 <div class="summary mb-2">
   
+  <h2 class="title-summary"><a href="/docs/github/">GitHubメモ</a></h2>
+  <p>ssh公開鍵を知る https://github.com/${USERNAME}.keys </p>
+</div>
+
+
+<div class="summary mb-2">
+  
   <h2 class="title-summary"><a href="/docs/vim/">vimメモ</a></h2>
-  <p>Vim ソートして重複消す sort u たまに使いたくなる smile NERDTREE ウインドウサイズ調整 let g:NERDTreeWinSize=40 :NERDTree :NERDTreeFind ,とかだとWindowサイズがリセットされない。数字は任意
+  <p>Vim ファイルパスジャンプ gf vsplitしてファイルパスジャンプ &lt;C-w&gt;f tabsplitしてファイルパスジャンプ CTRL-W gf ファイルジャンプ系プラグイン https://github.com/kana/vim-altr
+ソートして重複消す sort u たまに使いたくなる smile NERDTREE ウインドウサイズ調整 let g:NERDTreeWinSize=40 :NERDTree :NERDTreeFind ,とかだとWindowサイズがリセットされない。数字は任意
 現在開いてるファイルの位置表示 NERDTreeFind </p>
 </div>
 
@@ -148,7 +164,15 @@
 <div class="summary mb-2">
   
   <h2 class="title-summary"><a href="/docs/docker/">Dockerメモ</a></h2>
-  <p>容量確認 docker system df 色々消す docker system prune -a --volumes コンテナ消す docker container prune イメージ消す docker image prune ボリューム消す docker volume prune 起動しているコンテナ一覧 docker ps コンテナ一覧 docker ps -a イメージ一覧 docker images イメージ指定して削除 docker rmi [ImageID] </p>
+  <p>容量確認 docker system df 色々消す docker system prune -a --volumes コンテナ消す docker container prune イメージ消す docker image prune ボリューム消す docker volume prune 起動しているコンテナ一覧 docker ps コンテナ一覧 docker ps -a イメージ一覧 docker images イメージ指定して削除 docker rmi [ImageID] dockerの諸々の場所(linux) /var/lib/docker docker関連でよく使うコマンド ログ見る</p>
+</div>
+
+
+<div class="summary mb-2">
+  
+  <h2 class="title-summary"><a href="/docs/linux/">Linuxメモ</a></h2>
+  <p>想定としてはubuntu、archなど。
+とりあえず色々見たい journalctl -f サービス動かしたい systemctl start hoge systemctl stop hoge systemctl restart hoge サービスの状況を見たい systemctl status hoge apt-getのあれ apt-get install hoge apt-get remove hoge </p>
 </div>
 
 
