@@ -26,7 +26,8 @@
       <pubDate>Wed, 01 Apr 2020 16:02:47 +0900</pubDate>
       
       <guid>/docs/vim/</guid>
-      <description>Vim ファイルパスジャンプ gf vsplitしてファイルパスジャンプ &amp;lt;C-w&amp;gt;f tabsplitしてファイルパスジャンプ CTRL-W gf ファイルジャンプ系プラグイン https://github.com/kana/vim-altr
+      <description>Vim ファイルパスジャンプ gf gfはgoto fileの略
+vsplitしてファイルパスジャンプ &amp;lt;C-w&amp;gt;f tabsplitしてファイルパスジャンプ CTRL-W gf ファイルジャンプ系プラグイン https://github.com/kana/vim-altr
 ソートして重複消す sort u たまに使いたくなる smile NERDTREE ウインドウサイズ調整 let g:NERDTreeWinSize=40 :NERDTree :NERDTreeFind ,とかだとWindowサイズがリセットされない。数字は任意
 現在開いてるファイルの位置表示 NERDTreeFind </description>
     </item>
@@ -56,6 +57,25 @@
       
       <guid>/docs/docker/</guid>
       <description>容量確認 docker system df 色々消す docker system prune -a --volumes コンテナ消す docker container prune イメージ消す docker image prune ボリューム消す docker volume prune 起動しているコンテナ一覧 docker ps コンテナ一覧 docker ps -a イメージ一覧 docker images イメージ指定して削除 docker rmi [ImageID] dockerの諸々の場所(linux) /var/lib/docker docker関連でよく使うコマンド ログ見る</description>
+    </item>
+    
+    <item>
+      <title>brewメモ</title>
+      <link>/docs/brew/</link>
+      <pubDate>Fri, 01 May 2020 13:45:31 +0900</pubDate>
+      
+      <guid>/docs/brew/</guid>
+      <description>インストール中の一覧見る brew list cleanup brew cleanup upgrade brew upgrade hogehoge uninstall brew uninstall hogehoge install brew install hogehoge 依存関係見る brew deps --tree hogehoge brewおかしいなって時 brew doctor </description>
+    </item>
+    
+    <item>
+      <title>npm vs yarnメモ</title>
+      <link>/docs/npmvsyarn/</link>
+      <pubDate>Sun, 26 Apr 2020 00:24:25 +0900</pubDate>
+      
+      <guid>/docs/npmvsyarn/</guid>
+      <description>プロジェクト作成 npm npm init yarn yarn init typescript依存追加 npm npm i -D typescript iがinstallの略。-Dでdev dependency
+yarn yarn add typescript -D ローカルパッケージの実行 npm npx {package} yarn yarn -s run {package} 　たとえばtsc init yarn -s run tsc --init </description>
     </item>
     
     <item>

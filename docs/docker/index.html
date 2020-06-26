@@ -111,6 +111,14 @@
     </li>
     
     <li class="">
+      <a href="/docs/brew/">brewメモ</a>
+    </li>
+    
+    <li class="">
+      <a href="/docs/npmvsyarn/">npm vs yarnメモ</a>
+    </li>
+    
+    <li class="">
       <a href="/docs/linux/">Linuxメモ</a>
     </li>
     
@@ -152,6 +160,19 @@
 <div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">docker start hoge
 </code></pre></div><p>bashでもぐる</p>
 <div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">docker exec -it hoge /bin/bash
+</code></pre></div><h2 id="linux--postgresコンテナをシュッと作ってgoのプロジェクトのユニットテスト">Linux + postgresコンテナをシュッと作ってGoのプロジェクトのユニットテスト</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">docker run --privileged --name centos -d centos /sbin/init
+docker exec -ti centos bash
+yum install -y git
+yum install -y epel-release
+yum install -y golang
+yum install -y https://yum.postgresql.org/9.6/redhat/rhel-7-x86_64/pgdg-redhat96-9.6-3.noarch.rpm
+yum install -y postgresql96-server postgresql96-contrib
+PGDATA=/var/lib/pgsql/data /usr/pgsql-9.6/bin/postgresql96-setup initdb
+systemctl start postgresql-9.6.service
+git clone [repo url]
+cd [repo]
+go test ./..
 </code></pre></div>
 </div>
 </div>
