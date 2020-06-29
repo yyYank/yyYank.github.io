@@ -7,4 +7,4 @@
 about meなページ→https://yyyank.github.io/
 
 
-自分用memo→https://yyyank.github.io/memo/
+自分用memo→https://yyyank.github.io/docs/
