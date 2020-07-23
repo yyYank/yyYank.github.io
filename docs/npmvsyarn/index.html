@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
-  <title>GitHubメモ - Hugo Whisper Theme</title>
+  <title>npm vs yarnメモ - Hugo Whisper Theme</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   
   <link rel="icon" href="/favicon.png">
@@ -90,7 +90,7 @@
   <h4>Docs</h4>
   <ul>
     
-    <li class="active ">
+    <li class="">
       <a href="/docs/github/">GitHubメモ</a>
     </li>
     
@@ -118,7 +118,7 @@
       <a href="/docs/brew/">brewメモ</a>
     </li>
     
-    <li class="">
+    <li class="active ">
       <a href="/docs/npmvsyarn/">npm vs yarnメモ</a>
     </li>
     
@@ -133,10 +133,27 @@
         </div>
         <div class="col-12 col-md-9">
           
-<h1 class="title">GitHubメモ</h1>
+<h1 class="title">npm vs yarnメモ</h1>
 <div class="content ">
-  <h2 id="ssh公開鍵を知る">ssh公開鍵を知る</h2>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">https://github.com/${USERNAME}.keys
+  <h2 id="プロジェクト作成">プロジェクト作成</h2>
+<h3 id="npm">npm</h3>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">npm init
+</code></pre></div><h3 id="yarn">yarn</h3>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">yarn init
+</code></pre></div><h2 id="typescript依存追加">typescript依存追加</h2>
+<h3 id="npm-1">npm</h3>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">npm i -D typescript
+</code></pre></div><p>iがinstallの略。-Dでdev dependency</p>
+<h3 id="yarn-1">yarn</h3>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">yarn add typescript -D 
+</code></pre></div><h2 id="ローカルパッケージの実行">ローカルパッケージの実行</h2>
+<h3 id="npm-2">npm</h3>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">npx {package}
+</code></pre></div><h3 id="yarn-2">yarn</h3>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">yarn -s run {package}
+</code></pre></div><p>　</p>
+<h3 id="たとえばtsc-init">たとえばtsc init</h3>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">yarn -s run tsc --init
 </code></pre></div>
 </div>
 </div>

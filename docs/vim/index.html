@@ -1,10 +1,201 @@
-<!doctype html><html lang=en><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="ie=edge"><title>vimメモ - Hugo Whisper Theme</title><meta name=viewport content="width=device-width,initial-scale=1"><link rel=icon href=/favicon.png><link rel=stylesheet href=/css/style.min.aad43d4ecb69a264f2539b89d7f779d5f3cdff22e7585fe5fc3c77272f1c2696.css></head><body class="page page-default-single"><div id=main-menu-mobile class=main-menu-mobile><ul><li class=menu-item-home><a href=/><span>Home</span></a></li><li class=menu-item-docs><a href=/docs/><span>Docs</span></a></li></ul></div><div class=wrapper><div class=header><div class=container><div class=logo><a href=/><img alt=Logo src=/images/logo.svg></a></div><div class=logo-mobile><a href=/><img alt=Logo src=/images/logo-mobile.svg></a></div><div id=main-menu class=main-menu><ul><li class=menu-item-home><a href=/><span>Home</span></a></li><li class=menu-item-docs><a href=/docs/><span>Docs</span></a></li></ul></div><button id=toggle-main-menu-mobile class="hamburger hamburger--slider" type=button>
-<span class=hamburger-box><span class=hamburger-inner></span></span></button></div></div><div class="container pt-2 pt-md-6 pb-3 pb-md-6"><div class=row><div class="col-12 col-md-3 mb-3"><div class=sidebar><div class=docs-menu><h4>Docs</h4><ul><li><a href=/docs/github/>GitHubメモ</a></li><li class=active><a href=/docs/vim/>vimメモ</a></li><li><a href=/docs/git/>gitメモ</a></li><li><a href=/docs/tmux/>tmuxメモ</a></li><li><a href=/docs/docker/>Dockerメモ</a></li></ul></div></div></div><div class="col-12 col-md-9"><h1 class=title>vimメモ</h1><div class=content><h1 id=vim>Vim</h1><h2 id=ファイルパスジャンプ>ファイルパスジャンプ</h2><div class=highlight><pre class=chroma><code class=language-fallback data-lang=fallback>gf
-</code></pre></div><p>gfはgoto fileの略</p><h2 id=vsplitしてファイルパスジャンプ>vsplitしてファイルパスジャンプ</h2><div class=highlight><pre class=chroma><code class=language-fallback data-lang=fallback>&lt;C-w&gt;f
-</code></pre></div><h2 id=tabsplitしてファイルパスジャンプ>tabsplitしてファイルパスジャンプ</h2><div class=highlight><pre class=chroma><code class=language-fallback data-lang=fallback>CTRL-W gf 
-</code></pre></div><h2 id=ファイルジャンプ系プラグイン>ファイルジャンプ系プラグイン</h2><p><a href=https://github.com/kana/vim-altr>https://github.com/kana/vim-altr</a></p><h2 id=ソートして重複消す>ソートして重複消す</h2><div class=highlight><pre class=chroma><code class=language-fallback data-lang=fallback>sort u
-</code></pre></div><h2 id=たまに使いたくなる>たまに使いたくなる</h2><div class=highlight><pre class=chroma><code class=language-fallback data-lang=fallback>smile
-</code></pre></div><h1 id=nerdtree>NERDTREE</h1><h2 id=ウインドウサイズ調整>ウインドウサイズ調整</h2><div class=highlight><pre class=chroma><code class=language-fallback data-lang=fallback>let g:NERDTreeWinSize=40
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>vimメモ - Hugo Whisper Theme</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <link rel="icon" href="/favicon.png">
+
+  
+  
+  <link rel="stylesheet" href="/css/style.min.aad43d4ecb69a264f2539b89d7f779d5f3cdff22e7585fe5fc3c77272f1c2696.css">
+  
+
+  
+
+</head>
+
+<body class='page page-default-single'>
+  <div id="main-menu-mobile" class="main-menu-mobile">
+  <ul>
+    
+    
+    <li class="menu-item-home">
+      <a href="/">
+        <span>Home</span>
+      </a>
+    </li>
+    
+    <li class="menu-item-docs">
+      <a href="/docs/">
+        <span>Docs</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+  <div class="wrapper">
+    <div class='header'>
+  <div class="container">
+    <div class="logo">
+      <a href="/"><img alt="Logo" src="/images/logo.svg" /></a>
+    </div>
+    <div class="logo-mobile">
+      <a href="/"><img alt="Logo" src="/images/logo-mobile.svg" /></a>
+    </div>
+    <div id="main-menu" class="main-menu">
+  <ul>
+    
+    
+    <li class="menu-item-home">
+      <a href="/">
+        <span>Home</span>
+      </a>
+    </li>
+    
+    <li class="menu-item-docs">
+      <a href="/docs/">
+        <span>Docs</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+    <button id="toggle-main-menu-mobile" class="hamburger hamburger--slider" type="button">
+  <span class="hamburger-box">
+    <span class="hamburger-inner"></span>
+  </span>
+</button>
+  </div>
+</div>
+
+
+    
+    
+    
+    
+    
+    
+
+    
+    <div class="container pt-2 pt-md-6 pb-3 pb-md-6">
+      <div class="row">
+        <div class="col-12 col-md-3 mb-3">
+          <div class="sidebar">
+            
+<div class="docs-menu">
+  <h4>Docs</h4>
+  <ul>
+    
+    <li class="">
+      <a href="/docs/github/">GitHubメモ</a>
+    </li>
+    
+    <li class="active ">
+      <a href="/docs/vim/">vimメモ</a>
+    </li>
+    
+    <li class="">
+      <a href="/docs/git/">gitメモ</a>
+    </li>
+    
+    <li class="">
+      <a href="/docs/tmux/">tmuxメモ</a>
+    </li>
+    
+    <li class="">
+      <a href="/docs/docker/">Dockerメモ</a>
+    </li>
+    
+    <li class="">
+      <a href="/docs/intellij/">IntelliJ IDEAメモ</a>
+    </li>
+    
+    <li class="">
+      <a href="/docs/brew/">brewメモ</a>
+    </li>
+    
+    <li class="">
+      <a href="/docs/npmvsyarn/">npm vs yarnメモ</a>
+    </li>
+    
+    <li class="">
+      <a href="/docs/linux/">Linuxメモ</a>
+    </li>
+    
+  </ul>
+</div>
+
+          </div>
+        </div>
+        <div class="col-12 col-md-9">
+          
+<h1 class="title">vimメモ</h1>
+<div class="content ">
+  <h1 id="vim">Vim</h1>
+<h2 id="ファイルパスジャンプ">ファイルパスジャンプ</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">gf
+</code></pre></div><p>gfはgoto fileの略</p>
+<h2 id="vsplitしてファイルパスジャンプ">vsplitしてファイルパスジャンプ</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">&lt;C-w&gt;f
+</code></pre></div><h2 id="tabsplitしてファイルパスジャンプ">tabsplitしてファイルパスジャンプ</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">CTRL-W gf 
+</code></pre></div><h2 id="ファイルジャンプ系プラグイン">ファイルジャンプ系プラグイン</h2>
+<p><a href="https://github.com/kana/vim-altr">https://github.com/kana/vim-altr</a></p>
+<h2 id="ソートして重複消す">ソートして重複消す</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">sort u
+</code></pre></div><h2 id="たまに使いたくなる">たまに使いたくなる</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">smile
+</code></pre></div><h1 id="nerdtree">NERDTREE</h1>
+<h2 id="ウインドウサイズ調整">ウインドウサイズ調整</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">let g:NERDTreeWinSize=40
 :NERDTree
-</code></pre></div><p><code>:NERDTreeFind</code> ,とかだとWindowサイズがリセットされない。数字は任意</p><h2 id=現在開いてるファイルの位置表示>現在開いてるファイルの位置表示</h2><div class=highlight><pre class=chroma><code class=language-fallback data-lang=fallback>NERDTreeFind
-</code></pre></div></div></div></div></div></div></div><div class=sub-footer><div class=container><div class=row><div class=col-12><div class=sub-footer-inner><ul><li class=zerostatic><a href=https://www.zerostatic.io>www.zerostatic.io</a></li></ul></div></div></div></div></div><script type=text/javascript src=/js/scripts.min.1237ff71925bb8625c97a9af8db4c54525258bedfd7c47493daaff723bea755e.js></script></body></html>
+</code></pre></div><p><code>:NERDTreeFind</code> ,とかだとWindowサイズがリセットされない。数字は任意</p>
+<h2 id="現在開いてるファイルの位置表示">現在開いてるファイルの位置表示</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">NERDTreeFind
+</code></pre></div>
+</div>
+</div>
+
+        </div>
+      </div>
+    </div>
+    
+  </div>
+
+  <div class="sub-footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <div class="sub-footer-inner">
+          <ul>
+            <li class="zerostatic"><a href="https://www.zerostatic.io">www.zerostatic.io</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/scripts.min.1237ff71925bb8625c97a9af8db4c54525258bedfd7c47493daaff723bea755e.js"></script>
+  
+
+  
+  
+  
+    
+  
+
+
+</body>
+
+</html>
