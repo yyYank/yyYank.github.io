@@ -139,6 +139,8 @@
 <div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">git branch --merged|egrep -v &#39;\*|develop|master&#39;|xargs git branch -d
 </code></pre></div><h2 id="authorをammendしたいとき">authorをammendしたいとき</h2>
 <div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">git commit --amend --author=&#34;name &lt;hoge@gmail.com&gt;&#34;
+</code></pre></div><h2 id="gitのremote-urlをhttpsからsshに変更したい">gitのremote urlをhttpsからsshに変更したい</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">git remote set-url origin git@github.com:{repository_owner}/{repository_name}.git
 </code></pre></div>
 </div>
 </div>
