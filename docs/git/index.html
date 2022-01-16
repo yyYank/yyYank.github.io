@@ -11,7 +11,7 @@
 
   
   
-  <link rel="stylesheet" href="/css/style.min.3fa7d1129d6a35378e8b2a066888d5f1c50ce77ee0a064e8851fb064235fd540.css">
+  <link rel="stylesheet" href="/css/style.min.aad43d4ecb69a264f2539b89d7f779d5f3cdff22e7585fe5fc3c77272f1c2696.css">
   
 
   
@@ -139,34 +139,32 @@
           
 <h1 class="title">gitメモ</h1>
 <div class="content anchor-link-enabled">
-  
-
-<h2 id="developとmasterにマージ済みのローカルブランチを削除する">developとmasterにマージ済みのローカルブランチを削除する</h2>
-<div class="highlight"><pre class="chroma">git branch --merged|egrep -v &#39;\*|develop|master&#39;|xargs git branch -d</pre></div>
-<h2 id="authorをammendしたいとき">authorをammendしたいとき</h2>
-<div class="highlight"><pre class="chroma">git commit --amend --author=&#34;name &lt;hoge@gmail.com&gt;&#34;</pre></div>
-<h2 id="gitのremote-urlをhttpsからsshに変更したい">gitのremote urlをhttpsからsshに変更したい</h2>
-<div class="highlight"><pre class="chroma">git remote set-url origin git@github.com:{repository_owner}/{repository_name}.git</pre></div>
-<h2 id="git-rebaseのなんだっけ-メモ">git rebaseのなんだっけ？メモ</h2>
-
+  <h2 id="developとmasterにマージ済みのローカルブランチを削除する">developとmasterにマージ済みのローカルブランチを削除する</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">git branch --merged|egrep -v &#39;\*|develop|master&#39;|xargs git branch -d
+</code></pre></div><h2 id="authorをammendしたいとき">authorをammendしたいとき</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">git commit --amend --author=&#34;name &lt;hoge@gmail.com&gt;&#34;
+</code></pre></div><h2 id="gitのremote-urlをhttpsからsshに変更したい">gitのremote urlをhttpsからsshに変更したい</h2>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">git remote set-url origin git@github.com:{repository_owner}/{repository_name}.git
+</code></pre></div><h2 id="git-rebaseのなんだっけメモ">git rebaseのなんだっけ？メモ</h2>
 <h3 id="d-drop">d, drop</h3>
-<div class="highlight"><pre class="chroma">remove commit
-ドロップ=コミットを削除</pre></div>
-<h3 id="x-exec">x, exec</h3>
-<div class="highlight"><pre class="chroma">exec = run command (the rest of the line) using shel
-x、exec =シェルを使用してコマンド（行の残りの部分）を実行</pre></div>
-<h3 id="f-fixup">f, fixup</h3>
-<div class="highlight"><pre class="chroma">like &#34;squash&#34;, but discard this commit&#39;s log message
-「スカッシュ」のようですが、このコミットのログメッセージを破棄します</pre></div>
-<h3 id="s-squash">s, squash</h3>
-<div class="highlight"><pre class="chroma">use commit, but meld into previous commit
-コミットを使用しますが、以前のコミットにマージします</pre></div>
-<h3 id="e-edit">e, edit</h3>
-<div class="highlight"><pre class="chroma">use commit, but stop for amending
-コミットを使用しますが、修正のために停止します</pre></div>
-<h3 id="r-reword">r, reword</h3>
-<div class="highlight"><pre class="chroma">use commit, but edit the commit message
-コミットを使用しますが、コミットメッセージを編集します</pre></div>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">remove commit
+ドロップ=コミットを削除
+</code></pre></div><h3 id="x-exec">x, exec</h3>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">exec = run command (the rest of the line) using shel
+x、exec =シェルを使用してコマンド（行の残りの部分）を実行
+</code></pre></div><h3 id="f-fixup">f, fixup</h3>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">like &#34;squash&#34;, but discard this commit&#39;s log message
+「スカッシュ」のようですが、このコミットのログメッセージを破棄します
+</code></pre></div><h3 id="s-squash">s, squash</h3>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">use commit, but meld into previous commit
+コミットを使用しますが、以前のコミットにマージします
+</code></pre></div><h3 id="e-edit">e, edit</h3>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">use commit, but stop for amending
+コミットを使用しますが、修正のために停止します
+</code></pre></div><h3 id="r-reword">r, reword</h3>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">use commit, but edit the commit message
+コミットを使用しますが、コミットメッセージを編集します
+</code></pre></div>
 </div>
 </div>
 
