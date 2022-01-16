@@ -11,7 +11,7 @@
 
   
   
-  <link rel="stylesheet" href="/css/style.min.aad43d4ecb69a264f2539b89d7f779d5f3cdff22e7585fe5fc3c77272f1c2696.css">
+  <link rel="stylesheet" href="/css/style.min.6719d72e323121369d5caeb4264b95d8a63cf1deaab029da67602fe5a046e0a4.css">
   
 
   
@@ -140,36 +140,36 @@
 <h1 class="title">Dockerメモ</h1>
 <div class="content anchor-link-enabled">
   <h2 id="容量確認">容量確認</h2>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">docker system df
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">docker system df
 </code></pre></div><h2 id="色々消す">色々消す</h2>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">docker system prune -a --volumes
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">docker system prune -a --volumes
 </code></pre></div><h2 id="コンテナ消す">コンテナ消す</h2>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">docker container prune
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">docker container prune
 </code></pre></div><h2 id="イメージ消す">イメージ消す</h2>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">docker image prune
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">docker image prune
 </code></pre></div><h2 id="ボリューム消す">ボリューム消す</h2>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">docker volume prune
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">docker volume prune
 </code></pre></div><h2 id="起動しているコンテナ一覧">起動しているコンテナ一覧</h2>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">docker ps
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">docker ps
 </code></pre></div><h2 id="コンテナ一覧">コンテナ一覧</h2>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">docker ps -a
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">docker ps -a
 </code></pre></div><h2 id="イメージ一覧">イメージ一覧</h2>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">docker images
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">docker images
 </code></pre></div><h2 id="イメージ指定して削除">イメージ指定して削除</h2>
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">docker rmi <span class="o">[</span>ImageID<span class="o">]</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">docker rmi <span class="o">[</span>ImageID<span class="o">]</span>
 </code></pre></div><h2 id="dockerの諸々の場所linux">dockerの諸々の場所(linux)</h2>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">/var/lib/docker
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">/var/lib/docker
 </code></pre></div><h2 id="docker関連でよく使うコマンド">docker関連でよく使うコマンド</h2>
 <p>ログ見る</p>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">docker logs -f hoge
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">docker logs -f hoge
 </code></pre></div><p>再起動</p>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">docker restart hoge
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">docker restart hoge
 </code></pre></div><p>起動</p>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">docker start hoge
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">docker start hoge
 </code></pre></div><p>bashでもぐる</p>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">docker exec -it hoge /bin/bash
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">docker exec -it hoge /bin/bash
 </code></pre></div><h2 id="linux--postgresコンテナをシュッと作ってgoのプロジェクトのユニットテスト">Linux + postgresコンテナをシュッと作ってGoのプロジェクトのユニットテスト</h2>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">docker run --privileged --name centos -d centos /sbin/init
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">docker run --privileged --name centos -d centos /sbin/init
 docker exec -ti centos bash
 yum install -y git
 yum install -y epel-release
@@ -211,7 +211,7 @@ go test ./..
   
 
   
-  <script type="text/javascript" src="/js/scripts.min.1237ff71925bb8625c97a9af8db4c54525258bedfd7c47493daaff723bea755e.js"></script>
+  <script type="text/javascript" src="/js/scripts.min.eaf147370baecdd07c022597db631f99cab1c9cd6479de586f30327a568d6a0f.js"></script>
   
 
   
