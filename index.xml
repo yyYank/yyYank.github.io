@@ -17,7 +17,7 @@
       <pubDate>Wed, 12 Aug 2020 15:58:28 +0900</pubDate>
       
       <guid>/docs/scala/</guid>
-      <description>scala memo </description>
+      <description> scala memo </description>
     </item>
     
     <item>
@@ -26,7 +26,7 @@
       <pubDate>Wed, 22 Apr 2020 14:25:44 +0900</pubDate>
       
       <guid>/docs/github/</guid>
-      <description>ssh公開鍵を知る https://github.com/${USERNAME}.keys </description>
+      <description>ssh公開鍵を知る https://github.</description>
     </item>
     
     <item>
@@ -35,10 +35,10 @@
       <pubDate>Wed, 01 Apr 2020 16:02:47 +0900</pubDate>
       
       <guid>/docs/vim/</guid>
-      <description>Vim ファイルパスジャンプ gf gfはgoto fileの略
-vsplitしてファイルパスジャンプ &amp;lt;C-w&amp;gt;f tabsplitしてファイルパスジャンプ CTRL-W gf ファイルジャンプ系プラグイン https://github.com/kana/vim-altr
+      <description> Vim ファイルパスジャンプ gf gfはgoto fileの略
+vsplitしてファイルパスジャンプ &amp;lt;C-w&amp;gt;f tabsplitしてファイルパスジャンプ CTRL-W gf  ファイルジャンプ系プラグイン https://github.com/kana/vim-altr
 ソートして重複消す sort u たまに使いたくなる smile NERDTREE ウインドウサイズ調整 let g:NERDTreeWinSize=40 :NERDTree :NERDTreeFind ,とかだとWindowサイズがリセットされない。数字は任意
-現在開いてるファイルの位置表示 NERDTreeFind </description>
+現在開いてるファイルの位置表示 NERDTreeFind</description>
     </item>
     
     <item>
@@ -47,7 +47,7 @@ vsplitしてファイルパスジャンプ &amp;lt;C-w&amp;gt;f tabsplitして�
       <pubDate>Wed, 01 Apr 2020 16:02:44 +0900</pubDate>
       
       <guid>/docs/git/</guid>
-      <description>developとmasterにマージ済みのローカルブランチを削除する git branch --merged|egrep -v &amp;#39;\*|develop|master&amp;#39;|xargs git branch -d authorをammendしたいとき git commit --amend --author=&amp;#34;name &amp;lt;hoge@gmail.com&amp;gt;&amp;#34; gitのremote urlをhttpsからsshに変更したい git remote set-url origin git@github.com:{repository_owner}/{repository_name}.git git rebaseのなんだっけ？メモ d, drop remove commit ドロップ=コミットを削除 x, exec exec = run command (the rest of the line) using shel x、exec =シェルを使用してコマンド（行の残りの部分）を実行 f, fixup like &amp;#34;squash&amp;#34;, but discard this commit&amp;#39;s log message 「スカッシュ」のようですが、このコミットのログメッセージを破棄します s, squash use commit, but meld into previous commit コミットを使用しますが、以前のコミットにマージします e, edit use commit, but stop for amending コミットを使用しますが、修正のために停止します r, reword use commit, but edit the commit message コミットを使用しますが、コミットメッセージを編集します </description>
+      <description> developとmasterにマージ済みのローカルブランチを削除する git branch --merged|egrep -v &amp;#39;\*|develop|master&amp;#39;|xargs git branch -d authorをammendしたいとき git commit --amend --author=&amp;#34;name &amp;lt;hoge@gmail.com&amp;gt;&amp;#34; gitのremote urlをhttpsからsshに変更したい git remote set-url origin git@github.com:{repository_owner}/{repository_name}.git git rebaseのなんだっけ？メモ d, drop remove commit ドロップ=コミットを削除 x, exec exec = run command (the rest of the line) using shel x、exec =シェルを使用してコマンド（行の残りの部分）を実行 f, fixup like &amp;#34;squash&amp;#34;, but discard this commit&amp;#39;s log message 「スカッシュ」のようですが、このコミットのログメッセージを破棄します s, squash use commit, but meld into previous commit コミットを使用しますが、以前のコミットにマージします e, edit use commit, but stop for amending コミットを使用しますが、修正のために停止します r, reword use commit, but edit the commit message コミットを使用しますが、コミットメッセージを編集します</description>
     </item>
     
     <item>
@@ -56,7 +56,7 @@ vsplitしてファイルパスジャンプ &amp;lt;C-w&amp;gt;f tabsplitして�
       <pubDate>Wed, 01 Apr 2020 16:02:41 +0900</pubDate>
       
       <guid>/docs/tmux/</guid>
-      <description>tmuxサーバー kill tmux kill-server セッションkill tmux kill-session ウインドウkill &amp;amp; ウインドウ検索 f </description>
+      <description> tmuxサーバー kill tmux kill-server セッションkill tmux kill-session ウインドウkill &amp;amp; ウインドウ検索 f</description>
     </item>
     
     <item>
@@ -88,7 +88,7 @@ Find Action cmd + shift + a</description>
       <pubDate>Fri, 01 May 2020 13:45:31 +0900</pubDate>
       
       <guid>/docs/brew/</guid>
-      <description>インストール中の一覧見る brew list cleanup brew cleanup upgrade brew upgrade hogehoge uninstall brew uninstall hogehoge install brew install hogehoge 依存関係見る brew deps --tree hogehoge brewおかしいなって時 brew doctor </description>
+      <description> インストール中の一覧見る brew list cleanup brew cleanup upgrade brew upgrade hogehoge uninstall brew uninstall hogehoge install brew install hogehoge 依存関係見る brew deps --tree hogehoge brewおかしいなって時 brew doctor</description>
     </item>
     
     <item>
@@ -97,8 +97,8 @@ Find Action cmd + shift + a</description>
       <pubDate>Sun, 26 Apr 2020 00:24:25 +0900</pubDate>
       
       <guid>/docs/npmvsyarn/</guid>
-      <description>プロジェクト作成 npm npm init yarn yarn init typescript依存追加 npm npm i -D typescript iがinstallの略。-Dでdev dependency
-yarn yarn add typescript -D ローカルパッケージの実行 npm npx {package} yarn yarn -s run {package} 　たとえばtsc init yarn -s run tsc --init </description>
+      <description> プロジェクト作成 npm npm init yarn yarn init typescript依存追加 npm npm i -D typescript iがinstallの略。-Dでdev dependency
+yarn yarn add typescript -D  ローカルパッケージの実行 npm npx {package} yarn yarn -s run {package} 　たとえばtsc init yarn -s run tsc --init</description>
     </item>
     
     <item>
@@ -107,8 +107,8 @@ yarn yarn add typescript -D ローカルパッケージの実行 npm npx {packag
       <pubDate>Wed, 22 Apr 2020 14:43:05 +0900</pubDate>
       
       <guid>/docs/linux/</guid>
-      <description>想定としてはubuntu、archなど。コマンドはmacでも使えるかも
-port使っているやつを見つける lsof -n -P -i:8981 とりあえず色々見たい journalctl -f サービス動かしたい systemctl start hoge systemctl stop hoge systemctl restart hoge サービスの状況を見たい systemctl status hoge apt-getのあれ apt-get install hoge apt-get remove hoge </description>
+      <description> 想定としてはubuntu、archなど。コマンドはmacでも使えるかも
+port使っているやつを見つける lsof -n -P -i:8981 とりあえず色々見たい journalctl -f サービス動かしたい systemctl start hoge systemctl stop hoge systemctl restart hoge サービスの状況を見たい systemctl status hoge apt-getのあれ apt-get install hoge apt-get remove hoge</description>
     </item>
     
   </channel>

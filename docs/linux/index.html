@@ -11,7 +11,7 @@
 
   
   
-  <link rel="stylesheet" href="/css/style.min.aad43d4ecb69a264f2539b89d7f779d5f3cdff22e7585fe5fc3c77272f1c2696.css">
+  <link rel="stylesheet" href="/css/style.min.3fa7d1129d6a35378e8b2a066888d5f1c50ce77ee0a064e8851fb064235fd540.css">
   
 
   
@@ -139,21 +139,23 @@
           
 <h1 class="title">Linuxメモ</h1>
 <div class="content anchor-link-enabled">
-  <p>想定としてはubuntu、archなど。コマンドはmacでも使えるかも</p>
+  
+
+<p>想定としてはubuntu、archなど。コマンドはmacでも使えるかも</p>
+
 <h2 id="port使っているやつを見つける">port使っているやつを見つける</h2>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">lsof -n -P -i:8981
-</code></pre></div><h2 id="とりあえず色々見たい">とりあえず色々見たい</h2>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">journalctl -f
-</code></pre></div><h2 id="サービス動かしたい">サービス動かしたい</h2>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">systemctl start hoge
+<div class="highlight"><pre class="chroma">lsof -n -P -i:8981</pre></div>
+<h2 id="とりあえず色々見たい">とりあえず色々見たい</h2>
+<div class="highlight"><pre class="chroma">journalctl -f</pre></div>
+<h2 id="サービス動かしたい">サービス動かしたい</h2>
+<div class="highlight"><pre class="chroma">systemctl start hoge
 systemctl stop hoge
-systemctl restart hoge
-</code></pre></div><h2 id="サービスの状況を見たい">サービスの状況を見たい</h2>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">systemctl status hoge
-</code></pre></div><h3 id="apt-getのあれ">apt-getのあれ</h3>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback">apt-get install hoge
-apt-get remove hoge
-</code></pre></div>
+systemctl restart hoge</pre></div>
+<h2 id="サービスの状況を見たい">サービスの状況を見たい</h2>
+<div class="highlight"><pre class="chroma">systemctl status hoge</pre></div>
+<h3 id="apt-getのあれ">apt-getのあれ</h3>
+<div class="highlight"><pre class="chroma">apt-get install hoge
+apt-get remove hoge</pre></div>
 </div>
 </div>
 
