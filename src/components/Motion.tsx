@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import type { ReactNode } from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 
 interface FadeInProps {
   children: ReactNode;
@@ -129,23 +129,79 @@ interface TextSwitchAnimationProps {
   secondText: string;
   className?: string;
   duration?: number;
+  typingSequence?: string[];
+  typingStepDuration?: number;
+  typingHoldDuration?: number;
+  secondTypingSequence?: string[];
+  secondTypingStepDuration?: number;
+  secondTypingStartDelay?: number;
 }
 
 export function TextSwitchAnimation({
   firstText,
   secondText,
   className = '',
-  duration = 1
+  duration = 1,
+  typingSequence,
+  typingStepDuration = 0.25,
+  typingHoldDuration,
+  secondTypingSequence,
+  secondTypingStepDuration = 0.2,
+  secondTypingStartDelay = 0
 }: TextSwitchAnimationProps) {
+  const firstSteps = useMemo(
+    () => (typingSequence && typingSequence.length > 0 ? typingSequence : [firstText]),
+    [typingSequence, firstText]
+  );
+  const secondSteps = useMemo(
+    () => (secondTypingSequence && secondTypingSequence.length > 0 ? secondTypingSequence : [secondText]),
+    [secondTypingSequence, secondText]
+  );
+  const holdDuration = typingHoldDuration ?? duration;
   const [showFirst, setShowFirst] = useState(true);
+  const [currentFirstText, setCurrentFirstText] = useState(firstSteps[0] ?? firstText);
+  const [currentSecondText, setCurrentSecondText] = useState(secondSteps[0] ?? secondText);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowFirst(false);
-    }, duration * 1000);
+    setShowFirst(true);
+    setCurrentFirstText(firstSteps[0] ?? firstText);
+    setCurrentSecondText(secondSteps[0] ?? secondText);
 
-    return () => clearTimeout(timer);
-  }, [duration]);
+    const timers: ReturnType<typeof setTimeout>[] = [];
+
+    firstSteps.forEach((text, index) => {
+      const stepTimer = setTimeout(() => {
+        setCurrentFirstText(text);
+      }, index * typingStepDuration * 1000);
+      timers.push(stepTimer);
+    });
+
+    const switchDelay = (firstSteps.length - 1) * typingStepDuration * 1000 + holdDuration * 1000;
+    const switchTimer = setTimeout(() => {
+      setShowFirst(false);
+    }, switchDelay);
+    timers.push(switchTimer);
+
+    secondSteps.forEach((text, index) => {
+      const stepTimer = setTimeout(() => {
+        setCurrentSecondText(text);
+      }, switchDelay + (secondTypingStartDelay + index * secondTypingStepDuration) * 1000);
+      timers.push(stepTimer);
+    });
+
+    return () => {
+      timers.forEach((timer) => clearTimeout(timer));
+    };
+  }, [
+    firstText,
+    secondText,
+    firstSteps,
+    secondSteps,
+    typingStepDuration,
+    holdDuration,
+    secondTypingStepDuration,
+    secondTypingStartDelay
+  ]);
 
   return (
     <span style={{ position: 'relative', display: 'inline-block' }}>
@@ -160,7 +216,7 @@ export function TextSwitchAnimation({
             className={className}
             style={{ display: 'inline-block' }}
           >
-            {firstText}
+            {currentFirstText}
           </motion.span>
         ) : (
           <motion.span
@@ -171,7 +227,7 @@ export function TextSwitchAnimation({
             className={className}
             style={{ display: 'inline-block' }}
           >
-            {secondText}
+            {currentSecondText}
           </motion.span>
         )}
       </AnimatePresence>

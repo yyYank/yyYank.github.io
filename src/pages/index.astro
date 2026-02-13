@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { TwitterIcon, GitHubIcon, BloggerIcon, HatenaIcon, BlogIcon, MemoIcon } from '../components/Icons';
+import { TwitterIcon, GitHubIcon, BloggerIcon, HatenaIcon, BlogIcon, MemoIcon, PodcastIcon } from '../components/Icons';
 import { FadeIn, StaggerContainer, StaggerItem, ScaleIn, HoverCard, TextSwitchAnimation } from '../components/Motion';
 ---
 
@@ -21,8 +21,10 @@ import { FadeIn, StaggerContainer, StaggerItem, ScaleIn, HoverCard, TextSwitchAn
         </ScaleIn>
         <h1 class="text-5xl font-bold mb-4">
           <TextSwitchAnimation
-            firstText=":q"
+            firstText=":"
             secondText="yy_yank"
+            typingSequence={[':', ':q', ':q!']}
+            secondTypingSequence={['y', 'yy', 'yy_', 'yy_y', 'yy_ya', 'yy_yan', 'yy_yank']}
             className="bg-gradient-to-r from-accent-cyan via-accent-purple to-accent-pink bg-clip-text text-transparent"
             duration={1}
             client:load
@@ -167,6 +169,32 @@ import { FadeIn, StaggerContainer, StaggerItem, ScaleIn, HoverCard, TextSwitchAn
                 >
                   <span class="text-accent-green"><BlogIcon /></span>
                   <span class="text-gray-300 group-hover:text-accent-green transition-colors">Zenn</span>
+                </a>
+              </HoverCard>
+            </StaggerItem>
+          </StaggerContainer>
+        </div>
+      </FadeIn>
+
+      <!-- Podcast Section -->
+      <FadeIn direction="left" client:visible>
+        <div class="mb-16">
+          <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="w-8 h-0.5 bg-accent-cyan"></span>
+            <span class="text-accent-cyan"><PodcastIcon /></span>
+            Podcast
+          </h2>
+          <StaggerContainer className="space-y-4" staggerDelay={0.08} client:visible>
+            <StaggerItem>
+              <HoverCard client:visible>
+                <a
+                  href="https://open.spotify.com/show/10oTV1GgG4GRfbLcwunpJU"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="flex items-center gap-3 p-4 bg-dark-800/50 border border-dark-600 rounded-lg hover:bg-dark-700 transition-colors group"
+                >
+                  <span class="text-accent-cyan"><BlogIcon /></span>
+                  <span class="text-gray-300 group-hover:text-accent-cyan transition-colors">わいわいyankfm</span>
                 </a>
               </HoverCard>
             </StaggerItem>
