@@ -22,7 +22,7 @@ const currentSlug = currentPath.replace(/^\/docs\//, '').replace(/\/$/, '');
       <aside class="w-full md:w-64 flex-shrink-0">
         <DocsSidebar docs={sortedDocs} currentSlug={currentSlug} />
       </aside>
-      <article class="flex-grow min-w-0 prose prose-lg max-w-none">
+      <article class="flex-grow min-w-0 prose prose-lg prose-invert max-w-none">
         <slot />
       </article>
     </div>

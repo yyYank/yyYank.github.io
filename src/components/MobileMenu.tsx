@@ -16,7 +16,7 @@ export default function MobileMenu({ navItems }: Props) {
     <div className="md:hidden">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="p-2 text-gray-700"
+        className="p-2 text-gray-300 hover:text-accent-cyan transition-colors"
         aria-label="Toggle menu"
       >
         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -29,13 +29,13 @@ export default function MobileMenu({ navItems }: Props) {
       </button>
 
       {isOpen && (
-        <div className="absolute top-16 left-0 right-0 bg-white border-b border-gray-200 shadow-lg">
+        <div className="absolute top-16 left-0 right-0 bg-dark-800 border-b border-dark-600 shadow-lg">
           <nav className="container mx-auto px-4 py-4">
             {navItems.map(item => (
               <a
                 key={item.href}
                 href={item.href}
-                className="block py-2 text-gray-700 hover:text-primary-600"
+                className="block py-3 text-gray-300 hover:text-accent-cyan transition-colors border-b border-dark-600 last:border-b-0"
                 onClick={() => setIsOpen(false)}
               >
                 {item.label}

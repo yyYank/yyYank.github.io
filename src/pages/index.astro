@@ -3,78 +3,205 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
 <BaseLayout title="Profile">
-  <div class="container mx-auto px-4 py-12">
-    <div class="max-w-3xl mx-auto">
-      <h1 class="text-4xl font-bold mb-8">Profile</h1>
-
-      <div class="prose prose-lg max-w-none">
-        <h2>yy_yank</h2>
-        <img
-          src="https://avatars3.githubusercontent.com/u/3250718?v=3&s=460"
-          alt="yy_yank icon"
-          class="w-32 h-32 rounded-full"
-        />
-        <p>Japanese 'Yurufuwa' Programmer.</p>
-
-        <h3>Organization</h3>
-        <p>UZABASE Inc.</p>
-
-        <h3>Like</h3>
-        <p>Java, Kotlin, Go</p>
-
-        <h3>Twitter</h3>
-        <p><a href="https://twitter.com/yy_yank">@yy_yank</a></p>
-
-        <h3>GitHub</h3>
-        <p><a href="https://github.com/yyYank">https://github.com/yyYank</a></p>
-
-        <h3>Blog</h3>
-        <p><a href="https://yyyank.blogspot.jp/">プログラマのはしくれダイアリー</a></p>
-
-        <h3>contribute as a writer</h3>
-        <ul>
-          <li><a href="https://drive.google.com/file/d/0Bylpznm149-gTGRjOFRkWm9PODg/view">Kotlin助走読本</a></li>
-          <li><a href="https://www.amazon.co.jp/dp/B076Q2L1M6/ref=cm_sw_r_tw_awdo_c_x_LMA.BbPBEM027">Kotlinイン・アクション</a></li>
-        </ul>
-
-        <h3>Slide</h3>
-        <ul>
-          <li><a href="https://www.slideshare.net/yyyank/server-side-kotlin-49030491">Server Side Kotlin</a></li>
-          <li><a href="https://www.slideshare.net/yyyank/kotlinver">Kotlinメジャーver リリースを前に</a></li>
-          <li><a href="https://www.slideshare.net/yyyank/java-55600699">【こっそり始める】Javaプログラマコーディングマイグレーション</a></li>
-          <li><a href="https://www.slideshare.net/yyyank/kotlin-58781668">Kotlinあるある言いたい</a></li>
-          <li><a href="https://www.slideshare.net/yyyank/kotlin-60377622">Kotlinこんなん出ましたけど</a></li>
-          <li><a href="https://www.slideshare.net/yyyank/ss-62257220">絶対にぬるぽを出さない</a></li>
-          <li><a href="https://www.slideshare.net/yyyank/doma2-with-kotlin">Doma2 with Kotlin</a></li>
-          <li><a href="https://www.slideshare.net/yyyank/kuromojikotlin">KuromojiをKotlinで動かす</a></li>
-          <li><a href="https://www.slideshare.net/yyyank/javafizz-buzz">Javaで最強のfizz buzz</a></li>
-          <li><a href="https://www.slideshare.net/yyyank/kotlin-69542943">Kotlinソースコード探訪</a></li>
-          <li><a href="https://www.slideshare.net/yyyank/jvmjava-69784006">Jvm言語とJava、切っても切れないその関係</a></li>
-          <li><a href="https://www.slideshare.net/yyyank/vm-dalvikartjava-vm">VMの歩む道。 Dalvik、ART、そしてJava VM</a></li>
-          <li><a href="https://www.slideshare.net/yyyank/javago">Javaプログラマのための頑張らないGo入門</a></li>
-          <li><a href="https://speakerdeck.com/yyyank/sabasaidokotlintoiuxuan-ze-zhi-toyuzabesu">サーバーサイドKotlinという選択肢とユーザベース</a></li>
-          <li><a href="https://speakerdeck.com/yyyank/debeziumdebian-geng-detakiyaputiyawoxue-bou-number-jjug-ccc">Debeziumで変更データキャプチャを学ぼう #jjug_ccc</a></li>
-        </ul>
-
-        <h3>Site</h3>
-        <ul>
-          <li><a href="https://kotlin-rev-solution.herokuapp.com/">逆引きKotlin</a></li>
-          <li><a href="/docs/">memo</a></li>
-        </ul>
-
-        <h3>Library</h3>
-        <ul>
-          <li><a href="https://github.com/yyYank/Kebab">Kebab</a></li>
-          <li><a href="https://github.com/skrap-json4k/skrap-json4k">json4k</a></li>
-        </ul>
+  <div class="container mx-auto px-4 py-16">
+    <div class="max-w-4xl mx-auto">
+      <!-- Hero Section -->
+      <div class="text-center mb-16">
+        <div class="relative inline-block mb-6">
+          <div class="absolute inset-0 bg-accent-cyan/20 rounded-full blur-xl"></div>
+          <img
+            src="https://avatars3.githubusercontent.com/u/3250718?v=3&s=460"
+            alt="yy_yank icon"
+            class="relative w-32 h-32 rounded-full border-2 border-accent-cyan/50 shadow-glow-cyan"
+          />
+        </div>
+        <h1 class="text-5xl font-bold mb-4 bg-gradient-to-r from-accent-cyan via-accent-purple to-accent-pink bg-clip-text text-transparent">
+          yy_yank
+        </h1>
+        <p class="text-xl text-gray-400">Japanese 'Yurufuwa' Programmer</p>
+        <p class="text-gray-500 mt-2">UZABASE Inc.</p>
       </div>
 
-      <div class="mt-8">
+      <!-- Tech Stack -->
+      <div class="flex flex-wrap justify-center gap-3 mb-16">
+        {['Java', 'Kotlin', 'Go'].map(tech => (
+          <span class="px-4 py-2 bg-dark-700 border border-dark-500 rounded-full text-accent-cyan font-mono text-sm">
+            {tech}
+          </span>
+        ))}
+      </div>
+
+      <!-- Links Grid -->
+      <div class="grid md:grid-cols-2 gap-6 mb-16">
+        <a
+          href="https://twitter.com/yy_yank"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="group p-6 bg-dark-800 border border-dark-600 rounded-xl hover:border-accent-cyan/50 hover:shadow-glow-cyan transition-all"
+        >
+          <h3 class="text-lg font-semibold text-white group-hover:text-accent-cyan transition-colors mb-2">
+            Twitter
+          </h3>
+          <p class="text-gray-400">@yy_yank</p>
+        </a>
+
+        <a
+          href="https://github.com/yyYank"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="group p-6 bg-dark-800 border border-dark-600 rounded-xl hover:border-accent-purple/50 hover:shadow-glow-purple transition-all"
+        >
+          <h3 class="text-lg font-semibold text-white group-hover:text-accent-purple transition-colors mb-2">
+            GitHub
+          </h3>
+          <p class="text-gray-400">github.com/yyYank</p>
+        </a>
+
+        <a
+          href="https://yyyank.blogspot.jp/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="group p-6 bg-dark-800 border border-dark-600 rounded-xl hover:border-accent-green/50 transition-all"
+        >
+          <h3 class="text-lg font-semibold text-white group-hover:text-accent-green transition-colors mb-2">
+            Blog
+          </h3>
+          <p class="text-gray-400">プログラマのはしくれダイアリー</p>
+        </a>
+
         <a
           href="/docs/"
-          class="inline-block bg-primary-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-primary-700 transition-colors"
+          class="group p-6 bg-dark-800 border border-dark-600 rounded-xl hover:border-accent-pink/50 transition-all"
+        >
+          <h3 class="text-lg font-semibold text-white group-hover:text-accent-pink transition-colors mb-2">
+            MEMO
+          </h3>
+          <p class="text-gray-400">やんくのメモ</p>
+        </a>
+      </div>
+
+      <!-- Contributions Section -->
+      <div class="mb-16">
+        <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+          <span class="w-8 h-0.5 bg-accent-cyan"></span>
+          Contributions
+        </h2>
+        <div class="space-y-4">
+          <a
+            href="https://drive.google.com/file/d/0Bylpznm149-gTGRjOFRkWm9PODg/view"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="block p-4 bg-dark-800/50 border border-dark-600 rounded-lg hover:bg-dark-700 transition-colors"
+          >
+            <span class="text-gray-300 hover:text-accent-cyan transition-colors">Kotlin助走読本</span>
+          </a>
+          <a
+            href="https://www.amazon.co.jp/dp/B076Q2L1M6/ref=cm_sw_r_tw_awdo_c_x_LMA.BbPBEM027"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="block p-4 bg-dark-800/50 border border-dark-600 rounded-lg hover:bg-dark-700 transition-colors"
+          >
+            <span class="text-gray-300 hover:text-accent-cyan transition-colors">Kotlinイン・アクション</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Slides Section -->
+      <div class="mb-16">
+        <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+          <span class="w-8 h-0.5 bg-accent-purple"></span>
+          Slides
+        </h2>
+        <div class="grid md:grid-cols-2 gap-3">
+          {[
+            { url: 'https://www.slideshare.net/yyyank/server-side-kotlin-49030491', title: 'Server Side Kotlin' },
+            { url: 'https://www.slideshare.net/yyyank/kotlinver', title: 'Kotlinメジャーver リリースを前に' },
+            { url: 'https://www.slideshare.net/yyyank/java-55600699', title: 'Javaプログラマコーディングマイグレーション' },
+            { url: 'https://www.slideshare.net/yyyank/kotlin-58781668', title: 'Kotlinあるある言いたい' },
+            { url: 'https://www.slideshare.net/yyyank/kotlin-60377622', title: 'Kotlinこんなん出ましたけど' },
+            { url: 'https://www.slideshare.net/yyyank/ss-62257220', title: '絶対にぬるぽを出さない' },
+            { url: 'https://www.slideshare.net/yyyank/doma2-with-kotlin', title: 'Doma2 with Kotlin' },
+            { url: 'https://www.slideshare.net/yyyank/kuromojikotlin', title: 'KuromojiをKotlinで動かす' },
+            { url: 'https://www.slideshare.net/yyyank/javafizz-buzz', title: 'Javaで最強のfizz buzz' },
+            { url: 'https://www.slideshare.net/yyyank/kotlin-69542943', title: 'Kotlinソースコード探訪' },
+            { url: 'https://www.slideshare.net/yyyank/jvmjava-69784006', title: 'Jvm言語とJava、切っても切れないその関係' },
+            { url: 'https://www.slideshare.net/yyyank/vm-dalvikartjava-vm', title: 'VMの歩む道。Dalvik、ART、そしてJava VM' },
+            { url: 'https://www.slideshare.net/yyyank/javago', title: 'Javaプログラマのための頑張らないGo入門' },
+            { url: 'https://speakerdeck.com/yyyank/sabasaidokotlintoiuxuan-ze-zhi-toyuzabesu', title: 'サーバーサイドKotlinという選択肢とユーザベース' },
+            { url: 'https://speakerdeck.com/yyyank/debeziumdebian-geng-detakiyaputiyawoxue-bou-number-jjug-ccc', title: 'Debeziumで変更データキャプチャを学ぼう' },
+          ].map(slide => (
+            <a
+              href={slide.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="p-3 text-sm bg-dark-800/50 border border-dark-600 rounded-lg text-gray-400 hover:text-accent-purple hover:bg-dark-700 transition-all truncate"
+            >
+              {slide.title}
+            </a>
+          ))}
+        </div>
+      </div>
+
+      <!-- Libraries Section -->
+      <div class="mb-16">
+        <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+          <span class="w-8 h-0.5 bg-accent-green"></span>
+          Libraries
+        </h2>
+        <div class="flex flex-wrap gap-4">
+          <a
+            href="https://github.com/yyYank/Kebab"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="px-6 py-3 bg-dark-700 border border-dark-500 rounded-lg text-accent-green hover:bg-dark-600 transition-colors font-mono"
+          >
+            Kebab
+          </a>
+          <a
+            href="https://github.com/skrap-json4k/skrap-json4k"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="px-6 py-3 bg-dark-700 border border-dark-500 rounded-lg text-accent-green hover:bg-dark-600 transition-colors font-mono"
+          >
+            json4k
+          </a>
+        </div>
+      </div>
+
+      <!-- Sites Section -->
+      <div class="mb-16">
+        <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+          <span class="w-8 h-0.5 bg-accent-pink"></span>
+          Sites
+        </h2>
+        <div class="flex flex-wrap gap-4">
+          <a
+            href="https://kotlin-rev-solution.herokuapp.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="px-6 py-3 bg-dark-700 border border-dark-500 rounded-lg text-gray-300 hover:text-accent-pink hover:bg-dark-600 transition-colors"
+          >
+            逆引きKotlin
+          </a>
+          <a
+            href="/docs/"
+            class="px-6 py-3 bg-dark-700 border border-dark-500 rounded-lg text-gray-300 hover:text-accent-pink hover:bg-dark-600 transition-colors"
+          >
+            MEMO
+          </a>
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <div class="text-center">
+        <a
+          href="/docs/"
+          class="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-accent-cyan to-accent-purple text-dark-900 font-bold rounded-lg hover:opacity-90 transition-opacity"
         >
           やんくのメモをみてみる
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+          </svg>
         </a>
       </div>
     </div>
