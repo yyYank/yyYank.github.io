@@ -161,3 +161,6 @@ JavaScriptにコンバートされるよう。
 [公式チュートリアル](http://kotlinlang.org/docs/tutorials/command-line.html)
 
 [あまり知られていない？ #Kotlin の対話型評価環境](http://taro.hatenablog.jp/entry/2013/04/06/162855)
+
+
+最終更新日時：2016年5月29日

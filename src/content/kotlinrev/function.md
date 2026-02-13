@@ -55,3 +55,6 @@ order: 10
    
 $personは文字列への埋め込みの記法です。
 string templateまたはstring interpolationと一般に呼ばれます。
+
+
+最終更新日時：2017年1月23日

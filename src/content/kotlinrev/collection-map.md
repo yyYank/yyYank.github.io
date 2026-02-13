@@ -44,3 +44,6 @@ map関数を使います
 [Kotlin公式ドキュメント stdlib / kotlin / map](http://kotlinlang.org/api/latest/jvm/stdlib/kotlin/map.html)
 
 
+
+
+最終更新日時：2017年1月13日

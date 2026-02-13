@@ -23,3 +23,6 @@ useはClosableインターフェースを実装しているクラスの拡張関
 したがってcloseが実装されているクラスには同じように適用できます。
 
 [https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.io/use.html](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.io/use.html)
+
+
+最終更新日時：2018年4月18日

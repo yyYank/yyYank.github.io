@@ -14,3 +14,6 @@ Javaと同等のenumがあります。
     enum class Direction {
       NORTH, SOUTH, WEST, EAST
     }
+
+
+最終更新日時：2016年5月2日

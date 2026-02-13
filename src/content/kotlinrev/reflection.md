@@ -103,3 +103,6 @@ Javaでinvokeメソッドを呼ぶ場合のように、コレクションにパ�
     val result = method.invoke(obj, *params)
     println(result) // => XXYY
 
+
+
+最終更新日時：2017年1月24日

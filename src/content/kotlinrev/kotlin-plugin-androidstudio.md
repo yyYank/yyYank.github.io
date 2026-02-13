@@ -51,3 +51,6 @@ Android Studioのインストール
 [AndroidでHello World](/kotlin-rev/hello-kotlin-android/)
 
 
+
+
+最終更新日時：2018年4月18日

@@ -29,3 +29,6 @@ Kotlinの場合TODO関数が用意されており、実行時にエラーにし�
         at sample.Simplest_versionKt.main(Simplest version.kt:11)
     
 [https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-t-o-d-o.html](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-t-o-d-o.html)
+
+
+最終更新日時：2016年4月29日

@@ -26,3 +26,6 @@ take関数を使います
 ### 参考URL
 
 [Kotlin公式ドキュメント stdlib / kotlin /take](http://kotlinlang.org/api/latest/jvm/stdlib/kotlin/take.html)
+
+
+最終更新日時：2016年5月29日

@@ -55,3 +55,6 @@ merge関数を使います
 [Kotlin公式ドキュメント stdlib / kotlin / merge](http://kotlinlang.org/api/latest/jvm/stdlib/kotlin/merge.html)
 
 
+
+
+最終更新日時：2017年1月13日

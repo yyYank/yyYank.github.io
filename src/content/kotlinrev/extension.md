@@ -35,3 +35,6 @@ getter/setterでのみ値の決定が可能です。
 
 [Kotlin Reference - Extensions](http://kotlinlang.org/docs/reference/extensions.html)
 
+
+
+最終更新日時：2017年1月13日

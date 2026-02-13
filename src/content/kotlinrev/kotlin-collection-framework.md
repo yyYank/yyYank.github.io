@@ -72,3 +72,6 @@ setへのread onlyな処理を提供するインターフェース。
 参考URL
 
 [https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/)
+
+
+最終更新日時：2016年6月22日

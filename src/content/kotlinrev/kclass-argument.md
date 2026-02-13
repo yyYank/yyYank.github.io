@@ -21,3 +21,6 @@ Kotlinのクラスは"KClass<T:Any>"です。
 
     jsonToObject(jsonString, Hoge::class)
 
+
+
+最終更新日時：2016年6月30日

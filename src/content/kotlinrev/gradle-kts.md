@@ -52,3 +52,6 @@ settings.gradleの設定も以下のように修正する必要があるよう�
 rootProject.buildFileName = 'build.gradle.kts'
 
 ```
+
+
+最終更新日時：2016年12月11日

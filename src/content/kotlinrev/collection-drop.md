@@ -26,3 +26,6 @@ drop関数を使います
 ### 参考URL
 
 [Kotlin公式ドキュメント stdlib / kotlin /drop](http://kotlinlang.org/api/latest/jvm/stdlib/kotlin/drop.html)
+
+
+最終更新日時：2016年5月29日

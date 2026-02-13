@@ -61,3 +61,6 @@ val fibonacci = buildSequence {
 * [https://blog.jetbrains.com/kotlin/2017/01/kotlin-1-1-beta-is-here/](https://blog.jetbrains.com/kotlin/2017/01/kotlin-1-1-beta-is-here/)
 * [https://github.com/Kotlin/kotlin-coroutines](https://github.com/Kotlin/kotlin-coroutines)
 * [https://github.com/Kotlin/kotlin-coroutines/blob/master/kotlin-coroutines-informal.md](https://github.com/Kotlin/kotlin-coroutines/blob/master/kotlin-coroutines-informal.md)
+
+
+最終更新日時：2017年2月1日

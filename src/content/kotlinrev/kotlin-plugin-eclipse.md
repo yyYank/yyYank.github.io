@@ -99,3 +99,6 @@ kotlin-eclipseのプロジェクトを取り込む
 
 [動画-Kotlin Eclipse Plugin @clomie #jkug](https://www.youtube.com/watch?v=6AZ6NjWXjzc)   
 [スライド-Kotlin Eclipse Plugin #jkug by clomie](https://speakerdeck.com/clomie/kotlin-eclipse-plugin-number-jkug)
+
+
+最終更新日時：2017年5月23日

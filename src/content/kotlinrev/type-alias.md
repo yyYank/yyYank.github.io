@@ -49,3 +49,6 @@ Kotlin 1.1以降
 ## 参考URL
 
 https://github.com/Kotlin/KEEP/blob/master/proposals/type-aliases.md
+
+
+最終更新日時：2017年1月6日
