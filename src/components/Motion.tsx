@@ -1,7 +1,8 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import type { ReactNode } from 'react';
+import { useState, useEffect } from 'react';
 
 interface FadeInProps {
   children: ReactNode;
@@ -120,5 +121,58 @@ export function HoverCard({ children, className = '' }: HoverCardProps) {
     >
       {children}
     </motion.div>
+  );
+}
+
+interface TextSwitchAnimationProps {
+  firstText: string;
+  secondText: string;
+  className?: string;
+  duration?: number;
+}
+
+export function TextSwitchAnimation({
+  firstText,
+  secondText,
+  className = '',
+  duration = 1
+}: TextSwitchAnimationProps) {
+  const [showFirst, setShowFirst] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowFirst(false);
+    }, duration * 1000);
+
+    return () => clearTimeout(timer);
+  }, [duration]);
+
+  return (
+    <div className={className} style={{ position: 'relative' }}>
+      <AnimatePresence mode="wait">
+        {showFirst ? (
+          <motion.span
+            key="first"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: duration }}
+            style={{ display: 'inline-block' }}
+          >
+            {firstText}
+          </motion.span>
+        ) : (
+          <motion.span
+            key="second"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: duration }}
+            style={{ display: 'inline-block' }}
+          >
+            {secondText}
+          </motion.span>
+        )}
+      </AnimatePresence>
+    </div>
   );
 }

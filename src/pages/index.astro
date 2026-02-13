@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { TwitterIcon, GitHubIcon, BloggerIcon, HatenaIcon, BlogIcon, MemoIcon } from '../components/Icons';
-import { FadeIn, StaggerContainer, StaggerItem, ScaleIn, HoverCard } from '../components/Motion';
+import { FadeIn, StaggerContainer, StaggerItem, ScaleIn, HoverCard, TextSwitchAnimation } from '../components/Motion';
 ---
 
 <BaseLayout title="Profile">
@@ -19,11 +19,14 @@ import { FadeIn, StaggerContainer, StaggerItem, ScaleIn, HoverCard } from '../co
             />
           </div>
         </ScaleIn>
-        <FadeIn delay={0.2} client:visible>
-          <h1 class="text-5xl font-bold mb-4 bg-gradient-to-r from-accent-cyan via-accent-purple to-accent-pink bg-clip-text text-transparent">
-            yy_yank
-          </h1>
-        </FadeIn>
+        <h1 class="text-5xl font-bold mb-4 bg-gradient-to-r from-accent-cyan via-accent-purple to-accent-pink bg-clip-text text-transparent">
+          <TextSwitchAnimation
+            firstText=":q"
+            secondText="yy_yank"
+            duration={1}
+            client:load
+          />
+        </h1>
         <FadeIn delay={0.3} client:visible>
           <p class="text-xl text-gray-400">Japanese 'Yurufuwa' Programmer</p>
           <p class="text-gray-500 mt-2">UZABASE Inc.</p>
