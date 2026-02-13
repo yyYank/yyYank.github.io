@@ -148,8 +148,8 @@ export function TextSwitchAnimation({
   }, [duration]);
 
   return (
-    <div className={className} style={{ position: 'relative' }}>
-      <AnimatePresence mode="wait">
+    <span style={{ position: 'relative', display: 'inline-block' }}>
+      <AnimatePresence mode="wait" initial={false}>
         {showFirst ? (
           <motion.span
             key="first"
@@ -157,6 +157,7 @@ export function TextSwitchAnimation({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: duration }}
+            className={className}
             style={{ display: 'inline-block' }}
           >
             {firstText}
@@ -167,12 +168,13 @@ export function TextSwitchAnimation({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: duration }}
+            className={className}
             style={{ display: 'inline-block' }}
           >
             {secondText}
           </motion.span>
         )}
       </AnimatePresence>
-    </div>
+    </span>
   );
 }
