@@ -1,0 +1,158 @@
+---
+title: "逆引きKotlin"
+description: "逆引きKotlin: 逆引きKotlin"
+order: 1000
+---
+
+# 逆引きKotlin
+
+<br/>  
+JVM言語の[Kotlin](http://kotlinlang.org)の逆引きサイトです。![](/images/Kotlin-icon.png)
+<br/>  
+<br/>  
+## 目次
+<br/>  
+
+### 導入
+* [Kotlinをインストールする](/kotlin-rev/kotlin-install/)
+* [KotlinプラグインをIntelliJ IDEAに導入する](/kotlin-rev/kotlin-plugin-intellij/)
+* [KotlinプラグインをAndroid Studioに入れる](/kotlin-rev/kotlin-plugin-androidstudio/)
+* [AndroidでHello World](/kotlin-rev/hello-kotlin-android/)
+* [KotlinをEclipseで動かす](/kotlin-rev/kotlin-plugin-eclipse/)
+
+### 基本文法
+* [変数を宣言する](/kotlin-rev/variable/)
+* [型を宣言する](/kotlin-rev/type/)
+* [インスタンスを生成する](/kotlin-rev/instance/)
+* [配列を生成する](/kotlin-rev/array/)
+* [関数を宣言する](/kotlin-rev/function/)
+* [関数をオブジェクトとして扱う](/kotlin-rev/function_object/)
+* [好きなタイミングで特定の処理を行う](/kotlin-rev/function_type/)
+* [条件分岐を行う](/kotlin-rev/if-statement/)
+* [ifを式として扱う](/kotlin-rev/if-function/)
+* [switchみたいな条件分岐がしたい](/kotlin-rev/when/)
+* [ループ処理を行う](/kotlin-rev/loop/)
+* [enumを使いたい](/kotlin-rev/enum/)  
+
+### コレクション操作
+* [Kotlinのコレクション・フレームワークを知りたい](/kotlin-rev/kotlin-collection-framework/)  
+* [リストの要素をループして操作する](/kotlin-rev/collection-for-each/)  
+* [条件でリストの要素を絞り込む](/kotlin-rev/collection-filter/)  
+* [リストの要素の名前のみを抽出する](/kotlin-rev/collection-map/)
+* [リストをマージする](/kotlin-rev/collection-merge/) 
+* [リストの値を集計する](/kotlin-rev/collection-sum/)
+* [リストの要素を前からいくつか取り出す](/kotlin-rev/collection-take/) 
+* [リストの要素を前からいくつか削る](/kotlin-rev/collection-drop/) 
+
+
+### 応用編
+* [Kotlinでフレームワークを使いたい](/kotlin-rev/framework-for-kotlin/) 
+* [ユニットテストをしたい](/kotlin-rev/unit-test-for-kotlin/) 
+* [親子関係のある独自のブロックを作りたい](/kotlin-rev/type-safe-builder/) 
+* [クラスの機能を拡張したい](/kotlin-rev/extension/) 
+* [クラスのメタデータを取得したい（リフレクション操作がしたい）](/kotlin-rev/reflection/) 
+* [Kotlinのキーワードを知りたい](/kotlin-rev/keyword-for-kotlin/) 
+* [KotlinでSQLライブラリやORM(O/R Mapper)を使いたい](/kotlin-rev/orm-for-kotlin/)
+* [Kotlinでtry-with-resourcesが使いたい](/kotlin-rev/try-with-resources-for-kotlin/)
+* [TODOタスクをソースに残す](/kotlin-rev/todo/)
+* [クラスを引数にとる関数をつくる](/kotlin-rev/kclass-argument/)
+* [GradleのビルドスクリプトをKotlinで書く](/kotlin-rev/gradle-kts/)
+
+### ver1.1
+
+* [よく使う型に別名をつけたい](/kotlin-rev/type-alias/)
+* [コールバックヘルとサヨナラしたい](/kotlin-rev/coroutines-for-kotlin/)
+* [SpringのAOPやMockitoでopenって書きたくない](/kotlin-rev/all-open-plugin/)
+   
+<br/>  
+<br/>  
+<br/>  
+   
+## サイト管理者
+   
+<br/>  
+   [yy_yank](https://twitter.com/yy_yank) -> Kotlinが好きなだけのプログラマ
+   
+<br/>  
+<br/>  
+   
+   
+   
+## プルリクお待ちしています
+<br/>
+<br/>
+内容の修正や新規追加などのプルリクをお待ちしています。
+   
+<br/>
+[こちらから](https://github.com/yyYank/kotlin-rev-solution)
+  
+<br/>
+<br/>
+<br/>
+<br/>
+   
+   
+## 履歴
+
+<pre>
+2015/03/05:サイト開設
+2015/03/07:変数の宣言についてページ作成
+2015/03/08:型の宣言についてページ作成
+2015/03/08:KotlinをEclipseで動かす ページ作成
+2015/03/09:Kotlinをインストールする ページ作成
+2015/03/10:KotlinプラグインをIntelliJ IDEAに導入する ページ作成
+2015/03/10:インスタンスを生成する ページ作成
+2015/03/10:配列を生成する ページ作成
+2015/03/11:関数を宣言する ページ作成
+2015/03/11:条件分岐を行う ページ作成
+2015/03/11:ifを式として扱う ページ作成
+2015/03/11:switchみたいな条件分岐がしたい ページ作成
+2015/03/11:ループ処理を行う ページ作成
+2015/03/12:KotlinプラグインをAndroid Studioに入れる ページ作成
+2015/03/12:AndroidでHello World  ページ作成
+2015/07/26:リストの要素をループして操作する ページ作成  
+2015/07/26:条件でリストの要素を絞り込む ページ作成 
+2015/07/26:リストの要素の名前のみを抽出する ページ作成 
+2015/07/26:リストをマージする ページ作成 
+2015/07/26:リストの値を集計する ページ作成 
+2015/07/26:リストの1部分を切り出す] ページ作成 
+2015/07/26:２つのリストのペアのリストを作る  ページ作成 
+2015/08/13:ループ処理を行う  一部修正(drmashuさんプルリク) 
+2015/08/13:クラスの機能を拡張したい  ページ作成(drmashuさんプルリク) 
+2015/08/13:クラスのメタデータを取得したい（リフレクション操作がしたい）  ページ作成(drmashuさんプルリク)
+2015/09/02:関数を宣言する  ページ修正(drmashuさんプルリク)
+2015/09/02:関数をオブジェクトとして扱う  ページ作成(drmashuさんプルリク)
+2015/09/02:好きなタイミングで特定の処理を行う ページ作成(drmashuさんプルリク)
+2015/10/06:リストの要素を前からいくつか取り出す ページ作成(hkdnetさんプルリク)
+2015/10/06:drop関数の説明 リストの要素を前からいくつか削る ページ名変更(hkdnetさんプルリク)
+2015/10/06:Kotlinをインストールする ページ誤字修正(iwata-nさんプルリク)
+2016/1/30:Siteのカスタムテーマ修正(EFEXPさんプルリク)
+2016/2/25:Type-Safe Buildersのページを新規作成
+2016/3/01:ユニットテストのページを新規作成
+2016/3/29:Kotlinのキーワードのページを新規作成
+2016/7/11:KotlinでSQLライブラリやORM(O/R Mapper)を使いたい、Kotlinでtry-with-resourcesが使いたい、TODOタスクをソースに残す、クラスを引数にとる関数をつくるを追加
+2016/12/12:GradleのビルドスクリプトをKotlinで書く新規追加
+2017/1/23:よく使う型に別名をつけたい新規追加
+2017/2/2:コールバックヘルとサヨナラしたい新規追加
+2017/2/12:SpringのAOPやMockitoでopenって書きたくない新規作成
+</pre>
+
+
+## Special Thanks
+
+### プルリクしてくれた方
+
+* [siosioさん](https://github.com/siosio)
+* [drmashuさん](https://github.com/drmashu)
+* [iwata-nさん](https://github.com/iwata-n)  
+* [hkdnetさん](https://github.com/hkdnet)  
+* [EFEXPさん](https://github.com/EFEXP)  
+* [umireonさん](https://github.com/umireon)
+   
+  
+   
+   
+   
+   
+   
+   

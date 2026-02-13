@@ -7,7 +7,10 @@
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "test": "npm run test:links",
+    "test:links": "node scripts/check-links.mjs",
+    "test:links:kotlin-rev": "node scripts/check-links.mjs --scope=/kotlin-rev/"
   },
   "dependencies": {
     "@astrojs/mdx": "^2.2.0",

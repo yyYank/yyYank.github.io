@@ -1,0 +1,17 @@
+---
+import { getCollection } from 'astro:content';
+import KotlinRevLayout from '../../layouts/KotlinRevLayout.astro';
+
+const allDocs = await getCollection('kotlinrev', ({ data }) => !data.draft);
+const indexDoc = allDocs.find((doc) => doc.slug === 'index');
+
+if (!indexDoc) {
+  throw new Error('kotlinrev index document is missing.');
+}
+
+const { Content } = await indexDoc.render();
+---
+
+<KotlinRevLayout title={indexDoc.data.title} description={indexDoc.data.description}>
+  <Content />
+</KotlinRevLayout>

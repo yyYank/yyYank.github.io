@@ -48,7 +48,7 @@ import { FadeIn, StaggerContainer, StaggerItem, ScaleIn, HoverCard, TextSwitchAn
       </FadeIn>
 
       <!-- Links Grid -->
-      <StaggerContainer className="grid md:grid-cols-3 gap-6 mb-16" client:visible>
+      <StaggerContainer className="grid md:grid-cols-4 gap-6 mb-16" client:visible>
         <StaggerItem>
           <HoverCard client:visible>
             <a
@@ -94,6 +94,21 @@ import { FadeIn, StaggerContainer, StaggerItem, ScaleIn, HoverCard, TextSwitchAn
                 MEMO
               </h3>
               <p class="text-gray-400">やんくのメモ</p>
+            </a>
+          </HoverCard>
+        </StaggerItem>
+
+        <StaggerItem>
+          <HoverCard client:visible>
+            <a
+              href="/kotlin-rev/"
+              class="block p-6 bg-dark-800 border border-dark-600 rounded-xl hover:border-accent-green/50 transition-all"
+            >
+              <h3 class="text-lg font-semibold text-white hover:text-accent-green transition-colors mb-2 flex items-center gap-2">
+                <BlogIcon />
+                逆引きKotlin
+              </h3>
+              <p class="text-gray-400">移植した逆引きドキュメント</p>
             </a>
           </HoverCard>
         </StaggerItem>
@@ -339,9 +354,7 @@ import { FadeIn, StaggerContainer, StaggerItem, ScaleIn, HoverCard, TextSwitchAn
             <StaggerItem>
               <HoverCard client:visible>
                 <a
-                  href="https://kotlin-rev-solution.herokuapp.com/"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href="/kotlin-rev/"
                   class="block px-6 py-3 bg-dark-700 border border-dark-500 rounded-lg text-gray-300 hover:text-accent-pink hover:bg-dark-600 transition-colors"
                 >
                   逆引きKotlin
