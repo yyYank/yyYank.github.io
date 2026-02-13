@@ -1,0 +1,38 @@
+---
+import '../styles/globals.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title, description = "yy_yankのページ" } = Astro.props;
+const siteTitle = "yankなぺーじ";
+const fullTitle = title ? `${title} - ${siteTitle}` : siteTitle;
+---
+
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="/favicon.png" />
+    <meta name="description" content={description} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:type" content="website" />
+    <meta property="og:description" content={description} />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@yy_yank" />
+    <meta name="twitter:creator" content="@yy_yank" />
+    <title>{fullTitle}</title>
+  </head>
+  <body class="min-h-screen bg-white text-gray-900 flex flex-col">
+    <Header />
+    <main class="flex-grow">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

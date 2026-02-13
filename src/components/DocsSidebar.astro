@@ -1,0 +1,31 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  docs: CollectionEntry<'docs'>[];
+  currentSlug?: string;
+}
+
+const { docs, currentSlug } = Astro.props;
+---
+
+<nav class="bg-gray-50 rounded-lg p-4">
+  <h4 class="font-bold text-gray-900 mb-4">Docs</h4>
+  <ul class="space-y-2">
+    {docs.map(doc => (
+      <li>
+        <a
+          href={`/docs/${doc.slug}/`}
+          class:list={[
+            'block py-1 px-2 rounded transition-colors',
+            currentSlug === doc.slug
+              ? 'bg-primary-100 text-primary-700 font-medium'
+              : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+          ]}
+        >
+          {doc.data.title}
+        </a>
+      </li>
+    ))}
+  </ul>
+</nav>

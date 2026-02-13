@@ -1,0 +1,108 @@
+---
+title: "Dockerメモ"
+description: "Docker関連のメモ"
+order: 6
+---
+
+## 容量確認
+
+```bash
+docker system df
+```
+
+## 色々消す
+
+```bash
+docker system prune -a --volumes
+```
+
+## コンテナ消す
+
+```bash
+docker container prune
+```
+
+## イメージ消す
+
+```bash
+docker image prune
+```
+
+## ボリューム消す
+
+```bash
+docker volume prune
+```
+
+## 起動しているコンテナ一覧
+
+```bash
+docker ps
+```
+
+## コンテナ一覧
+
+```bash
+docker ps -a
+```
+
+## イメージ一覧
+
+```bash
+docker images
+```
+
+## イメージ指定して削除
+
+```bash
+docker rmi [ImageID]
+```
+
+## dockerの諸々の場所(linux)
+
+```
+/var/lib/docker
+```
+
+## docker関連でよく使うコマンド
+
+ログ見る
+
+```bash
+docker logs -f hoge
+```
+
+再起動
+
+```bash
+docker restart hoge
+```
+
+起動
+
+```bash
+docker start hoge
+```
+
+bashでもぐる
+
+```bash
+docker exec -it hoge /bin/bash
+```
+
+## Linux + postgresコンテナをシュッと作ってGoのプロジェクトのユニットテスト
+
+```bash
+docker run --privileged --name centos -d centos /sbin/init
+docker exec -ti centos bash
+yum install -y git
+yum install -y epel-release
+yum install -y golang
+yum install -y https://yum.postgresql.org/9.6/redhat/rhel-7-x86_64/pgdg-redhat96-9.6-3.noarch.rpm
+yum install -y postgresql96-server postgresql96-contrib
+PGDATA=/var/lib/pgsql/data /usr/pgsql-9.6/bin/postgresql96-setup initdb
+systemctl start postgresql-9.6.service
+git clone [repo url]
+cd [repo]
+go test ./..
+```

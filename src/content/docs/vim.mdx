@@ -1,0 +1,60 @@
+---
+title: "vimメモ"
+description: "Vim関連のメモ"
+order: 3
+---
+
+# Vim
+
+## ファイルパスジャンプ
+
+```
+gf
+```
+
+gfはgoto fileの略
+
+## vsplitしてファイルパスジャンプ
+
+```
+<C-w>f
+```
+
+## tabsplitしてファイルパスジャンプ
+
+```
+CTRL-W gf
+```
+
+## ファイルジャンプ系プラグイン
+
+[https://github.com/kana/vim-altr](https://github.com/kana/vim-altr)
+
+## ソートして重複消す
+
+```
+sort u
+```
+
+## たまに使いたくなる
+
+```
+smile
+```
+
+# NERDTREE
+
+## ウインドウサイズ調整
+
+```
+let g:NERDTreeWinSize=40
+:NERDTree
+```
+
+`:NERDTreeFind` とかだとWindowサイズがリセットされない。数字は任意
+
+## 現在開いてるファイルの位置表示
+
+```
+NERDTreeFind
+```

@@ -1,0 +1,27 @@
+---
+import DocsLayout from '../../layouts/DocsLayout.astro';
+import { getCollection } from 'astro:content';
+
+const allDocs = await getCollection('docs');
+const sortedDocs = allDocs.sort((a, b) => (a.data.order ?? 100) - (b.data.order ?? 100));
+---
+
+<DocsLayout title="Overview">
+  <h1>Overview</h1>
+  <h2>memoリンク</h2>
+  <p>たまーにしか使わないやつか、よく忘れるやつのメモになる予定</p>
+
+  <div class="grid gap-4 mt-8 not-prose">
+    {sortedDocs.map(doc => (
+      <a
+        href={`/docs/${doc.slug}/`}
+        class="block p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors no-underline border border-gray-200"
+      >
+        <h3 class="text-lg font-semibold text-gray-900 mb-1">{doc.data.title}</h3>
+        {doc.data.description && (
+          <p class="text-gray-600 text-sm">{doc.data.description}</p>
+        )}
+      </a>
+    ))}
+  </div>
+</DocsLayout>
