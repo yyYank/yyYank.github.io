@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="ferrisGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#DEA584"/>
+      <stop offset="100%" style="stop-color:#B7410E"/>
+    </linearGradient>
+  </defs>
+  <!-- Claws -->
+  <ellipse cx="15" cy="50" rx="12" ry="8" fill="url(#ferrisGrad)"/>
+  <ellipse cx="85" cy="50" rx="12" ry="8" fill="url(#ferrisGrad)"/>
+  <ellipse cx="8" cy="45" rx="6" ry="10" fill="url(#ferrisGrad)"/>
+  <ellipse cx="92" cy="45" rx="6" ry="10" fill="url(#ferrisGrad)"/>
+  <!-- Body -->
+  <ellipse cx="50" cy="55" rx="30" ry="25" fill="url(#ferrisGrad)"/>
+  <!-- Shell pattern -->
+  <path d="M30 50 Q50 40 70 50" stroke="#B7410E" stroke-width="2" fill="none"/>
+  <path d="M35 60 Q50 52 65 60" stroke="#B7410E" stroke-width="2" fill="none"/>
+  <!-- Eyes stalks -->
+  <rect x="38" y="25" width="4" height="12" fill="url(#ferrisGrad)" rx="2"/>
+  <rect x="58" y="25" width="4" height="12" fill="url(#ferrisGrad)" rx="2"/>
+  <!-- Eyes -->
+  <circle cx="40" cy="22" r="7" fill="#fff" stroke="#B7410E" stroke-width="1"/>
+  <circle cx="60" cy="22" r="7" fill="#fff" stroke="#B7410E" stroke-width="1"/>
+  <!-- Pupils -->
+  <circle cx="41" cy="22" r="4" fill="#000"/>
+  <circle cx="61" cy="22" r="4" fill="#000"/>
+  <!-- Eye shine -->
+  <circle cx="43" cy="20" r="1.5" fill="#fff"/>
+  <circle cx="63" cy="20" r="1.5" fill="#fff"/>
+  <!-- Smile -->
+  <path d="M42 65 Q50 72 58 65" stroke="#000" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <!-- Legs -->
+  <ellipse cx="28" cy="75" rx="5" ry="8" fill="url(#ferrisGrad)"/>
+  <ellipse cx="40" cy="78" rx="4" ry="7" fill="url(#ferrisGrad)"/>
+  <ellipse cx="60" cy="78" rx="4" ry="7" fill="url(#ferrisGrad)"/>
+  <ellipse cx="72" cy="75" rx="5" ry="8" fill="url(#ferrisGrad)"/>
+</svg>

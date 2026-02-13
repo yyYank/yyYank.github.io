@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="dukeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f89820"/>
+      <stop offset="100%" style="stop-color:#e76f00"/>
+    </linearGradient>
+  </defs>
+  <!-- Body -->
+  <ellipse cx="50" cy="60" rx="30" ry="35" fill="url(#dukeGrad)"/>
+  <!-- Face -->
+  <ellipse cx="50" cy="45" rx="25" ry="28" fill="#fff"/>
+  <!-- Eyes -->
+  <ellipse cx="40" cy="40" rx="8" ry="10" fill="#000"/>
+  <ellipse cx="60" cy="40" rx="8" ry="10" fill="#000"/>
+  <!-- Eye shine -->
+  <circle cx="42" cy="37" r="3" fill="#fff"/>
+  <circle cx="62" cy="37" r="3" fill="#fff"/>
+  <!-- Nose -->
+  <ellipse cx="50" cy="52" rx="8" ry="5" fill="url(#dukeGrad)"/>
+  <!-- Hair spikes -->
+  <path d="M35 15 L40 25 L30 20 Z" fill="#000"/>
+  <path d="M50 10 L50 22 L45 15 Z" fill="#000"/>
+  <path d="M65 15 L60 25 L70 20 Z" fill="#000"/>
+  <!-- Smile -->
+  <path d="M40 58 Q50 65 60 58" stroke="#000" stroke-width="2" fill="none"/>
+</svg>

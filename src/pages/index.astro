@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { TwitterIcon, GitHubIcon, BloggerIcon, HatenaIcon, BlogIcon, MemoIcon, PodcastIcon } from '../components/Icons';
 import { FadeIn, StaggerContainer, StaggerItem, ScaleIn, HoverCard, TextSwitchAnimation } from '../components/Motion';
+import { TechBadgeList } from '../components/TechBadge';
 ---
 
 <BaseLayout title="Profile">
@@ -38,12 +39,8 @@ import { FadeIn, StaggerContainer, StaggerItem, ScaleIn, HoverCard, TextSwitchAn
 
       <!-- Tech Stack -->
       <FadeIn client:visible>
-        <div class="flex flex-wrap justify-center gap-3 mb-16">
-          {['Java', 'Kotlin', 'Go', 'Rust', 'TypeScript'].map(tech => (
-            <span class="px-4 py-2 bg-dark-700 border border-dark-500 rounded-full text-accent-cyan font-mono text-sm">
-              {tech}
-            </span>
-          ))}
+        <div class="mb-16">
+          <TechBadgeList techs={['Java', 'Kotlin', 'Go', 'Rust', 'TypeScript']} client:visible />
         </div>
       </FadeIn>
 
