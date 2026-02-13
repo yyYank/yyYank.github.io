@@ -1,0 +1,55 @@
+---
+title: "npm vs yarnメモ"
+description: "npm vs yarn比較メモ"
+order: 9
+---
+
+## プロジェクト作成
+
+### npm
+
+```bash
+npm init
+```
+
+### yarn
+
+```bash
+yarn init
+```
+
+## typescript依存追加
+
+### npm
+
+```bash
+npm i -D typescript
+```
+
+iがinstallの略。-Dでdev dependency
+
+### yarn
+
+```bash
+yarn add typescript -D
+```
+
+## ローカルパッケージの実行
+
+### npm
+
+```bash
+npx {package}
+```
+
+### yarn
+
+```bash
+yarn -s run {package}
+```
+
+### たとえばtsc init
+
+```bash
+yarn -s run tsc --init
+```

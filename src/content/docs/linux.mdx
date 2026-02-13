@@ -1,0 +1,40 @@
+---
+title: "Linuxメモ"
+description: "Linux関連のメモ"
+order: 10
+---
+
+想定としてはubuntu、archなど。コマンドはmacでも使えるかも
+
+## port使っているやつを見つける
+
+```bash
+lsof -n -P -i:8981
+```
+
+## とりあえず色々見たい
+
+```bash
+journalctl -f
+```
+
+## サービス動かしたい
+
+```bash
+systemctl start hoge
+systemctl stop hoge
+systemctl restart hoge
+```
+
+## サービスの状況を見たい
+
+```bash
+systemctl status hoge
+```
+
+### apt-getのあれ
+
+```bash
+apt-get install hoge
+apt-get remove hoge
+```
