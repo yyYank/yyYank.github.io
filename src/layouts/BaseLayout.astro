@@ -11,6 +11,9 @@ interface Props {
 const { title, description = "yy_yankのページ" } = Astro.props;
 const siteTitle = "yankなぺーじ";
 const fullTitle = title ? `${title} - ${siteTitle}` : siteTitle;
+const siteUrl = "https://yyyank.github.io";
+const ogImage = `${siteUrl}/ogp.png`;
+const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
 ---
 
 <!DOCTYPE html>
@@ -24,9 +27,14 @@ const fullTitle = title ? `${title} - ${siteTitle}` : siteTitle;
     <meta property="og:title" content={fullTitle} />
     <meta property="og:type" content="website" />
     <meta property="og:description" content={description} />
-    <meta name="twitter:card" content="summary" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:site_name" content={siteTitle} />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@yy_yank" />
     <meta name="twitter:creator" content="@yy_yank" />
+    <meta name="twitter:image" content={ogImage} />
+    <link rel="canonical" href={canonicalUrl} />
     <title>{fullTitle}</title>
   </head>
   <body class="min-h-screen bg-dark-900 text-gray-100 flex flex-col">
