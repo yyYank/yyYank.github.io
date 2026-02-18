@@ -1,0 +1,13 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SnippetSearch from '../components/snippet/SnippetSearch.tsx';
+import snippets from '../data/snippets.json';
+---
+
+<BaseLayout title="Snippet" description="コードスニペット検索">
+  <div class="container mx-auto px-4 py-8 max-w-4xl">
+    <h1 class="text-3xl font-bold text-white mb-2">Snippet</h1>
+    <p class="text-gray-400 mb-8">コードスニペットをファジー検索</p>
+    <SnippetSearch client:load snippets={snippets} />
+  </div>
+</BaseLayout>

@@ -10,7 +10,8 @@
     "astro": "astro",
     "test": "npm run test:links",
     "test:links": "node scripts/check-links.mjs",
-    "test:links:kotlin-rev": "node scripts/check-links.mjs --scope=/kotlin-rev/"
+    "test:links:kotlin-rev": "node scripts/check-links.mjs --scope=/kotlin-rev/",
+    "generate:snippets": "node src/scripts/generate-snippets.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^2.2.0",
@@ -20,6 +21,7 @@
     "@tailwindcss/typography": "^0.5.10",
     "astro": "^4.5.0",
     "framer-motion": "^12.34.0",
+    "fuse.js": "^7.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^5.5.0",
