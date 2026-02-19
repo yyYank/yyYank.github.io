@@ -10,15 +10,14 @@ interface SnippetSearchProps {
 export default function SnippetSearch({ snippets }: SnippetSearchProps) {
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Parse initial state from URL
   const params = new URLSearchParams(
     typeof window !== 'undefined' ? window.location.search : ''
   );
   const [query, setQuery] = useState(params.get('q') || '');
   const [selectedLang, setSelectedLang] = useState(params.get('lang') || '');
   const [selectedTag, setSelectedTag] = useState(params.get('tag') || '');
+  const [selectedIndex, setSelectedIndex] = useState(0);
 
-  // Derive available languages and tags
   const languages = useMemo(
     () => [...new Set(snippets.map((s) => s.lang))].sort(),
     [snippets]
@@ -28,7 +27,6 @@ export default function SnippetSearch({ snippets }: SnippetSearchProps) {
     [snippets]
   );
 
-  // Fuse.js instance
   const fuse = useMemo(
     () =>
       new Fuse(snippets, {
@@ -45,20 +43,12 @@ export default function SnippetSearch({ snippets }: SnippetSearchProps) {
     [snippets]
   );
 
-  // Filter and search
   const results = useMemo(() => {
     let filtered = snippets;
-
-    if (selectedLang) {
-      filtered = filtered.filter((s) => s.lang === selectedLang);
-    }
-    if (selectedTag) {
-      filtered = filtered.filter((s) => s.tags.includes(selectedTag));
-    }
-
+    if (selectedLang) filtered = filtered.filter((s) => s.lang === selectedLang);
+    if (selectedTag) filtered = filtered.filter((s) => s.tags.includes(selectedTag));
     if (!query.trim()) return filtered;
 
-    // Search within filtered set
     const searchBase = selectedLang || selectedTag ? filtered : snippets;
     const fuseForSearch =
       searchBase === snippets
@@ -78,6 +68,11 @@ export default function SnippetSearch({ snippets }: SnippetSearchProps) {
     return fuseForSearch.search(query).map((r) => r.item);
   }, [query, selectedLang, selectedTag, snippets, fuse]);
 
+  // Reset selection when filters change
+  useEffect(() => {
+    setSelectedIndex(0);
+  }, [query, selectedLang, selectedTag]);
+
   // Update URL params
   useEffect(() => {
     const url = new URL(window.location.href);
@@ -90,67 +85,72 @@ export default function SnippetSearch({ snippets }: SnippetSearchProps) {
     window.history.replaceState({}, '', url.toString());
   }, [query, selectedLang, selectedTag]);
 
-  // `/` key to focus search
+  // Keyboard navigation
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       if (
         e.key === '/' &&
-        !['INPUT', 'TEXTAREA'].includes(
-          (e.target as HTMLElement).tagName
-        )
+        !['INPUT', 'TEXTAREA'].includes((e.target as HTMLElement).tagName)
       ) {
         e.preventDefault();
         inputRef.current?.focus();
+      } else if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        setSelectedIndex((i) => Math.min(i + 1, results.length - 1));
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        setSelectedIndex((i) => Math.max(i - 1, 0));
       }
     };
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
-  }, []);
+  }, [results.length]);
 
   return (
-    <div>
-      {/* Search bar */}
-      <div className="mb-6">
-        <div className="relative">
+    <div className="font-mono text-sm">
+      {/* fzf-style search bar */}
+      <div className="mb-3">
+        <div className="flex items-center border border-dark-600 focus-within:border-accent-cyan transition-colors duration-200">
+          <span className="px-3 text-accent-cyan select-none font-bold">{'>'}</span>
           <input
             ref={inputRef}
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search snippets... (press / to focus)"
-            className="w-full px-4 py-3 bg-dark-800 border border-dark-600 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-accent-cyan focus:ring-1 focus:ring-accent-cyan transition-colors"
+            placeholder="fuzzy search..."
+            className="flex-1 py-2.5 bg-transparent text-white placeholder-gray-600 focus:outline-none"
+            autoFocus
           />
-          <kbd className="absolute right-3 top-1/2 -translate-y-1/2 px-2 py-0.5 text-xs text-gray-500 bg-dark-700 border border-dark-500 rounded">
+          <span className="px-3 text-xs text-gray-600">
+            {results.length}/{snippets.length}
+          </span>
+          <kbd className="mr-2 px-1.5 py-0.5 text-xs text-gray-600 bg-dark-700 border border-dark-600">
             /
           </kbd>
         </div>
       </div>
 
-      {/* Filters */}
-      <div className="flex flex-wrap gap-3 mb-6">
+      {/* Filters - compact monospace style */}
+      <div className="flex flex-wrap gap-2 mb-3 text-xs">
         <select
           value={selectedLang}
           onChange={(e) => setSelectedLang(e.target.value)}
-          className="px-3 py-1.5 bg-dark-800 border border-dark-600 rounded-lg text-sm text-gray-300 focus:outline-none focus:border-accent-cyan"
+          className="px-2 py-1 bg-dark-800 border border-dark-600 text-gray-400 focus:outline-none focus:border-accent-cyan"
         >
-          <option value="">All Languages</option>
+          <option value="">lang:all</option>
           {languages.map((lang) => (
-            <option key={lang} value={lang}>
-              {lang}
-            </option>
+            <option key={lang} value={lang}>{lang}</option>
           ))}
         </select>
 
         <select
           value={selectedTag}
           onChange={(e) => setSelectedTag(e.target.value)}
-          className="px-3 py-1.5 bg-dark-800 border border-dark-600 rounded-lg text-sm text-gray-300 focus:outline-none focus:border-accent-cyan"
+          className="px-2 py-1 bg-dark-800 border border-dark-600 text-gray-400 focus:outline-none focus:border-accent-cyan"
         >
-          <option value="">All Tags</option>
+          <option value="">tag:all</option>
           {tags.map((tag) => (
-            <option key={tag} value={tag}>
-              {tag}
-            </option>
+            <option key={tag} value={tag}>{tag}</option>
           ))}
         </select>
 
@@ -161,26 +161,33 @@ export default function SnippetSearch({ snippets }: SnippetSearchProps) {
               setSelectedLang('');
               setSelectedTag('');
             }}
-            className="px-3 py-1.5 text-sm text-gray-400 hover:text-white transition-colors"
+            className="px-2 py-1 text-gray-600 hover:text-gray-300 transition-colors"
           >
-            Clear filters
+            [clear]
           </button>
         )}
 
-        <span className="ml-auto text-sm text-gray-500 self-center">
-          {results.length} snippet{results.length !== 1 ? 's' : ''}
+        <span className="ml-auto text-gray-700 self-center hidden sm:block">
+          ↑↓ navigate · / focus
         </span>
       </div>
 
-      {/* Results */}
-      <div className="grid gap-4">
+      {/* Results - list style */}
+      <div className="border border-dark-600">
         {results.length > 0 ? (
-          results.map((snippet) => (
-            <SnippetCard key={snippet.id} snippet={snippet} query={query} />
+          results.map((snippet, i) => (
+            <SnippetCard
+              key={snippet.id}
+              snippet={snippet}
+              query={query}
+              isSelected={i === selectedIndex}
+              index={i}
+              onClick={() => setSelectedIndex(i)}
+            />
           ))
         ) : (
-          <div className="text-center py-12 text-gray-500">
-            No snippets found for "{query}"
+          <div className="px-4 py-10 text-center text-gray-600">
+            no results for &quot;{query}&quot;
           </div>
         )}
       </div>

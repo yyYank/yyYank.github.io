@@ -14,6 +14,9 @@ export interface Snippet {
 interface SnippetCardProps {
   snippet: Snippet;
   query: string;
+  isSelected?: boolean;
+  index?: number;
+  onClick?: () => void;
 }
 
 function highlightMatch(text: string, query: string) {
@@ -23,7 +26,7 @@ function highlightMatch(text: string, query: string) {
   const parts = text.split(regex);
   return parts.map((part, i) =>
     regex.test(part) ? (
-      <mark key={i} className="bg-accent-cyan/30 text-white rounded px-0.5">
+      <mark key={i} className="bg-accent-cyan/30 text-white px-0.5">
         {part}
       </mark>
     ) : (
@@ -32,32 +35,65 @@ function highlightMatch(text: string, query: string) {
   );
 }
 
-export default function SnippetCard({ snippet, query }: SnippetCardProps) {
+export default function SnippetCard({
+  snippet,
+  query,
+  isSelected = false,
+  index = 0,
+  onClick,
+}: SnippetCardProps) {
+  const codeLines = snippet.code.split('\n');
+
   return (
-    <div className="bg-dark-800 border border-dark-600 rounded-lg p-4 hover:border-accent-cyan/40 transition-colors">
-      <div className="flex items-start justify-between gap-2 mb-2">
-        <h3 className="text-white font-medium text-sm">
+    <div
+      className={`fzf-item border-b border-dark-700 last:border-b-0 cursor-pointer select-none transition-colors duration-100 ${
+        isSelected ? 'bg-dark-700' : 'hover:bg-dark-800'
+      }`}
+      style={{ animationDelay: `${Math.min(index * 20, 250)}ms` }}
+      onClick={onClick}
+    >
+      {/* Title row */}
+      <div className="flex items-center gap-2 px-2 py-1.5 font-mono text-sm">
+        <span
+          className="w-4 shrink-0 text-accent-cyan transition-opacity duration-100"
+          style={{ opacity: isSelected ? 1 : 0 }}
+        >
+          {'>'}
+        </span>
+        <span
+          className={`flex-1 truncate transition-colors duration-100 ${
+            isSelected ? 'text-white' : 'text-gray-300'
+          }`}
+        >
           {highlightMatch(snippet.title, query)}
-        </h3>
-        <div className="flex items-center gap-2 shrink-0">
-          <span className="px-2 py-0.5 text-xs rounded bg-accent-cyan/10 text-accent-cyan border border-accent-cyan/20">
-            {snippet.lang}
-          </span>
-          <span className="px-2 py-0.5 text-xs rounded bg-accent-purple/10 text-accent-purple border border-accent-purple/20">
-            {snippet.source}
-          </span>
-        </div>
+        </span>
+        <span className="text-xs text-accent-cyan/50 shrink-0">{snippet.lang}</span>
+        <span className="text-xs text-gray-700 shrink-0 max-w-[8rem] truncate">
+          {snippet.source}
+        </span>
       </div>
-      {snippet.description && (
-        <p className="text-gray-400 text-xs mb-2">{snippet.description}</p>
-      )}
-      <div className="relative group">
-        <pre className="bg-dark-700 border border-dark-500 rounded-lg p-3 overflow-x-auto text-sm text-gray-100 font-mono">
+
+      {/* Code preview */}
+      <div className="relative ml-8 mr-2 mb-2">
+        <pre
+          className={`text-xs font-mono overflow-hidden transition-all duration-200 ${
+            isSelected ? 'text-gray-300' : 'text-gray-600'
+          }`}
+          style={{
+            maxHeight: isSelected ? '400px' : '3.6em',
+            overflow: isSelected ? 'auto' : 'hidden',
+          }}
+        >
           <code>{highlightMatch(snippet.code, query)}</code>
         </pre>
-        <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
-          <CopyButton text={snippet.code} />
-        </div>
+        {!isSelected && codeLines.length > 3 && (
+          <span className="text-gray-700 text-xs">··· {codeLines.length} lines</span>
+        )}
+        {isSelected && (
+          <div className="absolute top-0 right-0">
+            <CopyButton text={snippet.code} />
+          </div>
+        )}
       </div>
     </div>
   );
