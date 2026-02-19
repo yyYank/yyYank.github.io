@@ -7,6 +7,8 @@ interface SnippetSearchProps {
   snippets: Snippet[];
 }
 
+const SPINNER_CHARS = ['⣾', '⣽', '⣻', '⢿', '⡿', '⣟', '⣯', '⣷'];
+
 export default function SnippetSearch({ snippets }: SnippetSearchProps) {
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -14,6 +16,7 @@ export default function SnippetSearch({ snippets }: SnippetSearchProps) {
     typeof window !== 'undefined' ? window.location.search : ''
   );
   const [query, setQuery] = useState(params.get('q') || '');
+  const [spinnerIndex, setSpinnerIndex] = useState(0);
   const [selectedLang, setSelectedLang] = useState(params.get('lang') || '');
   const [selectedTag, setSelectedTag] = useState(params.get('tag') || '');
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -68,6 +71,15 @@ export default function SnippetSearch({ snippets }: SnippetSearchProps) {
     return fuseForSearch.search(query).map((r) => r.item);
   }, [query, selectedLang, selectedTag, snippets, fuse]);
 
+  // Spinner animation while searching
+  useEffect(() => {
+    if (!query.trim()) return;
+    const interval = setInterval(() => {
+      setSpinnerIndex((i) => (i + 1) % SPINNER_CHARS.length);
+    }, 80);
+    return () => clearInterval(interval);
+  }, [query]);
+
   // Reset selection when filters change
   useEffect(() => {
     setSelectedIndex(0);
@@ -111,7 +123,9 @@ export default function SnippetSearch({ snippets }: SnippetSearchProps) {
       {/* fzf-style search bar */}
       <div className="mb-3">
         <div className="flex items-center border border-dark-600 focus-within:border-accent-cyan transition-colors duration-200">
-          <span className="px-3 text-accent-cyan select-none font-bold">{'>'}</span>
+          <span className="px-3 text-accent-cyan select-none font-bold">
+            {query.trim() ? SPINNER_CHARS[spinnerIndex] : '>'}
+          </span>
           <input
             ref={inputRef}
             type="text"
