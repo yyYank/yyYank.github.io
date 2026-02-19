@@ -10,8 +10,7 @@
     "astro": "astro",
     "test": "npm run test:links",
     "test:links": "node scripts/check-links.mjs",
-    "test:links:kotlin-rev": "node scripts/check-links.mjs --scope=/kotlin-rev/",
-    "generate:snippets": "node src/scripts/generate-snippets.mjs"
+    "test:links:kotlin-rev": "node scripts/check-links.mjs --scope=/kotlin-rev/"
   },
   "dependencies": {
     "@astrojs/mdx": "^2.2.0",
