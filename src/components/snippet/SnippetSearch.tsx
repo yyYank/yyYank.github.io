@@ -7,7 +7,7 @@ interface SnippetSearchProps {
   snippets: Snippet[];
 }
 
-const SPINNER_CHARS = ['⣾', '⣽', '⣻', '⢿', '⡿', '⣟', '⣯', '⣷'];
+const SPINNER_CHARS = ['|', '/', '-', '\\'];
 
 export default function SnippetSearch({ snippets }: SnippetSearchProps) {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -76,7 +76,7 @@ export default function SnippetSearch({ snippets }: SnippetSearchProps) {
     if (!query.trim()) return;
     const interval = setInterval(() => {
       setSpinnerIndex((i) => (i + 1) % SPINNER_CHARS.length);
-    }, 80);
+    }, 120);
     return () => clearInterval(interval);
   }, [query]);
 
