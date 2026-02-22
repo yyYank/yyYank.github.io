@@ -18,8 +18,22 @@ const currentSlug = currentPath.replace(/^\/docs\//, '').replace(/\/$/, '');
 
 <BaseLayout title={title} description={description}>
   <div class="container mx-auto px-4 py-8">
-    <div class="flex flex-col md:flex-row gap-8">
-      <aside class="w-full md:w-64 flex-shrink-0">
+    <!-- Mobile: collapsible nav -->
+    <div class="md:hidden mb-4">
+      <details class="bg-dark-800 border border-dark-600 rounded-lg">
+        <summary class="p-4 font-bold text-white cursor-pointer list-none flex items-center justify-between select-none">
+          <span>Docs ナビゲーション</span>
+          <span class="text-gray-400 text-xs transition-transform duration-200">▼</span>
+        </summary>
+        <div class="px-2 pb-3">
+          <DocsSidebar docs={sortedDocs} currentSlug={currentSlug} plain={true} />
+        </div>
+      </details>
+    </div>
+
+    <!-- Desktop: sidebar + content -->
+    <div class="flex flex-row gap-8">
+      <aside class="hidden md:block w-64 flex-shrink-0">
         <DocsSidebar docs={sortedDocs} currentSlug={currentSlug} />
       </aside>
       <article class="flex-grow min-w-0 prose prose-lg prose-invert max-w-none">
