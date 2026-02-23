@@ -179,6 +179,10 @@ function proxyUrl(url: string): string {
   return `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
 }
 
+function corsProxyUrl(url: string): string {
+  return `https://corsproxy.io/?url=${encodeURIComponent(url)}`;
+}
+
 function getJSTEndOfDay(): number {
   const now = new Date();
   const jstOffset = 9 * 60 * 60 * 1000;
@@ -466,15 +470,15 @@ export default function FeedReader() {
           if (!r.ok) throw new Error(`Nikkei: ${r.status}`);
           return r.text();
         }),
-        fetch(proxyUrl(FEEDS.reuters)).then((r) => {
+        fetch(corsProxyUrl(FEEDS.reuters)).then((r) => {
           if (!r.ok) throw new Error(`Reuters: ${r.status}`);
           return r.text();
         }),
-        fetch(proxyUrl(FEEDS.toyokeizai)).then((r) => {
+        fetch(corsProxyUrl(FEEDS.toyokeizai)).then((r) => {
           if (!r.ok) throw new Error(`Toyokeizai: ${r.status}`);
           return r.text();
         }),
-        fetch(proxyUrl(FEEDS.bloomberg)).then((r) => {
+        fetch(corsProxyUrl(FEEDS.bloomberg)).then((r) => {
           if (!r.ok) throw new Error(`Bloomberg: ${r.status}`);
           return r.text();
         }),
