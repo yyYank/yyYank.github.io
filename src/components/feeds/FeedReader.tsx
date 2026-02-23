@@ -5,22 +5,47 @@ interface FeedItem {
   link: string;
   date: string;
   description: string;
-  source: 'hatena' | 'hackernews';
+  source: 'hatena' | 'hackernews' | 'nikkei';
 }
 
+interface CityWeather {
+  city: string;
+  dates: {
+    date: string;
+    weatherCode: number;
+    tempMax: number;
+    tempMin: number;
+    precipProb: number;
+  }[];
+}
+
+type WeatherData = CityWeather[];
+
 interface CacheData {
-  data: { hatena: FeedItem[]; hackernews: FeedItem[] };
+  data: {
+    hatena: FeedItem[];
+    hackernews: FeedItem[];
+    nikkei: FeedItem[];
+    weather: WeatherData;
+  };
   expiresAt: number;
 }
 
-type TabType = 'all' | 'hatena' | 'hackernews';
+type TabType = 'all' | 'hatena' | 'hackernews' | 'nikkei';
 
 const CACHE_KEY = 'feeds-cache';
 
 const FEEDS = {
   hatena: 'https://b.hatena.ne.jp/hotentry/it.rss',
   hackernews: 'https://hnrss.org/frontpage',
+  nikkei: 'https://assets.wor.jp/rss/rdf/nikkei/news.rdf',
 } as const;
+
+const CITIES = [
+  { name: '東京', latitude: 35.6762, longitude: 139.6503 },
+  { name: '大阪', latitude: 34.6937, longitude: 135.5023 },
+  { name: '福岡', latitude: 33.5904, longitude: 130.4017 },
+] as const;
 
 function proxyUrl(url: string): string {
   return `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
@@ -61,7 +86,7 @@ function saveCache(data: CacheData['data']): void {
   }
 }
 
-function parseRSS(xml: string, source: 'hatena' | 'hackernews'): FeedItem[] {
+function parseRSS(xml: string, source: 'hatena' | 'hackernews' | 'nikkei'): FeedItem[] {
   const parser = new DOMParser();
   const doc = parser.parseFromString(xml, 'text/xml');
   const items: FeedItem[] = [];
@@ -122,11 +147,117 @@ function formatDate(dateStr: string): string {
   }
 }
 
+function weatherCodeToEmoji(code: number): string {
+  if (code === 0) return '☀️';
+  if (code <= 3) return '🌤️';
+  if (code <= 49) return '☁️';
+  if (code <= 59) return '🌦️';
+  if (code <= 69) return '🌧️';
+  if (code <= 79) return '🌨️';
+  if (code <= 84) return '🌧️';
+  if (code <= 94) return '⛈️';
+  return '🌪️';
+}
+
+function weatherCodeToText(code: number): string {
+  if (code === 0) return '快晴';
+  if (code <= 3) return '晴れ';
+  if (code <= 49) return '曇り';
+  if (code <= 59) return '霧雨';
+  if (code <= 69) return '雨';
+  if (code <= 79) return '雪';
+  if (code <= 84) return '大雨';
+  if (code <= 94) return '雷雨';
+  return '暴風';
+}
+
+async function fetchWeather(): Promise<WeatherData> {
+  const results: WeatherData = [];
+
+  const responses = await Promise.allSettled(
+    CITIES.map(async (city) => {
+      const url = `https://api.open-meteo.com/v1/forecast?latitude=${city.latitude}&longitude=${city.longitude}&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=Asia/Tokyo&forecast_days=2`;
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(`Weather ${city.name}: ${res.status}`);
+      const json = await res.json();
+      return { city: city.name, json };
+    })
+  );
+
+  for (const r of responses) {
+    if (r.status === 'fulfilled') {
+      const { city, json } = r.value;
+      const daily = json.daily;
+      const dates = daily.time.map((date: string, i: number) => ({
+        date,
+        weatherCode: daily.weather_code[i],
+        tempMax: daily.temperature_2m_max[i],
+        tempMin: daily.temperature_2m_min[i],
+        precipProb: daily.precipitation_probability_max[i] ?? 0,
+      }));
+      results.push({ city, dates });
+    }
+  }
+
+  return results;
+}
+
+function formatWeatherDate(dateStr: string): string {
+  const d = new Date(dateStr + 'T00:00:00+09:00');
+  const today = new Date();
+  const jstOffset = 9 * 60 * 60 * 1000;
+  const jstToday = new Date(today.getTime() + jstOffset);
+  const todayStr = `${jstToday.getUTCFullYear()}-${String(jstToday.getUTCMonth() + 1).padStart(2, '0')}-${String(jstToday.getUTCDate()).padStart(2, '0')}`;
+
+  if (dateStr === todayStr) return '今日';
+  return '明日';
+}
+
+function WeatherSection({ weather }: { weather: WeatherData }) {
+  if (weather.length === 0) return null;
+
+  return (
+    <div className="mb-8">
+      <h2 className="text-sm font-medium text-gray-400 mb-3">天気予報</h2>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+        {weather.map((city) => (
+          <div
+            key={city.city}
+            className="bg-dark-700 border border-dark-600 rounded-lg p-4"
+          >
+            <h3 className="text-gray-100 font-medium mb-3">{city.city}</h3>
+            <div className="space-y-2">
+              {city.dates.map((day) => (
+                <div key={day.date} className="flex items-center justify-between text-sm">
+                  <span className="text-gray-400 w-8">{formatWeatherDate(day.date)}</span>
+                  <span className="text-lg" title={weatherCodeToText(day.weatherCode)}>
+                    {weatherCodeToEmoji(day.weatherCode)}
+                  </span>
+                  <span className="text-gray-300">
+                    <span className="text-red-400">{day.tempMax}°</span>
+                    <span className="text-gray-600 mx-1">/</span>
+                    <span className="text-blue-400">{day.tempMin}°</span>
+                  </span>
+                  <span className="text-gray-500 text-xs">
+                    ☔ {day.precipProb}%
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 const SPINNER_CHARS = ['|', '/', '-', '\\'];
 
 export default function FeedReader() {
   const [hatena, setHatena] = useState<FeedItem[]>([]);
   const [hackernews, setHackernews] = useState<FeedItem[]>([]);
+  const [nikkei, setNikkei] = useState<FeedItem[]>([]);
+  const [weather, setWeather] = useState<WeatherData>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [tab, setTab] = useState<TabType>('all');
@@ -143,6 +274,8 @@ export default function FeedReader() {
     if (cached) {
       setHatena(cached.data.hatena);
       setHackernews(cached.data.hackernews);
+      setNikkei(cached.data.nikkei ?? []);
+      setWeather(cached.data.weather ?? []);
       setLoading(false);
       return;
     }
@@ -151,7 +284,7 @@ export default function FeedReader() {
     setError(null);
 
     try {
-      const [hatenaRes, hnRes] = await Promise.allSettled([
+      const [hatenaRes, hnRes, nikkeiRes, weatherRes] = await Promise.allSettled([
         fetch(proxyUrl(FEEDS.hatena)).then((r) => {
           if (!r.ok) throw new Error(`Hatena: ${r.status}`);
           return r.text();
@@ -160,20 +293,31 @@ export default function FeedReader() {
           if (!r.ok) throw new Error(`HN: ${r.status}`);
           return r.text();
         }),
+        fetch(proxyUrl(FEEDS.nikkei)).then((r) => {
+          if (!r.ok) throw new Error(`Nikkei: ${r.status}`);
+          return r.text();
+        }),
+        fetchWeather(),
       ]);
 
       const hatenaItems =
         hatenaRes.status === 'fulfilled' ? parseRSS(hatenaRes.value, 'hatena') : [];
       const hnItems =
         hnRes.status === 'fulfilled' ? parseRSS(hnRes.value, 'hackernews') : [];
+      const nikkeiItems =
+        nikkeiRes.status === 'fulfilled' ? parseRSS(nikkeiRes.value, 'nikkei') : [];
+      const weatherData =
+        weatherRes.status === 'fulfilled' ? weatherRes.value : [];
 
-      if (hatenaRes.status === 'rejected' && hnRes.status === 'rejected') {
+      if (hatenaRes.status === 'rejected' && hnRes.status === 'rejected' && nikkeiRes.status === 'rejected') {
         setError('フィードの取得に失敗しました。しばらくしてからリロードしてください。');
       }
 
       setHatena(hatenaItems);
       setHackernews(hnItems);
-      saveCache({ hatena: hatenaItems, hackernews: hnItems });
+      setNikkei(nikkeiItems);
+      setWeather(weatherData);
+      saveCache({ hatena: hatenaItems, hackernews: hnItems, nikkei: nikkeiItems, weather: weatherData });
     } catch (e) {
       setError('フィードの取得に失敗しました。');
     } finally {
@@ -191,8 +335,10 @@ export default function FeedReader() {
         return hatena;
       case 'hackernews':
         return hackernews;
+      case 'nikkei':
+        return nikkei.slice(0, 5);
       case 'all':
-        return [...hatena, ...hackernews].sort((a, b) => {
+        return [...hatena, ...hackernews, ...nikkei].sort((a, b) => {
           if (!a.date || !b.date) return 0;
           return new Date(b.date).getTime() - new Date(a.date).getTime();
         });
@@ -200,13 +346,28 @@ export default function FeedReader() {
   })();
 
   const tabs: { key: TabType; label: string; count: number }[] = [
-    { key: 'all', label: 'All', count: hatena.length + hackernews.length },
+    { key: 'all', label: 'All', count: hatena.length + hackernews.length + nikkei.length },
     { key: 'hatena', label: 'はてブ IT', count: hatena.length },
     { key: 'hackernews', label: 'Hacker News', count: hackernews.length },
+    { key: 'nikkei', label: '日経', count: nikkei.length },
   ];
+
+  const sourceBadge = (source: FeedItem['source']) => {
+    switch (source) {
+      case 'hatena':
+        return { className: 'bg-accent-purple/20 text-accent-purple', label: 'はてブ' };
+      case 'hackernews':
+        return { className: 'bg-accent-green/20 text-accent-green', label: 'HN' };
+      case 'nikkei':
+        return { className: 'bg-accent-pink/20 text-accent-pink', label: '日経' };
+    }
+  };
 
   return (
     <div>
+      {/* Weather */}
+      {!loading && <WeatherSection weather={weather} />}
+
       {/* Tabs */}
       <div className="flex gap-2 mb-6 flex-wrap">
         {tabs.map((t) => (
@@ -252,42 +413,41 @@ export default function FeedReader() {
       )}
 
       <div className="space-y-3">
-        {displayItems.map((item, i) => (
-          <a
-            key={`${item.source}-${i}`}
-            href={item.link}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="block bg-dark-700 border border-dark-600 rounded-lg p-4 hover:border-accent-cyan/40 hover:bg-dark-600 transition-all group"
-          >
-            <div className="flex items-start gap-3">
-              <span
-                className={`shrink-0 mt-1 text-xs px-2 py-0.5 rounded font-medium ${
-                  item.source === 'hatena'
-                    ? 'bg-accent-purple/20 text-accent-purple'
-                    : 'bg-accent-green/20 text-accent-green'
-                }`}
-              >
-                {item.source === 'hatena' ? 'はてブ' : 'HN'}
-              </span>
-              <div className="min-w-0 flex-1">
-                <h3 className="text-gray-100 font-medium group-hover:text-accent-cyan transition-colors leading-snug">
-                  {item.title}
-                </h3>
-                {item.description && (
-                  <p className="text-gray-500 text-sm mt-1 line-clamp-2">
-                    {item.description}
-                  </p>
-                )}
-                {item.date && (
-                  <time className="text-gray-600 text-xs mt-2 block">
-                    {formatDate(item.date)}
-                  </time>
-                )}
+        {displayItems.map((item, i) => {
+          const badge = sourceBadge(item.source);
+          return (
+            <a
+              key={`${item.source}-${i}`}
+              href={item.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block bg-dark-700 border border-dark-600 rounded-lg p-4 hover:border-accent-cyan/40 hover:bg-dark-600 transition-all group"
+            >
+              <div className="flex items-start gap-3">
+                <span
+                  className={`shrink-0 mt-1 text-xs px-2 py-0.5 rounded font-medium ${badge.className}`}
+                >
+                  {badge.label}
+                </span>
+                <div className="min-w-0 flex-1">
+                  <h3 className="text-gray-100 font-medium group-hover:text-accent-cyan transition-colors leading-snug">
+                    {item.title}
+                  </h3>
+                  {item.description && (
+                    <p className="text-gray-500 text-sm mt-1 line-clamp-2">
+                      {item.description}
+                    </p>
+                  )}
+                  {item.date && (
+                    <time className="text-gray-600 text-xs mt-2 block">
+                      {formatDate(item.date)}
+                    </time>
+                  )}
+                </div>
               </div>
-            </div>
-          </a>
-        ))}
+            </a>
+          );
+        })}
       </div>
     </div>
   );
