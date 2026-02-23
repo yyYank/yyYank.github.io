@@ -579,7 +579,7 @@ export default function FeedReader() {
       case 'hackernews':
         return hackernews;
       case 'nikkei':
-        return nikkei.slice(0, 5);
+        return nikkei;
       case 'reuters':
         return reuters;
       case 'toyokeizai':
