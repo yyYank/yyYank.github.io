@@ -7,7 +7,7 @@ interface FeedItem {
   link: string;
   date: string;
   description: string;
-  source: 'hatena' | 'hackernews' | 'nikkei';
+  source: 'hatena' | 'hackernews' | 'nikkei' | 'reuters' | 'toyokeizai' | 'bloomberg';
 }
 
 interface CityWeather {
@@ -28,12 +28,16 @@ interface CacheData {
     hatena: FeedItem[];
     hackernews: FeedItem[];
     nikkei: FeedItem[];
+    reuters: FeedItem[];
+    toyokeizai: FeedItem[];
+    bloomberg: FeedItem[];
     weather: WeatherData;
+    holidays: Record<string, string>;
   };
   expiresAt: number;
 }
 
-type TabType = 'all' | 'hatena' | 'hackernews' | 'nikkei';
+type TabType = 'all' | 'hatena' | 'hackernews' | 'nikkei' | 'reuters' | 'toyokeizai' | 'bloomberg';
 
 const CACHE_KEY = 'feeds-cache';
 
@@ -41,6 +45,9 @@ const FEEDS = {
   hatena: 'https://b.hatena.ne.jp/hotentry/it.rss',
   hackernews: 'https://hnrss.org/frontpage',
   nikkei: 'https://assets.wor.jp/rss/rdf/nikkei/news.rdf',
+  reuters: 'https://assets.wor.jp/rss/rdf/reuters/top.rdf',
+  toyokeizai: 'https://toyokeizai.net/list/feed/rss',
+  bloomberg: 'https://assets.wor.jp/rss/rdf/bloomberg/news.rdf',
 } as const;
 
 const CITIES = [
@@ -207,7 +214,7 @@ function saveCache(data: CacheData['data']): void {
   }
 }
 
-function parseRSS(xml: string, source: 'hatena' | 'hackernews' | 'nikkei'): FeedItem[] {
+function parseRSS(xml: string, source: FeedItem['source']): FeedItem[] {
   const parser = new DOMParser();
   const doc = parser.parseFromString(xml, 'text/xml');
   const items: FeedItem[] = [];
@@ -372,13 +379,48 @@ function WeatherSection({ weather }: { weather: WeatherData }) {
   );
 }
 
+async function fetchHolidays(): Promise<Record<string, string>> {
+  const year = new Date().getFullYear();
+  try {
+    const res = await fetch(`https://holidays-jp.github.io/api/v1/${year}/date.json`);
+    if (!res.ok) return {};
+    return await res.json();
+  } catch {
+    return {};
+  }
+}
+
+function DateHeader({ holidays }: { holidays: Record<string, string> }) {
+  const now = new Date();
+  const jstOffset = 9 * 60 * 60 * 1000;
+  const jst = new Date(now.getTime() + jstOffset);
+  const year = jst.getUTCFullYear();
+  const month = String(jst.getUTCMonth() + 1).padStart(2, '0');
+  const day = String(jst.getUTCDate()).padStart(2, '0');
+  const weekdays = ['日', '月', '火', '水', '木', '金', '土'];
+  const weekday = weekdays[jst.getUTCDay()];
+  const dateKey = `${year}-${month}-${day}`;
+  const holiday = holidays[dateKey];
+
+  return (
+    <div className="mb-6 font-mono text-sm text-gray-300">
+      <span>{year}/{month}/{day}（{weekday}）</span>
+      {holiday && <span className="ml-2 text-red-400">{holiday}</span>}
+    </div>
+  );
+}
+
 const SPINNER_CHARS = ['|', '/', '-', '\\'];
 
 export default function FeedReader() {
   const [hatena, setHatena] = useState<FeedItem[]>([]);
   const [hackernews, setHackernews] = useState<FeedItem[]>([]);
   const [nikkei, setNikkei] = useState<FeedItem[]>([]);
+  const [reuters, setReuters] = useState<FeedItem[]>([]);
+  const [toyokeizai, setToyokeizai] = useState<FeedItem[]>([]);
+  const [bloomberg, setBloomberg] = useState<FeedItem[]>([]);
   const [weather, setWeather] = useState<WeatherData>([]);
+  const [holidays, setHolidays] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [tab, setTab] = useState<TabType>('all');
@@ -398,7 +440,11 @@ export default function FeedReader() {
       setHatena(cached.data.hatena);
       setHackernews(cached.data.hackernews);
       setNikkei(cached.data.nikkei ?? []);
+      setReuters(cached.data.reuters ?? []);
+      setToyokeizai(cached.data.toyokeizai ?? []);
+      setBloomberg(cached.data.bloomberg ?? []);
       setWeather(cached.data.weather ?? []);
+      setHolidays(cached.data.holidays ?? {});
       setLoading(false);
       return;
     }
@@ -407,7 +453,7 @@ export default function FeedReader() {
     setError(null);
 
     try {
-      const [hatenaRes, hnRes, nikkeiRes, weatherRes] = await Promise.allSettled([
+      const [hatenaRes, hnRes, nikkeiRes, reutersRes, toyokeizaiRes, bloombergRes, weatherRes, holidaysRes] = await Promise.allSettled([
         fetch(proxyUrl(FEEDS.hatena)).then((r) => {
           if (!r.ok) throw new Error(`Hatena: ${r.status}`);
           return r.text();
@@ -420,7 +466,20 @@ export default function FeedReader() {
           if (!r.ok) throw new Error(`Nikkei: ${r.status}`);
           return r.text();
         }),
+        fetch(proxyUrl(FEEDS.reuters)).then((r) => {
+          if (!r.ok) throw new Error(`Reuters: ${r.status}`);
+          return r.text();
+        }),
+        fetch(proxyUrl(FEEDS.toyokeizai)).then((r) => {
+          if (!r.ok) throw new Error(`Toyokeizai: ${r.status}`);
+          return r.text();
+        }),
+        fetch(proxyUrl(FEEDS.bloomberg)).then((r) => {
+          if (!r.ok) throw new Error(`Bloomberg: ${r.status}`);
+          return r.text();
+        }),
         fetchWeather(),
+        fetchHolidays(),
       ]);
 
       const hatenaItems =
@@ -429,8 +488,16 @@ export default function FeedReader() {
         hnRes.status === 'fulfilled' ? parseRSS(hnRes.value, 'hackernews') : [];
       const nikkeiItems =
         nikkeiRes.status === 'fulfilled' ? parseRSS(nikkeiRes.value, 'nikkei') : [];
+      const reutersItems =
+        reutersRes.status === 'fulfilled' ? parseRSS(reutersRes.value, 'reuters') : [];
+      const toyokeizaiItems =
+        toyokeizaiRes.status === 'fulfilled' ? parseRSS(toyokeizaiRes.value, 'toyokeizai') : [];
+      const bloombergItems =
+        bloombergRes.status === 'fulfilled' ? parseRSS(bloombergRes.value, 'bloomberg') : [];
       const weatherData =
         weatherRes.status === 'fulfilled' ? weatherRes.value : [];
+      const holidaysData =
+        holidaysRes.status === 'fulfilled' ? holidaysRes.value : {};
 
       if (hatenaRes.status === 'rejected' && hnRes.status === 'rejected' && nikkeiRes.status === 'rejected') {
         setError('フィードの取得に失敗しました。しばらくしてからリロードしてください。');
@@ -439,8 +506,12 @@ export default function FeedReader() {
       setHatena(hatenaItems);
       setHackernews(hnItems);
       setNikkei(nikkeiItems);
+      setReuters(reutersItems);
+      setToyokeizai(toyokeizaiItems);
+      setBloomberg(bloombergItems);
       setWeather(weatherData);
-      saveCache({ hatena: hatenaItems, hackernews: hnItems, nikkei: nikkeiItems, weather: weatherData });
+      setHolidays(holidaysData);
+      saveCache({ hatena: hatenaItems, hackernews: hnItems, nikkei: nikkeiItems, reuters: reutersItems, toyokeizai: toyokeizaiItems, bloomberg: bloombergItems, weather: weatherData, holidays: holidaysData });
     } catch (e) {
       setError('フィードの取得に失敗しました。');
     } finally {
@@ -460,13 +531,19 @@ export default function FeedReader() {
         return hackernews;
       case 'nikkei':
         return nikkei.slice(0, 5);
+      case 'reuters':
+        return reuters;
+      case 'toyokeizai':
+        return toyokeizai;
+      case 'bloomberg':
+        return bloomberg;
       case 'all':
-        return [...hatena, ...hackernews, ...nikkei].sort((a, b) => {
+        return [...hatena, ...hackernews, ...nikkei, ...reuters, ...toyokeizai, ...bloomberg].sort((a, b) => {
           if (!a.date || !b.date) return 0;
           return new Date(b.date).getTime() - new Date(a.date).getTime();
         });
     }
-  }, [tab, hatena, hackernews, nikkei]);
+  }, [tab, hatena, hackernews, nikkei, reuters, toyokeizai, bloomberg]);
 
   const feedFuse = useMemo(
     () =>
@@ -486,13 +563,16 @@ export default function FeedReader() {
     return feedFuse.search(searchQuery).map((r) => r.item);
   }, [searchQuery, allItems, feedFuse]);
 
-  const totalItemCount = hatena.length + hackernews.length + nikkei.length;
+  const totalItemCount = hatena.length + hackernews.length + nikkei.length + reuters.length + toyokeizai.length + bloomberg.length;
 
   const tabs: { key: TabType; label: string; count: number }[] = [
-    { key: 'all', label: 'All', count: hatena.length + hackernews.length + nikkei.length },
+    { key: 'all', label: 'All', count: totalItemCount },
     { key: 'hatena', label: 'はてブ IT', count: hatena.length },
     { key: 'hackernews', label: 'Hacker News', count: hackernews.length },
     { key: 'nikkei', label: '日経', count: nikkei.length },
+    { key: 'reuters', label: 'Reuters', count: reuters.length },
+    { key: 'toyokeizai', label: '東洋経済', count: toyokeizai.length },
+    { key: 'bloomberg', label: 'Bloomberg', count: bloomberg.length },
   ];
 
   const sourceBadge = (source: FeedItem['source']) => {
@@ -503,11 +583,20 @@ export default function FeedReader() {
         return { className: 'bg-accent-green/20 text-accent-green', label: 'HN' };
       case 'nikkei':
         return { className: 'bg-accent-pink/20 text-accent-pink', label: '日経' };
+      case 'reuters':
+        return { className: 'bg-orange-500/20 text-orange-400', label: 'Reuters' };
+      case 'toyokeizai':
+        return { className: 'bg-blue-500/20 text-blue-400', label: '東洋経済' };
+      case 'bloomberg':
+        return { className: 'bg-yellow-500/20 text-yellow-400', label: 'Bloomberg' };
     }
   };
 
   return (
     <div>
+      {/* Date Header */}
+      {!loading && <DateHeader holidays={holidays} />}
+
       {/* Weather */}
       {!loading && <WeatherSection weather={weather} />}
 
