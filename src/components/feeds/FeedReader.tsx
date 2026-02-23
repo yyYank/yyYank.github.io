@@ -7,7 +7,7 @@ interface FeedItem {
   link: string;
   date: string;
   description: string;
-  source: 'hatena' | 'hackernews' | 'nikkei' | 'reuters' | 'toyokeizai' | 'bloomberg';
+  source: 'hatena' | 'hackernews' | 'nikkei' | 'reuters' | 'toyokeizai' | 'bloomberg' | 'reddit';
 }
 
 interface CityWeather {
@@ -31,13 +31,14 @@ interface CacheData {
     reuters: FeedItem[];
     toyokeizai: FeedItem[];
     bloomberg: FeedItem[];
+    reddit: FeedItem[];
     weather: WeatherData;
     holidays: Record<string, string>;
   };
   expiresAt: number;
 }
 
-type TabType = 'all' | 'hatena' | 'hackernews' | 'nikkei' | 'reuters' | 'toyokeizai' | 'bloomberg' | 'favorites';
+type TabType = 'all' | 'hatena' | 'hackernews' | 'nikkei' | 'reuters' | 'toyokeizai' | 'bloomberg' | 'reddit' | 'favorites';
 
 const CACHE_KEY = 'feeds-cache';
 const FAVORITES_KEY = 'feeds-favorites';
@@ -49,6 +50,8 @@ const FEEDS = {
   reuters: 'https://assets.wor.jp/rss/rdf/reuters/top.rdf',
   toyokeizai: 'https://toyokeizai.net/list/feed/rss',
   bloomberg: 'https://assets.wor.jp/rss/rdf/bloomberg/news.rdf',
+  redditProgramming: 'https://www.reddit.com/r/programming/.rss',
+  redditTechnology: 'https://www.reddit.com/r/technology/.rss',
 } as const;
 
 const CITIES = [
@@ -255,14 +258,32 @@ function parseRSS(xml: string, source: FeedItem['source']): FeedItem[] {
   const doc = parser.parseFromString(xml, 'text/xml');
   const items: FeedItem[] = [];
 
-  // RSS 2.0 format
+  // Atom format (Reddit etc.)
+  const atomEntries = doc.querySelectorAll('entry');
+  if (atomEntries.length > 0) {
+    atomEntries.forEach((entry) => {
+      const title = entry.querySelector('title')?.textContent?.trim() ?? '';
+      const link = entry.querySelector('link[href]')?.getAttribute('href') ?? '';
+      const updated = entry.querySelector('updated')?.textContent?.trim() ?? '';
+      const content = entry.querySelector('content')?.textContent?.trim() ?? '';
+
+      if (title && link) {
+        items.push({
+          title,
+          link,
+          date: updated,
+          description: stripHtml(content).slice(0, 200),
+          source,
+        });
+      }
+    });
+    return items;
+  }
+
+  // RSS 2.0 / RDF format
   const rssItems = doc.querySelectorAll('item');
-  // RDF format (hatena uses rdf:RDF > item)
-  const rdfItems = doc.querySelectorAll('item');
 
-  const allItems = rssItems.length > 0 ? rssItems : rdfItems;
-
-  allItems.forEach((item) => {
+  rssItems.forEach((item) => {
     const title = item.querySelector('title')?.textContent?.trim() ?? '';
     const link = item.querySelector('link')?.textContent?.trim() ?? '';
     const pubDate =
@@ -455,6 +476,7 @@ export default function FeedReader() {
   const [reuters, setReuters] = useState<FeedItem[]>([]);
   const [toyokeizai, setToyokeizai] = useState<FeedItem[]>([]);
   const [bloomberg, setBloomberg] = useState<FeedItem[]>([]);
+  const [reddit, setReddit] = useState<FeedItem[]>([]);
   const [weather, setWeather] = useState<WeatherData>([]);
   const [holidays, setHolidays] = useState<Record<string, string>>({});
   const [favorites, setFavorites] = useState<FeedItem[]>(() => loadFavorites());
@@ -492,6 +514,7 @@ export default function FeedReader() {
       setReuters(cached.data.reuters ?? []);
       setToyokeizai(cached.data.toyokeizai ?? []);
       setBloomberg(cached.data.bloomberg ?? []);
+      setReddit(cached.data.reddit ?? []);
       setWeather(cached.data.weather ?? []);
       setHolidays(cached.data.holidays ?? {});
       setLoading(false);
@@ -502,7 +525,7 @@ export default function FeedReader() {
     setError(null);
 
     try {
-      const [hatenaRes, hnRes, nikkeiRes, reutersRes, toyokeizaiRes, bloombergRes, weatherRes, holidaysRes] = await Promise.allSettled([
+      const [hatenaRes, hnRes, nikkeiRes, reutersRes, toyokeizaiRes, bloombergRes, redditProgRes, redditTechRes, weatherRes, holidaysRes] = await Promise.allSettled([
         fetch(proxyUrl(FEEDS.hatena)).then((r) => {
           if (!r.ok) throw new Error(`Hatena: ${r.status}`);
           return r.text();
@@ -527,6 +550,14 @@ export default function FeedReader() {
           if (!r.ok) throw new Error(`Bloomberg: ${r.status}`);
           return r.text();
         }),
+        fetch(allOriginsProxyUrl(FEEDS.redditProgramming)).then((r) => {
+          if (!r.ok) throw new Error(`Reddit Prog: ${r.status}`);
+          return r.text();
+        }),
+        fetch(allOriginsProxyUrl(FEEDS.redditTechnology)).then((r) => {
+          if (!r.ok) throw new Error(`Reddit Tech: ${r.status}`);
+          return r.text();
+        }),
         fetchWeather(),
         fetchHolidays(),
       ]);
@@ -543,6 +574,11 @@ export default function FeedReader() {
         toyokeizaiRes.status === 'fulfilled' ? parseRSS(toyokeizaiRes.value, 'toyokeizai') : [];
       const bloombergItems =
         bloombergRes.status === 'fulfilled' ? parseRSS(bloombergRes.value, 'bloomberg') : [];
+      const redditProgItems =
+        redditProgRes.status === 'fulfilled' ? parseRSS(redditProgRes.value, 'reddit') : [];
+      const redditTechItems =
+        redditTechRes.status === 'fulfilled' ? parseRSS(redditTechRes.value, 'reddit') : [];
+      const redditItems = [...redditProgItems, ...redditTechItems];
       const weatherData =
         weatherRes.status === 'fulfilled' ? weatherRes.value : [];
       const holidaysData =
@@ -558,9 +594,10 @@ export default function FeedReader() {
       setReuters(reutersItems);
       setToyokeizai(toyokeizaiItems);
       setBloomberg(bloombergItems);
+      setReddit(redditItems);
       setWeather(weatherData);
       setHolidays(holidaysData);
-      saveCache({ hatena: hatenaItems, hackernews: hnItems, nikkei: nikkeiItems, reuters: reutersItems, toyokeizai: toyokeizaiItems, bloomberg: bloombergItems, weather: weatherData, holidays: holidaysData });
+      saveCache({ hatena: hatenaItems, hackernews: hnItems, nikkei: nikkeiItems, reuters: reutersItems, toyokeizai: toyokeizaiItems, bloomberg: bloombergItems, reddit: redditItems, weather: weatherData, holidays: holidaysData });
     } catch (e) {
       setError('フィードの取得に失敗しました。');
     } finally {
@@ -586,15 +623,17 @@ export default function FeedReader() {
         return toyokeizai;
       case 'bloomberg':
         return bloomberg;
+      case 'reddit':
+        return reddit;
       case 'favorites':
         return favorites;
       case 'all':
-        return [...hatena, ...hackernews, ...nikkei, ...reuters, ...toyokeizai, ...bloomberg].sort((a, b) => {
+        return [...hatena, ...hackernews, ...nikkei, ...reuters, ...toyokeizai, ...bloomberg, ...reddit].sort((a, b) => {
           if (!a.date || !b.date) return 0;
           return new Date(b.date).getTime() - new Date(a.date).getTime();
         });
     }
-  }, [tab, hatena, hackernews, nikkei, reuters, toyokeizai, bloomberg, favorites]);
+  }, [tab, hatena, hackernews, nikkei, reuters, toyokeizai, bloomberg, reddit, favorites]);
 
   const feedFuse = useMemo(
     () =>
@@ -614,7 +653,7 @@ export default function FeedReader() {
     return feedFuse.search(searchQuery).map((r) => r.item);
   }, [searchQuery, allItems, feedFuse]);
 
-  const totalItemCount = hatena.length + hackernews.length + nikkei.length + reuters.length + toyokeizai.length + bloomberg.length;
+  const totalItemCount = hatena.length + hackernews.length + nikkei.length + reuters.length + toyokeizai.length + bloomberg.length + reddit.length;
 
   const tabs: { key: TabType; label: string; count: number }[] = [
     { key: 'all', label: 'All', count: totalItemCount },
@@ -624,6 +663,7 @@ export default function FeedReader() {
     { key: 'reuters', label: 'Reuters', count: reuters.length },
     { key: 'toyokeizai', label: '東洋経済', count: toyokeizai.length },
     { key: 'bloomberg', label: 'Bloomberg', count: bloomberg.length },
+    { key: 'reddit', label: 'Reddit', count: reddit.length },
     { key: 'favorites', label: 'お気に入り', count: favorites.length },
   ];
 
@@ -641,6 +681,8 @@ export default function FeedReader() {
         return { className: 'bg-blue-500/20 text-blue-400', label: '東洋経済' };
       case 'bloomberg':
         return { className: 'bg-yellow-500/20 text-yellow-400', label: 'Bloomberg' };
+      case 'reddit':
+        return { className: 'bg-red-500/20 text-red-400', label: 'Reddit' };
     }
   };
 
