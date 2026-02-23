@@ -37,9 +37,10 @@ interface CacheData {
   expiresAt: number;
 }
 
-type TabType = 'all' | 'hatena' | 'hackernews' | 'nikkei' | 'reuters' | 'toyokeizai' | 'bloomberg';
+type TabType = 'all' | 'hatena' | 'hackernews' | 'nikkei' | 'reuters' | 'toyokeizai' | 'bloomberg' | 'favorites';
 
 const CACHE_KEY = 'feeds-cache';
+const FAVORITES_KEY = 'feeds-favorites';
 
 const FEEDS = {
   hatena: 'https://b.hatena.ne.jp/hotentry/it.rss',
@@ -226,6 +227,24 @@ function saveCache(data: CacheData['data']): void {
   const cache: CacheData = { data, expiresAt: getJSTEndOfDay() };
   try {
     localStorage.setItem(CACHE_KEY, JSON.stringify(cache));
+  } catch {
+    // storage full - ignore
+  }
+}
+
+function loadFavorites(): FeedItem[] {
+  try {
+    const raw = localStorage.getItem(FAVORITES_KEY);
+    if (!raw) return [];
+    return JSON.parse(raw);
+  } catch {
+    return [];
+  }
+}
+
+function saveFavorites(items: FeedItem[]): void {
+  try {
+    localStorage.setItem(FAVORITES_KEY, JSON.stringify(items));
   } catch {
     // storage full - ignore
   }
@@ -438,12 +457,24 @@ export default function FeedReader() {
   const [bloomberg, setBloomberg] = useState<FeedItem[]>([]);
   const [weather, setWeather] = useState<WeatherData>([]);
   const [holidays, setHolidays] = useState<Record<string, string>>({});
+  const [favorites, setFavorites] = useState<FeedItem[]>(() => loadFavorites());
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [tab, setTab] = useState<TabType>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [spinnerIdx, setSpinnerIdx] = useState(0);
   const translations = useTranslation(hackernews);
+
+  const favoriteLinks = useMemo(() => new Set(favorites.map((f) => f.link)), [favorites]);
+
+  const toggleFavorite = useCallback((item: FeedItem) => {
+    setFavorites((prev) => {
+      const exists = prev.some((f) => f.link === item.link);
+      const next = exists ? prev.filter((f) => f.link !== item.link) : [...prev, item];
+      saveFavorites(next);
+      return next;
+    });
+  }, []);
 
   useEffect(() => {
     if (!loading) return;
@@ -554,13 +585,15 @@ export default function FeedReader() {
         return toyokeizai;
       case 'bloomberg':
         return bloomberg;
+      case 'favorites':
+        return favorites;
       case 'all':
         return [...hatena, ...hackernews, ...nikkei, ...reuters, ...toyokeizai, ...bloomberg].sort((a, b) => {
           if (!a.date || !b.date) return 0;
           return new Date(b.date).getTime() - new Date(a.date).getTime();
         });
     }
-  }, [tab, hatena, hackernews, nikkei, reuters, toyokeizai, bloomberg]);
+  }, [tab, hatena, hackernews, nikkei, reuters, toyokeizai, bloomberg, favorites]);
 
   const feedFuse = useMemo(
     () =>
@@ -590,6 +623,7 @@ export default function FeedReader() {
     { key: 'reuters', label: 'Reuters', count: reuters.length },
     { key: 'toyokeizai', label: '東洋経済', count: toyokeizai.length },
     { key: 'bloomberg', label: 'Bloomberg', count: bloomberg.length },
+    { key: 'favorites', label: 'お気に入り', count: favorites.length },
   ];
 
   const sourceBadge = (source: FeedItem['source']) => {
@@ -680,15 +714,25 @@ export default function FeedReader() {
       <div className="space-y-3">
         {displayItems.map((item, i) => {
           const badge = sourceBadge(item.source);
+          const isFav = favoriteLinks.has(item.link);
           return (
-            <a
+            <div
               key={`${item.source}-${i}`}
-              href={item.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block bg-dark-700 border border-dark-600 rounded-lg p-4 hover:border-accent-cyan/40 hover:bg-dark-600 transition-all group"
+              className="bg-dark-700 border border-dark-600 rounded-lg p-4 hover:border-accent-cyan/40 hover:bg-dark-600 transition-all group flex items-start gap-3"
             >
-              <div className="flex items-start gap-3">
+              <button
+                onClick={() => toggleFavorite(item)}
+                className="shrink-0 mt-0.5 text-lg leading-none transition-colors hover:scale-110"
+                title={isFav ? 'お気に入り解除' : 'お気に入りに追加'}
+              >
+                {isFav ? <span className="text-yellow-400">★</span> : <span className="text-gray-600">☆</span>}
+              </button>
+              <a
+                href={item.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="min-w-0 flex-1 flex items-start gap-3"
+              >
                 <span
                   className={`shrink-0 mt-1 text-xs px-2 py-0.5 rounded font-medium ${badge.className}`}
                 >
@@ -714,8 +758,8 @@ export default function FeedReader() {
                     </time>
                   )}
                 </div>
-              </div>
-            </a>
+              </a>
+            </div>
           );
         })}
       </div>
