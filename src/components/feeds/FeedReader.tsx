@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 
 interface FeedItem {
   title: string;
@@ -46,6 +46,125 @@ const CITIES = [
   { name: '大阪', latitude: 34.6937, longitude: 135.5023 },
   { name: '福岡', latitude: 33.5904, longitude: 130.4017 },
 ] as const;
+
+const TRANSLATION_CACHE_KEY = 'hn-translations';
+
+function loadTranslationCache(): Record<string, string> {
+  if (typeof localStorage === 'undefined') return {};
+  try {
+    const raw = localStorage.getItem(TRANSLATION_CACHE_KEY);
+    if (!raw) return {};
+    const cache = JSON.parse(raw);
+    if (Date.now() > cache.expiresAt) {
+      localStorage.removeItem(TRANSLATION_CACHE_KEY);
+      return {};
+    }
+    return cache.data ?? {};
+  } catch {
+    localStorage.removeItem(TRANSLATION_CACHE_KEY);
+    return {};
+  }
+}
+
+function saveTranslationCache(data: Record<string, string>): void {
+  if (typeof localStorage === 'undefined') return;
+  try {
+    localStorage.setItem(
+      TRANSLATION_CACHE_KEY,
+      JSON.stringify({ data, expiresAt: getJSTEndOfDay() })
+    );
+  } catch {
+    // storage full - ignore
+  }
+}
+
+function useTranslation(items: FeedItem[]) {
+  const [translations, setTranslations] = useState<Map<string, string>>(() => {
+    const cached = loadTranslationCache();
+    return new Map(Object.entries(cached));
+  });
+  const translatorRef = useRef<any>(null);
+  const availableRef = useRef<boolean | null>(null);
+  const queueRef = useRef<string[]>([]);
+  const processingRef = useRef(false);
+
+  // Check availability and create translator once
+  useEffect(() => {
+    (async () => {
+      try {
+        const translation = (window as any).translation;
+        if (!translation) {
+          availableRef.current = false;
+          return;
+        }
+        const result = await translation.canTranslate({
+          sourceLanguage: 'en',
+          targetLanguage: 'ja',
+        });
+        if (result === 'no') {
+          availableRef.current = false;
+          return;
+        }
+        availableRef.current = true;
+        translatorRef.current = await translation.createTranslator({
+          sourceLanguage: 'en',
+          targetLanguage: 'ja',
+        });
+      } catch {
+        availableRef.current = false;
+      }
+    })();
+  }, []);
+
+  // Process queue sequentially
+  useEffect(() => {
+    if (processingRef.current) return;
+    if (queueRef.current.length === 0) return;
+    if (!translatorRef.current) return;
+
+    processingRef.current = true;
+
+    (async () => {
+      const translator = translatorRef.current;
+      while (queueRef.current.length > 0) {
+        const title = queueRef.current.shift()!;
+        try {
+          const result = await translator.translate(title);
+          setTranslations((prev) => {
+            const next = new Map(prev);
+            next.set(title, result);
+            return next;
+          });
+        } catch {
+          // skip failed translation
+        }
+      }
+      processingRef.current = false;
+
+      // Persist to localStorage
+      setTranslations((current) => {
+        saveTranslationCache(Object.fromEntries(current));
+        return current;
+      });
+    })();
+  });
+
+  // Enqueue HN titles for translation
+  useEffect(() => {
+    if (availableRef.current !== true) return;
+
+    const hnTitles = items
+      .filter((item) => item.source === 'hackernews')
+      .map((item) => item.title)
+      .filter((title) => !translations.has(title) && !queueRef.current.includes(title));
+
+    if (hnTitles.length > 0) {
+      queueRef.current.push(...hnTitles);
+    }
+  }, [items, translations]);
+
+  return translations;
+}
 
 function proxyUrl(url: string): string {
   return `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
@@ -262,6 +381,7 @@ export default function FeedReader() {
   const [error, setError] = useState<string | null>(null);
   const [tab, setTab] = useState<TabType>('all');
   const [spinnerIdx, setSpinnerIdx] = useState(0);
+  const translations = useTranslation(hackernews);
 
   useEffect(() => {
     if (!loading) return;
@@ -433,6 +553,11 @@ export default function FeedReader() {
                   <h3 className="text-gray-100 font-medium group-hover:text-accent-cyan transition-colors leading-snug">
                     {item.title}
                   </h3>
+                  {item.source === 'hackernews' && translations.get(item.title) && (
+                    <p className="text-gray-400 text-sm mt-0.5">
+                      {translations.get(item.title)}
+                    </p>
+                  )}
                   {item.description && (
                     <p className="text-gray-500 text-sm mt-1 line-clamp-2">
                       {item.description}
@@ -449,6 +574,55 @@ export default function FeedReader() {
           );
         })}
       </div>
+
+      {/* Cache reset */}
+      <CacheReset />
+    </div>
+  );
+}
+
+function CacheReset() {
+  const [open, setOpen] = useState(false);
+  const [pw, setPw] = useState('');
+  const [msg, setMsg] = useState('');
+
+  const handleReset = () => {
+    if (pw !== 'io_hub_git_yank_yy') {
+      setMsg('パスワードが違います');
+      return;
+    }
+    localStorage.removeItem(CACHE_KEY);
+    localStorage.removeItem(TRANSLATION_CACHE_KEY);
+    setMsg('キャッシュをクリアしました。リロードしてください。');
+    setPw('');
+  };
+
+  return (
+    <div className="mt-12 text-center">
+      <button
+        onClick={() => setOpen(!open)}
+        className="text-gray-700 text-xs hover:text-gray-500 transition-colors"
+      >
+        cache reset
+      </button>
+      {open && (
+        <div className="mt-2 inline-flex items-center gap-2">
+          <input
+            type="password"
+            value={pw}
+            onChange={(e) => { setPw(e.target.value); setMsg(''); }}
+            placeholder="password"
+            className="bg-dark-700 border border-dark-600 rounded px-2 py-1 text-xs text-gray-300 w-40"
+          />
+          <button
+            onClick={handleReset}
+            className="bg-red-900/30 border border-red-500/30 rounded px-3 py-1 text-xs text-red-400 hover:bg-red-900/50 transition-colors"
+          >
+            reset
+          </button>
+        </div>
+      )}
+      {msg && <p className="text-xs mt-1 text-gray-400">{msg}</p>}
     </div>
   );
 }
