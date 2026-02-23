@@ -1,22 +1,18 @@
-import { useState, useEffect, useMemo, useRef } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import Fuse from 'fuse.js';
 import SnippetCard from './SnippetCard';
 import type { Snippet } from './SnippetCard';
+import FuzzySearchBar from '../FuzzySearchBar';
 
 interface SnippetSearchProps {
   snippets: Snippet[];
 }
 
-const SPINNER_CHARS = ['|', '/', '-', '\\'];
-
 export default function SnippetSearch({ snippets }: SnippetSearchProps) {
-  const inputRef = useRef<HTMLInputElement>(null);
-
   const params = new URLSearchParams(
     typeof window !== 'undefined' ? window.location.search : ''
   );
   const [query, setQuery] = useState(params.get('q') || '');
-  const [spinnerIndex, setSpinnerIndex] = useState(0);
   const [selectedLang, setSelectedLang] = useState(params.get('lang') || '');
   const [selectedTag, setSelectedTag] = useState(params.get('tag') || '');
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -71,15 +67,6 @@ export default function SnippetSearch({ snippets }: SnippetSearchProps) {
     return fuseForSearch.search(query).map((r) => r.item);
   }, [query, selectedLang, selectedTag, snippets, fuse]);
 
-  // Spinner animation while searching
-  useEffect(() => {
-    if (!query.trim()) return;
-    const interval = setInterval(() => {
-      setSpinnerIndex((i) => (i + 1) % SPINNER_CHARS.length);
-    }, 120);
-    return () => clearInterval(interval);
-  }, [query]);
-
   // Reset selection when filters change
   useEffect(() => {
     setSelectedIndex(0);
@@ -97,16 +84,10 @@ export default function SnippetSearch({ snippets }: SnippetSearchProps) {
     window.history.replaceState({}, '', url.toString());
   }, [query, selectedLang, selectedTag]);
 
-  // Keyboard navigation
+  // Keyboard navigation (ArrowUp/Down only; `/` focus is handled by FuzzySearchBar)
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
-      if (
-        e.key === '/' &&
-        !['INPUT', 'TEXTAREA'].includes((e.target as HTMLElement).tagName)
-      ) {
-        e.preventDefault();
-        inputRef.current?.focus();
-      } else if (e.key === 'ArrowDown') {
+      if (e.key === 'ArrowDown') {
         e.preventDefault();
         setSelectedIndex((i) => Math.min(i + 1, results.length - 1));
       } else if (e.key === 'ArrowUp') {
@@ -121,28 +102,12 @@ export default function SnippetSearch({ snippets }: SnippetSearchProps) {
   return (
     <div className="font-mono text-sm">
       {/* fzf-style search bar */}
-      <div className="mb-3">
-        <div className="flex items-center border border-dark-600 focus-within:border-accent-cyan transition-colors duration-200">
-          <span className="px-3 text-accent-cyan select-none font-bold">
-            {query.trim() ? SPINNER_CHARS[spinnerIndex] : '>'}
-          </span>
-          <input
-            ref={inputRef}
-            type="text"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="fuzzy search..."
-            className="flex-1 py-2.5 bg-transparent text-white placeholder-gray-600 focus:outline-none"
-            autoFocus
-          />
-          <span className="px-3 text-xs text-gray-600">
-            {results.length}/{snippets.length}
-          </span>
-          <kbd className="mr-2 px-1.5 py-0.5 text-xs text-gray-600 bg-dark-700 border border-dark-600">
-            /
-          </kbd>
-        </div>
-      </div>
+      <FuzzySearchBar
+        query={query}
+        onChange={setQuery}
+        resultCount={results.length}
+        totalCount={snippets.length}
+      />
 
       {/* Filters - compact monospace style */}
       <div className="flex flex-wrap gap-2 mb-3 text-xs">

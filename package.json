@@ -9,6 +9,8 @@
     "preview": "astro preview",
     "astro": "astro",
     "test": "npm run test:links",
+    "test:unit": "vitest run",
+    "test:unit:watch": "vitest",
     "test:links": "node scripts/check-links.mjs",
     "test:links:kotlin-rev": "node scripts/check-links.mjs --scope=/kotlin-rev/"
   },
@@ -27,8 +29,14 @@
     "tailwindcss": "^3.4.0"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
-    "typescript": "^5.4.0"
+    "@vitejs/plugin-react": "^5.1.4",
+    "jsdom": "^28.1.0",
+    "typescript": "^5.4.0",
+    "vitest": "^4.0.18"
   }
 }

@@ -1,4 +1,6 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
+import Fuse from 'fuse.js';
+import FuzzySearchBar from '../FuzzySearchBar';
 
 interface FeedItem {
   title: string;
@@ -380,6 +382,7 @@ export default function FeedReader() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [tab, setTab] = useState<TabType>('all');
+  const [searchQuery, setSearchQuery] = useState('');
   const [spinnerIdx, setSpinnerIdx] = useState(0);
   const translations = useTranslation(hackernews);
 
@@ -449,7 +452,7 @@ export default function FeedReader() {
     fetchFeeds();
   }, [fetchFeeds]);
 
-  const displayItems = (() => {
+  const allItems = useMemo(() => {
     switch (tab) {
       case 'hatena':
         return hatena;
@@ -463,7 +466,27 @@ export default function FeedReader() {
           return new Date(b.date).getTime() - new Date(a.date).getTime();
         });
     }
-  })();
+  }, [tab, hatena, hackernews, nikkei]);
+
+  const feedFuse = useMemo(
+    () =>
+      new Fuse(allItems, {
+        keys: [
+          { name: 'title', weight: 0.5 },
+          { name: 'description', weight: 0.3 },
+        ],
+        threshold: 0.4,
+        includeScore: true,
+      }),
+    [allItems]
+  );
+
+  const displayItems = useMemo(() => {
+    if (!searchQuery.trim()) return allItems;
+    return feedFuse.search(searchQuery).map((r) => r.item);
+  }, [searchQuery, allItems, feedFuse]);
+
+  const totalItemCount = hatena.length + hackernews.length + nikkei.length;
 
   const tabs: { key: TabType; label: string; count: number }[] = [
     { key: 'all', label: 'All', count: hatena.length + hackernews.length + nikkei.length },
@@ -488,6 +511,20 @@ export default function FeedReader() {
       {/* Weather */}
       {!loading && <WeatherSection weather={weather} />}
 
+      {/* Search */}
+      {!loading && (
+        <div className="font-mono text-sm">
+          <FuzzySearchBar
+            query={searchQuery}
+            onChange={setSearchQuery}
+            resultCount={displayItems.length}
+            totalCount={totalItemCount}
+            placeholder="fuzzy search feeds..."
+            autoFocus={false}
+          />
+        </div>
+      )}
+
       {/* Tabs */}
       <div className="flex gap-2 mb-6 flex-wrap">
         {tabs.map((t) => (
@@ -502,7 +539,9 @@ export default function FeedReader() {
           >
             {t.label}
             {!loading && (
-              <span className="ml-2 text-xs opacity-70">{t.count}</span>
+              <span className="ml-2 text-xs opacity-70">
+                {tab === t.key && searchQuery.trim() ? displayItems.length : t.count}
+              </span>
             )}
           </button>
         ))}
