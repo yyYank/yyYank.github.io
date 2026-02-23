@@ -105,6 +105,7 @@ function useTranslation(items: FeedItem[]) {
   });
   const queueRef = useRef<string[]>([]);
   const processingRef = useRef(false);
+  const [tick, setTick] = useState(0);
 
   // Enqueue English titles for translation
   useEffect(() => {
@@ -115,6 +116,7 @@ function useTranslation(items: FeedItem[]) {
 
     if (enTitles.length > 0) {
       queueRef.current.push(...enTitles);
+      setTick((t) => t + 1);
     }
   }, [items, translations]);
 
@@ -147,7 +149,7 @@ function useTranslation(items: FeedItem[]) {
         return current;
       });
     })();
-  });
+  }, [tick]);
 
   return translations;
 }
