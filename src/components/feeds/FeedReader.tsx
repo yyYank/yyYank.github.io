@@ -463,6 +463,7 @@ export default function FeedReader() {
   const [tab, setTab] = useState<TabType>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [spinnerIdx, setSpinnerIdx] = useState(0);
+  const [copyMsg, setCopyMsg] = useState('');
   const translations = useTranslation(hackernews);
 
   const favoriteLinks = useMemo(() => new Set(favorites.map((f) => f.link)), [favorites]);
@@ -708,6 +709,25 @@ export default function FeedReader() {
       {!loading && !error && displayItems.length === 0 && (
         <div className="text-gray-500 text-center py-12">
           記事が見つかりませんでした。
+        </div>
+      )}
+
+      {/* Favorites copy button */}
+      {tab === 'favorites' && favorites.length > 0 && (
+        <div className="mb-3 flex items-center gap-2">
+          <button
+            onClick={() => {
+              const md = favorites.map((f) => `- [${f.title}](${f.link})`).join('\n');
+              navigator.clipboard.writeText(md).then(() => {
+                setCopyMsg('コピーしました');
+                setTimeout(() => setCopyMsg(''), 2000);
+              });
+            }}
+            className="bg-dark-700 border border-dark-600 rounded px-3 py-1.5 text-xs text-gray-300 hover:text-gray-100 hover:border-dark-500 transition-colors"
+          >
+            Markdown一括コピー
+          </button>
+          {copyMsg && <span className="text-xs text-accent-cyan">{copyMsg}</span>}
         </div>
       )}
 
