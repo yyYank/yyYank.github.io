@@ -60,7 +60,7 @@ const CITIES = [
   { name: '福岡', latitude: 33.5904, longitude: 130.4017 },
 ] as const;
 
-const TRANSLATION_CACHE_KEY = 'hn-translations';
+const TRANSLATION_CACHE_KEY = 'feed-translations';
 
 function loadTranslationCache(): Record<string, string> {
   if (typeof localStorage === 'undefined') return {};
@@ -91,58 +91,45 @@ function saveTranslationCache(data: Record<string, string>): void {
   }
 }
 
+async function translateViaLingva(text: string): Promise<string> {
+  const res = await fetch(`https://lingva.ml/api/v1/en/ja/${encodeURIComponent(text)}`);
+  if (!res.ok) throw new Error(`Lingva: ${res.status}`);
+  const json = await res.json();
+  return json.translation ?? '';
+}
+
 function useTranslation(items: FeedItem[]) {
   const [translations, setTranslations] = useState<Map<string, string>>(() => {
     const cached = loadTranslationCache();
     return new Map(Object.entries(cached));
   });
-  const translatorRef = useRef<any>(null);
-  const availableRef = useRef<boolean | null>(null);
   const queueRef = useRef<string[]>([]);
   const processingRef = useRef(false);
 
-  // Check availability and create translator once
+  // Enqueue English titles for translation
   useEffect(() => {
-    (async () => {
-      try {
-        const translation = (window as any).translation;
-        if (!translation) {
-          availableRef.current = false;
-          return;
-        }
-        const result = await translation.canTranslate({
-          sourceLanguage: 'en',
-          targetLanguage: 'ja',
-        });
-        if (result === 'no') {
-          availableRef.current = false;
-          return;
-        }
-        availableRef.current = true;
-        translatorRef.current = await translation.createTranslator({
-          sourceLanguage: 'en',
-          targetLanguage: 'ja',
-        });
-      } catch {
-        availableRef.current = false;
-      }
-    })();
-  }, []);
+    const enTitles = items
+      .filter((item) => item.source === 'hackernews' || item.source === 'reddit')
+      .map((item) => item.title)
+      .filter((title) => !translations.has(title) && !queueRef.current.includes(title));
+
+    if (enTitles.length > 0) {
+      queueRef.current.push(...enTitles);
+    }
+  }, [items, translations]);
 
   // Process queue sequentially
   useEffect(() => {
     if (processingRef.current) return;
     if (queueRef.current.length === 0) return;
-    if (!translatorRef.current) return;
 
     processingRef.current = true;
 
     (async () => {
-      const translator = translatorRef.current;
       while (queueRef.current.length > 0) {
         const title = queueRef.current.shift()!;
         try {
-          const result = await translator.translate(title);
+          const result = await translateViaLingva(title);
           setTranslations((prev) => {
             const next = new Map(prev);
             next.set(title, result);
@@ -161,20 +148,6 @@ function useTranslation(items: FeedItem[]) {
       });
     })();
   });
-
-  // Enqueue HN titles for translation
-  useEffect(() => {
-    if (availableRef.current !== true) return;
-
-    const hnTitles = items
-      .filter((item) => item.source === 'hackernews')
-      .map((item) => item.title)
-      .filter((title) => !translations.has(title) && !queueRef.current.includes(title));
-
-    if (hnTitles.length > 0) {
-      queueRef.current.push(...hnTitles);
-    }
-  }, [items, translations]);
 
   return translations;
 }
@@ -486,7 +459,8 @@ export default function FeedReader() {
   const [searchQuery, setSearchQuery] = useState('');
   const [spinnerIdx, setSpinnerIdx] = useState(0);
   const [copyMsg, setCopyMsg] = useState('');
-  const translations = useTranslation(hackernews);
+  const enItems = useMemo(() => [...hackernews, ...reddit], [hackernews, reddit]);
+  const translations = useTranslation(enItems);
 
   const favoriteLinks = useMemo(() => new Set(favorites.map((f) => f.link)), [favorites]);
 
@@ -804,7 +778,7 @@ export default function FeedReader() {
                   <h3 className="text-gray-100 font-medium group-hover:text-accent-cyan transition-colors leading-snug">
                     {item.title}
                   </h3>
-                  {item.source === 'hackernews' && translations.get(item.title) && (
+                  {(item.source === 'hackernews' || item.source === 'reddit') && translations.get(item.title) && (
                     <p className="text-gray-400 text-sm mt-0.5">
                       {translations.get(item.title)}
                     </p>
