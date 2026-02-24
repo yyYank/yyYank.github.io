@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { TwitterIcon, GitHubIcon, BloggerIcon, HatenaIcon, BlogIcon, MemoIcon, PodcastIcon } from '../components/Icons';
 import { FadeIn, StaggerContainer, StaggerItem, ScaleIn, HoverCard, TextSwitchAnimation } from '../components/Motion';
 import { TechBadgeList } from '../components/TechBadge';
+import PagesSection from '../components/PagesSection.tsx';
 ---
 
 <BaseLayout title="Profile">
@@ -82,35 +83,7 @@ import { TechBadgeList } from '../components/TechBadge';
       </StaggerContainer>
 
       <!-- Pages Section -->
-      <FadeIn direction="right" client:visible>
-        <div class="mb-16">
-          <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
-            <span class="w-8 h-0.5 bg-accent-pink"></span>
-            Pages
-          </h2>
-          <StaggerContainer className="grid grid-cols-2 md:grid-cols-3 gap-3" client:visible>
-            {[
-              { href: '/kotlin-rev/', label: '逆引きKotlin', desc: 'Kotlinリファレンス' },
-              { href: '/docs/', label: 'MEMO', desc: '技術メモ' },
-              { href: '/snippet/', label: 'Snippet', desc: 'コードスニペット' },
-              { href: '/feeds/', label: 'Feeds', desc: 'ニュースフィード' },
-              { href: '/random_pass/', label: 'Random Pass', desc: 'パスワード生成' },
-            ].map(page => (
-              <StaggerItem>
-                <HoverCard client:visible>
-                  <a
-                    href={page.href}
-                    class="block p-4 bg-dark-800/50 border border-dark-600 rounded-lg hover:border-accent-pink/50 hover:bg-dark-700 transition-all group"
-                  >
-                    <span class="text-gray-200 font-medium group-hover:text-accent-pink transition-colors">{page.label}</span>
-                    <span class="block text-xs text-gray-500 mt-1">{page.desc}</span>
-                  </a>
-                </HoverCard>
-              </StaggerItem>
-            ))}
-          </StaggerContainer>
-        </div>
-      </FadeIn>
+      <PagesSection client:load />
 
       <!-- Blog Section -->
       <FadeIn client:visible>
