@@ -10,6 +10,7 @@ const PAGES = [
   { href: '/feeds/', label: 'Feeds', desc: 'ニュースフィード' },
   { href: '/random_pass/', label: 'Random Pass', desc: 'パスワード生成' },
   { href: '/count/', label: 'Count', desc: '文字数カウント' },
+  { href: '/img_paste/', label: 'Image Paste', desc: '画像ペースト・保存' },
 ];
 
 export default function PagesSection() {
