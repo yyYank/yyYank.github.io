@@ -9,6 +9,7 @@ const PAGES = [
   { href: '/snippet/', label: 'Snippet', desc: 'コードスニペット' },
   { href: '/feeds/', label: 'Feeds', desc: 'ニュースフィード' },
   { href: '/random_pass/', label: 'Random Pass', desc: 'パスワード生成' },
+  { href: '/count/', label: 'Count', desc: '文字数カウント' },
 ];
 
 export default function PagesSection() {
