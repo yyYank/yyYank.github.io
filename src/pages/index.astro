@@ -81,54 +81,33 @@ import { TechBadgeList } from '../components/TechBadge';
         </StaggerItem>
       </StaggerContainer>
 
-      <!-- Sites Section -->
+      <!-- Pages Section -->
       <FadeIn direction="right" client:visible>
         <div class="mb-16">
           <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
             <span class="w-8 h-0.5 bg-accent-pink"></span>
-            Sites
+            Pages
           </h2>
-          <StaggerContainer className="flex flex-wrap gap-4" client:visible>
-            <StaggerItem>
-              <HoverCard client:visible>
-                <a
-                  href="/kotlin-rev/"
-                  class="block px-6 py-3 bg-dark-700 border border-dark-500 rounded-lg text-gray-300 hover:text-accent-pink hover:bg-dark-600 transition-colors"
-                >
-                  逆引きKotlin
-                </a>
-              </HoverCard>
-            </StaggerItem>
-            <StaggerItem>
-              <HoverCard client:visible>
-                <a
-                  href="/docs/"
-                  class="block px-6 py-3 bg-dark-700 border border-dark-500 rounded-lg text-gray-300 hover:text-accent-pink hover:bg-dark-600 transition-colors"
-                >
-                  MEMO
-                </a>
-              </HoverCard>
-            </StaggerItem>
-            <StaggerItem>
-              <HoverCard client:visible>
-                <a
-                  href="/snippet/"
-                  class="block px-6 py-3 bg-dark-700 border border-dark-500 rounded-lg text-gray-300 hover:text-accent-pink hover:bg-dark-600 transition-colors"
-                >
-                  Snippet
-                </a>
-              </HoverCard>
-            </StaggerItem>
-            <StaggerItem>
-              <HoverCard client:visible>
-                <a
-                  href="/random_pass/"
-                  class="block px-6 py-3 bg-dark-700 border border-dark-500 rounded-lg text-gray-300 hover:text-accent-pink hover:bg-dark-600 transition-colors"
-                >
-                  Random Pass
-                </a>
-              </HoverCard>
-            </StaggerItem>
+          <StaggerContainer className="grid grid-cols-2 md:grid-cols-3 gap-3" client:visible>
+            {[
+              { href: '/kotlin-rev/', label: '逆引きKotlin', desc: 'Kotlinリファレンス' },
+              { href: '/docs/', label: 'MEMO', desc: '技術メモ' },
+              { href: '/snippet/', label: 'Snippet', desc: 'コードスニペット' },
+              { href: '/feeds/', label: 'Feeds', desc: 'ニュースフィード' },
+              { href: '/random_pass/', label: 'Random Pass', desc: 'パスワード生成' },
+            ].map(page => (
+              <StaggerItem>
+                <HoverCard client:visible>
+                  <a
+                    href={page.href}
+                    class="block p-4 bg-dark-800/50 border border-dark-600 rounded-lg hover:border-accent-pink/50 hover:bg-dark-700 transition-all group"
+                  >
+                    <span class="text-gray-200 font-medium group-hover:text-accent-pink transition-colors">{page.label}</span>
+                    <span class="block text-xs text-gray-500 mt-1">{page.desc}</span>
+                  </a>
+                </HoverCard>
+              </StaggerItem>
+            ))}
           </StaggerContainer>
         </div>
       </FadeIn>
