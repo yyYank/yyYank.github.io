@@ -1,0 +1,12 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PasswordGenerator from '../components/random-pass/PasswordGenerator.tsx';
+---
+
+<BaseLayout title="Random Pass" description="ランダムパスワード生成ツール">
+  <div class="container mx-auto px-4 py-8 max-w-4xl">
+    <h1 class="text-3xl font-bold text-white mb-2">Random Pass</h1>
+    <p class="text-gray-400 mb-8">ランダムパスワード生成</p>
+    <PasswordGenerator client:load />
+  </div>
+</BaseLayout>
