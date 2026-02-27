@@ -23,6 +23,11 @@ interface CityWeather {
 
 type WeatherData = CityWeather[];
 
+interface ExchangeRate {
+  rate: number;
+  date: string;
+}
+
 interface CacheData {
   data: {
     hatena: FeedItem[];
@@ -34,6 +39,7 @@ interface CacheData {
     bbc: FeedItem[];
     weather: WeatherData;
     holidays: Record<string, string>;
+    exchangeRate: ExchangeRate | null;
   };
   expiresAt: number;
 }
@@ -377,7 +383,7 @@ function WeatherSection({ weather }: { weather: WeatherData }) {
   if (weather.length === 0) return null;
 
   return (
-    <div className="mb-8">
+    <div>
       <h2 className="text-sm font-medium text-gray-400 mb-3">天気予報</h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
         {weather.map((city) => (
@@ -406,6 +412,34 @@ function WeatherSection({ weather }: { weather: WeatherData }) {
             </div>
           </div>
         ))}
+      </div>
+    </div>
+  );
+}
+
+async function fetchExchangeRate(): Promise<ExchangeRate | null> {
+  try {
+    const res = await fetch('https://api.frankfurter.app/latest?from=USD&to=JPY');
+    if (!res.ok) return null;
+    const json = await res.json();
+    return { rate: json.rates.JPY, date: json.date };
+  } catch {
+    return null;
+  }
+}
+
+function ExchangeRateSection({ exchangeRate }: { exchangeRate: ExchangeRate | null }) {
+  if (!exchangeRate) return null;
+
+  return (
+    <div className="mb-8">
+      <h2 className="text-sm font-medium text-gray-400 mb-3">為替レート</h2>
+      <div className="bg-dark-700 border border-dark-600 rounded-lg p-4 inline-block">
+        <div className="text-xs text-gray-500 mb-1">USD/JPY</div>
+        <div className="text-2xl font-mono text-gray-100">
+          {exchangeRate.rate.toFixed(2)}<span className="text-sm text-gray-400 ml-1">円</span>
+        </div>
+        <div className="text-xs text-gray-600 mt-1">{exchangeRate.date} 更新</div>
       </div>
     </div>
   );
@@ -454,6 +488,7 @@ export default function FeedReader() {
   const [bbc, setBbc] = useState<FeedItem[]>([]);
   const [weather, setWeather] = useState<WeatherData>([]);
   const [holidays, setHolidays] = useState<Record<string, string>>({});
+  const [exchangeRate, setExchangeRate] = useState<ExchangeRate | null>(null);
   const [favorites, setFavorites] = useState<FeedItem[]>(() => loadFavorites());
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -493,6 +528,7 @@ export default function FeedReader() {
       setBbc(cached.data.bbc ?? []);
       setWeather(cached.data.weather ?? []);
       setHolidays(cached.data.holidays ?? {});
+      setExchangeRate(cached.data.exchangeRate ?? null);
       setLoading(false);
       return;
     }
@@ -501,7 +537,7 @@ export default function FeedReader() {
     setError(null);
 
     try {
-      const [hatenaRes, hnRes, nikkeiRes, reutersRes, toyokeizaiRes, redditProgRes, redditTechRes, bbcRes, weatherRes, holidaysRes] = await Promise.allSettled([
+      const [hatenaRes, hnRes, nikkeiRes, reutersRes, toyokeizaiRes, redditProgRes, redditTechRes, bbcRes, weatherRes, holidaysRes, exchangeRateRes] = await Promise.allSettled([
         fetch(proxyUrl(FEEDS.hatena)).then((r) => {
           if (!r.ok) throw new Error(`Hatena: ${r.status}`);
           return r.text();
@@ -536,6 +572,7 @@ export default function FeedReader() {
         }),
         fetchWeather(),
         fetchHolidays(),
+        fetchExchangeRate(),
       ]);
 
       const hatenaItems =
@@ -559,6 +596,8 @@ export default function FeedReader() {
         weatherRes.status === 'fulfilled' ? weatherRes.value : [];
       const holidaysData =
         holidaysRes.status === 'fulfilled' ? holidaysRes.value : {};
+      const exchangeRateData =
+        exchangeRateRes.status === 'fulfilled' ? exchangeRateRes.value : null;
 
       if (hatenaRes.status === 'rejected' && hnRes.status === 'rejected' && nikkeiRes.status === 'rejected') {
         setError('フィードの取得に失敗しました。しばらくしてからリロードしてください。');
@@ -573,7 +612,8 @@ export default function FeedReader() {
       setBbc(bbcItems);
       setWeather(weatherData);
       setHolidays(holidaysData);
-      saveCache({ hatena: hatenaItems, hackernews: hnItems, nikkei: nikkeiItems, reuters: reutersItems, toyokeizai: toyokeizaiItems, reddit: redditItems, bbc: bbcItems, weather: weatherData, holidays: holidaysData });
+      setExchangeRate(exchangeRateData);
+      saveCache({ hatena: hatenaItems, hackernews: hnItems, nikkei: nikkeiItems, reuters: reutersItems, toyokeizai: toyokeizaiItems, reddit: redditItems, bbc: bbcItems, weather: weatherData, holidays: holidaysData, exchangeRate: exchangeRateData });
     } catch (e) {
       setError('フィードの取得に失敗しました。');
     } finally {
@@ -667,8 +707,17 @@ export default function FeedReader() {
       {/* Date Header */}
       {!loading && <DateHeader holidays={holidays} />}
 
-      {/* Weather */}
-      {!loading && <WeatherSection weather={weather} />}
+      {/* Weather & Exchange Rate */}
+      {!loading && (
+        <div className="flex flex-col md:flex-row gap-6 mb-8">
+          <div className="flex-1">
+            <WeatherSection weather={weather} />
+          </div>
+          <div className="md:w-auto">
+            <ExchangeRateSection exchangeRate={exchangeRate} />
+          </div>
+        </div>
+      )}
 
       {/* Search */}
       {!loading && (
