@@ -63,7 +63,6 @@ const FEEDS = {
 const CITIES = [
   { name: '東京', latitude: 35.6762, longitude: 139.6503 },
   { name: '大阪', latitude: 34.6937, longitude: 135.5023 },
-  { name: '福岡', latitude: 33.5904, longitude: 130.4017 },
 ] as const;
 
 const TRANSLATION_CACHE_KEY = 'feed-translations';
