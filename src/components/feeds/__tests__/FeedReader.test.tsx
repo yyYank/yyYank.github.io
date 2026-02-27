@@ -35,8 +35,8 @@ describe('FeedReader', () => {
     expect(screen.getByText('日経')).toBeInTheDocument();
   });
 
-  // キャッシュに為替データがある場合、USD/JPYレートが表示されることを検証する
-  it('shows USD/JPY exchange rate when cache contains exchange rate data', async () => {
+  // キャッシュに為替データがある場合、USD/JPYとEUR/JPYレートが表示されることを検証する
+  it('shows USD/JPY and EUR/JPY exchange rates when cache contains exchange rate data', async () => {
     const cache = {
       data: {
         hatena: [],
@@ -48,7 +48,10 @@ describe('FeedReader', () => {
         bbc: [],
         weather: [],
         holidays: {},
-        exchangeRate: { rate: 149.5, date: '2024-01-15' },
+        exchangeRates: [
+          { pair: 'USD/JPY', rate: 149.5, date: '2024-01-15' },
+          { pair: 'EUR/JPY', rate: 162.3, date: '2024-01-15' },
+        ],
       },
       expiresAt: Date.now() + 1000 * 60 * 60,
     };
@@ -59,6 +62,8 @@ describe('FeedReader', () => {
     await waitFor(() => {
       expect(screen.getByText(/USD\/JPY/)).toBeInTheDocument();
       expect(screen.getByText(/149\.50/)).toBeInTheDocument();
+      expect(screen.getByText(/EUR\/JPY/)).toBeInTheDocument();
+      expect(screen.getByText(/162\.30/)).toBeInTheDocument();
     });
   });
 });
