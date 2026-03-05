@@ -41,11 +41,32 @@ interface CacheData {
     weather: WeatherData;
     holidays: Record<string, string>;
     exchangeRates: ExchangeRate[];
+    loaded?: Partial<Record<LoadKey, boolean>>;
   };
   expiresAt: number;
 }
 
 type TabType = 'all' | 'hatena' | 'hackernews' | 'nikkei' | 'reuters' | 'toyokeizai' | 'reddit' | 'bbc' | 'favorites';
+type FeedKey = FeedItem['source'];
+type LoadKey = FeedKey | 'weather' | 'holidays' | 'exchangeRates';
+
+const FEED_KEYS: FeedKey[] = ['hatena', 'hackernews', 'nikkei', 'reuters', 'toyokeizai', 'reddit', 'bbc'];
+const LOAD_KEYS: LoadKey[] = [...FEED_KEYS, 'weather', 'holidays', 'exchangeRates'];
+
+function createLoadState(value: boolean): Record<LoadKey, boolean> {
+  return {
+    hatena: value,
+    hackernews: value,
+    nikkei: value,
+    reuters: value,
+    toyokeizai: value,
+    reddit: value,
+    bbc: value,
+    weather: value,
+    holidays: value,
+    exchangeRates: value,
+  };
+}
 
 const CACHE_KEY = 'feeds-cache';
 const FAVORITES_KEY = 'feeds-favorites';
@@ -494,12 +515,15 @@ export default function FeedReader() {
   const [holidays, setHolidays] = useState<Record<string, string>>({});
   const [exchangeRates, setExchangeRates] = useState<ExchangeRate[]>([]);
   const [favorites, setFavorites] = useState<FeedItem[]>(() => loadFavorites());
-  const [loading, setLoading] = useState(true);
+  const [loadingMap, setLoadingMap] = useState<Record<LoadKey, boolean>>(() => createLoadState(false));
+  const [loadedMap, setLoadedMap] = useState<Record<LoadKey, boolean>>(() => createLoadState(false));
   const [error, setError] = useState<string | null>(null);
   const [tab, setTab] = useState<TabType>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [spinnerIdx, setSpinnerIdx] = useState(0);
   const [copyMsg, setCopyMsg] = useState('');
+  const loadingRef = useRef<Record<LoadKey, boolean>>(createLoadState(false));
+  const loadedRef = useRef<Record<LoadKey, boolean>>(createLoadState(false));
   const enItems = useMemo(() => [...hackernews, ...reddit, ...bbc], [hackernews, reddit, bbc]);
   const translations = useTranslation(enItems);
 
@@ -514,123 +538,164 @@ export default function FeedReader() {
     });
   }, []);
 
-  useEffect(() => {
-    if (!loading) return;
-    const id = setInterval(() => setSpinnerIdx((i) => (i + 1) % SPINNER_CHARS.length), 100);
-    return () => clearInterval(id);
-  }, [loading]);
+  const setLoadingKey = useCallback((key: LoadKey, value: boolean) => {
+    loadingRef.current[key] = value;
+    setLoadingMap((prev) => ({ ...prev, [key]: value }));
+  }, []);
 
-  const fetchFeeds = useCallback(async () => {
-    const cached = loadCache();
-    if (cached) {
-      setHatena(cached.data.hatena);
-      setHackernews(cached.data.hackernews);
-      setNikkei(cached.data.nikkei ?? []);
-      setReuters(cached.data.reuters ?? []);
-      setToyokeizai(cached.data.toyokeizai ?? []);
-      setReddit(cached.data.reddit ?? []);
-      setBbc(cached.data.bbc ?? []);
-      setWeather(cached.data.weather ?? []);
-      setHolidays(cached.data.holidays ?? {});
-      setExchangeRates(cached.data.exchangeRates ?? []);
-      setLoading(false);
-      return;
-    }
+  const setLoadedKey = useCallback((key: LoadKey, value: boolean) => {
+    loadedRef.current[key] = value;
+    setLoadedMap((prev) => ({ ...prev, [key]: value }));
+  }, []);
 
-    setLoading(true);
-    setError(null);
+  const fetchRssText = useCallback(async (url: string, useAllOrigins = false): Promise<string> => {
+    const endpoint = useAllOrigins ? allOriginsProxyUrl(url) : proxyUrl(url);
+    const res = await fetch(endpoint);
+    if (!res.ok) throw new Error(`Fetch failed: ${res.status}`);
+    return res.text();
+  }, []);
 
+  const ensureLoad = useCallback(async <T,>(
+    key: LoadKey,
+    loader: () => Promise<T>,
+    onSuccess: (result: T) => void
+  ) => {
+    if (loadedRef.current[key] || loadingRef.current[key]) return;
+    setLoadingKey(key, true);
     try {
-      const [hatenaRes, hnRes, nikkeiRes, reutersRes, toyokeizaiRes, redditProgRes, redditTechRes, bbcRes, weatherRes, holidaysRes, usdJpyRes, eurJpyRes] = await Promise.allSettled([
-        fetch(proxyUrl(FEEDS.hatena)).then((r) => {
-          if (!r.ok) throw new Error(`Hatena: ${r.status}`);
-          return r.text();
-        }),
-        fetch(proxyUrl(FEEDS.hackernews)).then((r) => {
-          if (!r.ok) throw new Error(`HN: ${r.status}`);
-          return r.text();
-        }),
-        fetch(proxyUrl(FEEDS.nikkei)).then((r) => {
-          if (!r.ok) throw new Error(`Nikkei: ${r.status}`);
-          return r.text();
-        }),
-        fetch(proxyUrl(FEEDS.reuters)).then((r) => {
-          if (!r.ok) throw new Error(`Reuters: ${r.status}`);
-          return r.text();
-        }),
-        fetch(proxyUrl(FEEDS.toyokeizai)).then((r) => {
-          if (!r.ok) throw new Error(`Toyokeizai: ${r.status}`);
-          return r.text();
-        }),
-        fetch(allOriginsProxyUrl(FEEDS.redditProgramming)).then((r) => {
-          if (!r.ok) throw new Error(`Reddit Prog: ${r.status}`);
-          return r.text();
-        }),
-        fetch(allOriginsProxyUrl(FEEDS.redditTechnology)).then((r) => {
-          if (!r.ok) throw new Error(`Reddit Tech: ${r.status}`);
-          return r.text();
-        }),
-        fetch(allOriginsProxyUrl(FEEDS.bbc)).then((r) => {
-          if (!r.ok) throw new Error(`BBC: ${r.status}`);
-          return r.text();
-        }),
-        fetchWeather(),
-        fetchHolidays(),
+      const result = await loader();
+      onSuccess(result);
+      setLoadedKey(key, true);
+      setError(null);
+    } catch {
+      setError('一部フィードの取得に失敗しました。');
+    } finally {
+      setLoadingKey(key, false);
+    }
+  }, [setLoadedKey, setLoadingKey]);
+
+  const ensureFeedLoad = useCallback((key: FeedKey) => {
+    switch (key) {
+      case 'hatena':
+        void ensureLoad('hatena', async () => {
+          const xml = await fetchRssText(FEEDS.hatena);
+          return parseRSS(xml, 'hatena');
+        }, setHatena);
+        break;
+      case 'hackernews':
+        void ensureLoad('hackernews', async () => {
+          const xml = await fetchRssText(FEEDS.hackernews);
+          return parseRSS(xml, 'hackernews');
+        }, setHackernews);
+        break;
+      case 'nikkei':
+        void ensureLoad('nikkei', async () => {
+          const xml = await fetchRssText(FEEDS.nikkei);
+          return parseRSS(xml, 'nikkei');
+        }, setNikkei);
+        break;
+      case 'reuters':
+        void ensureLoad('reuters', async () => {
+          const xml = await fetchRssText(FEEDS.reuters);
+          return parseRSS(xml, 'reuters');
+        }, setReuters);
+        break;
+      case 'toyokeizai':
+        void ensureLoad('toyokeizai', async () => {
+          const xml = await fetchRssText(FEEDS.toyokeizai);
+          return parseRSS(xml, 'toyokeizai');
+        }, setToyokeizai);
+        break;
+      case 'reddit':
+        void ensureLoad('reddit', async () => {
+          const [prog, tech] = await Promise.allSettled([
+            fetchRssText(FEEDS.redditProgramming, true),
+            fetchRssText(FEEDS.redditTechnology, true),
+          ]);
+          const progItems = prog.status === 'fulfilled' ? parseRSS(prog.value, 'reddit') : [];
+          const techItems = tech.status === 'fulfilled' ? parseRSS(tech.value, 'reddit') : [];
+          return [...progItems, ...techItems];
+        }, setReddit);
+        break;
+      case 'bbc':
+        void ensureLoad('bbc', async () => {
+          const xml = await fetchRssText(FEEDS.bbc, true);
+          return parseRSS(xml, 'bbc');
+        }, setBbc);
+        break;
+    }
+  }, [ensureLoad, fetchRssText]);
+
+  const ensureMetaLoad = useCallback(() => {
+    void ensureLoad('weather', fetchWeather, setWeather);
+    void ensureLoad('holidays', fetchHolidays, setHolidays);
+    void ensureLoad('exchangeRates', async () => {
+      const [usdJpy, eurJpy] = await Promise.all([
         fetchExchangeRate('USD', 'JPY'),
         fetchExchangeRate('EUR', 'JPY'),
       ]);
+      return [usdJpy, eurJpy].filter((r): r is ExchangeRate => r !== null);
+    }, setExchangeRates);
+  }, [ensureLoad]);
 
-      const hatenaItems =
-        hatenaRes.status === 'fulfilled' ? parseRSS(hatenaRes.value, 'hatena') : [];
-      const hnItems =
-        hnRes.status === 'fulfilled' ? parseRSS(hnRes.value, 'hackernews') : [];
-      const nikkeiItems =
-        nikkeiRes.status === 'fulfilled' ? parseRSS(nikkeiRes.value, 'nikkei') : [];
-      const reutersItems =
-        reutersRes.status === 'fulfilled' ? parseRSS(reutersRes.value, 'reuters') : [];
-      const toyokeizaiItems =
-        toyokeizaiRes.status === 'fulfilled' ? parseRSS(toyokeizaiRes.value, 'toyokeizai') : [];
-      const redditProgItems =
-        redditProgRes.status === 'fulfilled' ? parseRSS(redditProgRes.value, 'reddit') : [];
-      const redditTechItems =
-        redditTechRes.status === 'fulfilled' ? parseRSS(redditTechRes.value, 'reddit') : [];
-      const redditItems = [...redditProgItems, ...redditTechItems];
-      const bbcItems =
-        bbcRes.status === 'fulfilled' ? parseRSS(bbcRes.value, 'bbc') : [];
-      const weatherData =
-        weatherRes.status === 'fulfilled' ? weatherRes.value : [];
-      const holidaysData =
-        holidaysRes.status === 'fulfilled' ? holidaysRes.value : {};
-      const exchangeRatesData = [
-        usdJpyRes.status === 'fulfilled' ? usdJpyRes.value : null,
-        eurJpyRes.status === 'fulfilled' ? eurJpyRes.value : null,
-      ].filter((r): r is ExchangeRate => r !== null);
-
-      if (hatenaRes.status === 'rejected' && hnRes.status === 'rejected' && nikkeiRes.status === 'rejected') {
-        setError('フィードの取得に失敗しました。しばらくしてからリロードしてください。');
-      }
-
-      setHatena(hatenaItems);
-      setHackernews(hnItems);
-      setNikkei(nikkeiItems);
-      setReuters(reutersItems);
-      setToyokeizai(toyokeizaiItems);
-      setReddit(redditItems);
-      setBbc(bbcItems);
-      setWeather(weatherData);
-      setHolidays(holidaysData);
-      setExchangeRates(exchangeRatesData);
-      saveCache({ hatena: hatenaItems, hackernews: hnItems, nikkei: nikkeiItems, reuters: reutersItems, toyokeizai: toyokeizaiItems, reddit: redditItems, bbc: bbcItems, weather: weatherData, holidays: holidaysData, exchangeRates: exchangeRatesData });
-    } catch (e) {
-      setError('フィードの取得に失敗しました。');
-    } finally {
-      setLoading(false);
+  const ensureTabLoaded = useCallback((target: TabType) => {
+    if (target === 'favorites') return;
+    if (target === 'all') {
+      FEED_KEYS.forEach((key) => ensureFeedLoad(key));
+      ensureMetaLoad();
+      return;
     }
-  }, []);
+    ensureFeedLoad(target);
+  }, [ensureFeedLoad, ensureMetaLoad]);
 
   useEffect(() => {
-    fetchFeeds();
-  }, [fetchFeeds]);
+    const cached = loadCache();
+    if (!cached) {
+      ensureTabLoaded('all');
+      return;
+    }
+
+    setHatena(cached.data.hatena ?? []);
+    setHackernews(cached.data.hackernews ?? []);
+    setNikkei(cached.data.nikkei ?? []);
+    setReuters(cached.data.reuters ?? []);
+    setToyokeizai(cached.data.toyokeizai ?? []);
+    setReddit(cached.data.reddit ?? []);
+    setBbc(cached.data.bbc ?? []);
+    setWeather(cached.data.weather ?? []);
+    setHolidays(cached.data.holidays ?? {});
+    setExchangeRates(cached.data.exchangeRates ?? []);
+
+    const cachedLoaded = cached.data.loaded ?? createLoadState(true);
+    const nextLoaded = createLoadState(false);
+    LOAD_KEYS.forEach((key) => { nextLoaded[key] = cachedLoaded[key] ?? false; });
+    loadedRef.current = nextLoaded;
+    loadingRef.current = createLoadState(false);
+    setLoadedMap(nextLoaded);
+    setLoadingMap(createLoadState(false));
+  }, [ensureTabLoaded]);
+
+  useEffect(() => {
+    ensureTabLoaded(tab);
+  }, [tab, ensureTabLoaded]);
+
+  useEffect(() => {
+    const hasLoaded = Object.values(loadedMap).some(Boolean);
+    if (!hasLoaded) return;
+    saveCache({
+      hatena,
+      hackernews,
+      nikkei,
+      reuters,
+      toyokeizai,
+      reddit,
+      bbc,
+      weather,
+      holidays,
+      exchangeRates,
+      loaded: loadedMap,
+    });
+  }, [hatena, hackernews, nikkei, reuters, toyokeizai, reddit, bbc, weather, holidays, exchangeRates, loadedMap]);
 
   const allItems = useMemo(() => {
     switch (tab) {
@@ -690,6 +755,27 @@ export default function FeedReader() {
     { key: 'favorites', label: 'お気に入り', count: favorites.length },
   ];
 
+  const isTabLoaded = useCallback((target: TabType): boolean => {
+    if (target === 'favorites') return true;
+    if (target === 'all') return FEED_KEYS.every((key) => loadedMap[key]);
+    return loadedMap[target];
+  }, [loadedMap]);
+
+  const isTabLoading = useCallback((target: TabType): boolean => {
+    if (target === 'favorites') return false;
+    if (target === 'all') return FEED_KEYS.some((key) => loadingMap[key]);
+    return loadingMap[target];
+  }, [loadingMap]);
+
+  const activeTabLoading = isTabLoading(tab);
+  const activeTabLoaded = isTabLoaded(tab);
+
+  useEffect(() => {
+    if (!activeTabLoading) return;
+    const id = setInterval(() => setSpinnerIdx((i) => (i + 1) % SPINNER_CHARS.length), 100);
+    return () => clearInterval(id);
+  }, [activeTabLoading]);
+
   const sourceBadge = (source: FeedItem['source']) => {
     switch (source) {
       case 'hatena':
@@ -712,33 +798,29 @@ export default function FeedReader() {
   return (
     <div>
       {/* Date Header */}
-      {!loading && <DateHeader holidays={holidays} />}
+      <DateHeader holidays={holidays} />
 
       {/* Weather & Exchange Rate */}
-      {!loading && (
-        <div className="flex flex-col md:flex-row gap-6 mb-8">
-          <div className="flex-1">
-            <WeatherSection weather={weather} />
-          </div>
-          <div className="md:w-auto">
-            <ExchangeRateSection exchangeRates={exchangeRates} />
-          </div>
+      <div className="flex flex-col md:flex-row gap-6 mb-8">
+        <div className="flex-1">
+          <WeatherSection weather={weather} />
         </div>
-      )}
+        <div className="md:w-auto">
+          <ExchangeRateSection exchangeRates={exchangeRates} />
+        </div>
+      </div>
 
       {/* Search */}
-      {!loading && (
-        <div className="font-mono text-sm">
-          <FuzzySearchBar
-            query={searchQuery}
-            onChange={setSearchQuery}
-            resultCount={displayItems.length}
-            totalCount={totalItemCount}
-            placeholder="fuzzy search feeds..."
-            autoFocus={false}
-          />
-        </div>
-      )}
+      <div className="font-mono text-sm">
+        <FuzzySearchBar
+          query={searchQuery}
+          onChange={setSearchQuery}
+          resultCount={displayItems.length}
+          totalCount={totalItemCount}
+          placeholder="fuzzy search feeds..."
+          autoFocus={false}
+        />
+      </div>
 
       {/* Tabs */}
       <div className="flex gap-2 mb-6 flex-wrap">
@@ -753,9 +835,12 @@ export default function FeedReader() {
             }`}
           >
             {t.label}
-            {!loading && (
-              <span className="ml-2 text-xs opacity-70">
-                {tab === t.key && searchQuery.trim() ? displayItems.length : t.count}
+            <span className="ml-2 text-xs opacity-70">
+              {tab === t.key && searchQuery.trim() ? displayItems.length : t.count}
+            </span>
+            {tab === t.key && isTabLoading(t.key) && !isTabLoaded(t.key) && (
+              <span className="ml-2 font-mono text-accent-cyan">
+                {SPINNER_CHARS[spinnerIdx]}
               </span>
             )}
           </button>
@@ -763,7 +848,7 @@ export default function FeedReader() {
       </div>
 
       {/* Loading */}
-      {loading && (
+      {activeTabLoading && !activeTabLoaded && displayItems.length === 0 && (
         <div className="flex items-center gap-3 text-gray-400 py-12 justify-center">
           <span className="font-mono text-accent-cyan text-lg">
             {SPINNER_CHARS[spinnerIdx]}
@@ -780,7 +865,7 @@ export default function FeedReader() {
       )}
 
       {/* Feed items */}
-      {!loading && !error && displayItems.length === 0 && (
+      {!error && !activeTabLoading && displayItems.length === 0 && (
         <div className="text-gray-500 text-center py-12">
           記事が見つかりませんでした。
         </div>
