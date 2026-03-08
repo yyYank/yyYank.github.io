@@ -21,7 +21,15 @@ export default function AudioMerger() {
       setStatus('ファイルを連結中...');
       await ffmpeg.writeFile('a.mp3', await fetchFile(fileA));
       await ffmpeg.writeFile('b.mp3', await fetchFile(fileB));
-      await ffmpeg.exec(['-i', 'concat:a.mp3|b.mp3', '-acodec', 'copy', 'merged.mp3']);
+      await ffmpeg.exec([
+        '-i', 'a.mp3',
+        '-i', 'b.mp3',
+        '-filter_complex', '[0:a][1:a]concat=n=2:v=0:a=1[out]',
+        '-map', '[out]',
+        '-codec:a', 'libmp3lame',
+        '-b:a', '192k',
+        'merged.mp3',
+      ]);
       const data = await ffmpeg.readFile('merged.mp3');
       setOutputBlob(new Blob([data], { type: 'audio/mpeg' }));
       setStatus('連結完了');
