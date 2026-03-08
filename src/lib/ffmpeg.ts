@@ -9,7 +9,7 @@ export async function getFFmpeg(): Promise<FFmpeg> {
   }
   if (!loaded) {
     await ffmpeg.load({
-      coreURL: '/ffmpeg-core/ffmpeg-core.js',
+      coreURL: '/ffmpeg-worker-init.js',
       wasmURL: '/ffmpeg-core/ffmpeg-core.wasm',
     });
     loaded = true;
