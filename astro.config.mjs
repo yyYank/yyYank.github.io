@@ -14,6 +14,11 @@ export default defineConfig({
   build: {
     assets: 'assets'
   },
+  vite: {
+    optimizeDeps: {
+      exclude: ['@ffmpeg/ffmpeg', '@ffmpeg/util'],
+    },
+  },
   markdown: {
     shikiConfig: {
       theme: 'github-dark',
