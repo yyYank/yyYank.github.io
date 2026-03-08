@@ -12,13 +12,15 @@
     "test:unit": "vitest run",
     "test:unit:watch": "vitest",
     "test:links": "node scripts/check-links.mjs",
-    "test:links:kotlin-rev": "node scripts/check-links.mjs --scope=/kotlin-rev/"
+    "test:links:kotlin-rev": "node scripts/check-links.mjs --scope=/kotlin-rev/",
+    "postinstall": "mkdir -p public/ffmpeg-core && cp node_modules/@ffmpeg/core/dist/umd/ffmpeg-core.js node_modules/@ffmpeg/core/dist/umd/ffmpeg-core.wasm public/ffmpeg-core/"
   },
   "dependencies": {
     "@astrojs/mdx": "^2.2.0",
     "@astrojs/react": "^3.1.0",
     "@astrojs/sitemap": "^3.1.0",
     "@astrojs/tailwind": "^5.1.0",
+    "@ffmpeg/core": "^0.12.10",
     "@ffmpeg/ffmpeg": "^0.12.15",
     "@ffmpeg/util": "^0.12.2",
     "@tailwindcss/typography": "^0.5.10",
