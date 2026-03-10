@@ -3,6 +3,11 @@ import { useState, useEffect } from 'react';
 interface DiaryEntry {
   id: string;
   datetime: string;
+  tokyo: string;
+  osaka: string;
+}
+
+interface CityWeather {
   weather: string;
   temperature: string;
 }
@@ -27,35 +32,29 @@ function weatherCodeToJa(code: number): string {
   return '雷雨';
 }
 
-async function fetchWeather(): Promise<{ weather: string; temperature: string }> {
-  return new Promise((resolve) => {
-    if (!navigator.geolocation) {
-      resolve({ weather: '取得不可', temperature: '取得不可' });
-      return;
-    }
-    navigator.geolocation.getCurrentPosition(
-      async (pos) => {
-        try {
-          const { latitude, longitude } = pos.coords;
-          const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,weather_code`;
-          const res = await fetch(url);
-          const data = await res.json();
-          const temp = data.current.temperature_2m;
-          const code = data.current.weather_code;
-          resolve({
-            weather: weatherCodeToJa(code),
-            temperature: `${temp}℃`,
-          });
-        } catch {
-          resolve({ weather: '取得失敗', temperature: '取得失敗' });
-        }
-      },
-      () => {
-        resolve({ weather: '位置情報拒否', temperature: '取得不可' });
-      },
-      { timeout: 5000 }
-    );
-  });
+async function fetchCityWeather(lat: number, lon: number): Promise<CityWeather> {
+  try {
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code`;
+    const res = await fetch(url);
+    const data = await res.json();
+    return {
+      weather: weatherCodeToJa(data.current.weather_code),
+      temperature: `${data.current.temperature_2m}℃`,
+    };
+  } catch {
+    return { weather: '取得失敗', temperature: '-' };
+  }
+}
+
+async function fetchWeather(): Promise<{ tokyo: string; osaka: string }> {
+  const [tokyo, osaka] = await Promise.all([
+    fetchCityWeather(35.6762, 139.6503),
+    fetchCityWeather(34.6937, 135.5023),
+  ]);
+  return {
+    tokyo: `${tokyo.weather} ${tokyo.temperature}`,
+    osaka: `${osaka.weather} ${osaka.temperature}`,
+  };
 }
 
 function loadEntries(): DiaryEntry[] {
@@ -74,7 +73,7 @@ function saveEntries(entries: DiaryEntry[]): void {
 function toMarkdown(entries: DiaryEntry[]): string {
   if (entries.length === 0) return '記録なし';
   const lines = entries.map(
-    (e) => `- 頭痛あり ${e.datetime}、${e.weather} ${e.temperature}`
+    (e) => `- 頭痛あり ${e.datetime}、東京:${e.tokyo} 大阪:${e.osaka}`
   );
   return lines.join('\n');
 }
@@ -91,12 +90,12 @@ export default function HeadacheDiary() {
   const handleRecord = async () => {
     setLoading(true);
     const now = new Date();
-    const { weather, temperature } = await fetchWeather();
+    const { tokyo, osaka } = await fetchWeather();
     const entry: DiaryEntry = {
       id: now.getTime().toString(),
       datetime: formatDatetime(now),
-      weather,
-      temperature,
+      tokyo,
+      osaka,
     };
     const updated = [entry, ...entries];
     setEntries(updated);
@@ -149,7 +148,7 @@ export default function HeadacheDiary() {
                 className="flex items-center justify-between bg-dark-800 border border-dark-600 rounded-lg px-4 py-3 group"
               >
                 <span className="text-gray-200 text-sm">
-                  頭痛あり {entry.datetime}、{entry.weather} {entry.temperature}
+                  頭痛あり {entry.datetime}、東京:{entry.tokyo} 大阪:{entry.osaka}
                 </span>
                 <button
                   onClick={() => handleDelete(entry.id)}
