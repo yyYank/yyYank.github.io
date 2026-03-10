@@ -15,11 +15,12 @@ interface CityWeather {
 const STORAGE_KEY = 'headache-diary';
 
 function formatDatetime(date: Date): string {
-  const m = date.getMonth() + 1;
-  const d = date.getDate();
-  const h = date.getHours();
-  const min = date.getMinutes();
-  return `${m}月${d}日${h}時${min.toString().padStart(2, '0')}分`;
+  const y = date.getFullYear();
+  const m = (date.getMonth() + 1).toString().padStart(2, '0');
+  const d = date.getDate().toString().padStart(2, '0');
+  const h = date.getHours().toString().padStart(2, '0');
+  const min = date.getMinutes().toString().padStart(2, '0');
+  return `${y}/${m}/${d} ${h}:${min}`;
 }
 
 function weatherCodeToJa(code: number): string {
