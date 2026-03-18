@@ -426,6 +426,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       let imageFile = null;
       let selectedFormat = 'markdown';
       let cameraStream = null;
+      let rawOcrText = null;
 
       const dropZone = document.getElementById('dropZone');
       const fileInput = document.getElementById('fileInput');
@@ -457,13 +458,16 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       const closeCameraBtn = document.getElementById('closeCameraBtn');
       const captureCanvas = document.getElementById('captureCanvas');
 
-      // Format selection
+      // Format selection — re-convert if result already exists
       formatOptions.addEventListener('click', (e) => {
         const btn = e.target.closest('.fmt-btn');
         if (!btn) return;
         formatOptions.querySelectorAll('.fmt-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         selectedFormat = btn.dataset.fmt;
+        if (rawOcrText !== null) {
+          outputBox.value = convertFormat(rawOcrText, selectedFormat);
+        }
       });
 
       // File load helper
@@ -505,10 +509,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         previewArea.classList.remove('show');
         dropZone.style.display = '';
         fileInput.value = '';
+        rawOcrText = null;
         extractBtn.disabled = true;
         progressWrap.classList.remove('show');
         progressBar.style.width = '0%';
         setStatus('', '');
+        emptyState.style.display = '';
+        outputBox.style.display = 'none';
+        outputBox.value = '';
       });
 
       // Camera
@@ -640,8 +648,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             throw new Error(data.ErrorMessage?.[0] || 'OCR処理エラー');
           }
 
-          const raw = data.ParsedResults?.[0]?.ParsedText || '';
-          const converted = convertFormat(raw, selectedFormat);
+          rawOcrText = data.ParsedResults?.[0]?.ParsedText || '';
+          const converted = convertFormat(rawOcrText, selectedFormat);
 
           emptyState.style.display = 'none';
           outputBox.style.display = 'block';
