@@ -560,20 +560,61 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         }
       }
 
+      // Compress image to under 1MB via Canvas
+      async function compressImage(file, maxBytes = 900 * 1024) {
+        return new Promise((resolve) => {
+          const img = new Image();
+          const url = URL.createObjectURL(file);
+          img.onload = () => {
+            URL.revokeObjectURL(url);
+            const canvas = document.createElement('canvas');
+            let { width, height } = img;
+            // Scale down if too large
+            const MAX_DIM = 2048;
+            if (width > MAX_DIM || height > MAX_DIM) {
+              const scale = Math.min(MAX_DIM / width, MAX_DIM / height);
+              width = Math.round(width * scale);
+              height = Math.round(height * scale);
+            }
+            canvas.width = width;
+            canvas.height = height;
+            canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+            // Try reducing quality until under maxBytes
+            let quality = 0.9;
+            const tryBlob = () => {
+              canvas.toBlob((blob) => {
+                if (blob.size <= maxBytes || quality <= 0.3) {
+                  resolve(new File([blob], 'compressed.jpg', { type: 'image/jpeg' }));
+                } else {
+                  quality -= 0.1;
+                  tryBlob();
+                }
+              }, 'image/jpeg', quality);
+            };
+            tryBlob();
+          };
+          img.src = url;
+        });
+      }
+
       // Extract with OCR.space
       extractBtn.addEventListener('click', async () => {
         if (!imageFile) { setStatus('画像を選択してください', 'error'); return; }
 
         extractBtn.disabled = true;
         progressWrap.classList.add('show');
-        progressBar.style.width = '30%';
-        setStatus('<span class="spinner"></span>OCR.space で解析中...', 'loading');
+        progressBar.style.width = '20%';
+        setStatus('<span class="spinner"></span>画像を最適化中...', 'loading');
 
         try {
+          const compressed = await compressImage(imageFile);
+          progressBar.style.width = '40%';
+          setStatus('<span class="spinner"></span>OCR.space で解析中...', 'loading');
+
           const formData = new FormData();
           const apiKey = ocrApiKeyEl.value.trim() || OCR_SPACE_DEMO_KEY;
           formData.append('apikey', apiKey);
-          formData.append('file', imageFile);
+          formData.append('file', compressed);
           formData.append('language', 'jpn');
           formData.append('isOverlayRequired', 'false');
           formData.append('detectOrientation', 'true');
