@@ -3,7 +3,8 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import FeedReader from '../FeedReader';
 
 // Mock fetch to prevent actual network requests
-vi.stubGlobal('fetch', vi.fn(() => Promise.reject(new Error('no fetch in test'))));
+const fetchMock = vi.fn(() => Promise.reject(new Error('no fetch in test')));
+vi.stubGlobal('fetch', fetchMock);
 
 // Mock localStorage
 const localStorageMock = (() => {
@@ -20,6 +21,8 @@ Object.defineProperty(window, 'localStorage', { value: localStorageMock });
 describe('FeedReader', () => {
   beforeEach(() => {
     localStorageMock.clear();
+    fetchMock.mockReset();
+    fetchMock.mockImplementation(() => Promise.reject(new Error('no fetch in test')));
   });
 
   it('shows loading spinner on initial render', () => {
@@ -64,6 +67,86 @@ describe('FeedReader', () => {
       expect(screen.getByText(/149\.50/)).toBeInTheDocument();
       expect(screen.getByText(/EUR\/JPY/)).toBeInTheDocument();
       expect(screen.getByText(/162\.30/)).toBeInTheDocument();
+    });
+  });
+
+  it('keeps showing stale cache while reloading in background', async () => {
+    const cache = {
+      data: {
+        hatena: [
+          {
+            title: 'cached entry',
+            link: 'https://example.com/cached',
+            date: '2024-01-15T10:00:00Z',
+            description: 'cached description',
+            source: 'hatena',
+          },
+        ],
+        hackernews: [],
+        nikkei: [],
+        reuters: [],
+        toyokeizai: [],
+        reddit: [],
+        bbc: [],
+        weather: [],
+        holidays: {},
+        exchangeRates: [],
+      },
+      expiresAt: Date.now() - 60_000,
+      staleUntil: Date.now() + 60_000,
+    };
+    localStorageMock.setItem('feeds-cache', JSON.stringify(cache));
+
+    render(<FeedReader />);
+
+    expect(screen.getByText('cached entry')).toBeInTheDocument();
+    expect(screen.getByText('直近のキャッシュを表示しています。バックグラウンドで再取得中です。')).toBeInTheDocument();
+  });
+
+  it('falls back to the secondary proxy when the first proxy fails', async () => {
+    fetchMock
+      .mockRejectedValueOnce(new Error('primary proxy down'))
+      .mockResolvedValueOnce(
+        new Response(
+          '<?xml version="1.0"?><rss><channel><item><title>fallback item</title><link>https://example.com/fallback</link></item></channel></rss>',
+          { status: 200 }
+        )
+      )
+      .mockResolvedValue(new Response('{}', { status: 200 }));
+
+    render(<FeedReader />);
+
+    await waitFor(() => {
+      expect(screen.getByText('fallback item')).toBeInTheDocument();
+    });
+
+    expect(fetchMock).toHaveBeenCalledWith(
+      expect.stringContaining('https://corsproxy.io/'),
+      expect.objectContaining({ signal: expect.any(AbortSignal) })
+    );
+    expect(fetchMock).toHaveBeenCalledWith(
+      expect.stringContaining('https://api.allorigins.win/raw'),
+      expect.objectContaining({ signal: expect.any(AbortSignal) })
+    );
+  });
+
+  it('shows which feed failed without hiding successful items', async () => {
+    fetchMock
+      .mockRejectedValueOnce(new Error('hatena down'))
+      .mockResolvedValueOnce(
+        new Response(
+          '<?xml version="1.0"?><rss><channel><item><title>hn item</title><link>https://example.com/hn</link></item></channel></rss>',
+          { status: 200 }
+        )
+      )
+      .mockResolvedValue(new Response('{}', { status: 200 }));
+
+    render(<FeedReader />);
+
+    await waitFor(() => {
+      expect(screen.getByText(/取得に失敗したフィード:/)).toBeInTheDocument();
+      expect(screen.getByText(/取得に失敗したフィード: .*はてブ IT/)).toBeInTheDocument();
+      expect(screen.getByText('hn item')).toBeInTheDocument();
     });
   });
 });

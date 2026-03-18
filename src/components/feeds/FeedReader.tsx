@@ -44,6 +44,7 @@ interface CacheData {
     loaded?: Partial<Record<LoadKey, boolean>>;
   };
   expiresAt: number;
+  staleUntil?: number;
 }
 
 type TabType = 'all' | 'hatena' | 'hackernews' | 'nikkei' | 'reuters' | 'toyokeizai' | 'reddit' | 'bbc' | 'favorites';
@@ -52,6 +53,15 @@ type LoadKey = FeedKey | 'weather' | 'holidays' | 'exchangeRates';
 
 const FEED_KEYS: FeedKey[] = ['hatena', 'hackernews', 'nikkei', 'reuters', 'toyokeizai', 'reddit', 'bbc'];
 const LOAD_KEYS: LoadKey[] = [...FEED_KEYS, 'weather', 'holidays', 'exchangeRates'];
+const FEED_LABELS: Record<FeedKey, string> = {
+  hatena: 'はてブ IT',
+  hackernews: 'Hacker News',
+  nikkei: '日経',
+  reuters: 'Reuters',
+  toyokeizai: '東洋経済',
+  reddit: 'Reddit',
+  bbc: 'BBC',
+};
 
 function createLoadState(value: boolean): Record<LoadKey, boolean> {
   return {
@@ -68,8 +78,25 @@ function createLoadState(value: boolean): Record<LoadKey, boolean> {
   };
 }
 
+function createErrorState(): Record<LoadKey, string | null> {
+  return {
+    hatena: null,
+    hackernews: null,
+    nikkei: null,
+    reuters: null,
+    toyokeizai: null,
+    reddit: null,
+    bbc: null,
+    weather: null,
+    holidays: null,
+    exchangeRates: null,
+  };
+}
+
 const CACHE_KEY = 'feeds-cache';
 const FAVORITES_KEY = 'feeds-favorites';
+const CACHE_STALE_MS = 7 * 24 * 60 * 60 * 1000;
+const FEED_FETCH_TIMEOUT_MS = 8000;
 
 const FEEDS = {
   hatena: 'https://b.hatena.ne.jp/hotentry/it.rss',
@@ -181,25 +208,12 @@ function useTranslation(items: FeedItem[]) {
   return translations;
 }
 
-type ProxyType = 'corsproxy' | 'allorigins';
-
-const ACTIVE_PROXY: ProxyType = 'corsproxy';
-
 function allOriginsProxyUrl(url: string): string {
   return `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
 }
 
 function corsProxyUrl(url: string): string {
   return `https://corsproxy.io/?url=${encodeURIComponent(url)}`;
-}
-
-function proxyUrl(url: string): string {
-  switch (ACTIVE_PROXY) {
-    case 'corsproxy':
-      return corsProxyUrl(url);
-    case 'allorigins':
-      return allOriginsProxyUrl(url);
-  }
 }
 
 function getJSTEndOfDay(): number {
@@ -212,24 +226,26 @@ function getJSTEndOfDay(): number {
   return jstEndOfDay.getTime() - jstOffset;
 }
 
-function loadCache(): CacheData | null {
+function loadCache(): { cache: CacheData | null; isFresh: boolean } {
   try {
     const raw = localStorage.getItem(CACHE_KEY);
-    if (!raw) return null;
+    if (!raw) return { cache: null, isFresh: false };
     const cache: CacheData = JSON.parse(raw);
-    if (Date.now() > cache.expiresAt) {
+    const staleUntil = cache.staleUntil ?? (cache.expiresAt + CACHE_STALE_MS);
+    if (Date.now() > staleUntil) {
       localStorage.removeItem(CACHE_KEY);
-      return null;
+      return { cache: null, isFresh: false };
     }
-    return cache;
+    return { cache: { ...cache, staleUntil }, isFresh: Date.now() <= cache.expiresAt };
   } catch {
     localStorage.removeItem(CACHE_KEY);
-    return null;
+    return { cache: null, isFresh: false };
   }
 }
 
 function saveCache(data: CacheData['data']): void {
-  const cache: CacheData = { data, expiresAt: getJSTEndOfDay() };
+  const expiresAt = getJSTEndOfDay();
+  const cache: CacheData = { data, expiresAt, staleUntil: expiresAt + CACHE_STALE_MS };
   try {
     localStorage.setItem(CACHE_KEY, JSON.stringify(cache));
   } catch {
@@ -315,6 +331,28 @@ function stripHtml(html: string): string {
   const tmp = document.createElement('div');
   tmp.innerHTML = html;
   return tmp.textContent ?? '';
+}
+
+function looksLikeXmlFeed(text: string): boolean {
+  const trimmed = text.trim();
+  if (!trimmed) return false;
+  if (trimmed.startsWith('<!doctype html') || trimmed.startsWith('<html')) return false;
+  return (
+    trimmed.includes('<rss') ||
+    trimmed.includes('<feed') ||
+    trimmed.includes('<rdf:RDF') ||
+    trimmed.includes('<channel')
+  );
+}
+
+async function fetchWithTimeout(input: RequestInfo | URL, init: RequestInit, timeoutMs: number): Promise<Response> {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    return await fetch(input, { ...init, signal: controller.signal });
+  } finally {
+    clearTimeout(timer);
+  }
 }
 
 function formatDate(dateStr: string): string {
@@ -517,7 +555,8 @@ export default function FeedReader() {
   const [favorites, setFavorites] = useState<FeedItem[]>(() => loadFavorites());
   const [loadingMap, setLoadingMap] = useState<Record<LoadKey, boolean>>(() => createLoadState(false));
   const [loadedMap, setLoadedMap] = useState<Record<LoadKey, boolean>>(() => createLoadState(false));
-  const [error, setError] = useState<string | null>(null);
+  const [errorMap, setErrorMap] = useState<Record<LoadKey, string | null>>(() => createErrorState());
+  const [showingStaleCache, setShowingStaleCache] = useState(false);
   const [tab, setTab] = useState<TabType>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [spinnerIdx, setSpinnerIdx] = useState(0);
@@ -548,11 +587,31 @@ export default function FeedReader() {
     setLoadedMap((prev) => ({ ...prev, [key]: value }));
   }, []);
 
-  const fetchRssText = useCallback(async (url: string, useAllOrigins = false): Promise<string> => {
-    const endpoint = useAllOrigins ? allOriginsProxyUrl(url) : proxyUrl(url);
-    const res = await fetch(endpoint);
-    if (!res.ok) throw new Error(`Fetch failed: ${res.status}`);
-    return res.text();
+  const setErrorKey = useCallback((key: LoadKey, value: string | null) => {
+    setErrorMap((prev) => ({ ...prev, [key]: value }));
+  }, []);
+
+  const fetchRssText = useCallback(async (url: string, preferAllOrigins = false): Promise<string> => {
+    const endpoints = preferAllOrigins
+      ? [allOriginsProxyUrl(url), corsProxyUrl(url)]
+      : [corsProxyUrl(url), allOriginsProxyUrl(url)];
+
+    let lastError: Error | null = null;
+
+    for (const endpoint of endpoints) {
+      try {
+        const res = await fetchWithTimeout(endpoint, {}, FEED_FETCH_TIMEOUT_MS);
+        if (!res.ok) throw new Error(`Fetch failed: ${res.status}`);
+        const text = await res.text();
+        if (!looksLikeXmlFeed(text)) throw new Error('Feed response was not XML');
+        return text;
+      } catch (err) {
+        lastError = err instanceof Error ? err : new Error(String(err));
+        console.warn('RSS fetch failed', { url, endpoint, message: lastError.message });
+      }
+    }
+
+    throw lastError ?? new Error('RSS fetch failed');
   }, []);
 
   const ensureLoad = useCallback(async <T,>(
@@ -566,13 +625,14 @@ export default function FeedReader() {
       const result = await loader();
       onSuccess(result);
       setLoadedKey(key, true);
-      setError(null);
+      setShowingStaleCache(false);
+      setErrorKey(key, null);
     } catch {
-      setError('一部フィードの取得に失敗しました。');
+      setErrorKey(key, '取得に失敗しました');
     } finally {
       setLoadingKey(key, false);
     }
-  }, [setLoadedKey, setLoadingKey]);
+  }, [setErrorKey, setLoadedKey, setLoadingKey]);
 
   const ensureFeedLoad = useCallback((key: FeedKey) => {
     switch (key) {
@@ -649,7 +709,7 @@ export default function FeedReader() {
   }, [ensureFeedLoad, ensureMetaLoad]);
 
   useEffect(() => {
-    const cached = loadCache();
+    const { cache: cached, isFresh } = loadCache();
     if (!cached) {
       ensureTabLoaded('all');
       return;
@@ -668,11 +728,14 @@ export default function FeedReader() {
 
     const cachedLoaded = cached.data.loaded ?? createLoadState(true);
     const nextLoaded = createLoadState(false);
-    LOAD_KEYS.forEach((key) => { nextLoaded[key] = cachedLoaded[key] ?? false; });
+    LOAD_KEYS.forEach((key) => { nextLoaded[key] = isFresh ? (cachedLoaded[key] ?? false) : false; });
     loadedRef.current = nextLoaded;
     loadingRef.current = createLoadState(false);
     setLoadedMap(nextLoaded);
     setLoadingMap(createLoadState(false));
+    setErrorMap(createErrorState());
+    setShowingStaleCache(!isFresh);
+    if (!isFresh) ensureTabLoaded('all');
   }, [ensureTabLoaded]);
 
   useEffect(() => {
@@ -769,6 +832,15 @@ export default function FeedReader() {
 
   const activeTabLoading = isTabLoading(tab);
   const activeTabLoaded = isTabLoaded(tab);
+  const failedFeedKeys = useMemo(
+    () => FEED_KEYS.filter((key) => errorMap[key]),
+    [errorMap]
+  );
+  const activeErrors = useMemo(() => {
+    if (tab === 'favorites') return [];
+    if (tab === 'all') return failedFeedKeys;
+    return errorMap[tab] ? [tab] : [];
+  }, [errorMap, failedFeedKeys, tab]);
 
   useEffect(() => {
     if (!activeTabLoading) return;
@@ -858,14 +930,23 @@ export default function FeedReader() {
       )}
 
       {/* Error */}
-      {error && (
+      {activeErrors.length > 0 && (
         <div className="bg-red-900/20 border border-red-500/30 rounded-lg p-4 mb-6 text-red-300">
-          {error}
+          {tab === 'all'
+            ? `取得に失敗したフィード: ${activeErrors.map((key) => FEED_LABELS[key]).join(', ')}`
+            : `${FEED_LABELS[activeErrors[0]]} の取得に失敗しました。`}
+        </div>
+      )}
+
+      {/* Stale cache notice */}
+      {showingStaleCache && (
+        <div className="bg-yellow-900/20 border border-yellow-500/30 rounded-lg p-4 mb-6 text-yellow-200">
+          直近のキャッシュを表示しています。バックグラウンドで再取得中です。
         </div>
       )}
 
       {/* Feed items */}
-      {!error && !activeTabLoading && displayItems.length === 0 && (
+      {!activeTabLoading && displayItems.length === 0 && (
         <div className="text-gray-500 text-center py-12">
           記事が見つかりませんでした。
         </div>
