@@ -2,7 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<BaseLayout title="SnapText — 付箋・メモOCR" description="付箋・メモ・ホワイトボードの画像からテキストを抽出">
+<BaseLayout title="OCR — 付箋・メモOCR" description="付箋・メモ・ホワイトボードの画像からテキストを抽出">
   <style>
     :root {
       --snap-bg: #0f0e0c;
@@ -278,6 +278,31 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     .empty-icon { font-size: 36px; opacity: 0.5; }
     .empty-text { font-size: 14px; line-height: 1.7; }
 
+    /* API KEY HINT */
+    .apikey-hint {
+      font-size: 11px;
+      color: var(--snap-muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .apikey-hint input {
+      flex: 1;
+      min-width: 140px;
+      background: var(--snap-surface);
+      border: 1px solid var(--snap-border);
+      border-radius: 4px;
+      padding: 4px 8px;
+      color: var(--snap-text);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      outline: none;
+    }
+    .apikey-hint input:focus { border-color: var(--snap-accent); }
+    .apikey-hint a { color: var(--snap-accent); text-decoration: none; }
+    .apikey-hint a:hover { text-decoration: underline; }
+
     /* STATUS */
     .status-bar {
       font-size: 12px;
@@ -354,6 +379,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         </div>
 
         <div class="status-bar" id="statusBar"></div>
+
+        <div class="apikey-hint">
+          <span>APIキー:</span>
+          <input type="text" id="ocrApiKey" placeholder="デフォルトキー使用中" />
+          <a href="https://ocr.space/ocrapi/freekey" target="_blank" rel="noopener">無料キー取得</a>
+        </div>
       </div>
 
       <!-- RIGHT PANEL -->
@@ -390,8 +421,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
   <script>
     (() => {
-      // OCR.space demo key — free tier, 25,000 req/month
-      const OCR_SPACE_KEY = 'K88888888888888';
+      const OCR_SPACE_DEMO_KEY = 'K88888888888888';
 
       let imageFile = null;
       let selectedFormat = 'markdown';
@@ -406,6 +436,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       const cameraBtn = document.getElementById('cameraBtn');
       const cameraInput = document.getElementById('cameraInput');
       const formatOptions = document.getElementById('formatOptions');
+      const ocrApiKeyEl = document.getElementById('ocrApiKey');
       const extractBtn = document.getElementById('extractBtn');
       const progressWrap = document.getElementById('progressWrap');
       const progressBar = document.getElementById('progressBar');
@@ -540,7 +571,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
         try {
           const formData = new FormData();
-          formData.append('apikey', OCR_SPACE_KEY);
+          const apiKey = ocrApiKeyEl.value.trim() || OCR_SPACE_DEMO_KEY;
+          formData.append('apikey', apiKey);
           formData.append('file', imageFile);
           formData.append('language', 'jpn');
           formData.append('isOverlayRequired', 'false');
