@@ -47,6 +47,17 @@ interface CacheData {
   staleUntil?: number;
 }
 
+interface FeedSnapshotEntry {
+  items: FeedItem[];
+  fetchedAt: string | null;
+  error: string | null;
+}
+
+interface FeedSnapshotData {
+  generatedAt: string;
+  feeds: Record<FeedKey, FeedSnapshotEntry>;
+}
+
 type TabType = 'all' | 'hatena' | 'hackernews' | 'nikkei' | 'reuters' | 'toyokeizai' | 'reddit' | 'bbc' | 'favorites';
 type FeedKey = FeedItem['source'];
 type LoadKey = FeedKey | 'weather' | 'holidays' | 'exchangeRates';
@@ -97,6 +108,7 @@ const CACHE_KEY = 'feeds-cache';
 const FAVORITES_KEY = 'feeds-favorites';
 const CACHE_STALE_MS = 7 * 24 * 60 * 60 * 1000;
 const FEED_FETCH_TIMEOUT_MS = 8000;
+const FEED_SNAPSHOT_PATH = '/feeds-data.json';
 
 const FEEDS = {
   hatena: 'https://b.hatena.ne.jp/hotentry/it.rss',
@@ -325,6 +337,17 @@ function parseRSS(xml: string, source: FeedItem['source']): FeedItem[] {
   });
 
   return items;
+}
+
+async function fetchFeedSnapshot(): Promise<FeedSnapshotData | null> {
+  try {
+    const res = await fetch(FEED_SNAPSHOT_PATH, { cache: 'no-store' });
+    if (!res.ok) return null;
+    const json = await res.json();
+    return json as FeedSnapshotData;
+  } catch {
+    return null;
+  }
 }
 
 function stripHtml(html: string): string {
@@ -563,6 +586,7 @@ export default function FeedReader() {
   const [copyMsg, setCopyMsg] = useState('');
   const loadingRef = useRef<Record<LoadKey, boolean>>(createLoadState(false));
   const loadedRef = useRef<Record<LoadKey, boolean>>(createLoadState(false));
+  const snapshotAppliedRef = useRef(false);
   const enItems = useMemo(() => [...hackernews, ...reddit, ...bbc], [hackernews, reddit, bbc]);
   const translations = useTranslation(enItems);
 
@@ -589,6 +613,32 @@ export default function FeedReader() {
 
   const setErrorKey = useCallback((key: LoadKey, value: string | null) => {
     setErrorMap((prev) => ({ ...prev, [key]: value }));
+  }, []);
+
+  const applyFeedItems = useCallback((key: FeedKey, items: FeedItem[]) => {
+    switch (key) {
+      case 'hatena':
+        setHatena(items);
+        break;
+      case 'hackernews':
+        setHackernews(items);
+        break;
+      case 'nikkei':
+        setNikkei(items);
+        break;
+      case 'reuters':
+        setReuters(items);
+        break;
+      case 'toyokeizai':
+        setToyokeizai(items);
+        break;
+      case 'reddit':
+        setReddit(items);
+        break;
+      case 'bbc':
+        setBbc(items);
+        break;
+    }
   }, []);
 
   const fetchRssText = useCallback(async (url: string, preferAllOrigins = false): Promise<string> => {
@@ -640,31 +690,31 @@ export default function FeedReader() {
         void ensureLoad('hatena', async () => {
           const xml = await fetchRssText(FEEDS.hatena);
           return parseRSS(xml, 'hatena');
-        }, setHatena);
+        }, (items) => applyFeedItems('hatena', items));
         break;
       case 'hackernews':
         void ensureLoad('hackernews', async () => {
           const xml = await fetchRssText(FEEDS.hackernews);
           return parseRSS(xml, 'hackernews');
-        }, setHackernews);
+        }, (items) => applyFeedItems('hackernews', items));
         break;
       case 'nikkei':
         void ensureLoad('nikkei', async () => {
           const xml = await fetchRssText(FEEDS.nikkei);
           return parseRSS(xml, 'nikkei');
-        }, setNikkei);
+        }, (items) => applyFeedItems('nikkei', items));
         break;
       case 'reuters':
         void ensureLoad('reuters', async () => {
           const xml = await fetchRssText(FEEDS.reuters);
           return parseRSS(xml, 'reuters');
-        }, setReuters);
+        }, (items) => applyFeedItems('reuters', items));
         break;
       case 'toyokeizai':
         void ensureLoad('toyokeizai', async () => {
           const xml = await fetchRssText(FEEDS.toyokeizai);
           return parseRSS(xml, 'toyokeizai');
-        }, setToyokeizai);
+        }, (items) => applyFeedItems('toyokeizai', items));
         break;
       case 'reddit':
         void ensureLoad('reddit', async () => {
@@ -675,16 +725,16 @@ export default function FeedReader() {
           const progItems = prog.status === 'fulfilled' ? parseRSS(prog.value, 'reddit') : [];
           const techItems = tech.status === 'fulfilled' ? parseRSS(tech.value, 'reddit') : [];
           return [...progItems, ...techItems];
-        }, setReddit);
+        }, (items) => applyFeedItems('reddit', items));
         break;
       case 'bbc':
         void ensureLoad('bbc', async () => {
           const xml = await fetchRssText(FEEDS.bbc, true);
           return parseRSS(xml, 'bbc');
-        }, setBbc);
+        }, (items) => applyFeedItems('bbc', items));
         break;
     }
-  }, [ensureLoad, fetchRssText]);
+  }, [applyFeedItems, ensureLoad, fetchRssText]);
 
   const ensureMetaLoad = useCallback(() => {
     void ensureLoad('weather', fetchWeather, setWeather);
@@ -737,6 +787,29 @@ export default function FeedReader() {
     setShowingStaleCache(!isFresh);
     if (!isFresh) ensureTabLoaded('all');
   }, [ensureTabLoaded]);
+
+  useEffect(() => {
+    if (snapshotAppliedRef.current) return;
+
+    void (async () => {
+      const snapshot = await fetchFeedSnapshot();
+      if (!snapshot) return;
+
+      FEED_KEYS.forEach((key) => {
+        if (loadedRef.current[key]) return;
+        const entry = snapshot.feeds[key];
+        if (!entry) return;
+        if (entry.items.length > 0) {
+          applyFeedItems(key, entry.items);
+        }
+        if (entry.error) {
+          setErrorKey(key, entry.error);
+        }
+      });
+
+      snapshotAppliedRef.current = true;
+    })();
+  }, [applyFeedItems, setErrorKey]);
 
   useEffect(() => {
     ensureTabLoaded(tab);

@@ -8,6 +8,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
+    "fetch:feeds": "node scripts/fetch-feeds.mjs",
     "test": "npm run test:links",
     "test:unit": "vitest run",
     "test:unit:watch": "vitest",

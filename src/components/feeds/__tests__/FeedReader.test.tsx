@@ -70,6 +70,44 @@ describe('FeedReader', () => {
     });
   });
 
+  it('loads snapshot feed data before live fetch succeeds', async () => {
+    fetchMock.mockImplementation((input: string | URL | Request) => {
+      if (String(input) === '/feeds-data.json') {
+        return Promise.resolve(new Response(JSON.stringify({
+          generatedAt: '2026-03-18T00:00:00.000Z',
+          feeds: {
+            hatena: {
+              items: [
+                {
+                  title: 'snapshot item',
+                  link: 'https://example.com/snapshot',
+                  date: '2026-03-18T00:00:00.000Z',
+                  description: 'from snapshot',
+                  source: 'hatena',
+                },
+              ],
+              fetchedAt: '2026-03-18T00:00:00.000Z',
+              error: null,
+            },
+            hackernews: { items: [], fetchedAt: null, error: null },
+            nikkei: { items: [], fetchedAt: null, error: null },
+            reuters: { items: [], fetchedAt: null, error: null },
+            toyokeizai: { items: [], fetchedAt: null, error: null },
+            reddit: { items: [], fetchedAt: null, error: null },
+            bbc: { items: [], fetchedAt: null, error: null },
+          },
+        }), { status: 200 }));
+      }
+      return Promise.reject(new Error('live fetch unavailable'));
+    });
+
+    render(<FeedReader />);
+
+    await waitFor(() => {
+      expect(screen.getByText('snapshot item')).toBeInTheDocument();
+    });
+  });
+
   it('keeps showing stale cache while reloading in background', async () => {
     const cache = {
       data: {
