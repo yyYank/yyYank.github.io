@@ -356,6 +356,20 @@ function stripHtml(html: string): string {
   return tmp.textContent ?? '';
 }
 
+function decodeHtmlEntities(text: string): string {
+  const tmp = document.createElement('textarea');
+  tmp.innerHTML = text;
+  return tmp.value;
+}
+
+function normalizeSnapshotItems(items: FeedItem[]): FeedItem[] {
+  return items.map((item) => ({
+    ...item,
+    title: decodeHtmlEntities(item.title),
+    description: decodeHtmlEntities(item.description),
+  }));
+}
+
 function looksLikeXmlFeed(text: string): boolean {
   const trimmed = text.trim();
   if (!trimmed) return false;
@@ -818,7 +832,7 @@ export default function FeedReader() {
         })();
 
         if (entry.items.length > 0 && currentItems.length === 0) {
-          applyFeedItems(key, entry.items);
+          applyFeedItems(key, normalizeSnapshotItems(entry.items));
         }
         if (entry.error && currentItems.length === 0) {
           setErrorKey(key, entry.error);

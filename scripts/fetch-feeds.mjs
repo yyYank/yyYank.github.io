@@ -23,6 +23,8 @@ function emptyEntry() {
 
 function decodeXml(text) {
   return text
+    .replace(/&#x([0-9a-f]+);/gi, (_, hex) => String.fromCodePoint(parseInt(hex, 16)))
+    .replace(/&#([0-9]+);/g, (_, dec) => String.fromCodePoint(parseInt(dec, 10)))
     .replace(/<!\[CDATA\[(.*?)\]\]>/gs, '$1')
     .replace(/&lt;/g, '<')
     .replace(/&gt;/g, '>')
