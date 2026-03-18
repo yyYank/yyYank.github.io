@@ -796,20 +796,38 @@ export default function FeedReader() {
       if (!snapshot) return;
 
       FEED_KEYS.forEach((key) => {
-        if (loadedRef.current[key]) return;
         const entry = snapshot.feeds[key];
         if (!entry) return;
-        if (entry.items.length > 0) {
+        const currentItems = (() => {
+          switch (key) {
+            case 'hatena':
+              return hatena;
+            case 'hackernews':
+              return hackernews;
+            case 'nikkei':
+              return nikkei;
+            case 'reuters':
+              return reuters;
+            case 'toyokeizai':
+              return toyokeizai;
+            case 'reddit':
+              return reddit;
+            case 'bbc':
+              return bbc;
+          }
+        })();
+
+        if (entry.items.length > 0 && currentItems.length === 0) {
           applyFeedItems(key, entry.items);
         }
-        if (entry.error) {
+        if (entry.error && currentItems.length === 0) {
           setErrorKey(key, entry.error);
         }
       });
 
       snapshotAppliedRef.current = true;
     })();
-  }, [applyFeedItems, setErrorKey]);
+  }, [applyFeedItems, bbc, hackernews, hatena, nikkei, reddit, reuters, setErrorKey, toyokeizai]);
 
   useEffect(() => {
     ensureTabLoaded(tab);
