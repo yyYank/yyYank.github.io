@@ -2,7 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<BaseLayout title="SnapText — 付箋・メモOCR" description="付箋・メモ・ホワイトボードのテキストをClaude Vision APIで抽出">
+<BaseLayout title="SnapText — 付箋・メモOCR" description="付箋・メモ・ホワイトボードの画像からテキストを抽出">
   <style>
     :root {
       --snap-bg: #0f0e0c;
@@ -25,38 +25,22 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       flex-direction: column;
     }
 
-    /* API BANNER */
-    .api-banner {
-      background: #1c1a10;
-      border-bottom: 1px solid #3a3210;
-      padding: 10px 32px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-    .api-banner label {
-      font-size: 12px;
-      color: var(--snap-accent);
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      white-space: nowrap;
-    }
-    .api-banner input {
-      flex: 1;
-      min-width: 200px;
-      max-width: 380px;
-      background: var(--snap-bg);
-      border: 1px solid #3a3210;
+    /* PROGRESS BAR */
+    .progress-wrap {
+      background: var(--snap-surface);
+      border: 1px solid var(--snap-border);
       border-radius: 6px;
-      padding: 6px 12px;
-      color: var(--snap-text);
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
-      outline: none;
+      overflow: hidden;
+      height: 6px;
+      display: none;
     }
-    .api-banner input:focus { border-color: var(--snap-accent); }
-    .api-note { font-size: 11px; color: var(--snap-muted); }
+    .progress-wrap.show { display: block; }
+    .progress-bar {
+      height: 100%;
+      background: var(--snap-accent);
+      width: 0%;
+      transition: width 0.3s ease;
+    }
 
     /* MAIN LAYOUT */
     .snap-main {
@@ -321,19 +305,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 
   <div class="snap-wrap">
-    <!-- API KEY BANNER -->
-    <div class="api-banner">
-      <label for="apiKey">ANTHROPIC API KEY</label>
-      <input
-        type="password"
-        id="apiKey"
-        placeholder="sk-ant-..."
-        autocomplete="off"
-        spellcheck="false"
-      />
-      <span class="api-note">キーはブラウザ外に送信されません。Claude Vision APIを使用します。</span>
-    </div>
-
     <div class="snap-main">
       <!-- LEFT PANEL -->
       <div class="panel-left">
@@ -378,6 +349,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           ⚡ テキスト抽出
         </button>
 
+        <div class="progress-wrap" id="progressWrap">
+          <div class="progress-bar" id="progressBar"></div>
+        </div>
+
         <div class="status-bar" id="statusBar"></div>
       </div>
 
@@ -413,14 +388,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     <canvas id="captureCanvas" style="display:none;"></canvas>
   </div>
 
+  <script src="https://unpkg.com/tesseract.js@v5/dist/tesseract.min.js"></script>
   <script>
     (() => {
-      let imageBase64 = null;
-      let imageMediaType = 'image/jpeg';
+      let imageFile = null;
       let selectedFormat = 'markdown';
       let cameraStream = null;
 
-      const apiKeyEl = document.getElementById('apiKey');
       const dropZone = document.getElementById('dropZone');
       const fileInput = document.getElementById('fileInput');
       const fileName = document.getElementById('fileName');
@@ -431,6 +405,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       const cameraInput = document.getElementById('cameraInput');
       const formatOptions = document.getElementById('formatOptions');
       const extractBtn = document.getElementById('extractBtn');
+      const progressWrap = document.getElementById('progressWrap');
+      const progressBar = document.getElementById('progressBar');
       const statusBar = document.getElementById('statusBar');
       const emptyState = document.getElementById('emptyState');
       const outputBox = document.getElementById('outputBox');
@@ -441,11 +417,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       const captureBtn = document.getElementById('captureBtn');
       const closeCameraBtn = document.getElementById('closeCameraBtn');
       const captureCanvas = document.getElementById('captureCanvas');
-
-      // Restore API key
-      const savedKey = sessionStorage.getItem('snaptext_apikey');
-      if (savedKey) apiKeyEl.value = savedKey;
-      apiKeyEl.addEventListener('input', () => sessionStorage.setItem('snaptext_apikey', apiKeyEl.value));
 
       // Format selection
       formatOptions.addEventListener('click', (e) => {
@@ -459,13 +430,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       // File load helper
       function loadFile(file) {
         if (!file || !file.type.startsWith('image/')) return;
-        imageMediaType = file.type || 'image/jpeg';
+        imageFile = file;
         fileName.textContent = file.name;
         const reader = new FileReader();
         reader.onload = (e) => {
-          const dataUrl = e.target.result;
-          imageBase64 = dataUrl.split(',')[1];
-          previewImg.src = dataUrl;
+          previewImg.src = e.target.result;
           dropZone.style.display = 'none';
           previewArea.classList.add('show');
           extractBtn.disabled = false;
@@ -491,17 +460,19 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
       // Clear
       clearBtn.addEventListener('click', () => {
-        imageBase64 = null;
+        imageFile = null;
         fileName.textContent = '選択されていません';
         previewImg.src = '';
         previewArea.classList.remove('show');
         dropZone.style.display = '';
         fileInput.value = '';
         extractBtn.disabled = true;
+        progressWrap.classList.remove('show');
+        progressBar.style.width = '0%';
         setStatus('', '');
       });
 
-      // Camera — try getUserMedia first, fallback to input capture
+      // Camera
       cameraBtn.addEventListener('click', async () => {
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
           try {
@@ -537,60 +508,60 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         statusBar.className = 'status-bar' + (type ? ' ' + type : '');
       }
 
-      // Format prompts
-      const PROMPTS = {
-        markdown: '画像内のすべてのテキストをOCRで読み取り、Markdown形式で出力してください。見出し・リスト・強調などMarkdown記法を活用してください。',
-        csv: '画像内のすべてのテキストをOCRで読み取り、CSV形式で出力してください。各行をカンマ区切りで表現してください。',
-        tsv: '画像内のすべてのテキストをOCRで読み取り、TSV（タブ区切り）形式で出力してください。',
-        plain: '画像内のすべてのテキストをOCRで読み取り、プレーンテキストとして出力してください。余計な記号は使わないでください。',
-        bullet: '画像内のすべてのテキストをOCRで読み取り、箇条書き（・）形式で出力してください。',
-      };
+      // Format converter (raw OCR text → selected format)
+      function convertFormat(raw, fmt) {
+        const lines = raw.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+        switch (fmt) {
+          case 'plain':
+            return lines.join('\n');
+          case 'bullet':
+            return lines.map(l => `・${l}`).join('\n');
+          case 'markdown':
+            return lines.map(l => l).join('\n\n');
+          case 'csv':
+            return lines.map(l => `"${l.replace(/"/g, '""')}"`).join('\n');
+          case 'tsv':
+            return lines.map(l => l.replace(/\t/g, ' ')).join('\t\n');
+          default:
+            return raw;
+        }
+      }
 
-      // Extract
+      // Extract with Tesseract.js
       extractBtn.addEventListener('click', async () => {
-        const apiKey = apiKeyEl.value.trim();
-        if (!apiKey) { setStatus('APIキーを入力してください', 'error'); return; }
-        if (!imageBase64) { setStatus('画像を選択してください', 'error'); return; }
+        if (!imageFile) { setStatus('画像を選択してください', 'error'); return; }
 
         extractBtn.disabled = true;
-        setStatus('<span class="spinner"></span>Claude Vision APIで解析中...', 'loading');
+        progressWrap.classList.add('show');
+        progressBar.style.width = '0%';
+        setStatus('<span class="spinner"></span>OCR処理中...（初回は言語データのダウンロードがあります）', 'loading');
 
         try {
-          const resp = await fetch('https://api.anthropic.com/v1/messages', {
-            method: 'POST',
-            headers: {
-              'x-api-key': apiKey,
-              'anthropic-version': '2023-06-01',
-              'content-type': 'application/json',
-              'anthropic-dangerous-direct-browser-calls': 'true',
-            },
-            body: JSON.stringify({
-              model: 'claude-opus-4-5',
-              max_tokens: 4096,
-              messages: [{
-                role: 'user',
-                content: [
-                  { type: 'image', source: { type: 'base64', media_type: imageMediaType, data: imageBase64 } },
-                  { type: 'text', text: PROMPTS[selectedFormat] },
-                ],
-              }],
-            }),
-          });
+          const { data: { text } } = await Tesseract.recognize(
+            imageFile,
+            'jpn+eng',
+            {
+              logger: (m) => {
+                if (m.status === 'recognizing text') {
+                  const pct = Math.round(m.progress * 100);
+                  progressBar.style.width = pct + '%';
+                  setStatus(`<span class="spinner"></span>認識中... ${pct}%`, 'loading');
+                } else if (m.status === 'loading language traineddata') {
+                  setStatus('<span class="spinner"></span>言語データ読み込み中...', 'loading');
+                }
+              },
+            }
+          );
 
-          if (!resp.ok) {
-            const err = await resp.json().catch(() => ({}));
-            throw new Error(err.error?.message || `HTTP ${resp.status}`);
-          }
-
-          const data = await resp.json();
-          const text = data.content?.[0]?.text || '';
-
+          const converted = convertFormat(text, selectedFormat);
           emptyState.style.display = 'none';
           outputBox.style.display = 'block';
-          outputBox.value = text;
-          setStatus(`✓ 抽出完了（${text.length}文字）`, 'success');
+          outputBox.value = converted;
+          progressBar.style.width = '100%';
+          setStatus(`✓ 抽出完了（${converted.length}文字）`, 'success');
         } catch (e) {
           setStatus('エラー: ' + e.message, 'error');
+          progressWrap.classList.remove('show');
         } finally {
           extractBtn.disabled = false;
         }
