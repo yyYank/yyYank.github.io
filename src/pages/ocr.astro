@@ -437,6 +437,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       const cameraInput = document.getElementById('cameraInput');
       const formatOptions = document.getElementById('formatOptions');
       const ocrApiKeyEl = document.getElementById('ocrApiKey');
+      const savedKey = localStorage.getItem('snaptext_ocrkey');
+      if (savedKey) ocrApiKeyEl.value = savedKey;
+      ocrApiKeyEl.addEventListener('input', () => {
+        const v = ocrApiKeyEl.value.trim();
+        v ? localStorage.setItem('snaptext_ocrkey', v) : localStorage.removeItem('snaptext_ocrkey');
+      });
       const extractBtn = document.getElementById('extractBtn');
       const progressWrap = document.getElementById('progressWrap');
       const progressBar = document.getElementById('progressBar');
