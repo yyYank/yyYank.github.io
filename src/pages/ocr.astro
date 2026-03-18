@@ -362,6 +362,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           <div class="step-label">② 出力フォーマット</div>
           <div class="format-options" id="formatOptions">
             <button class="fmt-btn active" data-fmt="markdown">Markdown</button>
+            <button class="fmt-btn" data-fmt="todo">TODO</button>
             <button class="fmt-btn" data-fmt="csv">CSV</button>
             <button class="fmt-btn" data-fmt="tsv">TSV</button>
             <button class="fmt-btn" data-fmt="plain">プレーンテキスト</button>
@@ -555,6 +556,20 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         statusBar.className = 'status-bar' + (type ? ' ' + type : '');
       }
 
+      // TODO format: convert checkbox symbols → Markdown task list, others → unchecked
+      function toTodoLine(line) {
+        // checked: ✓ ✔ ☑ ● [x] [X] [v] [V]
+        if (/^[✓✔☑●]\s*/.test(line) || /^\[[xXvV✓]\]\s*/.test(line)) {
+          return '- [x] ' + line.replace(/^[✓✔☑●]\s*/, '').replace(/^\[[xXvV✓]\]\s*/, '');
+        }
+        // unchecked: □ ☐ ○ [ ] already
+        if (/^[□☐○]\s*/.test(line) || /^\[\s*\]\s*/.test(line)) {
+          return '- [ ] ' + line.replace(/^[□☐○]\s*/, '').replace(/^\[\s*\]\s*/, '');
+        }
+        // その他の行もすべて未チェックのTODOとして扱う
+        return '- [ ] ' + line;
+      }
+
       // Format converter (raw OCR text → selected format)
       function convertFormat(raw, fmt) {
         const lines = raw.split('\n').map(l => l.trim()).filter(l => l.length > 0);
@@ -564,7 +579,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           case 'bullet':
             return lines.map(l => `・${l}`).join('\n');
           case 'markdown':
-            return lines.map(l => l).join('\n\n');
+            return lines.join('\n\n');
+          case 'todo':
+            return lines.map(toTodoLine).join('\n');
           case 'csv':
             return lines.map(l => `"${l.replace(/"/g, '""')}"`).join('\n');
           case 'tsv':
@@ -681,7 +698,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       downloadBtn.addEventListener('click', () => {
         const text = outputBox.value;
         if (!text) return;
-        const exts = { markdown: 'md', csv: 'csv', tsv: 'tsv', plain: 'txt', bullet: 'txt' };
+        const exts = { markdown: 'md', todo: 'md', csv: 'csv', tsv: 'tsv', plain: 'txt', bullet: 'txt' };
         const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
