@@ -19,13 +19,25 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: '20'
           cache: 'npm'
+
+      - name: Checkout Snapshot Branch
+        uses: actions/checkout@v5
+        with:
+          ref: feeds-snapshot
+          path: snapshot
+          token: ${{ secrets.GITHUB_TOKEN }}
+          sparse-checkout: |
+            public/feeds-data.json
+
+      - name: Inject latest feeds snapshot
+        run: cp snapshot/public/feeds-data.json public/feeds-data.json
 
       - name: Install dependencies
         run: npm ci
