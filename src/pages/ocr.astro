@@ -1,0 +1,627 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="SnapText — 付箋・メモOCR" description="付箋・メモ・ホワイトボードのテキストをClaude Vision APIで抽出">
+  <style>
+    :root {
+      --snap-bg: #0f0e0c;
+      --snap-surface: #1a1916;
+      --snap-border: #2e2c28;
+      --snap-accent: #f5c842;
+      --snap-accent2: #e87040;
+      --snap-text: #f0ede6;
+      --snap-muted: #7a786f;
+      --snap-green: #5ec87a;
+      --snap-radius: 12px;
+    }
+
+    .snap-wrap {
+      background: var(--snap-bg);
+      color: var(--snap-text);
+      font-family: 'Zen Kaku Gothic New', 'Noto Sans JP', sans-serif;
+      min-height: calc(100vh - 64px);
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* API BANNER */
+    .api-banner {
+      background: #1c1a10;
+      border-bottom: 1px solid #3a3210;
+      padding: 10px 32px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .api-banner label {
+      font-size: 12px;
+      color: var(--snap-accent);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      white-space: nowrap;
+    }
+    .api-banner input {
+      flex: 1;
+      min-width: 200px;
+      max-width: 380px;
+      background: var(--snap-bg);
+      border: 1px solid #3a3210;
+      border-radius: 6px;
+      padding: 6px 12px;
+      color: var(--snap-text);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      outline: none;
+    }
+    .api-banner input:focus { border-color: var(--snap-accent); }
+    .api-note { font-size: 11px; color: var(--snap-muted); }
+
+    /* MAIN LAYOUT */
+    .snap-main {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 0;
+    }
+
+    @media (max-width: 768px) {
+      .snap-main { grid-template-columns: 1fr; }
+      .panel-right { border-left: none; border-top: 1px solid var(--snap-border); }
+    }
+
+    /* PANELS */
+    .panel-left {
+      border-right: 1px solid var(--snap-border);
+      display: flex;
+      flex-direction: column;
+      padding: 28px 32px;
+      gap: 20px;
+    }
+    .panel-right {
+      display: flex;
+      flex-direction: column;
+      padding: 28px 32px;
+      gap: 16px;
+    }
+
+    .step-label {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--snap-accent);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    /* DROP ZONE */
+    .drop-zone {
+      border: 2px dashed var(--snap-border);
+      border-radius: var(--snap-radius);
+      padding: 40px 24px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+      background: var(--snap-surface);
+    }
+    .drop-zone:hover, .drop-zone.drag-over {
+      border-color: var(--snap-accent);
+      background: #1c1a0e;
+    }
+    .drop-zone input[type=file] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+    }
+    .drop-icon { font-size: 40px; line-height: 1; margin-bottom: 12px; }
+    .drop-title { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+    .drop-sub { font-size: 12px; color: var(--snap-muted); }
+    .file-name { font-size: 12px; color: var(--snap-accent); margin-top: 8px; }
+
+    /* PREVIEW */
+    .preview-area {
+      display: none;
+      position: relative;
+      border-radius: var(--snap-radius);
+      overflow: hidden;
+      background: var(--snap-surface);
+      min-height: 140px;
+      align-items: center;
+      justify-content: center;
+    }
+    .preview-area.show { display: flex; }
+    .preview-area img {
+      max-width: 100%;
+      max-height: 280px;
+      object-fit: contain;
+      border-radius: var(--snap-radius);
+    }
+    .preview-clear {
+      position: absolute;
+      top: 8px; right: 8px;
+      background: rgba(0,0,0,0.7);
+      border: none;
+      color: var(--snap-text);
+      width: 26px; height: 26px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* CAMERA */
+    .camera-btn {
+      width: 100%;
+      padding: 10px;
+      background: var(--snap-surface);
+      border: 1px solid var(--snap-border);
+      border-radius: 8px;
+      color: var(--snap-muted);
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .camera-btn:hover { border-color: var(--snap-accent); color: var(--snap-text); }
+
+    /* FORMAT BUTTONS */
+    .format-options {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .fmt-btn {
+      padding: 7px 16px;
+      border-radius: 6px;
+      border: 1px solid var(--snap-border);
+      background: var(--snap-surface);
+      color: var(--snap-muted);
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .fmt-btn:hover { border-color: var(--snap-accent); color: var(--snap-text); }
+    .fmt-btn.active {
+      background: var(--snap-accent);
+      border-color: var(--snap-accent);
+      color: #0f0e0c;
+    }
+
+    /* EXTRACT BUTTON */
+    .extract-btn {
+      width: 100%;
+      padding: 14px;
+      background: var(--snap-accent);
+      color: #0f0e0c;
+      border: none;
+      border-radius: var(--snap-radius);
+      font-family: inherit;
+      font-size: 16px;
+      font-weight: 900;
+      cursor: pointer;
+      transition: all 0.15s;
+      letter-spacing: 0.03em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .extract-btn:hover { background: #f0bc28; transform: translateY(-1px); }
+    .extract-btn:disabled {
+      background: var(--snap-border);
+      color: var(--snap-muted);
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* OUTPUT PANEL */
+    .output-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .output-actions {
+      display: flex;
+      gap: 8px;
+    }
+    .action-btn {
+      padding: 7px 14px;
+      border-radius: 6px;
+      border: 1px solid var(--snap-border);
+      background: var(--snap-surface);
+      color: var(--snap-muted);
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .action-btn:hover { border-color: var(--snap-accent); color: var(--snap-text); }
+    .action-btn.copied { border-color: var(--snap-green); color: var(--snap-green); }
+
+    .output-box {
+      flex: 1;
+      background: var(--snap-surface);
+      border: 1px solid var(--snap-border);
+      border-radius: var(--snap-radius);
+      padding: 20px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      line-height: 1.7;
+      color: var(--snap-text);
+      resize: none;
+      outline: none;
+      min-height: 320px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .output-box:focus { border-color: var(--snap-border); }
+
+    /* EMPTY STATE */
+    .empty-state {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      color: var(--snap-muted);
+      text-align: center;
+      background: var(--snap-surface);
+      border: 1px solid var(--snap-border);
+      border-radius: var(--snap-radius);
+      min-height: 320px;
+    }
+    .empty-icon { font-size: 36px; opacity: 0.5; }
+    .empty-text { font-size: 14px; line-height: 1.7; }
+
+    /* STATUS */
+    .status-bar {
+      font-size: 12px;
+      color: var(--snap-muted);
+      min-height: 18px;
+    }
+    .status-bar.loading { color: var(--snap-accent); }
+    .status-bar.error { color: var(--snap-accent2); }
+    .status-bar.success { color: var(--snap-green); }
+
+    /* SPINNER */
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spinner {
+      display: inline-block;
+      width: 14px; height: 14px;
+      border: 2px solid #3a3210;
+      border-top-color: var(--snap-accent);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      vertical-align: middle;
+      margin-right: 6px;
+    }
+  </style>
+
+  <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+  <div class="snap-wrap">
+    <!-- API KEY BANNER -->
+    <div class="api-banner">
+      <label for="apiKey">ANTHROPIC API KEY</label>
+      <input
+        type="password"
+        id="apiKey"
+        placeholder="sk-ant-..."
+        autocomplete="off"
+        spellcheck="false"
+      />
+      <span class="api-note">キーはブラウザ外に送信されません。Claude Vision APIを使用します。</span>
+    </div>
+
+    <div class="snap-main">
+      <!-- LEFT PANEL -->
+      <div class="panel-left">
+        <!-- STEP 1 -->
+        <div>
+          <div class="step-label">① 画像をアップロード</div>
+
+          <div class="drop-zone" id="dropZone">
+            <input type="file" id="fileInput" accept="image/*" />
+            <div class="drop-icon">📸</div>
+            <div class="drop-title">ここにドロップ or クリック</div>
+            <div class="drop-sub">付箋・メモ・ホワイトボードなど</div>
+            <div class="drop-sub">JPG, PNG, WEBP, HEIC 対応</div>
+            <div class="file-name" id="fileName">選択されていません</div>
+          </div>
+
+          <div class="preview-area" id="previewArea">
+            <img id="previewImg" src="" alt="preview" />
+            <button class="preview-clear" id="clearBtn" title="クリア">✕</button>
+          </div>
+
+          <button class="camera-btn" id="cameraBtn" style="margin-top: 10px;">
+            📷 カメラで撮影
+          </button>
+          <input type="file" id="cameraInput" accept="image/*" capture="environment" style="display:none" />
+        </div>
+
+        <!-- STEP 2 -->
+        <div>
+          <div class="step-label">② 出力フォーマット</div>
+          <div class="format-options" id="formatOptions">
+            <button class="fmt-btn active" data-fmt="markdown">Markdown</button>
+            <button class="fmt-btn" data-fmt="csv">CSV</button>
+            <button class="fmt-btn" data-fmt="tsv">TSV</button>
+            <button class="fmt-btn" data-fmt="plain">プレーンテキスト</button>
+            <button class="fmt-btn" data-fmt="bullet">箇条書き</button>
+          </div>
+        </div>
+
+        <!-- EXTRACT -->
+        <button class="extract-btn" id="extractBtn" disabled>
+          ⚡ テキスト抽出
+        </button>
+
+        <div class="status-bar" id="statusBar"></div>
+      </div>
+
+      <!-- RIGHT PANEL -->
+      <div class="panel-right">
+        <div class="output-header">
+          <div class="step-label">③ 抽出結果</div>
+          <div class="output-actions">
+            <button class="action-btn" id="copyBtn">📋 コピー</button>
+            <button class="action-btn" id="downloadBtn">💾 ダウンロード</button>
+          </div>
+        </div>
+
+        <div class="empty-state" id="emptyState">
+          <div class="empty-icon">✨</div>
+          <div class="empty-text">
+            画像をアップロードして<br>「テキスト抽出」を押すと<br>ここに結果が表示されます
+          </div>
+        </div>
+
+        <textarea class="output-box" id="outputBox" style="display:none" placeholder="抽出結果がここに表示されます..."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- CAMERA MODAL -->
+  <div id="cameraModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:100; align-items:center; justify-content:center; flex-direction:column; gap:16px;">
+    <video id="cameraVideo" autoplay playsinline style="max-width:90vw; max-height:60vh; border-radius:12px; border:2px solid #f5c842;"></video>
+    <div style="display:flex; gap:12px;">
+      <button id="captureBtn" style="padding:12px 28px; background:#f5c842; color:#0f0e0c; border:none; border-radius:8px; font-size:15px; font-weight:900; cursor:pointer;">📸 撮影</button>
+      <button id="closeCameraBtn" style="padding:12px 28px; background:#2e2c28; color:#f0ede6; border:1px solid #2e2c28; border-radius:8px; font-size:15px; cursor:pointer;">キャンセル</button>
+    </div>
+    <canvas id="captureCanvas" style="display:none;"></canvas>
+  </div>
+
+  <script>
+    (() => {
+      let imageBase64 = null;
+      let imageMediaType = 'image/jpeg';
+      let selectedFormat = 'markdown';
+      let cameraStream = null;
+
+      const apiKeyEl = document.getElementById('apiKey');
+      const dropZone = document.getElementById('dropZone');
+      const fileInput = document.getElementById('fileInput');
+      const fileName = document.getElementById('fileName');
+      const previewArea = document.getElementById('previewArea');
+      const previewImg = document.getElementById('previewImg');
+      const clearBtn = document.getElementById('clearBtn');
+      const cameraBtn = document.getElementById('cameraBtn');
+      const cameraInput = document.getElementById('cameraInput');
+      const formatOptions = document.getElementById('formatOptions');
+      const extractBtn = document.getElementById('extractBtn');
+      const statusBar = document.getElementById('statusBar');
+      const emptyState = document.getElementById('emptyState');
+      const outputBox = document.getElementById('outputBox');
+      const copyBtn = document.getElementById('copyBtn');
+      const downloadBtn = document.getElementById('downloadBtn');
+      const cameraModal = document.getElementById('cameraModal');
+      const cameraVideo = document.getElementById('cameraVideo');
+      const captureBtn = document.getElementById('captureBtn');
+      const closeCameraBtn = document.getElementById('closeCameraBtn');
+      const captureCanvas = document.getElementById('captureCanvas');
+
+      // Restore API key
+      const savedKey = sessionStorage.getItem('snaptext_apikey');
+      if (savedKey) apiKeyEl.value = savedKey;
+      apiKeyEl.addEventListener('input', () => sessionStorage.setItem('snaptext_apikey', apiKeyEl.value));
+
+      // Format selection
+      formatOptions.addEventListener('click', (e) => {
+        const btn = e.target.closest('.fmt-btn');
+        if (!btn) return;
+        formatOptions.querySelectorAll('.fmt-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        selectedFormat = btn.dataset.fmt;
+      });
+
+      // File load helper
+      function loadFile(file) {
+        if (!file || !file.type.startsWith('image/')) return;
+        imageMediaType = file.type || 'image/jpeg';
+        fileName.textContent = file.name;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const dataUrl = e.target.result;
+          imageBase64 = dataUrl.split(',')[1];
+          previewImg.src = dataUrl;
+          dropZone.style.display = 'none';
+          previewArea.classList.add('show');
+          extractBtn.disabled = false;
+        };
+        reader.readAsDataURL(file);
+      }
+
+      // Drag & Drop
+      dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+      dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+      dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('drag-over');
+        loadFile(e.dataTransfer.files[0]);
+      });
+      fileInput.addEventListener('change', () => loadFile(fileInput.files[0]));
+
+      // Clipboard paste
+      document.addEventListener('paste', (e) => {
+        const item = [...e.clipboardData.items].find(i => i.type.startsWith('image/'));
+        if (item) loadFile(item.getAsFile());
+      });
+
+      // Clear
+      clearBtn.addEventListener('click', () => {
+        imageBase64 = null;
+        fileName.textContent = '選択されていません';
+        previewImg.src = '';
+        previewArea.classList.remove('show');
+        dropZone.style.display = '';
+        fileInput.value = '';
+        extractBtn.disabled = true;
+        setStatus('', '');
+      });
+
+      // Camera — try getUserMedia first, fallback to input capture
+      cameraBtn.addEventListener('click', async () => {
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+          try {
+            cameraStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+            cameraVideo.srcObject = cameraStream;
+            cameraModal.style.display = 'flex';
+            return;
+          } catch (_) { /* fallback */ }
+        }
+        cameraInput.click();
+      });
+      cameraInput.addEventListener('change', () => loadFile(cameraInput.files[0]));
+
+      captureBtn.addEventListener('click', () => {
+        captureCanvas.width = cameraVideo.videoWidth;
+        captureCanvas.height = cameraVideo.videoHeight;
+        captureCanvas.getContext('2d').drawImage(cameraVideo, 0, 0);
+        captureCanvas.toBlob((blob) => {
+          loadFile(new File([blob], 'camera.jpg', { type: 'image/jpeg' }));
+          closeCamera();
+        }, 'image/jpeg', 0.92);
+      });
+
+      closeCameraBtn.addEventListener('click', closeCamera);
+      function closeCamera() {
+        if (cameraStream) { cameraStream.getTracks().forEach(t => t.stop()); cameraStream = null; }
+        cameraModal.style.display = 'none';
+      }
+
+      // Status helper
+      function setStatus(msg, type) {
+        statusBar.innerHTML = msg;
+        statusBar.className = 'status-bar' + (type ? ' ' + type : '');
+      }
+
+      // Format prompts
+      const PROMPTS = {
+        markdown: '画像内のすべてのテキストをOCRで読み取り、Markdown形式で出力してください。見出し・リスト・強調などMarkdown記法を活用してください。',
+        csv: '画像内のすべてのテキストをOCRで読み取り、CSV形式で出力してください。各行をカンマ区切りで表現してください。',
+        tsv: '画像内のすべてのテキストをOCRで読み取り、TSV（タブ区切り）形式で出力してください。',
+        plain: '画像内のすべてのテキストをOCRで読み取り、プレーンテキストとして出力してください。余計な記号は使わないでください。',
+        bullet: '画像内のすべてのテキストをOCRで読み取り、箇条書き（・）形式で出力してください。',
+      };
+
+      // Extract
+      extractBtn.addEventListener('click', async () => {
+        const apiKey = apiKeyEl.value.trim();
+        if (!apiKey) { setStatus('APIキーを入力してください', 'error'); return; }
+        if (!imageBase64) { setStatus('画像を選択してください', 'error'); return; }
+
+        extractBtn.disabled = true;
+        setStatus('<span class="spinner"></span>Claude Vision APIで解析中...', 'loading');
+
+        try {
+          const resp = await fetch('https://api.anthropic.com/v1/messages', {
+            method: 'POST',
+            headers: {
+              'x-api-key': apiKey,
+              'anthropic-version': '2023-06-01',
+              'content-type': 'application/json',
+              'anthropic-dangerous-direct-browser-calls': 'true',
+            },
+            body: JSON.stringify({
+              model: 'claude-opus-4-5',
+              max_tokens: 4096,
+              messages: [{
+                role: 'user',
+                content: [
+                  { type: 'image', source: { type: 'base64', media_type: imageMediaType, data: imageBase64 } },
+                  { type: 'text', text: PROMPTS[selectedFormat] },
+                ],
+              }],
+            }),
+          });
+
+          if (!resp.ok) {
+            const err = await resp.json().catch(() => ({}));
+            throw new Error(err.error?.message || `HTTP ${resp.status}`);
+          }
+
+          const data = await resp.json();
+          const text = data.content?.[0]?.text || '';
+
+          emptyState.style.display = 'none';
+          outputBox.style.display = 'block';
+          outputBox.value = text;
+          setStatus(`✓ 抽出完了（${text.length}文字）`, 'success');
+        } catch (e) {
+          setStatus('エラー: ' + e.message, 'error');
+        } finally {
+          extractBtn.disabled = false;
+        }
+      });
+
+      // Copy
+      copyBtn.addEventListener('click', async () => {
+        const text = outputBox.value;
+        if (!text) return;
+        await navigator.clipboard.writeText(text);
+        copyBtn.textContent = '✓ コピーしました';
+        copyBtn.classList.add('copied');
+        setTimeout(() => {
+          copyBtn.innerHTML = '📋 コピー';
+          copyBtn.classList.remove('copied');
+        }, 2000);
+      });
+
+      // Download
+      downloadBtn.addEventListener('click', () => {
+        const text = outputBox.value;
+        if (!text) return;
+        const exts = { markdown: 'md', csv: 'csv', tsv: 'tsv', plain: 'txt', bullet: 'txt' };
+        const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `snaptext.${exts[selectedFormat] || 'txt'}`;
+        a.click();
+        URL.revokeObjectURL(url);
+      });
+    })();
+  </script>
+</BaseLayout>
