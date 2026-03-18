@@ -359,7 +359,16 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
         <!-- STEP 2 -->
         <div>
-          <div class="step-label">② 出力フォーマット</div>
+          <div class="step-label">② オプション</div>
+          <label style="display:flex; align-items:center; gap:8px; font-size:13px; color:var(--snap-muted); cursor:pointer;">
+            <input type="checkbox" id="isTable" style="accent-color:var(--snap-accent); width:14px; height:14px;" />
+            テーブル検出（レシート・表など）
+          </label>
+        </div>
+
+        <!-- STEP 3 -->
+        <div>
+          <div class="step-label">③ 出力フォーマット</div>
           <div class="format-options" id="formatOptions">
             <button class="fmt-btn active" data-fmt="markdown">Markdown</button>
             <button class="fmt-btn" data-fmt="todo">TODO</button>
@@ -372,7 +381,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
         <!-- EXTRACT -->
         <button class="extract-btn" id="extractBtn" disabled>
-          ⚡ テキスト抽出
+          ⚡ ④ テキスト抽出
         </button>
 
         <div class="progress-wrap" id="progressWrap">
@@ -439,6 +448,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       const cameraInput = document.getElementById('cameraInput');
       const formatOptions = document.getElementById('formatOptions');
       const ocrApiKeyEl = document.getElementById('ocrApiKey');
+      const isTableEl = document.getElementById('isTable');
       const savedKey = localStorage.getItem('snaptext_ocrkey');
       if (savedKey) ocrApiKeyEl.value = savedKey;
       ocrApiKeyEl.addEventListener('input', () => {
@@ -648,6 +658,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           formData.append('file', compressed);
           formData.append('language', 'jpn');
           formData.append('isOverlayRequired', 'false');
+          formData.append('isTable', isTableEl.checked ? 'true' : 'false');
           formData.append('detectOrientation', 'true');
           formData.append('scale', 'true');
           formData.append('OCREngine', '2');
