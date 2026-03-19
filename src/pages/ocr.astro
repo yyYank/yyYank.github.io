@@ -139,6 +139,34 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       align-items: center;
       justify-content: center;
     }
+    .preview-toolbar {
+      display: none;
+      gap: 8px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+    .preview-toolbar.show { display: flex; }
+    .secondary-btn {
+      padding: 9px 14px;
+      background: var(--snap-surface);
+      border: 1px solid var(--snap-border);
+      border-radius: 8px;
+      color: var(--snap-text);
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .secondary-btn:hover:not(:disabled) {
+      border-color: var(--snap-accent);
+      color: var(--snap-accent);
+    }
+    .secondary-btn:disabled {
+      color: var(--snap-muted);
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
 
     /* CAMERA */
     .camera-btn {
@@ -325,6 +353,102 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       vertical-align: middle;
       margin-right: 6px;
     }
+
+    /* CROP MODAL */
+    .crop-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 110;
+      background: rgba(0, 0, 0, 0.88);
+      padding: 24px;
+      align-items: center;
+      justify-content: center;
+    }
+    .crop-modal.show { display: flex; }
+    .crop-panel {
+      width: min(960px, 100%);
+      max-height: calc(100vh - 48px);
+      background: var(--snap-surface);
+      border: 1px solid var(--snap-border);
+      border-radius: 16px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .crop-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .crop-title {
+      font-size: 16px;
+      font-weight: 900;
+      color: var(--snap-text);
+    }
+    .crop-subtitle {
+      font-size: 12px;
+      color: var(--snap-muted);
+    }
+    .crop-stage {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 320px;
+      max-height: 65vh;
+      overflow: auto;
+      background:
+        linear-gradient(45deg, #171511 25%, transparent 25%) -12px 0/24px 24px,
+        linear-gradient(-45deg, #171511 25%, transparent 25%) -12px 0/24px 24px,
+        linear-gradient(45deg, transparent 75%, #171511 75%) -12px 0/24px 24px,
+        linear-gradient(-45deg, transparent 75%, #171511 75%) -12px 0/24px 24px;
+      border-radius: 12px;
+      border: 1px solid var(--snap-border);
+      user-select: none;
+      touch-action: none;
+    }
+    .crop-image-wrap {
+      position: relative;
+      line-height: 0;
+      max-width: 100%;
+    }
+    .crop-image {
+      display: block;
+      max-width: 100%;
+      max-height: 60vh;
+      border-radius: 8px;
+    }
+    .crop-selection {
+      position: absolute;
+      border: 2px solid var(--snap-accent);
+      background: rgba(245, 200, 66, 0.12);
+      box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.45);
+      pointer-events: none;
+      display: none;
+    }
+    .crop-selection.show { display: block; }
+    .crop-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 768px) {
+      .crop-modal { padding: 12px; }
+      .crop-panel {
+        padding: 14px;
+        max-height: calc(100vh - 24px);
+      }
+      .crop-stage {
+        min-height: 240px;
+        max-height: 55vh;
+      }
+    }
   </style>
 
   <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
@@ -349,6 +473,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           <div class="preview-area" id="previewArea">
             <img id="previewImg" src="" alt="preview" />
             <button class="preview-clear" id="clearBtn" title="クリア">✕</button>
+          </div>
+          <div class="preview-toolbar" id="previewToolbar">
+            <button class="secondary-btn" id="cropBtn" type="button">✂️ トリミング</button>
+            <button class="secondary-btn" id="restoreBtn" type="button" disabled>元画像に戻す</button>
           </div>
 
           <button class="camera-btn" id="cameraBtn" style="margin-top: 10px;">
@@ -429,21 +557,50 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     <canvas id="captureCanvas" style="display:none;"></canvas>
   </div>
 
+  <div class="crop-modal" id="cropModal">
+    <div class="crop-panel">
+      <div class="crop-header">
+        <div>
+          <div class="crop-title">画像をトリミング</div>
+          <div class="crop-subtitle">必要な範囲だけドラッグして選択すると OCR のノイズを減らせます</div>
+        </div>
+      </div>
+      <div class="crop-stage" id="cropStage">
+        <div class="crop-image-wrap" id="cropImageWrap">
+          <img class="crop-image" id="cropImage" src="" alt="crop target" />
+          <div class="crop-selection" id="cropSelection"></div>
+        </div>
+      </div>
+      <div class="crop-actions">
+        <button class="secondary-btn" id="cropResetBtn" type="button">選択をリセット</button>
+        <button class="secondary-btn" id="cropCancelBtn" type="button">キャンセル</button>
+        <button class="extract-btn" id="cropApplyBtn" type="button" disabled style="width:auto; padding:10px 18px;">この範囲で切り抜く</button>
+      </div>
+    </div>
+  </div>
+
   <script>
     (() => {
       const OCR_SPACE_DEMO_KEY = 'K88888888888888';
 
       let imageFile = null;
+      let originalImageFile = null;
       let selectedFormat = 'markdown';
       let cameraStream = null;
       let rawOcrText = null;
+      let cropRect = null;
+      let cropPointerId = null;
+      let cropStartPoint = null;
 
       const dropZone = document.getElementById('dropZone');
       const fileInput = document.getElementById('fileInput');
       const fileName = document.getElementById('fileName');
       const previewArea = document.getElementById('previewArea');
       const previewImg = document.getElementById('previewImg');
+      const previewToolbar = document.getElementById('previewToolbar');
       const clearBtn = document.getElementById('clearBtn');
+      const cropBtn = document.getElementById('cropBtn');
+      const restoreBtn = document.getElementById('restoreBtn');
       const cameraBtn = document.getElementById('cameraBtn');
       const cameraInput = document.getElementById('cameraInput');
       const formatOptions = document.getElementById('formatOptions');
@@ -468,6 +625,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       const captureBtn = document.getElementById('captureBtn');
       const closeCameraBtn = document.getElementById('closeCameraBtn');
       const captureCanvas = document.getElementById('captureCanvas');
+      const cropModal = document.getElementById('cropModal');
+      const cropStage = document.getElementById('cropStage');
+      const cropImageWrap = document.getElementById('cropImageWrap');
+      const cropImage = document.getElementById('cropImage');
+      const cropSelection = document.getElementById('cropSelection');
+      const cropResetBtn = document.getElementById('cropResetBtn');
+      const cropCancelBtn = document.getElementById('cropCancelBtn');
+      const cropApplyBtn = document.getElementById('cropApplyBtn');
 
       // Format selection — re-convert if result already exists
       formatOptions.addEventListener('click', (e) => {
@@ -482,16 +647,34 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       });
 
       // File load helper
-      function loadFile(file) {
+      function resetOutput() {
+        rawOcrText = null;
+        progressWrap.classList.remove('show');
+        progressBar.style.width = '0%';
+        setStatus('', '');
+        emptyState.style.display = '';
+        outputBox.style.display = 'none';
+        outputBox.value = '';
+      }
+
+      function updateRestoreButton() {
+        restoreBtn.disabled = !originalImageFile || !imageFile || originalImageFile === imageFile;
+      }
+
+      function loadFile(file, options = {}) {
         if (!file || !file.type.startsWith('image/')) return;
+        if (!options.preserveOriginal) originalImageFile = file;
         imageFile = file;
         fileName.textContent = file.name;
+        resetOutput();
         const reader = new FileReader();
         reader.onload = (e) => {
           previewImg.src = e.target.result;
           dropZone.style.display = 'none';
           previewArea.classList.add('show');
+          previewToolbar.classList.add('show');
           extractBtn.disabled = false;
+          updateRestoreButton();
         };
         reader.readAsDataURL(file);
       }
@@ -515,19 +698,16 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       // Clear
       clearBtn.addEventListener('click', () => {
         imageFile = null;
+        originalImageFile = null;
         fileName.textContent = '選択されていません';
         previewImg.src = '';
         previewArea.classList.remove('show');
+        previewToolbar.classList.remove('show');
         dropZone.style.display = '';
         fileInput.value = '';
-        rawOcrText = null;
         extractBtn.disabled = true;
-        progressWrap.classList.remove('show');
-        progressBar.style.width = '0%';
-        setStatus('', '');
-        emptyState.style.display = '';
-        outputBox.style.display = 'none';
-        outputBox.value = '';
+        resetOutput();
+        updateRestoreButton();
       });
 
       // Camera
@@ -559,6 +739,142 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         if (cameraStream) { cameraStream.getTracks().forEach(t => t.stop()); cameraStream = null; }
         cameraModal.style.display = 'none';
       }
+
+      function resetCropSelection() {
+        cropRect = null;
+        cropSelection.classList.remove('show');
+        cropSelection.style.left = '0px';
+        cropSelection.style.top = '0px';
+        cropSelection.style.width = '0px';
+        cropSelection.style.height = '0px';
+        cropApplyBtn.disabled = true;
+      }
+
+      function closeCropModal() {
+        cropModal.classList.remove('show');
+        document.body.style.overflow = '';
+        if (cropPointerId !== null) {
+          cropImage.releasePointerCapture(cropPointerId);
+          cropPointerId = null;
+        }
+        cropStartPoint = null;
+        resetCropSelection();
+      }
+
+      function openCropModal() {
+        if (!imageFile) return;
+        cropImage.src = previewImg.src;
+        cropModal.classList.add('show');
+        document.body.style.overflow = 'hidden';
+        resetCropSelection();
+      }
+
+      function eventToImagePoint(event) {
+        const rect = cropImage.getBoundingClientRect();
+        const x = Math.min(Math.max(event.clientX - rect.left, 0), rect.width);
+        const y = Math.min(Math.max(event.clientY - rect.top, 0), rect.height);
+        return { x, y, width: rect.width, height: rect.height };
+      }
+
+      function renderCropSelection() {
+        if (!cropRect) return;
+        cropSelection.classList.add('show');
+        cropSelection.style.left = `${cropRect.x}px`;
+        cropSelection.style.top = `${cropRect.y}px`;
+        cropSelection.style.width = `${cropRect.width}px`;
+        cropSelection.style.height = `${cropRect.height}px`;
+        cropApplyBtn.disabled = cropRect.width < 8 || cropRect.height < 8;
+      }
+
+      cropBtn.addEventListener('click', openCropModal);
+      restoreBtn.addEventListener('click', () => {
+        if (!originalImageFile || originalImageFile === imageFile) return;
+        loadFile(originalImageFile, { preserveOriginal: true });
+      });
+      cropCancelBtn.addEventListener('click', closeCropModal);
+      cropResetBtn.addEventListener('click', resetCropSelection);
+      cropModal.addEventListener('click', (event) => {
+        if (event.target === cropModal) closeCropModal();
+      });
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && cropModal.classList.contains('show')) closeCropModal();
+      });
+
+      cropImage.addEventListener('pointerdown', (event) => {
+        const point = eventToImagePoint(event);
+        cropPointerId = event.pointerId;
+        cropStartPoint = point;
+        cropImage.setPointerCapture(cropPointerId);
+        cropRect = { x: point.x, y: point.y, width: 0, height: 0 };
+        renderCropSelection();
+      });
+
+      cropImage.addEventListener('pointermove', (event) => {
+        if (cropStartPoint === null) return;
+        const point = eventToImagePoint(event);
+        cropRect = {
+          x: Math.min(cropStartPoint.x, point.x),
+          y: Math.min(cropStartPoint.y, point.y),
+          width: Math.abs(point.x - cropStartPoint.x),
+          height: Math.abs(point.y - cropStartPoint.y),
+        };
+        renderCropSelection();
+      });
+
+      function finishCropSelection() {
+        cropStartPoint = null;
+        if (cropPointerId !== null) {
+          cropImage.releasePointerCapture(cropPointerId);
+          cropPointerId = null;
+        }
+      }
+
+      cropImage.addEventListener('pointerup', finishCropSelection);
+      cropImage.addEventListener('pointercancel', finishCropSelection);
+
+      cropApplyBtn.addEventListener('click', async () => {
+        if (!imageFile || !cropRect || cropRect.width < 8 || cropRect.height < 8) return;
+
+        cropApplyBtn.disabled = true;
+        cropApplyBtn.textContent = '切り抜き中...';
+
+        try {
+          const bitmapUrl = URL.createObjectURL(imageFile);
+          const sourceImage = new Image();
+          await new Promise((resolve, reject) => {
+            sourceImage.onload = resolve;
+            sourceImage.onerror = reject;
+            sourceImage.src = bitmapUrl;
+          });
+
+          const scaleX = sourceImage.naturalWidth / cropImage.clientWidth;
+          const scaleY = sourceImage.naturalHeight / cropImage.clientHeight;
+          const sx = Math.round(cropRect.x * scaleX);
+          const sy = Math.round(cropRect.y * scaleY);
+          const sw = Math.max(1, Math.round(cropRect.width * scaleX));
+          const sh = Math.max(1, Math.round(cropRect.height * scaleY));
+
+          const canvas = document.createElement('canvas');
+          canvas.width = sw;
+          canvas.height = sh;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(sourceImage, sx, sy, sw, sh, 0, 0, sw, sh);
+
+          const blob = await new Promise((resolve) => canvas.toBlob(resolve, 'image/jpeg', 0.95));
+          URL.revokeObjectURL(bitmapUrl);
+          if (!blob) throw new Error('切り抜き画像の生成に失敗しました');
+
+          const croppedName = imageFile.name.replace(/\.[^.]+$/, '') || 'cropped';
+          loadFile(new File([blob], `${croppedName}-cropped.jpg`, { type: 'image/jpeg' }), { preserveOriginal: true });
+          closeCropModal();
+          setStatus('トリミング画像を適用しました', 'success');
+        } catch (error) {
+          setStatus('トリミングに失敗しました: ' + error.message, 'error');
+        } finally {
+          cropApplyBtn.textContent = 'この範囲で切り抜く';
+          cropApplyBtn.disabled = !cropRect || cropRect.width < 8 || cropRect.height < 8;
+        }
+      });
 
       // Status helper
       function setStatus(msg, type) {
