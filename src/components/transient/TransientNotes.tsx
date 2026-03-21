@@ -418,7 +418,7 @@ export default function TransientNotes() {
                   key={note.id}
                   className="rounded-2xl border border-dark-600 bg-dark-900/45 p-5"
                 >
-                  <div className="flex flex-wrap items-start justify-between gap-3">
+                  <div className="sticky top-20 z-10 -mx-5 -mt-5 mb-4 flex flex-wrap items-start justify-between gap-3 border-b border-dark-700 bg-dark-900/95 px-5 py-4 backdrop-blur">
                     <div>
                       <p className="text-lg font-semibold text-white">{note.title}</p>
                       <p className="mt-1 text-xs uppercase tracking-[0.2em] text-gray-500">
