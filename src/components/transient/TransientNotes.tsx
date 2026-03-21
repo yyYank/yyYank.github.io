@@ -53,8 +53,8 @@ const DEFAULT_TEMPLATES: Template[] = [
 ];
 
 const fadeTransition = {
-  duration: 0.22,
-  ease: 'easeInOut' as const,
+  duration: 0.55,
+  ease: [0.22, 1, 0.36, 1] as const,
 };
 
 function createId(prefix: string): string {
@@ -363,7 +363,7 @@ export default function TransientNotes() {
       <motion.section
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 0.4, ease: 'easeOut' }}
+        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
         className="grid gap-6 xl:grid-cols-[1.1fr_0.9fr]"
       >
         <motion.div layout className="rounded-3xl border border-dark-600 bg-dark-800/70 p-6">
@@ -418,8 +418,10 @@ export default function TransientNotes() {
                       transition={fadeTransition}
                       className="rounded-2xl border border-dark-600 bg-dark-900/45 p-5"
                     >
-                  <div className="sticky top-20 z-10 -mx-5 -mt-5 mb-4 flex flex-wrap items-start justify-between gap-3 border-b border-dark-700 bg-dark-900/95 px-5 py-4 backdrop-blur">
-                    <div>
+                  <div className="sticky top-[70px] z-10 -mx-5 -mt-5 mb-4 flex flex-wrap items-start justify-between gap-3 overflow-hidden border-b border-dark-700 bg-dark-900/80 px-5 py-4 backdrop-blur-xl">
+                    <div className="pointer-events-none absolute inset-y-0 left-0 w-12 bg-gradient-to-r from-dark-900/95 via-dark-900/60 to-transparent blur-lg opacity-80" />
+                    <div className="pointer-events-none absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-dark-900/95 via-dark-900/60 to-transparent blur-lg opacity-80" />
+                    <div className="relative z-10">
                       <p className="text-lg font-semibold text-white">{note.title}</p>
                       <p className="mt-1 text-xs uppercase tracking-[0.2em] text-gray-500">
                         created {formatDateTime(note.createdAt)}
@@ -428,7 +430,7 @@ export default function TransientNotes() {
                     <button
                       onClick={() => handleDeleteNote(note.id)}
                       type="button"
-                      className="rounded-full border border-red-500/30 px-3 py-1 text-xs text-red-300 transition-colors hover:bg-red-500/10"
+                      className="relative z-10 rounded-full border border-red-500/25 bg-dark-900/45 px-3 py-1 text-xs text-red-300 transition-colors hover:bg-red-500/10"
                     >
                       破棄
                     </button>
@@ -678,7 +680,7 @@ export default function TransientNotes() {
       <motion.section
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 0.35, delay: 0.05, ease: 'easeOut' }}
+        transition={{ duration: 0.75, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
         className="border-t border-dark-700 pt-6"
       >
         <ul className="space-y-4 text-sm leading-7 text-gray-300">
