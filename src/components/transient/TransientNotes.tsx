@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 interface Template {
   id: string;
@@ -127,6 +127,7 @@ export default function TransientNotes() {
   const [editingTemplateId, setEditingTemplateId] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const [todayKey, setTodayKey] = useState('');
+  const templateNameInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const storedTemplates = loadTemplates();
@@ -205,10 +206,14 @@ export default function TransientNotes() {
   };
 
   const handleEditTemplate = (template: Template) => {
+    setSelectedTemplateId(template.id);
     setEditingTemplateId(template.id);
     setTemplateName(template.name);
     setTemplateSummary(template.summary);
     setTemplateItemsText(template.items.join('\n'));
+    window.setTimeout(() => {
+      templateNameInputRef.current?.focus();
+    }, 0);
   };
 
   const handleDeleteTemplate = (templateId: string) => {
@@ -334,6 +339,7 @@ export default function TransientNotes() {
             </div>
             <button
               onClick={resetTemplateForm}
+              type="button"
               className="rounded-full border border-dark-500 px-4 py-2 text-sm text-gray-300 transition-colors hover:border-cyan-400/40 hover:text-white"
             >
               新規作成
@@ -351,22 +357,27 @@ export default function TransientNotes() {
                 }`}
               >
                 <div className="flex flex-wrap items-start justify-between gap-3">
-                  <button
-                    onClick={() => setSelectedTemplateId(template.id)}
-                    className="text-left"
-                  >
-                    <p className="text-lg font-semibold text-white">{template.name}</p>
-                    <p className="mt-1 text-sm text-gray-400">{template.summary}</p>
-                  </button>
+                  <div className="flex-1 min-w-0">
+                    <button
+                      onClick={() => setSelectedTemplateId(template.id)}
+                      type="button"
+                      className="text-left"
+                    >
+                      <p className="text-lg font-semibold text-white">{template.name}</p>
+                      <p className="mt-1 text-sm text-gray-400">{template.summary}</p>
+                    </button>
+                  </div>
                   <div className="flex gap-2">
                     <button
                       onClick={() => handleEditTemplate(template)}
+                      type="button"
                       className="rounded-full border border-dark-500 px-3 py-1 text-xs text-gray-300 transition-colors hover:border-cyan-400/40 hover:text-white"
                     >
                       編集
                     </button>
                     <button
                       onClick={() => handleDeleteTemplate(template.id)}
+                      type="button"
                       className="rounded-full border border-red-500/30 px-3 py-1 text-xs text-red-300 transition-colors hover:bg-red-500/10"
                     >
                       削除
@@ -393,6 +404,7 @@ export default function TransientNotes() {
               <label className="grid gap-2 text-sm text-gray-300">
                 <span>テンプレート名</span>
                 <input
+                  ref={templateNameInputRef}
                   type="text"
                   value={templateName}
                   onChange={(event) => setTemplateName(event.target.value)}
@@ -423,6 +435,7 @@ export default function TransientNotes() {
               <div className="flex flex-wrap gap-3">
                 <button
                   onClick={handleSaveTemplate}
+                  type="button"
                   className="rounded-full bg-cyan-400/15 px-5 py-2.5 text-sm font-medium text-cyan-200 transition-colors hover:bg-cyan-400/25"
                 >
                   {editingTemplateId ? '更新する' : '追加する'}
@@ -430,6 +443,7 @@ export default function TransientNotes() {
                 {editingTemplateId && (
                   <button
                     onClick={resetTemplateForm}
+                    type="button"
                     className="rounded-full border border-dark-500 px-5 py-2.5 text-sm text-gray-300 transition-colors hover:border-dark-400 hover:text-white"
                   >
                     キャンセル
@@ -451,6 +465,7 @@ export default function TransientNotes() {
               <button
                 onClick={handleCreateNote}
                 disabled={!activeTemplate}
+                type="button"
                 className="rounded-full bg-emerald-400/15 px-4 py-2 text-sm font-medium text-emerald-200 transition-colors hover:bg-emerald-400/25 disabled:cursor-not-allowed disabled:opacity-40"
               >
                 テンプレートから生成
@@ -458,6 +473,7 @@ export default function TransientNotes() {
               <button
                 onClick={handleCopyToday}
                 disabled={notes.length === 0}
+                type="button"
                 className="rounded-full border border-dark-500 px-4 py-2 text-sm text-gray-300 transition-colors hover:border-emerald-400/30 hover:text-white disabled:cursor-not-allowed disabled:opacity-40"
               >
                 {copied ? 'コピー済み' : '当日内容をコピー'}
@@ -512,6 +528,7 @@ export default function TransientNotes() {
                     </div>
                     <button
                       onClick={() => handleDeleteNote(note.id)}
+                      type="button"
                       className="rounded-full border border-red-500/30 px-3 py-1 text-xs text-red-300 transition-colors hover:bg-red-500/10"
                     >
                       破棄
@@ -557,26 +574,24 @@ export default function TransientNotes() {
         </div>
       </section>
 
-      <section className="grid gap-4 md:grid-cols-3">
-        {[
-          {
-            title: '作成',
-            text: 'テンプレートを選び、その日の実行用ノートを生成する。',
-          },
-          {
-            title: '使用',
-            text: 'チェックと短い記入だけに絞り、長期管理には使わない。',
-          },
-          {
-            title: '消去',
-            text: '日付が変わると自動削除され、履歴として蓄積されない。',
-          },
-        ].map((step) => (
-          <div key={step.title} className="rounded-2xl border border-dark-600 bg-dark-800/60 p-5">
-            <p className="text-xs uppercase tracking-[0.25em] text-cyan-300/70">{step.title}</p>
-            <p className="mt-3 text-sm leading-7 text-gray-300">{step.text}</p>
-          </div>
-        ))}
+      <section className="border-t border-dark-700 pt-6">
+        <ul className="space-y-4 text-sm leading-7 text-gray-300">
+          <li>
+            <span className="font-semibold text-white">作成</span>
+            <br />
+            テンプレートを選び、その日の実行用ノートを生成する。
+          </li>
+          <li>
+            <span className="font-semibold text-white">使用</span>
+            <br />
+            チェックと短い記入だけに絞り、長期管理には使わない。
+          </li>
+          <li>
+            <span className="font-semibold text-white">消去</span>
+            <br />
+            日付が変わると自動削除され、履歴として蓄積されない。
+          </li>
+        </ul>
       </section>
     </div>
   );
