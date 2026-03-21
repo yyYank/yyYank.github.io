@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { fetchFile } from '@ffmpeg/util';
 import { getFFmpeg } from '../../lib/ffmpeg';
 import DownloadButton from './DownloadButton';
@@ -13,9 +13,12 @@ function drawWaveform(
   canvas: HTMLCanvasElement,
   data: Float32Array,
   startRatio: number,
-  endRatio: number
+  endRatio: number,
+  playheadRatio: number | null
 ) {
-  const ctx = canvas.getContext('2d')!;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
+
   const { width, height } = canvas;
   const amp = height / 2;
   const step = Math.max(1, Math.floor(data.length / width));
@@ -24,20 +27,21 @@ function drawWaveform(
   ctx.fillStyle = '#0f172a';
   ctx.fillRect(0, 0, width, height);
 
-  // selected region background
   const sx = startRatio * width;
   const ex = endRatio * width;
   ctx.fillStyle = 'rgba(0,188,212,0.08)';
   ctx.fillRect(sx, 0, ex - sx, height);
 
-  // waveform bars
   for (let i = 0; i < width; i++) {
-    let min = 1.0, max = -1.0;
+    let min = 1.0;
+    let max = -1.0;
+
     for (let j = 0; j < step; j++) {
       const v = data[i * step + j] ?? 0;
       if (v < min) min = v;
       if (v > max) max = v;
     }
+
     const ratio = i / width;
     ctx.fillStyle = ratio >= startRatio && ratio <= endRatio ? '#00bcd4' : '#334155';
     const y = (1 + min) * amp;
@@ -45,7 +49,6 @@ function drawWaveform(
     ctx.fillRect(i, y, 1, h);
   }
 
-  // trim region border lines
   ctx.strokeStyle = '#ffffff';
   ctx.lineWidth = 2;
   [sx, ex].forEach((x) => {
@@ -55,19 +58,29 @@ function drawWaveform(
     ctx.stroke();
   });
 
-  // handle triangles
-  const HANDLE = 12;
+  if (playheadRatio !== null) {
+    const px = playheadRatio * width;
+    ctx.strokeStyle = '#fbbf24';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(px, 0);
+    ctx.lineTo(px, height);
+    ctx.stroke();
+  }
+
+  const handleSize = 12;
   ctx.fillStyle = '#ffffff';
+
   ctx.beginPath();
   ctx.moveTo(sx, 0);
-  ctx.lineTo(sx + HANDLE, 0);
-  ctx.lineTo(sx, HANDLE);
+  ctx.lineTo(sx + handleSize, 0);
+  ctx.lineTo(sx, handleSize);
   ctx.fill();
 
   ctx.beginPath();
   ctx.moveTo(ex, 0);
-  ctx.lineTo(ex - HANDLE, 0);
-  ctx.lineTo(ex, HANDLE);
+  ctx.lineTo(ex - handleSize, 0);
+  ctx.lineTo(ex, handleSize);
   ctx.fill();
 }
 
@@ -77,81 +90,179 @@ export default function AudioTrimmer() {
   const [duration, setDuration] = useState(0);
   const [startTime, setStartTime] = useState(0);
   const [endTime, setEndTime] = useState(0);
+  const [audioUrl, setAudioUrl] = useState<string | null>(null);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [loopSelection, setLoopSelection] = useState(true);
   const [outputBlob, setOutputBlob] = useState<Blob | null>(null);
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState('');
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const audioRef = useRef<HTMLAudioElement>(null);
   const draggingRef = useRef<'start' | 'end' | null>(null);
 
-  // decode audio and build waveform data
+  const syncCurrentTime = (nextTime: number) => {
+    setCurrentTime(nextTime);
+    const audio = audioRef.current;
+    if (audio) {
+      audio.currentTime = nextTime;
+    }
+  };
+
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const f = e.target.files?.[0];
     if (!f) return;
+
     setFile(f);
     setOutputBlob(null);
     setStatus('波形を解析中...');
+    setCurrentTime(0);
+    setIsPlaying(false);
+
     try {
       const arrayBuffer = await f.arrayBuffer();
       const audioCtx = new AudioContext();
       const buffer = await audioCtx.decodeAudioData(arrayBuffer);
+      const nextAudioUrl = URL.createObjectURL(f);
+
       setWaveData(buffer.getChannelData(0));
       setDuration(buffer.duration);
       setStartTime(0);
       setEndTime(buffer.duration);
+      setAudioUrl((prev) => {
+        if (prev) {
+          URL.revokeObjectURL(prev);
+        }
+        return nextAudioUrl;
+      });
       setStatus('');
+      await audioCtx.close();
     } catch {
       setStatus('音声ファイルの読み込みに失敗しました');
     }
   };
 
-  // redraw on any change
+  useEffect(() => {
+    return () => {
+      if (audioUrl) {
+        URL.revokeObjectURL(audioUrl);
+      }
+    };
+  }, [audioUrl]);
+
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas || !waveData || duration === 0) return;
-    drawWaveform(canvas, waveData, startTime / duration, endTime / duration);
-  }, [waveData, startTime, endTime, duration]);
+
+    drawWaveform(
+      canvas,
+      waveData,
+      startTime / duration,
+      endTime / duration,
+      Math.min(1, currentTime / duration)
+    );
+  }, [waveData, startTime, endTime, duration, currentTime]);
+
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    const handleTimeUpdate = () => {
+      const nextTime = audio.currentTime;
+      setCurrentTime(nextTime);
+
+      if (nextTime < endTime) {
+        return;
+      }
+
+      if (loopSelection) {
+        audio.currentTime = startTime;
+        void audio.play();
+      } else {
+        audio.pause();
+        audio.currentTime = endTime;
+        setCurrentTime(endTime);
+      }
+    };
+
+    const handlePlay = () => setIsPlaying(true);
+    const handlePause = () => setIsPlaying(false);
+    const handleEnded = () => setIsPlaying(false);
+
+    audio.addEventListener('timeupdate', handleTimeUpdate);
+    audio.addEventListener('play', handlePlay);
+    audio.addEventListener('pause', handlePause);
+    audio.addEventListener('ended', handleEnded);
+
+    return () => {
+      audio.removeEventListener('timeupdate', handleTimeUpdate);
+      audio.removeEventListener('play', handlePlay);
+      audio.removeEventListener('pause', handlePause);
+      audio.removeEventListener('ended', handleEnded);
+    };
+  }, [startTime, endTime, loopSelection]);
+
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    if (audio.currentTime < startTime || audio.currentTime > endTime) {
+      audio.currentTime = startTime;
+      setCurrentTime(startTime);
+    }
+  }, [startTime, endTime]);
 
   const getRatioFromEvent = (e: React.MouseEvent<HTMLCanvasElement>): number => {
-    const canvas = canvasRef.current!;
+    const canvas = canvasRef.current;
+    if (!canvas) return 0;
+
     const rect = canvas.getBoundingClientRect();
     return Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
   };
 
   const getHandleAt = (ratio: number): 'start' | 'end' | null => {
-    const THRESHOLD = 0.015;
+    const threshold = 0.015;
     const startRatio = startTime / duration;
     const endRatio = endTime / duration;
-    if (Math.abs(ratio - startRatio) < THRESHOLD) return 'start';
-    if (Math.abs(ratio - endRatio) < THRESHOLD) return 'end';
-    return null;
-  };
 
-  const handleMouseDown = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    if (!waveData) return;
-    const ratio = getRatioFromEvent(e);
-    const handle = getHandleAt(ratio);
-    if (handle) {
-      draggingRef.current = handle;
-    } else {
-      // click sets the closer handle
-      const startRatio = startTime / duration;
-      const endRatio = endTime / duration;
-      if (Math.abs(ratio - startRatio) < Math.abs(ratio - endRatio)) {
-        draggingRef.current = 'start';
-      } else {
-        draggingRef.current = 'end';
-      }
-      applyDrag(ratio);
-    }
+    if (Math.abs(ratio - startRatio) < threshold) return 'start';
+    if (Math.abs(ratio - endRatio) < threshold) return 'end';
+    return null;
   };
 
   const applyDrag = (ratio: number) => {
     const t = ratio * duration;
+
     if (draggingRef.current === 'start') {
-      setStartTime(Math.min(t, endTime - 0.1));
-    } else if (draggingRef.current === 'end') {
-      setEndTime(Math.max(t, startTime + 0.1));
+      const nextStart = Math.min(t, endTime - 0.1);
+      setStartTime(nextStart);
+      if (currentTime < nextStart) {
+        syncCurrentTime(nextStart);
+      }
+      return;
     }
+
+    if (draggingRef.current === 'end') {
+      const nextEnd = Math.max(t, startTime + 0.1);
+      setEndTime(nextEnd);
+      if (currentTime > nextEnd) {
+        syncCurrentTime(nextEnd);
+      }
+    }
+  };
+
+  const handleMouseDown = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    if (!waveData || duration === 0) return;
+
+    const ratio = getRatioFromEvent(e);
+    const handle = getHandleAt(ratio);
+
+    if (handle) {
+      draggingRef.current = handle;
+      return;
+    }
+
+    syncCurrentTime(ratio * duration);
   };
 
   const handleMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
@@ -163,10 +274,38 @@ export default function AudioTrimmer() {
     draggingRef.current = null;
   };
 
+  const togglePreviewPlayback = async () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    if (isPlaying) {
+      audio.pause();
+      return;
+    }
+
+    if (audio.currentTime < startTime || audio.currentTime >= endTime) {
+      audio.currentTime = startTime;
+      setCurrentTime(startTime);
+    }
+
+    await audio.play();
+  };
+
+  const playSelection = async () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    audio.currentTime = startTime;
+    setCurrentTime(startTime);
+    await audio.play();
+  };
+
   const handleTrim = async () => {
     if (!file) return;
+
     setLoading(true);
     setOutputBlob(null);
+
     try {
       setStatus('ffmpegを読み込み中...');
       const ffmpeg = await getFFmpeg();
@@ -176,12 +315,19 @@ export default function AudioTrimmer() {
       setStatus('トリミング中...');
       await ffmpeg.writeFile(inputName, await fetchFile(file));
       await ffmpeg.exec([
-        '-i', inputName,
-        '-ss', startTime.toFixed(3),
-        '-to', endTime.toFixed(3),
-        '-codec:a', 'libmp3lame', '-b:a', '192k',
+        '-i',
+        inputName,
+        '-ss',
+        startTime.toFixed(3),
+        '-to',
+        endTime.toFixed(3),
+        '-codec:a',
+        'libmp3lame',
+        '-b:a',
+        '192k',
         'trimmed.mp3',
       ]);
+
       const data = await ffmpeg.readFile('trimmed.mp3');
       setOutputBlob(new Blob([data], { type: 'audio/mpeg' }));
       setStatus('完了');
@@ -192,9 +338,7 @@ export default function AudioTrimmer() {
     }
   };
 
-  const trimmedFilename = file
-    ? file.name.replace(/\.[^.]+$/, '') + '_trimmed.mp3'
-    : 'trimmed.mp3';
+  const trimmedFilename = file ? `${file.name.replace(/\.[^.]+$/, '')}_trimmed.mp3` : 'trimmed.mp3';
 
   return (
     <div className="bg-dark-800 border border-dark-600 rounded-xl p-6 space-y-4">
@@ -202,7 +346,7 @@ export default function AudioTrimmer() {
         <span className="w-6 h-0.5 bg-accent-cyan" />
         Trim
       </h2>
-      <p className="text-gray-400 text-sm">音声ファイルの範囲を指定してトリミング</p>
+      <p className="text-gray-400 text-sm">音声をプレビュー再生しながらトリム範囲を調整</p>
 
       <div>
         <label className="block text-sm text-gray-400 mb-2">File Upload</label>
@@ -216,6 +360,52 @@ export default function AudioTrimmer() {
 
       {waveData && (
         <>
+          {audioUrl && (
+            <div className="rounded-xl border border-dark-600 bg-dark-900/50 p-4 space-y-4">
+              <div className="flex flex-wrap items-center gap-3">
+                <button
+                  onClick={() => void togglePreviewPlayback()}
+                  className="px-4 py-2 bg-accent-cyan/20 text-accent-cyan border border-accent-cyan/40 rounded-lg text-sm font-medium hover:bg-accent-cyan/30 transition-colors"
+                >
+                  {isPlaying ? 'Pause Preview' : 'Play Preview'}
+                </button>
+
+                <button
+                  onClick={() => void playSelection()}
+                  className="px-4 py-2 bg-dark-700 text-gray-100 border border-dark-500 rounded-lg text-sm font-medium hover:bg-dark-600 transition-colors"
+                >
+                  選択範囲を再生
+                </button>
+
+                <button
+                  onClick={() => syncCurrentTime(startTime)}
+                  className="px-4 py-2 bg-dark-700 text-gray-100 border border-dark-500 rounded-lg text-sm font-medium hover:bg-dark-600 transition-colors"
+                >
+                  開始位置へ
+                </button>
+
+                <label className="flex items-center gap-2 text-sm text-gray-300 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={loopSelection}
+                    onChange={(e) => setLoopSelection(e.target.checked)}
+                    className="accent-accent-cyan w-4 h-4"
+                  />
+                  選択範囲をループ
+                </label>
+              </div>
+
+              <audio ref={audioRef} src={audioUrl} preload="metadata" controls className="w-full" />
+
+              <div className="flex flex-wrap items-center justify-between gap-3 text-sm">
+                <p className="text-gray-400">
+                  再生位置: <span className="text-white font-medium">{formatTime(currentTime)}</span>
+                </p>
+                <p className="text-gray-500">黄線が再生位置、白線がトリム範囲です</p>
+              </div>
+            </div>
+          )}
+
           <div>
             <canvas
               ref={canvasRef}
@@ -228,7 +418,9 @@ export default function AudioTrimmer() {
               onMouseUp={handleMouseUp}
               onMouseLeave={handleMouseUp}
             />
-            <p className="text-xs text-gray-500 mt-1">ハンドル（白線）をドラッグしてトリム範囲を調整</p>
+            <p className="text-xs text-gray-500 mt-1">
+              白線をドラッグしてトリム範囲を調整。波形をクリックするとその位置へ移動します。
+            </p>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
@@ -245,6 +437,7 @@ export default function AudioTrimmer() {
               />
               <p className="text-xs text-gray-500 mt-0.5">{formatTime(startTime)}</p>
             </div>
+
             <div>
               <label className="block text-xs text-gray-400 mb-1">終了 (秒)</label>
               <input
