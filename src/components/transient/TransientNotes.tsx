@@ -127,6 +127,7 @@ export default function TransientNotes() {
   const [editingTemplateId, setEditingTemplateId] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const [todayKey, setTodayKey] = useState('');
+  const [templatesOpen, setTemplatesOpen] = useState(false);
   const templateNameInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -206,6 +207,7 @@ export default function TransientNotes() {
   };
 
   const handleEditTemplate = (template: Template) => {
+    setTemplatesOpen(true);
     setSelectedTemplateId(template.id);
     setEditingTemplateId(template.id);
     setTemplateName(template.name);
@@ -296,164 +298,7 @@ export default function TransientNotes() {
 
   return (
     <div className="space-y-8">
-      <section className="relative overflow-hidden rounded-3xl border border-cyan-400/20 bg-[radial-gradient(circle_at_top_left,_rgba(34,211,238,0.18),_transparent_35%),linear-gradient(135deg,rgba(8,47,73,0.85),rgba(15,23,42,0.95))] p-8 shadow-2xl shadow-cyan-950/30">
-        <div className="absolute inset-y-0 right-0 w-1/2 bg-[radial-gradient(circle_at_center,_rgba(56,189,248,0.12),_transparent_60%)]" />
-        <div className="relative grid gap-6 lg:grid-cols-[1.4fr_0.9fr]">
-          <div>
-            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.35em] text-cyan-200/70">
-              Transient Notes
-            </p>
-            <h2 className="mb-4 text-4xl font-bold text-white">記録しないためのメモ</h2>
-            <p className="max-w-2xl text-sm leading-7 text-slate-200/85">
-              思い出すためだけに使う、一日限定のノートです。テンプレートは残り、実行中のメモは当日が終わると自動で消えます。
-            </p>
-          </div>
-
-          <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-1">
-            <div className="rounded-2xl border border-white/10 bg-slate-950/35 p-4">
-              <p className="text-xs uppercase tracking-[0.25em] text-slate-400">Storage</p>
-              <p className="mt-2 text-lg font-semibold text-white">No history</p>
-              <p className="mt-1 text-sm text-slate-300">履歴保存なし / 検索対象外</p>
-            </div>
-            <div className="rounded-2xl border border-white/10 bg-slate-950/35 p-4">
-              <p className="text-xs uppercase tracking-[0.25em] text-slate-400">Daily Expiry</p>
-              <p className="mt-2 text-lg font-semibold text-white">{todayKey || getTodayKey()}</p>
-              <p className="mt-1 text-sm text-slate-300">日付が変わると当日ノートを破棄</p>
-            </div>
-            <div className="rounded-2xl border border-white/10 bg-slate-950/35 p-4">
-              <p className="text-xs uppercase tracking-[0.25em] text-slate-400">Purpose</p>
-              <p className="mt-2 text-lg font-semibold text-white">不安の解消</p>
-              <p className="mt-1 text-sm text-slate-300">記録ではなく、その瞬間の補助</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
       <section className="grid gap-6 xl:grid-cols-[1.1fr_0.9fr]">
-        <div className="rounded-3xl border border-dark-600 bg-dark-800/70 p-6">
-          <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
-            <div>
-              <p className="text-xs uppercase tracking-[0.28em] text-cyan-300/70">Templates</p>
-              <h3 className="mt-2 text-2xl font-semibold text-white">永続テンプレート</h3>
-              <p className="mt-1 text-sm text-gray-400">{templateCountLabel}</p>
-            </div>
-            <button
-              onClick={resetTemplateForm}
-              type="button"
-              className="rounded-full border border-dark-500 px-4 py-2 text-sm text-gray-300 transition-colors hover:border-cyan-400/40 hover:text-white"
-            >
-              新規作成
-            </button>
-          </div>
-
-          <div className="mb-6 space-y-3">
-            {templates.map((template) => (
-              <div
-                key={template.id}
-                className={`rounded-2xl border p-4 transition-colors ${
-                  selectedTemplateId === template.id
-                    ? 'border-cyan-400/50 bg-cyan-400/10'
-                    : 'border-dark-600 bg-dark-900/40'
-                }`}
-              >
-                <div className="flex flex-wrap items-start justify-between gap-3">
-                  <div className="flex-1 min-w-0">
-                    <button
-                      onClick={() => setSelectedTemplateId(template.id)}
-                      type="button"
-                      className="text-left"
-                    >
-                      <p className="text-lg font-semibold text-white">{template.name}</p>
-                      <p className="mt-1 text-sm text-gray-400">{template.summary}</p>
-                    </button>
-                  </div>
-                  <div className="flex gap-2">
-                    <button
-                      onClick={() => handleEditTemplate(template)}
-                      type="button"
-                      className="rounded-full border border-dark-500 px-3 py-1 text-xs text-gray-300 transition-colors hover:border-cyan-400/40 hover:text-white"
-                    >
-                      編集
-                    </button>
-                    <button
-                      onClick={() => handleDeleteTemplate(template.id)}
-                      type="button"
-                      className="rounded-full border border-red-500/30 px-3 py-1 text-xs text-red-300 transition-colors hover:bg-red-500/10"
-                    >
-                      削除
-                    </button>
-                  </div>
-                </div>
-                <ul className="mt-4 space-y-2">
-                  {template.items.map((item) => (
-                    <li key={item} className="flex items-center gap-3 text-sm text-gray-300">
-                      <span className="h-2 w-2 rounded-full bg-cyan-300/70" />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-
-          <div className="rounded-2xl border border-dark-600 bg-dark-900/50 p-5">
-            <h4 className="text-lg font-semibold text-white">
-              {editingTemplateId ? 'テンプレートを編集' : 'テンプレートを追加'}
-            </h4>
-            <div className="mt-4 grid gap-4">
-              <label className="grid gap-2 text-sm text-gray-300">
-                <span>テンプレート名</span>
-                <input
-                  ref={templateNameInputRef}
-                  type="text"
-                  value={templateName}
-                  onChange={(event) => setTemplateName(event.target.value)}
-                  placeholder="例: 外出前チェック"
-                  className="rounded-xl border border-dark-500 bg-dark-800 px-4 py-3 text-white outline-none transition-colors focus:border-cyan-400/50"
-                />
-              </label>
-              <label className="grid gap-2 text-sm text-gray-300">
-                <span>概要</span>
-                <input
-                  type="text"
-                  value={templateSummary}
-                  onChange={(event) => setTemplateSummary(event.target.value)}
-                  placeholder="例: その瞬間だけ確認したい内容"
-                  className="rounded-xl border border-dark-500 bg-dark-800 px-4 py-3 text-white outline-none transition-colors focus:border-cyan-400/50"
-                />
-              </label>
-              <label className="grid gap-2 text-sm text-gray-300">
-                <span>チェック項目</span>
-                <textarea
-                  value={templateItemsText}
-                  onChange={(event) => setTemplateItemsText(event.target.value)}
-                  rows={6}
-                  placeholder={'1行に1項目\n鍵を持った\n財布を持った\nスマホを持った'}
-                  className="rounded-xl border border-dark-500 bg-dark-800 px-4 py-3 text-white outline-none transition-colors focus:border-cyan-400/50"
-                />
-              </label>
-              <div className="flex flex-wrap gap-3">
-                <button
-                  onClick={handleSaveTemplate}
-                  type="button"
-                  className="rounded-full bg-cyan-400/15 px-5 py-2.5 text-sm font-medium text-cyan-200 transition-colors hover:bg-cyan-400/25"
-                >
-                  {editingTemplateId ? '更新する' : '追加する'}
-                </button>
-                {editingTemplateId && (
-                  <button
-                    onClick={resetTemplateForm}
-                    type="button"
-                    className="rounded-full border border-dark-500 px-5 py-2.5 text-sm text-gray-300 transition-colors hover:border-dark-400 hover:text-white"
-                  >
-                    キャンセル
-                  </button>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-
         <div className="rounded-3xl border border-dark-600 bg-dark-800/70 p-6">
           <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
             <div>
@@ -570,6 +415,152 @@ export default function TransientNotes() {
                 </article>
               ))}
             </div>
+          )}
+        </div>
+
+        <div className="rounded-3xl border border-dark-600 bg-dark-800/70 p-6">
+          <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <p className="text-xs uppercase tracking-[0.28em] text-cyan-300/70">Templates</p>
+              <h3 className="mt-2 text-2xl font-semibold text-white">テンプレート</h3>
+              <p className="mt-1 text-sm text-gray-400">{templateCountLabel}</p>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              <button
+                onClick={() => setTemplatesOpen((current) => !current)}
+                type="button"
+                className="rounded-full border border-dark-500 px-4 py-2 text-sm text-gray-300 transition-colors hover:border-cyan-400/40 hover:text-white"
+              >
+                {templatesOpen ? '閉じる' : '開く'}
+              </button>
+              <button
+                onClick={() => {
+                  setTemplatesOpen(true);
+                  resetTemplateForm();
+                }}
+                type="button"
+                className="rounded-full border border-dark-500 px-4 py-2 text-sm text-gray-300 transition-colors hover:border-cyan-400/40 hover:text-white"
+              >
+                新規作成
+              </button>
+            </div>
+          </div>
+
+          {templatesOpen && (
+            <>
+              <div className="mb-6 space-y-3">
+                {templates.map((template) => (
+                  <div
+                    key={template.id}
+                    className={`rounded-2xl border p-4 transition-colors ${
+                      selectedTemplateId === template.id
+                        ? 'border-cyan-400/50 bg-cyan-400/10'
+                        : 'border-dark-600 bg-dark-900/40'
+                    }`}
+                  >
+                    <div className="flex flex-wrap items-start justify-between gap-3">
+                      <div className="flex-1 min-w-0">
+                        <button
+                          onClick={() => setSelectedTemplateId(template.id)}
+                          type="button"
+                          className="text-left"
+                        >
+                          <p className="text-lg font-semibold text-white">{template.name}</p>
+                          <p className="mt-1 text-sm text-gray-400">{template.summary}</p>
+                        </button>
+                      </div>
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => handleEditTemplate(template)}
+                          type="button"
+                          className="rounded-full border border-dark-500 px-3 py-1 text-xs text-gray-300 transition-colors hover:border-cyan-400/40 hover:text-white"
+                        >
+                          編集
+                        </button>
+                        <button
+                          onClick={() => handleDeleteTemplate(template.id)}
+                          type="button"
+                          className="rounded-full border border-red-500/30 px-3 py-1 text-xs text-red-300 transition-colors hover:bg-red-500/10"
+                        >
+                          削除
+                        </button>
+                      </div>
+                    </div>
+                    <ul className="mt-4 space-y-2">
+                      {template.items.map((item) => (
+                        <li key={item} className="flex items-center gap-3 text-sm text-gray-300">
+                          <span className="h-2 w-2 rounded-full bg-cyan-300/70" />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+
+              <div className="rounded-2xl border border-dark-600 bg-dark-900/50 p-5">
+                <h4 className="text-lg font-semibold text-white">
+                  {editingTemplateId ? 'テンプレートを編集' : 'テンプレートを追加'}
+                </h4>
+                <div className="mt-4 grid gap-4">
+                  <label className="grid gap-2 text-sm text-gray-300">
+                    <span>テンプレート名</span>
+                    <input
+                      ref={templateNameInputRef}
+                      type="text"
+                      value={templateName}
+                      onChange={(event) => setTemplateName(event.target.value)}
+                      placeholder="例: 外出前チェック"
+                      className="rounded-xl border border-dark-500 bg-dark-800 px-4 py-3 text-white outline-none transition-colors focus:border-cyan-400/50"
+                    />
+                  </label>
+                  <label className="grid gap-2 text-sm text-gray-300">
+                    <span>概要</span>
+                    <input
+                      type="text"
+                      value={templateSummary}
+                      onChange={(event) => setTemplateSummary(event.target.value)}
+                      placeholder="例: その瞬間だけ確認したい内容"
+                      className="rounded-xl border border-dark-500 bg-dark-800 px-4 py-3 text-white outline-none transition-colors focus:border-cyan-400/50"
+                    />
+                  </label>
+                  <label className="grid gap-2 text-sm text-gray-300">
+                    <span>チェック項目</span>
+                    <textarea
+                      value={templateItemsText}
+                      onChange={(event) => setTemplateItemsText(event.target.value)}
+                      rows={6}
+                      placeholder={'1行に1項目\n鍵を持った\n財布を持った\nスマホを持った'}
+                      className="rounded-xl border border-dark-500 bg-dark-800 px-4 py-3 text-white outline-none transition-colors focus:border-cyan-400/50"
+                    />
+                  </label>
+                  <div className="flex flex-wrap gap-3">
+                    <button
+                      onClick={handleSaveTemplate}
+                      type="button"
+                      className="rounded-full bg-cyan-400/15 px-5 py-2.5 text-sm font-medium text-cyan-200 transition-colors hover:bg-cyan-400/25"
+                    >
+                      {editingTemplateId ? '更新する' : '追加する'}
+                    </button>
+                    {editingTemplateId && (
+                      <button
+                        onClick={resetTemplateForm}
+                        type="button"
+                        className="rounded-full border border-dark-500 px-5 py-2.5 text-sm text-gray-300 transition-colors hover:border-dark-400 hover:text-white"
+                      >
+                        キャンセル
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
+
+          {!templatesOpen && (
+            <p className="text-sm text-gray-500">
+              テンプレート一覧と編集フォームは閉じています。必要なときだけ開いてください。
+            </p>
           )}
         </div>
       </section>
