@@ -1,41 +1,118 @@
 {
-  "generatedAt": "2026-03-20T12:32:42.950Z",
+  "generatedAt": "2026-03-21T01:02:33.265Z",
   "feeds": {
     "hatena": {
       "items": [
         {
-          "title": "Anthropic社員のClaude Code活用術8選 — 公式情報から読み解く実践テクニック",
-          "link": "https://zenn.dev/happy_elements/articles/046faa4f61d98f",
-          "date": "2026-03-19T10:25:21Z",
-          "description": "ポイントは、これらが一回のプロンプトの工夫ではなく、 プロジェクト全体の「環境」として蓄積される ことです。調べていくうちに気づいたのは、これらのテクニックに共通するパターンがあるということ — ポッドキャストではこの考え方を「 複利的エンジニアリング 」（筆者訳、原文では compounding という表現）と表...",
+          "title": "iOS 27 / Xcode 27 の破壊的変更に備えて今から準備すべきこと | DevelopersIO",
+          "link": "https://dev.classmethod.jp/articles/ios27-xcode27-migration-preparation-guide/",
+          "date": "2026-03-20T09:53:41Z",
+          "description": "現在、iOS 26対応を進めているが、すでにiOS 27（2026年9月リリース予測）で予告されている破壊的変更が気になっている。特にLiquid Glassデザインの完全義務化とUISceneライフサイクルの強制適用は、対応を怠るとアプリが起動すらできなくなるリスクがある。 iOS 26の時点でAppleはこれらの変更を公式に予告しており、...",
           "source": "hatena"
         },
         {
-          "title": "結局、Appleも邪悪だった » p2ptk[.]org",
-          "link": "https://p2ptk.org/monopoly/5490",
-          "date": "2026-03-19T13:34:24Z",
-          "description": "以下の文章は、2025年10月5日付のコリイ・ドクトロウの「Apple’s unlawful evil」という記事を翻訳したものである。 Pluralistic Appleが、ICEBlockというアプリをApp Storeから削除した。このアプリは完全に合法であり、米国の各都市に住まう褐色の肌を持つ人々を違法に脅かす覆面拉致部隊の動きを追跡するツールだ。Ap...",
+          "title": "AI生成文から「AIくささ」を取り除く技術と、Claude Codeスキルに組み込むまでの話",
+          "link": "https://zenn.dev/m0370/articles/205c9340a418c3",
+          "date": "2026-03-20T11:32:14Z",
+          "description": "AIが書いた文章は、なぜバレるのか ChatGPTやClaudeに文章を書かせると、どこか「それっぽい」仕上がりになる。丁寧で、整っていて、読みやすい。でも何か引っかかる。その違和感の正体を、Wikipediaのコミュニティが体系的にまとめていることを最近知りました。 「Signs of AI writing」というページがそれです。WikiPr...",
           "source": "hatena"
         },
         {
-          "title": "90分で学び直すDNSとDNSSECの基本",
-          "link": "https://www.nic.ad.jp/ja/materials/iw/2025/proceedings/o1/o1-kaji-kuramochi-morishita.pdf",
-          "date": "2026-03-19T07:55:38Z",
-          "description": "90分で学び直す DNSとDNSSECの基本 2025年11月18日 Internet Week 2025 オンラインWeek 株式会社日本レジストリサービス（JPRS） 鍛冶 典彦・倉持 玲介・森下 泰宏 Copyright © 2025 株式会社日本レジストリサービス 1 講師自己紹介 • 鍛冶 典彦（かじ ふみひこ） – 所属：JPRS システム部 – 主な業務内容：権威DNSサー...",
+          "title": "3日50万円で作れるシステムに4ヵ月800万円かけれなくなっている - きしだのHatena",
+          "link": "https://nowokay.hatenablog.com/entry/2026/03/20/153412",
+          "date": "2026-03-20T07:16:10Z",
+          "description": "SIerに発注したら4ヵ月800万円という見積もりだったものをAI駆使してつくったら3日で50万円でできた、という話が話題になってました。 そこで、SIerでは作るものをちゃんと保証したりしていて文書化は大切である、みたいな指摘が入ってたりした。 でも、よく考えると、それって外注-受託において、作ると言ったものをち...",
           "source": "hatena"
         },
         {
-          "title": "GoogleのUIデザインツール「Stitch」がアップデートされてAIと話しながら高品質UIをサクッと作成可能に、Figmaの株価は下落",
-          "link": "https://gigazine.net/news/20260320-google-ai-stitch-ui-design/",
-          "date": "2026-03-19T21:59:04Z",
-          "description": "GoogleがUIデザインツールの「Stitch」に大幅なアップデートを施しました。アップデート版のStitchではAIに自然言語で指示を出すだけで高品質なUIを作ることが可能。日本でもすでに利用可能だったので実際に使ってみました。 Stitch - Design with AI https://stitch.withgoogle.com/ Design UI using AI with Stit",
+          "title": "【比較実験】AIにやさしいFigmaデザインとは？Claude Code×Figma MCPによるAIフロントコーディング「はじめの一歩」 - Qiita",
+          "link": "https://qiita.com/ta09nak/items/1190ec5575692f84e8cb",
+          "date": "2026-03-20T04:24:12Z",
+          "description": "また、Desktop・リモート関係なく、プランごとにMCPサーバーのツール呼び出し回数が制限されています DesktopとRemoteの使い分け AIに渡されるデータの質という観点では、どちらも差はありません。しかしながら、無料枠で気軽に使いたいという方にとってはRemote版が適していると言えます。「趣味でちょっとしたものを作...",
           "source": "hatena"
         },
         {
-          "title": "Claude Codeの使用率がステータスラインに表示できるようになったので表示用のスクリプトを作った話",
-          "link": "https://nyosegawa.com/posts/claude-code-statusline-rate-limits/",
-          "date": "2026-03-20T01:29:43Z",
-          "description": "こんにちは！逆瀬川 (@gyakuse) です！ Claude Code v2.1.80で待ちに待ったステータスライン用のrate_limitsフィールドが追加されました。これがないために本当にみんな頑張ってきたのです。本当につらい世界でした。 何が変わったのか 2026年3月19日リリースのv2.1.80で、ステータスラインに渡されるJSONにrate_limits...",
+          "title": "Microsoft、「Windows 11」のタスクバー移動機能復活や「Copilot」統合見直しを計画",
+          "link": "https://www.itmedia.co.jp/news/articles/2603/21/news021.html",
+          "date": "2026-03-20T23:03:10Z",
+          "description": "米Microsoftは3月20日（現地時間）、「Our commitment to Windows quality」（Windowsの品質に関するわれわれの取り組み）と題した公式ブログで、「Windows 11」で計画している改善点を説明した。あらゆるところにAI「Copilot」を組み込む方針の見直しや、Windows 11で削除されたタスクバーの移動機能の復活などだ。 Win...",
+          "source": "hatena"
+        },
+        {
+          "title": "9Bなのに120B超え!? Qwen3.5-9BがローカルAIの常識を変えた (1/5)",
+          "link": "https://ascii.jp/elem/000/004/378/4378807/",
+          "date": "2026-03-20T10:16:35Z",
+          "description": "2026年2月から3月にかけ、Alibaba傘下のQwenチームがLLM「Qwen3.5」シリーズを順次公開した。2月16日にフラッグシップのQwen3.5-397B-A17B（397Bパラメータ、うちアクティブ17B）を皮切りに、2月24日にMediumシリーズ（27B dense、35B-A3B、122B-A10B）、3月2日にSmallシリーズ（0.8B、2B、4B、9B）と段階的に展開。全",
+          "source": "hatena"
+        },
+        {
+          "title": "CO2は｢服の原料｣にしちゃえばいい。発想がスゴすぎる環境テクノロジー",
+          "link": "https://www.gizmodo.jp/2026/03/rubi_carbon_transformation_technology.html",
+          "date": "2026-03-20T11:00:43Z",
+          "description": "CO2は｢服の原料｣にしちゃえばいい。発想がスゴすぎる環境テクノロジー2026.03.20 08:00 かみやまたくみ Rubiは、回収した二酸化炭素から繊維素材を作ろうとしている米国のスタートアップです。できた繊維素材は服や身の回りの布を作るための原料になるというからすごい。Rubiは木材由来だけに頼らない新しい作り方を目指...",
+          "source": "hatena"
+        },
+        {
+          "title": "研究者のための生成AI活用",
+          "link": "https://www.cc.mie-u.ac.jp/~shirai/jp/doc/Shirai_GenAI_slide_2026_03_pub.html",
+          "date": "2026-03-20T10:27:23Z",
+          "description": "Previous slideNext slideToggle fullscreenToggle overview viewOpen presenter view",
+          "source": "hatena"
+        },
+        {
+          "title": "イスラエル",
+          "link": "https://anond.hatelabo.jp/20260320180826",
+          "date": "2026-03-20T09:09:59Z",
+          "description": "元々居場所がなくて、イギリスに騙される格好で精神的故郷に移住する（65万人） ← わからんでもない 第一次中東戦争 ← わからん、ただの侵略戦争 ナチスの件もあり、欧米がやけに優しい ← わかる 周辺国から常に狙われる ← それはそう 仕返しとばかりに他国を襲う ← わからん パレスチナ人を迫害、土地を奪う...",
+          "source": "hatena"
+        },
+        {
+          "title": "【レビュー】Apple Fitness+を1カ月続けた結果 自宅がジムになるありがたさ",
+          "link": "https://www.watch.impress.co.jp/docs/review/review/2093935.html",
+          "date": "2026-03-20T00:40:58Z",
+          "description": "",
+          "source": "hatena"
+        },
+        {
+          "title": "BIツールの進化先？！ DBを業務分析用のMCPサーバにしてBIを次世代にする - Qiita",
+          "link": "https://qiita.com/ssc-ksaitou/items/784cd48a88e4ab166f69",
+          "date": "2026-03-19T10:23:28Z",
+          "description": "はじめに AI時代におけるBIツールとは何かを考えていく中で、「AIにDBを繋げば、ダッシュボードを作り込まなくても誰でも手軽にデータ分析ができるのでは？」 と思い立ち、 DBに直接接続するMCPサーバを構築してみました。 DB+MCPといえば、ローカルで起動するMCPサーバのDBHubが既にありますが、今回はWeb上で認証など...",
+          "source": "hatena"
+        },
+        {
+          "title": "【緊急】GitHub/npmを汚染する「見えないコード」の脅威：GlassWorm対策 - Qiita",
+          "link": "https://qiita.com/sarubot/items/df077776b293163e0a42",
+          "date": "2026-03-20T07:46:27Z",
+          "description": "【緊急】GitHub/npmを汚染する「見えないコード」の脅威：GlassWormの全貌と対策を徹底解説 2026年3月、開発者コミュニティに激震が走りました。GitHub、npm、VSCode拡張機能など、私たちが日常的に信頼を置く400以上のリポジトリが「GlassWorm」と呼ばれるマルウェアによって汚染されたのです。 「公開されているパッケ...",
+          "source": "hatena"
+        },
+        {
+          "title": "セキュリティ監視システムを構築して攻撃検知のための手法までを学べる書籍が発売／『初心者のための実践セキュリティ 自宅ラボでの攻撃検知と防御』【Book Watch/ニュース】",
+          "link": "https://forest.watch.impress.co.jp/docs/bookwatch/news/2093441.html",
+          "date": "2026-03-18T22:02:55Z",
+          "description": "",
+          "source": "hatena"
+        },
+        {
+          "title": "2026年3月19日の Trivy 再侵害の概要と対応指針",
+          "link": "https://diary.shift-js.info/trivy-compromise/",
+          "date": "2026-03-20T12:22:38Z",
+          "description": "2026年3月19日、Aqua Security が提供するOSSセキュリティスキャナ Trivy のエコシステムが、3週間以内に2度目のサプライチェーン攻撃を受けました。攻撃者は aquasecurity/setup-trivy および aquasecurity/trivy-action の2つのGitHub Actionsに悪意あるコードを注入し、これらを利用するCI/CDパイプラインからクレ",
+          "source": "hatena"
+        },
+        {
+          "title": "gemini embedding 2 で \"資料単位のナレッジ化\" が容易に！？OCRできない見た目の知識をRAG化する",
+          "link": "https://zenn.dev/bekku/articles/5fcbeae4ec5afb",
+          "date": "2026-03-19T09:43:41Z",
+          "description": "2026年3月、Google から gemini-embedding-2-preview が登場しました。これは テキスト・画像・動画・音声・PDF を単一の埋め込み空間にマッピングできる、マルチモーダル embedding モデルです。 これを見て、個人的にかなり大きいと感じたのが、 「文字列として抽出しづらい情報にも、ナレッジを紐づけやすくなった」 ...",
+          "source": "hatena"
+        },
+        {
+          "title": "チャットGPTは同じ質問を繰り返すと答えが二転三転する。一貫性に欠けることが判明",
+          "link": "https://karapaia.com/archives/591726.html",
+          "date": "2026-03-20T10:19:19Z",
+          "description": "チャットGPTは、最新の研究論文に書かれた仮説が「研究で証明された（ホント）」か「否定された（ウソ）」かを当てるテストで、全く同じ質問をされても回答が二転三転し、その実力は最低ラインにとどまることが最新の研究で判明した。 ワシントン州立大学の研究チームが700以上の問いを10回ずつ繰り返したところ、AIは「...",
           "source": "hatena"
         },
         {
@@ -46,6 +123,69 @@
           "source": "hatena"
         },
         {
+          "title": "ブラウザのあらゆる操作にショートカットキーを設定できる「Shortkeys」",
+          "link": "https://gigazine.net/news/20260320-shortkeys/",
+          "date": "2026-03-20T08:50:44Z",
+          "description": "PCユーザーは初心者のうちこそOSやアプリのGUI操作にマウスのようなポインティングデバイスを頼るものの、ある程度操作に慣れてくるとキーボードショートカットキーを使用する頻度が増加する傾向にあります。一方、グラフィカルな要素の多いブラウザはあまりショートカットキーが整備されていない印象があり、かなり習熟...",
+          "source": "hatena"
+        },
+        {
+          "title": "Product management on the AI exponential | Claude",
+          "link": "https://claude.com/blog/product-management-on-the-ai-exponential",
+          "date": "2026-03-20T08:56:33Z",
+          "description": "Since Claude Sonnet 3.5 (new) in October 2024, I made a habit of testing every new model by asking Claude Code (an internal tool at the time) to add a table tool to Excalidraw. With each new model, Cl",
+          "source": "hatena"
+        },
+        {
+          "title": "RubyGems/Bundler における Cooldown 機能の議論と現状 - ANDPAD Tech Blog",
+          "link": "https://tech.andpad.co.jp/entry/2026/03/19/100000",
+          "date": "2026-03-19T01:34:26Z",
+          "description": "こんにちは、Ruby コミッタの柴田です。最近は暖かくなり、ガーデニングで栽培しているバラや藤の新芽や花芽が出てくる時期になってきたので、しっかり花を咲かせるように薬剤や肥料の準備をしなければ〜と必要なものの買い物計画を立てている真っ最中です。 今回はサプライチェーンセキュリティの対策として他のエコシ...",
+          "source": "hatena"
+        },
+        {
+          "title": "GitHub CopilotユーザーでもCodexできる！ GitHubが掲げるAgent HQを堪能しよう | ドクセル",
+          "link": "https://www.docswell.com/s/yuma/KY8WED-2026-03-19-codexmeetup",
+          "date": "2026-03-19T12:11:44Z",
+          "description": "[Codex Meetup Tokyo #1 ](https://aiau.connpass.com/event/384679/) のスライドです。 GitHub Copilot から利用できるCodexの話です",
+          "source": "hatena"
+        },
+        {
+          "title": "無料でIMAPメールボックスをまるごと別のIMAPに転送できる「imapsync」、Windows・Linux・Mac対応でGmailでも可能",
+          "link": "https://gigazine.net/news/20260320-imapsync/",
+          "date": "2026-03-20T11:21:21Z",
+          "description": "メールシステムの移行やバックアップは、環境ごとに仕様が異なり複雑になりがちです。Windows・Linux・Macで動作するIMAP転送ツールで、メールシステムの移行やバックアップを簡単に行える「imapsync」が公開されています。 Official imapsync migration tool ( release 2.314 ) https://imapsync.lamiral.info/ ",
+          "source": "hatena"
+        },
+        {
+          "title": "AIでスライド作成！Anthropic公式pptxスキル＋PptxGenJSテンプレート活用術 | DevelopersIO",
+          "link": "https://dev.classmethod.jp/articles/pptx-skill-with-slide-template/",
+          "date": "2026-03-16T04:50:17Z",
+          "description": "データ事業本部のueharaです。 今回は、Anthropic公式のpptxスキルと、PptxGenJSのテンプレートを活用し、AIでスライドを作成する方法をご紹介したいと思います。 Anthropic公式スキルとPptxGenJSについて Anthropicの公式スキルに、 pptx というパワーポイントのスライド生成用スキルがあります。 内部の処理的には、生...",
+          "source": "hatena"
+        },
+        {
+          "title": "形式手法特論：SMT ソルバで解く認可ポリシの静的解析 #kernelvm / Kernel VM Study Tsukuba No3",
+          "link": "https://speakerdeck.com/ytaka23/kernel-vm-study-tsukuba-no3",
+          "date": "2026-03-20T07:38:26Z",
+          "description": "Kernel/VM 探検隊@つくば No3 で使用したスライドです。",
+          "source": "hatena"
+        },
+        {
+          "title": "Goで値オブジェクトをどこまで作るべきか〜コスパの良いDDD戦術設計〜",
+          "link": "https://zenn.dev/135yshr/articles/98473f8e119657",
+          "date": "2026-03-19T05:49:20Z",
+          "description": "本記事はDDD/クリーンアーキテクチャ連載の一部です。Goで値オブジェクト（Value Object）をどの粒度で作るべきかについて、実務での判断基準を紹介します。各セクションの根拠となる一次情報源は、該当箇所に参照リンクを記載しています。 DDDの戦術設計を学ぶと、「プリミティブ型をそのまま使わず、値オブジェクトに...",
+          "source": "hatena"
+        },
+        {
+          "title": "JavaにJavaScriptとPythonが合体。JSエンジン「V8」とPythonランタイム「CPython」組み込む「Project Detroit」をオラクルが発表 | テクノエッジ TechnoEdge",
+          "link": "https://www.techno-edge.net/article/2026/03/20/4942.html",
+          "date": "2026-03-20T09:19:12Z",
+          "description": "ITジャーナリスト／Publickeyブロガー。IT系の雑誌編集者、オンラインメディア発行人を経て独立。2009年にPublickeyを開始しました。 オラクルは、カリフォルニア州レッドウッドシティで開幕したイベント「JavaOne 2026」で、「Project Detroit」（以下、Detroit）をOpenJDKのプロジェクトプロポーザル（プロジェクト提...",
+          "source": "hatena"
+        },
+        {
           "title": "楽天がGPT-4o超えの「Rakuten AI 3.0」を無償公開！日本語性能で世界最高峰を圧倒 | DXマガジン",
           "link": "https://dxmagazine.jp/news/2611mm16/",
           "date": "2026-03-20T03:25:48Z",
@@ -53,122 +193,17 @@
           "source": "hatena"
         },
         {
-          "title": "GitHubリポジトリが静かに書き換えられる ── GlassWormサプライチェーン攻撃の全容と防御策 - Qiita",
-          "link": "https://qiita.com/nogataka/items/9952280fe6fddfd14ddf",
-          "date": "2026-03-20T04:23:05Z",
-          "description": "Deleted articles cannot be recovered. Draft of this article would be also deleted. Are you sure you want to delete this article? あなたのリポジトリは本当に安全ですか 2026年3月8日、数百のGitHub Pythonリポジトリが静かに改ざんされました。コミットメッセー",
+          "title": "LLMにちゃんと“電卓と検索”を使わせるには — ReActスタイルのツール利用・実装入門",
+          "link": "https://zenn.dev/lluminai_tech/articles/ae5020da567bcd",
+          "date": "2026-03-20T00:58:30Z",
+          "description": "はじめに ルミナイR&Dチームの栗原です。 最近の LLM は、テキストを出すだけでなく、 電卓 Web 検索 社内 API データベース など、**外部ツールを叩きながらタスクをこなす「エージェント」**として使われることが増えています。 ただ、 「いつツールを呼ぶべきか？」 「どの引数で呼ぶべきか？」 「ツールの結果をどう...",
           "source": "hatena"
         },
         {
-          "title": "CodexのBestPracticeを学ぶ会",
-          "link": "https://zenn.dev/microsoft/articles/codex_best_practice",
-          "date": "2026-03-19T08:37:05Z",
-          "description": "はじめに 本記事はCodexの始め方と、より良い結果を得るための実証済みの方法を紹介します。 Codexやコーディングエージェントは昨今非常に多くの方から注目されており、多くの人が「とりあえず使ってみる」段階に入っています。 この記事は、そんな「とりあえず使ってみる」フェーズを超えて、使いこなすフェーズに入る...",
-          "source": "hatena"
-        },
-        {
-          "title": "OpenAI、Astralを買収 Python開発支援ツール「Ruff」「uv」を「Codex」へ統合",
-          "link": "https://www.itmedia.co.jp/news/articles/2603/20/news024.html",
-          "date": "2026-03-19T23:58:35Z",
-          "description": "米OpenAIは3月19日（現地時間）、Python開発者向けの高速なツール群を提供する米Astralを買収することで合意したと発表した。買収総額などの取引の詳細は公表されていない。 買収の主な目的は、OpenAIのプログラミング支援AI「Codex」の成長を加速させ、単なるコード生成にとどまらず、コードベースの変更計画やツールの...",
-          "source": "hatena"
-        },
-        {
-          "title": "個人的開発環境 2026春",
-          "link": "https://zenn.dev/nokogiri/articles/2026-dev-environment",
-          "date": "2026-03-19T13:05:17Z",
-          "description": "きっかけ （会社の）M5 MacBookPro が届いたのでせっかくなので環境を0から作る!!! 実現したいこと Mac の zsh 環境を整備して、以下を実現する。 実際に作成したものは以下のリポジトリにまとめた。 設定ファイルは dotfiles としてリポジトリで管理し、シンボリックリンクで反映する。 Ctrl+q でディレクトリをインタ...",
-          "source": "hatena"
-        },
-        {
-          "title": "Blueskyが1億ドルの資金調達を事後公表 AT Protocolの基盤構築を加速",
-          "link": "https://www.itmedia.co.jp/news/articles/2603/20/news026.html",
-          "date": "2026-03-20T02:15:34Z",
-          "description": "米Blueskyは3月19日（現地時間）、昨年4月にシリーズB資金調達ラウンドで1億ドルを調達していたと発表した。主幹事はBain Capital Cryptoで、Alumni Ventures、Anthos Capital、Bloomberg Beta、Knight Foundation、True Venturesが参加した。企業評価額は公表していない。 同社は、2024年10月にシリーズA増資",
-          "source": "hatena"
-        },
-        {
-          "title": "GACKTから着信してびっくり？ 新アプリ「POPOPO」の所感と、ライブ配信の通知で感心した“ズル賢い正攻法”",
-          "link": "https://www.itmedia.co.jp/mobile/articles/2603/19/news125.html",
-          "date": "2026-03-19T13:04:16Z",
-          "description": "3Dアバターを使ったスマートフォン向け通話アプリ「POPOPO」が3月18日にリリースされた。ニコニコ動画でタッグを組んでいた西村博之（ひろゆき）氏と川上量生氏らが仕掛ける新サービスということで、ネット上の一部で話題になっている。 筆者はリリース当初から実際にアプリを試しているが、まず感心したのはライブ配信...",
-          "source": "hatena"
-        },
-        {
-          "title": "【特集】 Raspberry PiがレトロPCの光学ドライブに早変わり！USBODE導入ガイド",
-          "link": "https://pc.watch.impress.co.jp/docs/topic/feature/2094459.html",
-          "date": "2026-03-19T23:34:31Z",
-          "description": "",
-          "source": "hatena"
-        },
-        {
-          "title": "【非エンジニアのためのClaude/ClaudeCodeシリーズ 】 Anthropic公式の\"salesプラグイン\"全部試してみた | DevelopersIO",
-          "link": "https://dev.classmethod.jp/articles/claude_plugin_sales/",
-          "date": "2026-03-20T00:43:50Z",
-          "description": "",
-          "source": "hatena"
-        },
-        {
-          "title": "令和最新版 GoでのDockerfile / Docker Composeの書き方",
-          "link": "https://zenn.dev/yashikota/articles/cb4a49553bd368",
-          "date": "2026-03-19T23:07:19Z",
-          "description": "GoでよくDockerfileとComposeを書いてるんですが、いい感じの書き方が固まってきたので共有します。 コード例 もあるのでご自由にどうぞ！ 1. マルチステージビルドにする もう当たり前だと思うので割愛しますが、マルチステージビルドは必須です。 ビルドに必要なものと、実行に必要なものを分けるだけで、最終イメージ...",
-          "source": "hatena"
-        },
-        {
-          "title": "Java歴21年のエンジニアが同じAPIをJava・Go・Rust・Kotlinで実装して徹底比較した",
-          "link": "https://zenn.dev/netfishx/articles/4ee8f57d8a8ec7",
-          "date": "2026-03-19T09:51:19Z",
-          "description": "はじめに 筆者はJava歴21年のバックエンドエンジニアです。現在は日本のIT企業で働きながら、自社プロダクト（短動画プラットフォーム）のバックエンドを開発しています。 元々Spring Bootで構築していた本番環境をGoに移行し、さらにRustで書き直しました。その過程で「ちゃんと数字で比較したい」と思い、同じAPIをKot...",
-          "source": "hatena"
-        },
-        {
-          "title": "タスク管理もミーティングメモも Obsidian に自動で集まる仕組みを作った",
-          "link": "https://zenn.dev/fukurou_labo/articles/obsidian_google_calendar",
-          "date": "2026-03-20T00:12:03Z",
-          "description": "こんにちは、フクロウラボの満江です。 かなり乗り遅れた感はあるんですが、最近 Obsidian に入門して「タスク・議事録・日報・メモ」等々の管理を行っています。 所感としては、自分好みにカスタマイズ出来る点が非常に良いですね。最高です。 とはいえ、「毎日 Daily Note を作成して、前日のタスクをコピーしつつ Goo...",
-          "source": "hatena"
-        },
-        {
-          "title": "業務アプリのフロントエンド負債と向き合い、Tailwind CSS から Panda CSS への移行を決めた話",
-          "link": "https://zenn.dev/levtech/articles/frontend-kaizen-pandacss",
-          "date": "2026-03-19T23:04:23Z",
-          "description": "はじめに はじめまして。2025 年 10 月より、レバテック開発部にジョインした早川です。 私たちのチームでは、社内業務を効率化するための Web アプリケーションを Next.js（App Router）+ TypeScript で開発しています。フロントエンドのスタイリングには Tailwind CSS を採用しており、プロジェクト開始から 1 年半が...",
-          "source": "hatena"
-        },
-        {
-          "title": "クリーンアーキテクチャの同心円図が伝えきれないこと〜本当に大事な依存性の方向〜",
-          "link": "https://zenn.dev/135yshr/articles/808fbfe6b7db3d",
-          "date": "2026-03-19T01:49:30Z",
-          "description": "本記事は「DDD / クリーンアーキテクチャ」連載の1つです。クリーンアーキテクチャの同心円図にまつわる誤解を解き、本当に重要な「依存性の方向」と依存性逆転の原則（DIP）を解説します。各セクションの根拠となる一次情報源は、該当箇所に参照リンクを記載しています。 クリーンアーキテクチャといえば、あの同心円図...",
-          "source": "hatena"
-        },
-        {
-          "title": "マイクロソフトに『フリック入力』を売った発明家の「ビッグテックを本気にさせた」特許戦略 | Forbes JAPAN 公式サイト（フォーブス ジャパン）",
-          "link": "https://forbesjapan.com/articles/detail/93104",
-          "date": "2026-03-18T23:21:52Z",
-          "description": "発明家・弁理士の小川コータ氏はスマホの「フリック入力」の発明者として知られる。まさに「令和の女子高生がすごいスピードで文字入力している」あの風景は、小川氏の発明にこそ起因するのである。 氏にはフリック入力のほか「薄い財布『FINALE』シリーズ」「ベルトが吸い込まれるバッグ『シューベルト』」「上に開いて...",
-          "source": "hatena"
-        },
-        {
-          "title": "Introducing Composer 2 · Cursor",
-          "link": "https://cursor.com/blog/composer-2",
-          "date": "2026-03-19T17:27:20Z",
-          "description": "These quality improvements come from our first continued pretraining run, which provides a far stronger base to scale our reinforcement learning. From this base, we train on long-horizon coding tasks ",
-          "source": "hatena"
-        },
-        {
-          "title": "CHUWI、またまたCPU偽装（3機種目）。AMD激おこ、法的措置示唆 - すまほん!!",
-          "link": "https://smhn.info/202603-chuwi-pc-cpu-model-fraud-amd-legal-action",
-          "date": "2026-03-19T07:40:51Z",
-          "description": "ついにAMDも反応。 CPUの型番を偽装して販売する行為は、消費者にとって極めて悪質です。しかも今回は1機種ではなく、少なくともCHUWIの3製品が対象。 AMDも声明を出し、関係者に対する法的措置を講じる権利を留保すると表明したと、Tom’s Hardwareなどが伝えています。 事の発端は、中国のPCメーカーCHUWIが販売するノ...",
-          "source": "hatena"
-        },
-        {
-          "title": "大井町駅直結「OIMACHI TRACKS」を見てきた 眼前に車両基地を望む",
-          "link": "https://www.watch.impress.co.jp/docs/news/2094975.html",
-          "date": "2026-03-19T23:28:28Z",
-          "description": "",
+          "title": "Push events into a running session with channels - Claude Code Docs",
+          "link": "https://code.claude.com/docs/en/channels",
+          "date": "2026-03-20T02:09:11Z",
+          "description": "Use channels to push messages, alerts, and webhooks into your Claude Code session from an MCP server. Forward CI results, chat messages, and monitoring events so Claude can react while you’re away. Ch",
           "source": "hatena"
         },
         {
@@ -177,410 +212,466 @@
           "date": "2026-03-20T06:47:25Z",
           "description": "幣束 @goshuinchou 台湾のスーパーにて「乖乖(グァイグァイ)」を買ってきました。これは何種類も味があり期間や地域限定味などもある台湾で人気のスナック菓子なのですが、台湾で非常に広く信じられている現代の風習俗信として、この緑色の乖乖(ココナッツ味)をPCの横に置いておくと誤作動やトラブルが起こらない、と信...",
           "source": "hatena"
-        },
-        {
-          "title": "Anthropic公式「Skills完全ガイド」を読んだら、自分のSKILL.mdのトークン消費を40%減らせた - Qiita",
-          "link": "https://qiita.com/yurukusa/items/f69920b4a02cf7e2988c",
-          "date": "2026-03-19T11:59:39Z",
-          "description": "Deleted articles cannot be recovered. Draft of this article would be also deleted. Are you sure you want to delete this article?",
-          "source": "hatena"
-        },
-        {
-          "title": "私のMacには6人の社員がいる｜川崎 裕一 / マネタイズおじさん",
-          "link": "https://note.com/yukawasa/n/n1104687abec6",
-          "date": "2026-02-26T06:56:30Z",
-          "description": "この一週間、ChatGPTを開いていない。Geminiも開いていない。Claudeのチャット画面すら開いていない。 代わりに私が毎秒触れているのは、ターミナルだ。黒い画面にコマンドを打ち込み、AIエージェントに指示を出す。彼らは指示を受け取り、実行し、成果物を返す。ファイルを作り、コードを書き、リサーチをまとめ、メー...",
-          "source": "hatena"
-        },
-        {
-          "title": "Claude Codeに特化したデザインシステムを作って工夫したこと｜坪田 朋",
-          "link": "https://blog.tsubotax.com/n/n6f3701611d98",
-          "date": "2026-03-16T07:10:23Z",
-          "description": "こんにちは、坪田です。 前回のClaude記事で触れた、Claude CodeやAI最適化したデザインシステムを作ってみたのでまとめです。 Claude Codeが生成するUIの品質が安定しない課題最初の頃は、何か作っても 「いかにもAIが作りました」感のあるデザインで生成されてしまう ストレスがあって、例えば、コンポーネントに強め...",
-          "source": "hatena"
-        },
-        {
-          "title": "【2026年最新版】ローカルLLM（Ollama）で完全オフラインAI開発環境を作る - Qiita",
-          "link": "https://qiita.com/miruky/items/026aeee6b59f78df5e9d",
-          "date": "2026-03-18T04:10:09Z",
-          "description": "はじめに こんばんは、mirukyです。 今回は、ローカルLLMをテーマに、完全オフラインで動作するAI開発環境をゼロから構築していきます。 ChatGPTやClaude、Geminiなどのクラウド型AIは非常に便利ですが、こんな課題を感じたことはありませんか？ ソースコードや社内情報をクラウドに送りたくない APIの従量課金が地味に...",
-          "source": "hatena"
-        },
-        {
-          "title": "仕様駆動開発(SDD)から、意図駆動開発(IDD)へ",
-          "link": "https://zenn.dev/yamaken0107/articles/2b3d2a0b059aa0",
-          "date": "2026-03-19T09:44:56Z",
-          "description": "SDDを実践すると起こること 仕様を定義する際に、How（実装の詳細）が仕様書に入り込む。そしてしばしば、Howのボリュームは大きくなりがちである。実装フェーズに入る前に、仕様レビューに時間がかかり、本来のエージェント開発の持つスピード感を得られない感覚に陥る。 SDDから、IDDへ SDDの問題とは、仕様書にHowが...",
-          "source": "hatena"
         }
       ],
-      "fetchedAt": "2026-03-20T12:32:43.077Z",
+      "fetchedAt": "2026-03-21T01:02:33.431Z",
       "error": null
     },
     "hackernews": {
       "items": [
         {
-          "title": "Delphi 13.1 Released, with ARM64 support",
-          "link": "https://blogs.embarcadero.com/announcing-the-availability-of-rad-studio-13-florence-update-1/",
-          "date": "Fri, 20 Mar 2026 11:45:20 +0000",
-          "description": "Article URL: https://blogs.embarcadero.com/announcing-the-availability-of-rad-studio-13-florence-update-1/ Comments URL: https://news.ycombinator.com/item?id=47453261 Points: 7 # Comments: 0",
+          "title": "Linux Applications Programming by Example: The Fundamental APIs (2nd Edition)",
+          "link": "https://github.com/arnoldrobbins/LinuxByExample-2e",
+          "date": "Fri, 20 Mar 2026 23:57:22 +0000",
+          "description": "Article URL: https://github.com/arnoldrobbins/LinuxByExample-2e Comments URL: https://news.ycombinator.com/item?id=47462483 Points: 12 # Comments: 0",
+          "source": "hackernews"
+        },
+        {
+          "title": "Why I'm Not Worried About Running Out of Work in the Age of AI",
+          "link": "https://kellblog.com/2026/03/19/why-im-not-worried-about-running-out-of-work-in-the-age-of-ai/",
+          "date": "Fri, 20 Mar 2026 23:33:48 +0000",
+          "description": "Article URL: https://kellblog.com/2026/03/19/why-im-not-worried-about-running-out-of-work-in-the-age-of-ai/ Comments URL: https://news.ycombinator.com/item?id=47462298 Points: 26 # Comments: 18",
+          "source": "hackernews"
+        },
+        {
+          "title": "Show HN: Red Grid Link – peer-to-peer team tracking over Bluetooth, no servers",
+          "link": "https://github.com/RedGridTactical/RedGridLink",
+          "date": "Fri, 20 Mar 2026 22:25:51 +0000",
+          "description": "I go on a lot of backcountry trips where I barely get cell service. If my group splits, nobody knows knows where anyone is until you regroup at camp or at your destination. You can buy Garmin radios o",
+          "source": "hackernews"
+        },
+        {
+          "title": "Ghostling",
+          "link": "https://github.com/ghostty-org/ghostling",
+          "date": "Fri, 20 Mar 2026 22:11:37 +0000",
+          "description": "Article URL: https://github.com/ghostty-org/ghostling Comments URL: https://news.ycombinator.com/item?id=47461378 Points: 56 # Comments: 9",
+          "source": "hackernews"
+        },
+        {
+          "title": "Show HN: We built a terminal-only Bluesky / AT Proto client written in Fortran",
+          "link": "https://github.com/FormerLab/fortransky",
+          "date": "Fri, 20 Mar 2026 22:06:51 +0000",
+          "description": "Yes, that Fortran. Comments URL: https://news.ycombinator.com/item?id=47461321 Points: 34 # Comments: 26",
+          "source": "hackernews"
+        },
+        {
+          "title": "We rewrote our Rust WASM Parser in TypeScript – and it got 3x Faster",
+          "link": "https://www.openui.com/blog/rust-wasm-parser",
+          "date": "Fri, 20 Mar 2026 21:48:06 +0000",
+          "description": "Article URL: https://www.openui.com/blog/rust-wasm-parser Comments URL: https://news.ycombinator.com/item?id=47461094 Points: 76 # Comments: 49",
+          "source": "hackernews"
+        },
+        {
+          "title": "Discontinuation and reinitiation of dual-labeled GLP-1 receptor agonists",
+          "link": "https://nautil.us/whiplash-heart-attack-and-stroke-risk-jumps-when-people-stop-taking-glp-1s-1279029",
+          "date": "Fri, 20 Mar 2026 21:42:16 +0000",
+          "description": "Study: https://pubmed.ncbi.nlm.nih.gov/39888616/ Comments URL: https://news.ycombinator.com/item?id=47461018 Points: 52 # Comments: 64",
+          "source": "hackernews"
+        },
+        {
+          "title": "Show HN: Baltic shadow fleet tracker – live AIS, cable proximity alerts",
+          "link": "https://github.com/FormerLab/shadow-fleet-tracker-light",
+          "date": "Fri, 20 Mar 2026 21:04:11 +0000",
+          "description": "Article URL: https://github.com/FormerLab/shadow-fleet-tracker-light Comments URL: https://news.ycombinator.com/item?id=47460528 Points: 28 # Comments: 6",
+          "source": "hackernews"
+        },
+        {
+          "title": "OpenCode – The open source AI coding agent",
+          "link": "https://opencode.ai/",
+          "date": "Fri, 20 Mar 2026 21:03:52 +0000",
+          "description": "Article URL: https://opencode.ai/ Comments URL: https://news.ycombinator.com/item?id=47460525 Points: 365 # Comments: 179",
+          "source": "hackernews"
+        },
+        {
+          "title": "A Japanese Glossary of Chopsticks Faux Pas",
+          "link": "https://www.nippon.com/en/japan-data/h01362/",
+          "date": "Fri, 20 Mar 2026 20:54:57 +0000",
+          "description": "Article URL: https://www.nippon.com/en/japan-data/h01362/ Comments URL: https://news.ycombinator.com/item?id=47460452 Points: 97 # Comments: 92",
+          "source": "hackernews"
+        },
+        {
+          "title": "NumKong: 2'000 Mixed Precision Kernels for All",
+          "link": "https://ashvardanian.com/posts/numkong/",
+          "date": "Fri, 20 Mar 2026 19:29:39 +0000",
+          "description": "Article URL: https://ashvardanian.com/posts/numkong/ Comments URL: https://news.ycombinator.com/item?id=47459447 Points: 25 # Comments: 0",
+          "source": "hackernews"
+        },
+        {
+          "title": "Our commitment to Windows quality",
+          "link": "https://blogs.windows.com/windows-insider/2026/03/20/our-commitment-to-windows-quality/",
+          "date": "Fri, 20 Mar 2026 19:16:13 +0000",
+          "description": "Article URL: https://blogs.windows.com/windows-insider/2026/03/20/our-commitment-to-windows-quality/ Comments URL: https://news.ycombinator.com/item?id=47459296 Points: 367 # Comments: 657",
+          "source": "hackernews"
+        },
+        {
+          "title": "Attention Residuals",
+          "link": "https://github.com/MoonshotAI/Attention-Residuals",
+          "date": "Fri, 20 Mar 2026 18:23:41 +0000",
+          "description": "Article URL: https://github.com/MoonshotAI/Attention-Residuals Comments URL: https://news.ycombinator.com/item?id=47458595 Points: 113 # Comments: 19",
+          "source": "hackernews"
+        },
+        {
+          "title": "Show HN: I made an email app inspired by Arc browser",
+          "link": "https://demo.define.app",
+          "date": "Fri, 20 Mar 2026 18:06:20 +0000",
+          "description": "Email is one of those tools we check daily but its underlying experience didn’t evolve much. I use Gmail, as probably most of you reading this. The Arc browser brought joy and taste to browsing the we",
+          "source": "hackernews"
+        },
+        {
+          "title": "Launch HN: Sitefire (YC W26) – Automating actions to improve AI visibility",
+          "link": "https://news.ycombinator.com/item?id=47457472",
+          "date": "Fri, 20 Mar 2026 17:05:38 +0000",
+          "description": "Hi HN! We're Vincent and Jochen from sitefire ( https://sitefire.ai ). Our platform makes it easy for brands to improve their visibility in AI search. We’ve been working together for years and have ba",
+          "source": "hackernews"
+        },
+        {
+          "title": "Meme Buildings",
+          "link": "https://misfitsarchitecture.com/2026/03/15/meme-buildings/",
+          "date": "Fri, 20 Mar 2026 15:55:40 +0000",
+          "description": "Article URL: https://misfitsarchitecture.com/2026/03/15/meme-buildings/ Comments URL: https://news.ycombinator.com/item?id=47456421 Points: 18 # Comments: 1",
+          "source": "hackernews"
+        },
+        {
+          "title": "The Social Smolnet",
+          "link": "https://ploum.net/2026-03-20-social-smolnet.html",
+          "date": "Fri, 20 Mar 2026 13:02:19 +0000",
+          "description": "Article URL: https://ploum.net/2026-03-20-social-smolnet.html Comments URL: https://news.ycombinator.com/item?id=47453947 Points: 107 # Comments: 12",
+          "source": "hackernews"
+        },
+        {
+          "title": "France's aircraft carrier located in real time by Le Monde through fitness app",
+          "link": "https://www.lemonde.fr/en/international/article/2026/03/20/stravaleaks-france-s-aircraft-carrier-located-in-real-time-by-le-monde-through-fitness-app_6751640_4.html",
+          "date": "Fri, 20 Mar 2026 13:01:56 +0000",
+          "description": "Article URL: https://www.lemonde.fr/en/international/article/2026/03/20/stravaleaks-france-s-aircraft-carrier-located-in-real-time-by-le-monde-through-fitness-app_6751640_4.html Comments URL: https://",
           "source": "hackernews"
         },
         {
           "title": "Entso-E final report on Iberian 2025 blackout",
           "link": "https://www.entsoe.eu/publications/blackout/28-april-2025-iberian-blackout/",
           "date": "Fri, 20 Mar 2026 11:03:27 +0000",
-          "description": "Article URL: https://www.entsoe.eu/publications/blackout/28-april-2025-iberian-blackout/ Comments URL: https://news.ycombinator.com/item?id=47452955 Points: 18 # Comments: 0",
+          "description": "Article URL: https://www.entsoe.eu/publications/blackout/28-april-2025-iberian-blackout/ Comments URL: https://news.ycombinator.com/item?id=47452955 Points: 170 # Comments: 74",
           "source": "hackernews"
         },
         {
-          "title": "3M's PFAS exit killed the supply chain for two-phase immersion cooling in DCs",
-          "link": "https://thecoolingreport.com/intel.html",
-          "date": "Fri, 20 Mar 2026 10:46:15 +0000",
-          "description": "Article URL: https://thecoolingreport.com/intel.html Comments URL: https://news.ycombinator.com/item?id=47452828 Points: 28 # Comments: 10",
-          "source": "hackernews"
-        },
-        {
-          "title": "Show HN: Sonar – A tiny CLI to see and kill whatever's running on localhost",
-          "link": "https://github.com/RasKrebs/sonar",
-          "date": "Fri, 20 Mar 2026 09:59:56 +0000",
-          "description": "Article URL: https://github.com/RasKrebs/sonar Comments URL: https://news.ycombinator.com/item?id=47452515 Points: 7 # Comments: 3",
-          "source": "hackernews"
-        },
-        {
-          "title": "Cursor Composer 2 is just Kimi K2.5 with RL",
-          "link": "https://twitter.com/fynnso/status/2034706304875602030",
-          "date": "Fri, 20 Mar 2026 09:41:51 +0000",
-          "description": "Article URL: https://twitter.com/fynnso/status/2034706304875602030 Comments URL: https://news.ycombinator.com/item?id=47452404 Points: 120 # Comments: 56",
-          "source": "hackernews"
-        },
-        {
-          "title": "The Soul of a Pedicab Driver",
-          "link": "https://www.sheldonbrown.com/pedicab.html",
-          "date": "Fri, 20 Mar 2026 09:40:56 +0000",
-          "description": "Article URL: https://www.sheldonbrown.com/pedicab.html Comments URL: https://news.ycombinator.com/item?id=47452399 Points: 30 # Comments: 4",
-          "source": "hackernews"
-        },
-        {
-          "title": "FSFE supporters affected: Payment provider Nexi cancelled us",
-          "link": "https://fsfe.org/news/2026/news-20260316-01.en.html",
-          "date": "Fri, 20 Mar 2026 07:09:07 +0000",
-          "description": "Article URL: https://fsfe.org/news/2026/news-20260316-01.en.html Comments URL: https://news.ycombinator.com/item?id=47451429 Points: 82 # Comments: 19",
-          "source": "hackernews"
-        },
-        {
-          "title": "ArXiv Declares Independence from Cornell",
-          "link": "https://www.science.org/content/article/arxiv-pioneering-preprint-server-declares-independence-cornell",
-          "date": "Fri, 20 Mar 2026 04:24:11 +0000",
-          "description": "Article URL: https://www.science.org/content/article/arxiv-pioneering-preprint-server-declares-independence-cornell Comments URL: https://news.ycombinator.com/item?id=47450478 Points: 388 # Comments: ",
-          "source": "hackernews"
-        },
-        {
-          "title": "Full Disclosure: A Third (and Fourth) Azure Sign-In Log Bypass Found",
-          "link": "https://trustedsec.com/blog/full-disclosure-a-third-and-fourth-azure-sign-in-log-bypass-found",
-          "date": "Fri, 20 Mar 2026 01:09:45 +0000",
-          "description": "Article URL: https://trustedsec.com/blog/full-disclosure-a-third-and-fourth-azure-sign-in-log-bypass-found Comments URL: https://news.ycombinator.com/item?id=47448994 Points: 175 # Comments: 46",
-          "source": "hackernews"
-        },
-        {
-          "title": "Drugwars for the TI-82/83/83 Calculators (2011)",
-          "link": "https://gist.github.com/mattmanning/1002653/b7a1e88479a10eaae3bd5298b8b2c86e16fb4404",
-          "date": "Fri, 20 Mar 2026 00:26:47 +0000",
-          "description": "Article URL: https://gist.github.com/mattmanning/1002653/b7a1e88479a10eaae3bd5298b8b2c86e16fb4404 Comments URL: https://news.ycombinator.com/item?id=47448566 Points: 171 # Comments: 58",
-          "source": "hackernews"
-        },
-        {
-          "title": "Push events into a running session with channels",
-          "link": "https://code.claude.com/docs/en/channels",
-          "date": "Fri, 20 Mar 2026 00:22:08 +0000",
-          "description": "Article URL: https://code.claude.com/docs/en/channels Comments URL: https://news.ycombinator.com/item?id=47448524 Points: 352 # Comments: 206",
-          "source": "hackernews"
-        },
-        {
-          "title": "Be intentional about how AI changes your codebase",
-          "link": "https://aicode.swerdlow.dev",
-          "date": "Thu, 19 Mar 2026 21:23:24 +0000",
-          "description": "Article URL: https://aicode.swerdlow.dev Comments URL: https://news.ycombinator.com/item?id=47446373 Points: 136 # Comments: 61",
-          "source": "hackernews"
-        },
-        {
-          "title": "Cockpit is a web-based graphical interface for servers",
-          "link": "https://github.com/cockpit-project/cockpit",
-          "date": "Thu, 19 Mar 2026 20:33:02 +0000",
-          "description": "Article URL: https://github.com/cockpit-project/cockpit Comments URL: https://news.ycombinator.com/item?id=47445599 Points: 278 # Comments: 159",
-          "source": "hackernews"
-        },
-        {
-          "title": "Clockwise acquired by Salesforce",
-          "link": "https://www.getclockwise.com",
-          "date": "Thu, 19 Mar 2026 19:50:51 +0000",
-          "description": "Article URL: https://www.getclockwise.com Comments URL: https://news.ycombinator.com/item?id=47444906 Points: 127 # Comments: 61",
-          "source": "hackernews"
-        },
-        {
-          "title": "Noq: n0's new QUIC implementation in Rust",
-          "link": "https://www.iroh.computer/blog/noq-announcement",
-          "date": "Thu, 19 Mar 2026 18:17:15 +0000",
-          "description": "Article URL: https://www.iroh.computer/blog/noq-announcement Comments URL: https://news.ycombinator.com/item?id=47443588 Points: 218 # Comments: 33",
-          "source": "hackernews"
-        },
-        {
-          "title": "Google details new 24-hour process to sideload unverified Android apps",
-          "link": "https://arstechnica.com/gadgets/2026/03/google-details-new-24-hour-process-to-sideload-unverified-android-apps/",
-          "date": "Thu, 19 Mar 2026 17:16:04 +0000",
-          "description": "https://android-developers.googleblog.com/2026/03/android-de... Comments URL: https://news.ycombinator.com/item?id=47442690 Points: 917 # Comments: 980",
-          "source": "hackernews"
-        },
-        {
-          "title": "Launch HN: Voltair (YC W26) – Drone and charging network for power utilities",
-          "link": "https://news.ycombinator.com/item?id=47442452",
-          "date": "Thu, 19 Mar 2026 16:57:02 +0000",
-          "description": "Hey HN! We’re Hayden, Ronan, Avi, and Warren of Voltair ( https://voltairlabs.com/ ). We’re making weatherized, hybrid-fixed drones deployed for power utility inspections. Here’s some footage: https:/",
-          "source": "hackernews"
-        },
-        {
-          "title": "Scaling Karpathy's Autoresearch: What Happens When the Agent Gets a GPU Cluster",
-          "link": "https://blog.skypilot.co/scaling-autoresearch/",
-          "date": "Thu, 19 Mar 2026 16:55:45 +0000",
-          "description": "Article URL: https://blog.skypilot.co/scaling-autoresearch/ Comments URL: https://news.ycombinator.com/item?id=47442435 Points: 194 # Comments: 83",
-          "source": "hackernews"
-        },
-        {
-          "title": "Show HN: Three new Kitten TTS models – smallest less than 25MB",
-          "link": "https://github.com/KittenML/KittenTTS",
-          "date": "Thu, 19 Mar 2026 15:56:06 +0000",
-          "description": "Kitten TTS ( https://github.com/KittenML/KittenTTS ) is an open-source series of tiny and expressive text-to-speech models for on-device applications. We had a thread last year here: https://news.ycom",
-          "source": "hackernews"
-        },
-        {
-          "title": "4Chan mocks £520k fine for UK online safety breaches",
-          "link": "https://www.bbc.com/news/articles/c624330lg1ko",
-          "date": "Thu, 19 Mar 2026 14:46:25 +0000",
-          "description": "https://www.ofcom.org.uk/online-safety/illegal-and-harmful-c... Comments URL: https://news.ycombinator.com/item?id=47440430 Points: 397 # Comments: 705",
+          "title": "Delve – Fake Compliance as a Service",
+          "link": "https://deepdelver.substack.com/p/delve-fake-compliance-as-a-service",
+          "date": "Thu, 19 Mar 2026 19:08:02 +0000",
+          "description": "Article URL: https://deepdelver.substack.com/p/delve-fake-compliance-as-a-service Comments URL: https://news.ycombinator.com/item?id=47444319 Points: 532 # Comments: 184",
           "source": "hackernews"
         }
       ],
-      "fetchedAt": "2026-03-20T12:32:43.507Z",
+      "fetchedAt": "2026-03-21T01:02:36.766Z",
       "error": null
     },
     "nikkei": {
       "items": [
         {
-          "title": "「イ・ボミの後継者」朴炫径、圧巻イーグルで首位発進 女子ゴルフ",
-          "link": "https://www.nikkei.com/article/DGXZQODH201MV0Q6A320C2000000/",
-          "date": "2026-03-20T20:29:24+09:00",
+          "title": "21日の有力馬 フラワーカップなど競馬予想",
+          "link": "https://www.nikkei.com/article/DGXZQODH201IY0Q6A320C2000000/",
+          "date": "2026-03-21T09:00:00+09:00",
           "description": "",
           "source": "nikkei"
         },
         {
-          "title": "ロシア中銀が0.5%利下げ、7会合連続 経済減速で緩和を継続",
-          "link": "https://www.nikkei.com/article/DGXZQOGR19BKX0Z10C26A3000000/",
-          "date": "2026-03-20T20:22:45+09:00",
+          "title": "トランプ氏、イラン攻撃「縮小を検討」 直前には海兵隊増派報道",
+          "link": "https://www.nikkei.com/article/DGXZQOGN203OV0Q6A320C2000000/",
+          "date": "2026-03-21T07:50:28+09:00",
           "description": "",
           "source": "nikkei"
         },
         {
-          "title": "ミャンマー国会、30日に大統領選出の会合開催 4月に新政権発足",
-          "link": "https://www.nikkei.com/article/DGXZQOGM200YN0Q6A320C2000000/",
-          "date": "2026-03-20T20:19:51+09:00",
+          "title": "高市首相、訪米終え帰国の途 ホルムズ海峡対応の検討継続",
+          "link": "https://www.nikkei.com/article/DGXZQOUA210810R20C26A3000000/",
+          "date": "2026-03-21T07:45:37+09:00",
           "description": "",
           "source": "nikkei"
         },
         {
-          "title": "霧島は単独首位守る、豊昇龍は10勝目 春場所13日目",
-          "link": "https://www.nikkei.com/article/DGXZQOKC202F40Q6A320C2000000/",
-          "date": "2026-03-20T19:47:25+09:00",
+          "title": "強襲揚陸艦トリポリ、大型艦ともないインド洋へ 空母打撃群に合流予定",
+          "link": "https://www.nikkei.com/article/DGXZQOGN17BCD0X10C26A3000000/",
+          "date": "2026-03-21T07:30:27+09:00",
           "description": "",
           "source": "nikkei"
         },
         {
-          "title": "日米同盟が抱えた宿題 トランプ氏「貢献」要求、高市氏は具体策回避",
-          "link": "https://www.nikkei.com/article/DGXZQOUA19BAH0Z10C26A3000000/",
-          "date": "2026-03-20T19:40:57+09:00",
+          "title": "ソフトバンクG孫正義氏、AI投資「オハイオで80兆円」 日米21社参画",
+          "link": "https://www.nikkei.com/article/DGXZQOGN2035V0Q6A320C2000000/",
+          "date": "2026-03-21T07:22:01+09:00",
           "description": "",
           "source": "nikkei"
         },
         {
-          "title": "競泳、村佐達也・梶本一花が代表確実 鈴木聡美・松下知之らも",
-          "link": "https://www.nikkei.com/article/DGXZQOKC202FR0Q6A320C2000000/",
-          "date": "2026-03-20T19:37:57+09:00",
+          "title": "アルゼンチンGDP、25年4.4%増 3年ぶりプラス成長",
+          "link": "https://www.nikkei.com/article/DGXZQOGN2104R0R20C26A3000000/",
+          "date": "2026-03-21T07:20:57+09:00",
           "description": "",
           "source": "nikkei"
         },
         {
-          "title": "「首相は停戦促すメッセージ伝えた」 同志社大大学院・三牧聖子教授",
-          "link": "https://www.nikkei.com/article/DGXZQOUA201H20Q6A320C2000000/",
-          "date": "2026-03-20T19:30:00+09:00",
+          "title": "米電力大手、日米所有のガス発電所を建設へ 対米投資第2弾の案件",
+          "link": "https://www.nikkei.com/article/DGXZQOGN210390R20C26A3000000/",
+          "date": "2026-03-21T07:09:15+09:00",
           "description": "",
           "source": "nikkei"
         },
         {
-          "title": "手詰まりのトランプ氏、孤立回避へ圧力抑制 高市氏との友好演出",
-          "link": "https://www.nikkei.com/article/DGXZQOGN190FU0Z10C26A3000000/",
-          "date": "2026-03-20T19:30:00+09:00",
+          "title": "チャック・ノリスさん死去 「ドラゴンへの道」出演の米俳優",
+          "link": "https://www.nikkei.com/article/DGXZQOCB2105Q0R20C26A3000000/",
+          "date": "2026-03-21T07:07:57+09:00",
           "description": "",
           "source": "nikkei"
         },
         {
-          "title": "トランプ氏、イスラエルにガス田攻撃「やるな」 部隊増派も否定",
-          "link": "https://www.nikkei.com/article/DGXZQOGR19BL00Z10C26A3000000/",
-          "date": "2026-03-20T19:04:27+09:00",
+          "title": "NY円相場、反落 1ドル=159円20〜30銭 米金利上昇や中東情勢の不透明感で",
+          "link": "https://www.nikkei.com/article/DGXZQOFL203420Q6A320C2000000/",
+          "date": "2026-03-21T06:52:52+09:00",
           "description": "",
           "source": "nikkei"
         },
         {
-          "title": "宇宙の謎「暗黒物質」検出へ、世界一正確な時計活用 京大が基礎技術",
-          "link": "https://www.nikkei.com/article/DGXZQOSG095YQ0Z00C26A3000000/",
-          "date": "2026-03-20T19:00:00+09:00",
+          "title": "仏空母ドゴールの位置、乗組員のフィットネスアプリで表示 仏紙報道",
+          "link": "https://www.nikkei.com/article/DGXZQOGR203IO0Q6A320C2000000/",
+          "date": "2026-03-21T06:33:31+09:00",
           "description": "",
           "source": "nikkei"
         },
         {
-          "title": "大相撲春場所中入り後取組・14日目",
-          "link": "https://www.nikkei.com/article/DGXZMSX000S01_Q6A320C2000000/",
-          "date": "2026-03-20T18:52:33+09:00",
+          "title": "砂糖原料10%・トウモロコシ6%高 イラン攻撃3週間、食品で費用上昇",
+          "link": "https://www.nikkei.com/article/DGXZQOUB202WF0Q6A320C2000000/",
+          "date": "2026-03-21T06:22:52+09:00",
           "description": "",
           "source": "nikkei"
         },
         {
-          "title": "大相撲春場所星取表・13日目",
-          "link": "https://www.nikkei.com/article/DGXZMSK3ISU02_Q6A320C2000000/",
-          "date": "2026-03-20T18:52:03+09:00",
+          "title": "日経平均先物、夜間取引で下落 1970円安の5万1020円で終了",
+          "link": "https://www.nikkei.com/article/DGXZQOFL2102N0R20C26A3000000/",
+          "date": "2026-03-21T06:19:16+09:00",
           "description": "",
           "source": "nikkei"
         },
         {
-          "title": "大相撲春場所中入り後勝負・13日目",
-          "link": "https://www.nikkei.com/article/DGXZMSK3ISU01_Q6A320C2000000/",
-          "date": "2026-03-20T18:51:48+09:00",
+          "title": "イラン攻撃3週間、｢安全資産｣が軒並み安 マネー退避先見つからず",
+          "link": "https://www.nikkei.com/article/DGXZQOGN203G70Q6A320C2000000/",
+          "date": "2026-03-21T06:16:13+09:00",
           "description": "",
           "source": "nikkei"
         },
         {
-          "title": "IEA、石油備蓄で国別の放出量を公表 日米で全体の6割",
-          "link": "https://www.nikkei.com/article/DGXZQOGR201SW0Q6A320C2000000/",
-          "date": "2026-03-20T18:51:18+09:00",
+          "title": "NY債券、長期債反落 10年債利回り4.38% インフレ懸念で米利下げ観測大幅に後退",
+          "link": "https://www.nikkei.com/article/DGXZQOFL203660Q6A320C2000000/",
+          "date": "2026-03-21T06:10:54+09:00",
           "description": "",
           "source": "nikkei"
         },
         {
-          "title": "中国外務省、日本との対話に慎重 高市首相の台湾答弁撤回改めて要求",
-          "link": "https://www.nikkei.com/article/DGXZQOGM201R70Q6A320C2000000/",
-          "date": "2026-03-20T18:46:48+09:00",
+          "title": "｢泣き叫ぶ米兵｣｢同盟国で爆発｣はフェイク イラン攻撃でAI偽動画拡散",
+          "link": "https://www.nikkei.com/article/DGXZQOGN140400U6A310C2000000/",
+          "date": "2026-03-21T06:03:40+09:00",
           "description": "",
           "source": "nikkei"
         },
         {
-          "title": "中国レアアース磁石、対日輸出は1〜2月は9%増 重希土は減少か",
-          "link": "https://www.nikkei.com/article/DGXZQOGM2011F0Q6A320C2000000/",
-          "date": "2026-03-20T18:45:46+09:00",
+          "title": "トランプ減税効果、ガソリン代で帳消し 市場期待｢TACO｣は沈黙",
+          "link": "https://www.nikkei.com/article/DGXZQOFL203E10Q6A320C2000000/",
+          "date": "2026-03-21T06:02:35+09:00",
           "description": "",
           "source": "nikkei"
         },
         {
-          "title": "サーフィン五十嵐カノア「アジア大会優勝を」 ロス五輪出場へ意欲",
-          "link": "https://www.nikkei.com/article/DGXZQOKC2026X0Q6A320C2000000/",
-          "date": "2026-03-20T18:40:53+09:00",
+          "title": "シカゴ日本株先物概況・20日",
+          "link": "https://www.nikkei.com/article/DGXZQOFL2100Y0R20C26A3000000/",
+          "date": "2026-03-21T05:50:17+09:00",
           "description": "",
           "source": "nikkei"
         },
         {
-          "title": "バレーSVリーグ、デンソーが19勝目",
-          "link": "https://www.nikkei.com/article/DGXZQOKC2028M0Q6A320C2000000/",
-          "date": "2026-03-20T18:40:41+09:00",
+          "title": "NYダウ3日続落443ドル安、5カ月ぶり安値 イラン攻撃拡大を意識",
+          "link": "https://www.nikkei.com/article/DGXZQOFL210010R20C26A3000000/",
+          "date": "2026-03-21T05:31:46+09:00",
           "description": "",
           "source": "nikkei"
         },
         {
-          "title": "朴炫径が首位、1打差で佐久間朱莉は2位 女子ゴルフ",
-          "link": "https://www.nikkei.com/article/DGXZQOKC202230Q6A320C2000000/",
-          "date": "2026-03-20T18:38:56+09:00",
+          "title": "OpenAI、パソコン向けスーパーアプリ開発 Claudeに対抗",
+          "link": "https://www.nikkei.com/article/DGXZQOGN203LA0Q6A320C2000000/",
+          "date": "2026-03-21T05:23:25+09:00",
           "description": "",
           "source": "nikkei"
         },
         {
-          "title": "対中抑止、日本の中東対応もディール懸念 米国「台湾安定に尽力」",
-          "link": "https://www.nikkei.com/article/DGXZQOUA19B9X0Z10C26A3000000/",
-          "date": "2026-03-20T18:15:00+09:00",
+          "title": "テスラ初のEVトラック 航続距離は他社製の2倍、燃料高騰の追い風",
+          "link": "https://www.nikkei.com/article/DGXZQOGN2039I0Q6A320C2000000/",
+          "date": "2026-03-21T05:22:28+09:00",
           "description": "",
           "source": "nikkei"
         },
         {
-          "title": "地下鉄サリン31年で黙とう、遺族ら献花 東京・霞ケ関駅",
-          "link": "https://www.nikkei.com/article/DGXZQOUD200ET0Q6A320C2000000/",
-          "date": "2026-03-20T18:10:11+09:00",
+          "title": "日本株ADR20日、全面安 三菱UFJや三井住友FGが下落",
+          "link": "https://www.nikkei.com/article/DGXZQOFL203P20Q6A320C2000000/",
+          "date": "2026-03-21T05:21:08+09:00",
           "description": "",
           "source": "nikkei"
         },
         {
-          "title": "競馬・橋木太希騎手が騎乗停止 JRA「重大な非行」",
-          "link": "https://www.nikkei.com/article/DGXZQOKC2022E0Q6A320C2000000/",
-          "date": "2026-03-20T17:59:31+09:00",
+          "title": "NY商品、原油反発 中東からの供給停滞の長期化観測で 金は続落",
+          "link": "https://www.nikkei.com/article/DGXZQOFL203400Q6A320C2000000/",
+          "date": "2026-03-21T05:12:51+09:00",
           "description": "",
           "source": "nikkei"
         },
         {
-          "title": "AIで雪道の状況すぐ判定 車搭載スマホ、防災科研",
-          "link": "https://www.nikkei.com/article/DGXZQOUD19B510Z10C26A3000000/",
-          "date": "2026-03-20T17:58:21+09:00",
+          "title": "ホルムズ海峡「安全確保」、共同声明20カ国に拡大 カナダや韓国参加",
+          "link": "https://www.nikkei.com/article/DGXZQOGR203O80Q6A320C2000000/",
+          "date": "2026-03-21T05:06:10+09:00",
           "description": "",
           "source": "nikkei"
         },
         {
-          "title": "首相、日朝会談の意欲トランプ氏に伝達 拉致解決「全面的支持得た」",
-          "link": "https://www.nikkei.com/article/DGXZQOUA2009E0Q6A320C2000000/",
-          "date": "2026-03-20T17:51:54+09:00",
+          "title": "BTS再結成 世界を回す韓流エコノミー、読み解く「7」の数字",
+          "link": "https://www.nikkei.com/article/DGXZTS00021111Z10C26A3000000/",
+          "date": "2026-03-21T05:00:00+09:00",
           "description": "",
           "source": "nikkei"
         },
         {
-          "title": "日米首脳夕食会 グーグルやIBMのCEO、孫正義氏など出席",
-          "link": "https://www.nikkei.com/article/DGXZQOUA2015I0Q6A320C2000000/",
-          "date": "2026-03-20T17:48:14+09:00",
+          "title": "サッカー・小泉佳穂 小柄で控えの少年期、思考続けてプロの道へ",
+          "link": "https://www.nikkei.com/article/DGXZQODH26ATX0W6A220C2000000/",
+          "date": "2026-03-21T05:00:00+09:00",
           "description": "",
           "source": "nikkei"
         },
         {
-          "title": "新名神で多重事故6人死亡 三重のトンネル、トラック運転手逮捕",
-          "link": "https://www.nikkei.com/article/DGXZQOUD200ED0Q6A320C2000000/",
-          "date": "2026-03-20T17:41:16+09:00",
+          "title": "サッカー・小泉佳穂 コーチング研究の兄と議論、目指すは「脱感覚」",
+          "link": "https://www.nikkei.com/article/DGXZQODH26ATV0W6A220C2000000/",
+          "date": "2026-03-21T05:00:00+09:00",
           "description": "",
           "source": "nikkei"
         },
         {
-          "title": "ラグビーリーグワン、横浜が神戸を破り3勝目",
-          "link": "https://www.nikkei.com/article/DGXZQOKC201YR0Q6A320C2000000/",
-          "date": "2026-03-20T17:33:47+09:00",
+          "title": "サッカー・小泉佳穂 柏レイソル昨季2位の立役者はチームの「頭脳」",
+          "link": "https://www.nikkei.com/article/DGXZQODH02AVG0S6A200C2000000/",
+          "date": "2026-03-21T05:00:00+09:00",
           "description": "",
           "source": "nikkei"
         },
         {
-          "title": "坂井丞が飛び込み代表入り確実 翼ジャパン杯",
-          "link": "https://www.nikkei.com/article/DGXZQOKC201TS0Q6A320C2000000/",
-          "date": "2026-03-20T17:33:32+09:00",
+          "title": "3月16〜19日 スタートアップ資金調達まとめ読み",
+          "link": "https://www.nikkei.com/article/DGXZQOUC19A5F0Z10C26A3000000/",
+          "date": "2026-03-21T05:00:00+09:00",
           "description": "",
           "source": "nikkei"
         },
         {
-          "title": "廃棄かまぼこで養殖ブリ丸々 餌コスト減、カネテツデリカや近畿大学",
-          "link": "https://www.nikkei.com/article/DGXZQOUC0496R0U6A300C2000000/",
-          "date": "2026-03-20T17:30:00+09:00",
+          "title": "トヨタ労組「工場保全担当の平日休」提案 人材確保へ休日出勤ゼロに",
+          "link": "https://www.nikkei.com/article/DGXZQOFD109XI0Q6A310C2000000/",
+          "date": "2026-03-21T05:00:00+09:00",
           "description": "",
           "source": "nikkei"
         },
         {
-          "title": "智弁学園は2回戦へ、花巻東に4-0で勝つ 選抜高校野球",
-          "link": "https://www.nikkei.com/article/DGXZQOKC201U80Q6A320C2000000/",
-          "date": "2026-03-20T17:15:26+09:00",
+          "title": "岡山の千屋牛、ブランド和牛のご先祖直系 上質な霜降りに広がる肉汁",
+          "link": "https://www.nikkei.com/article/DGXZQOCC1396B0T10C26A3000000/",
+          "date": "2026-03-21T05:00:00+09:00",
           "description": "",
           "source": "nikkei"
         }
       ],
-      "fetchedAt": "2026-03-20T12:32:43.658Z",
+      "fetchedAt": "2026-03-21T01:02:36.958Z",
       "error": null
     },
     "reuters": {
       "items": [
+        {
+          "title": "米国株式市場＝大幅続落、中東緊迫の長期化がインフレ助長との懸念",
+          "link": "https://jp.reuters.com/markets/japan/7X27DKSKKZPDNCL5SQZ62CVKBM-2026-03-20/",
+          "date": "2026-03-21T05:33:59+09:00",
+          "description": "",
+          "source": "reuters"
+        },
+        {
+          "title": "ＮＹ外為市場＝ドル上昇、利下げ観測後退で週間では下落へ",
+          "link": "https://jp.reuters.com/markets/japan/WCX7ULQDFVO75HXE5DQTUJ73T4-2026-03-20/",
+          "date": "2026-03-21T06:02:20+09:00",
+          "description": "",
+          "source": "reuters"
+        },
+        {
+          "title": "米、中東に追加部隊派遣へ 海兵隊員ら数千人＝当局者",
+          "link": "https://jp.reuters.com/markets/commodities/RMMY7SPIJFNF3L5QJEMAAF4JT4-2026-03-20/",
+          "date": "2026-03-20T23:33:08+09:00",
+          "description": "",
+          "source": "reuters"
+        },
+        {
+          "title": "イスラエル軍、テヘランに新たな攻撃開始 イラン「ミサイル生産継続」",
+          "link": "https://jp.reuters.com/world/security/QPNLXW62EZMDLEPCCPQJJE6V2M-2026-03-20/",
+          "date": "2026-03-20T14:55:10+09:00",
+          "description": "",
+          "source": "reuters"
+        },
+        {
+          "title": "ボウマンＦＲＢ副議長、年内3回の利下げ見込む 労働市場を支援＝ＦＯＸ",
+          "link": "https://jp.reuters.com/markets/japan/UKCK75PGPRNTVMRPHIDFVAQY2E-2026-03-20/",
+          "date": "2026-03-21T00:01:55+09:00",
+          "description": "",
+          "source": "reuters"
+        },
+        {
+          "title": "ＦＲＢウォラー理事、利下げ主張撤回 原油高でインフレ長期化警戒",
+          "link": "https://jp.reuters.com/markets/japan/QNBB2YJKMFLUTLHF7M3GWB22JQ-2026-03-20/",
+          "date": "2026-03-20T23:51:05+09:00",
+          "description": "",
+          "source": "reuters"
+        },
+        {
+          "title": "米、イラン戦争の目標達成に近づく＝トランプ氏",
+          "link": "https://jp.reuters.com/world/us/FQNK2QQR6FK3LFNVMKMFPINX6Q-2026-03-20/",
+          "date": "2026-03-21T06:30:05+09:00",
+          "description": "",
+          "source": "reuters"
+        },
+        {
+          "title": "イラン新最高指導者、新年を「抵抗経済」の年と位置付け",
+          "link": "https://jp.reuters.com/world/security/YS56CIVY3NJJZCJUQCADZ5JJLQ-2026-03-20/",
+          "date": "2026-03-21T02:06:17+09:00",
+          "description": "",
+          "source": "reuters"
+        },
+        {
+          "title": "中国、中東での戦争終結呼びかけ 経済的影響を警告",
+          "link": "https://jp.reuters.com/world/us/K2HPYECVY5IRZNZO7U64DMNK7I-2026-03-20/",
+          "date": "2026-03-21T01:57:35+09:00",
+          "description": "",
+          "source": "reuters"
+        },
+        {
+          "title": "ＩＲＧＣコッズ部隊司令官、抵抗戦線を称賛 ハメネイ師殺害後初の声明",
+          "link": "https://jp.reuters.com/world/security/2YK4QX2ZARJOBHUBSZ4VX3JZFY-2026-03-20/",
+          "date": "2026-03-21T02:01:44+09:00",
+          "description": "",
+          "source": "reuters"
+        },
+        {
+          "title": "イランに対話できる指導者残っていない＝トランプ氏",
+          "link": "https://jp.reuters.com/world/us/ANMIQ6QMFNOFZLNI2VVRQR7IGM-2026-03-20/",
+          "date": "2026-03-21T00:33:56+09:00",
+          "description": "",
+          "source": "reuters"
+        },
+        {
+          "title": "イラク、外国企業運営の油田で不可抗力宣言 ホルムズ海峡混乱で＝関係筋",
+          "link": "https://jp.reuters.com/markets/commodities/YJH2FC432NP4RBIUF6SDVC6NDA-2026-03-20/",
+          "date": "2026-03-21T04:42:48+09:00",
+          "description": "",
+          "source": "reuters"
+        },
+        {
+          "title": "イラン産原油制裁解除なら３─４日でアジアへの供給開始へ＝米エネルギー長官",
+          "link": "https://jp.reuters.com/markets/commodities/FCTR6PCLKNPFJD5AT3WNKQ3URA-2026-03-20/",
+          "date": "2026-03-20T23:13:21+09:00",
+          "description": "",
+          "source": "reuters"
+        },
         {
           "title": "中国念頭に「現状変更の試み反対」、米側が文書発出 日米首脳会談受け",
           "link": "https://jp.reuters.com/economy/73VVI7DHN5I4RJTGF6FIFIRJNI-2026-03-20/",
@@ -589,9 +680,9 @@
           "source": "reuters"
         },
         {
-          "title": "ＥＣＢ、利下げより利上げの可能性高い＝仏中銀総裁",
-          "link": "https://jp.reuters.com/markets/japan/UQQFQGERQRJBLCV67N7UOK3U3A-2026-03-20/",
-          "date": "2026-03-20T18:40:30+09:00",
+          "title": "ＥＣＢ理事ら、インフレ警戒 利上げは慎重に見極め",
+          "link": "https://jp.reuters.com/markets/japan/RQ7BTEWVMFILTPJRRULXZHUFJY-2026-03-20/",
+          "date": "2026-03-20T20:56:02+09:00",
           "description": "",
           "source": "reuters"
         },
@@ -624,109 +715,123 @@
           "source": "reuters"
         },
         {
-          "title": "イスラエル軍、テヘランに新たな攻撃開始 イラン「ミサイル生産継続」",
-          "link": "https://jp.reuters.com/world/security/QPNLXW62EZMDLEPCCPQJJE6V2M-2026-03-20/",
-          "date": "2026-03-20T14:55:10+09:00",
-          "description": "",
-          "source": "reuters"
-        },
-        {
           "title": "原油先物下落、ホルムズ海峡巡る日欧声明や米の供給拡大示唆で",
           "link": "https://jp.reuters.com/markets/commodities/36X66STY6FO6VE76LAI5AN6L3Q-2026-03-20/",
           "date": "2026-03-20T14:11:44+09:00",
           "description": "",
           "source": "reuters"
-        },
-        {
-          "title": "カタールＬＮＧ輸出17％停止、修復に最大5年 アジア欧州に影響へ",
-          "link": "https://jp.reuters.com/markets/commodities/BE36Z3HOL5OBDMMPNNOFNHITHE-2026-03-20/",
-          "date": "2026-03-20T09:45:52+09:00",
-          "description": "",
-          "source": "reuters"
-        },
-        {
-          "title": "高市首相、ホルムズへの艦船派遣巡り日本の立場説明 トランプ氏との会談で",
-          "link": "https://jp.reuters.com/world/security/H7QF67YVBJJ2FGNNCG3KGUWSZI-2026-03-19/",
-          "date": "2026-03-20T04:35:06+09:00",
-          "description": "",
-          "source": "reuters"
-        },
-        {
-          "title": "ＥＵ首脳会議、ハンガリーがウクライナ融資阻止 オルバン氏に不満噴出",
-          "link": "https://jp.reuters.com/markets/commodities/X4PHMVAWYRLFRMICKR44YK3S2Y-2026-03-20/",
-          "date": "2026-03-20T11:30:06+09:00",
-          "description": "",
-          "source": "reuters"
-        },
-        {
-          "title": "ＥＵのエネルギー高騰対策、一時的かつ的絞るべき＝ＥＣＢ総裁",
-          "link": "https://jp.reuters.com/markets/japan/GMWOM2EMCBMNZEXJLYY64I5ENY-2026-03-20/",
-          "date": "2026-03-20T12:24:20+09:00",
-          "description": "",
-          "source": "reuters"
-        },
-        {
-          "title": "ＥＵ首脳、中東のエネルギー・水関連施設への攻撃停止求める",
-          "link": "https://jp.reuters.com/markets/commodities/LUAWBJK27RPXJKBAEHU64RIKKU-2026-03-20/",
-          "date": "2026-03-20T13:40:58+09:00",
-          "description": "",
-          "source": "reuters"
-        },
-        {
-          "title": "米ガソリン小売価格、中東戦争で30％急騰 1ガロン4ドルに迫る",
-          "link": "https://jp.reuters.com/markets/commodities/IMILCLX62ZL3FCNJ66DXMDX3O4-2026-03-20/",
-          "date": "2026-03-20T12:04:58+09:00",
-          "description": "",
-          "source": "reuters"
-        },
-        {
-          "title": "エネ価格高騰、長期化ならインフレ加速・成長鈍化リスク＝ＩＭＦ",
-          "link": "https://jp.reuters.com/markets/japan/UH45MPJKXNMTDBJU6ZEDFUU3LU-2026-03-20/",
-          "date": "2026-03-20T10:31:38+09:00",
-          "description": "",
-          "source": "reuters"
-        },
-        {
-          "title": "アングル：イラン戦争によるガソリン価格高騰、ＥＶ販売に追い風か",
-          "link": "https://jp.reuters.com/markets/commodities/ANLIBILT4ROWHON6LBDIXLQF2Q-2026-03-19/",
-          "date": "2026-03-19T13:10:08+09:00",
-          "description": "",
-          "source": "reuters"
-        },
-        {
-          "title": "トランプ氏、イスラエルにガス田攻撃停止を要請 地上部隊派遣否定",
-          "link": "https://jp.reuters.com/markets/commodities/S5U54Y4W3BJ3NKSIYJ4SPZ55YM-2026-03-19/",
-          "date": "2026-03-20T00:22:00+09:00",
-          "description": "",
-          "source": "reuters"
-        },
-        {
-          "title": "日米、重要鉱物の供給網強化に行動計画 価格下限の導入に焦点",
-          "link": "https://jp.reuters.com/markets/commodities/L6ECKMDJKNJTDNTLK3NXXKUP54-2026-03-19/",
-          "date": "2026-03-20T06:10:26+09:00",
-          "description": "",
-          "source": "reuters"
-        },
-        {
-          "title": "ネタニヤフ氏、ホルムズ海峡の代替ルート提唱 中東横断パイプライン",
-          "link": "https://jp.reuters.com/world/us/I6OWJAVHQNN7XBW2T5GK3G6QAA-2026-03-19/",
-          "date": "2026-03-20T05:06:28+09:00",
-          "description": "",
-          "source": "reuters"
-        },
-        {
-          "title": "中国レアアース磁石輸出、1─2月は前年比8.2％増 日本向け9.5％増",
-          "link": "https://jp.reuters.com/markets/japan/EPFMTFLDVBIFHMW2WL5SSAGOS4-2026-03-20/",
-          "date": "2026-03-20T12:06:23+09:00",
-          "description": "",
-          "source": "reuters"
         }
       ],
-      "fetchedAt": "2026-03-20T12:32:43.669Z",
+      "fetchedAt": "2026-03-21T01:02:36.975Z",
       "error": null
     },
     "toyokeizai": {
       "items": [
+        {
+          "title": "インテグラのSUV版アキュラ｢ADX｣のジャスト感 | 試乗記 | 東洋経済オンライン",
+          "link": "https://toyokeizai.net/articles/-/937999?utm_source=rss&utm_medium=http&utm_campaign=link_back",
+          "date": "Sat, 21 Mar 2026 09:30:00 +0900",
+          "description": "2024年の11月に正式発表された、アキュラのプレミアムコンパクトSUV「ADX」。アキュラがラインナップするS…",
+          "source": "toyokeizai"
+        },
+        {
+          "title": "｢こんなママでごめん｣泣いていた私を変えたメモ | 子育て | 東洋経済オンライン",
+          "link": "https://toyokeizai.net/articles/-/938550?utm_source=rss&utm_medium=http&utm_campaign=link_back",
+          "date": "Sat, 21 Mar 2026 09:00:00 +0900",
+          "description": "当時の私は、毎日が限界でした。子育てと家事に追われ、心は常にいっぱいいっぱい。ある日、イライラを抑…",
+          "source": "toyokeizai"
+        },
+        {
+          "title": "中学受験率低下も｢東大生は6割が中受組｣の必然 | 学校・受験 | 東洋経済オンライン",
+          "link": "https://toyokeizai.net/articles/-/938069?utm_source=rss&utm_medium=http&utm_campaign=link_back",
+          "date": "Sat, 21 Mar 2026 08:30:00 +0900",
+          "description": "毎年3月、東大の合格発表が終わると、私たちは合格した生徒たちにアンケートを取っています。今年も例に…",
+          "source": "toyokeizai"
+        },
+        {
+          "title": "｢美女に転生して無双｣46歳､氷河期世代の大逆転 | 祈られすぎた氷河期世代は軍神に転生し復讐の刃を振り下ろす | 東洋経済オンライン",
+          "link": "https://toyokeizai.net/articles/-/938388?utm_source=rss&utm_medium=http&utm_campaign=link_back",
+          "date": "Sat, 21 Mar 2026 08:00:00 +0900",
+          "description": "氷河期世代で不遇な日々を送る非正規社員の佐藤正晴（46歳）。会社の非道な扱いで妹の死に目にも会えず、…",
+          "source": "toyokeizai"
+        },
+        {
+          "title": "なぜアメリカは世界の｢例外の国｣になり得たのか | リーダーシップ・教養・資格・スキル | 東洋経済オンライン",
+          "link": "https://toyokeizai.net/articles/-/937662?utm_source=rss&utm_medium=http&utm_campaign=link_back",
+          "date": "Sat, 21 Mar 2026 07:30:00 +0900",
+          "description": "「アメリカ例外主義（American exceptionalism）」という言葉をご存じだろうか。これは、アメリカが歴史…",
+          "source": "toyokeizai"
+        },
+        {
+          "title": "受注絶好調の｢工務店｣が経験した\"天国から地獄\" | コンクリートの船 | 東洋経済オンライン",
+          "link": "https://toyokeizai.net/articles/-/937867?utm_source=rss&utm_medium=http&utm_campaign=link_back",
+          "date": "Sat, 21 Mar 2026 07:00:00 +0900",
+          "description": "太平洋戦争末期、資材不足の日本で民間の一企業がコンクリートの船を造った。それは、一企業の社長の想い…",
+          "source": "toyokeizai"
+        },
+        {
+          "title": "｢なぜ日本がダメなのか｣が､ようやくわかった | 新競馬好きエコノミストの市場深読み劇場 | 東洋経済オンライン",
+          "link": "https://toyokeizai.net/articles/-/938769?utm_source=rss&utm_medium=http&utm_campaign=link_back",
+          "date": "Sat, 21 Mar 2026 06:30:00 +0900",
+          "description": "なぜ、日本はダメなのか。それを「中央銀行ウィーク」の今週は考えさせられた。18日（現地時間）にアメリ…",
+          "source": "toyokeizai"
+        },
+        {
+          "title": "53分も踏切開かず｢東西で分断された街｣衰退の訳 | 百貨店消滅タウン | 東洋経済オンライン",
+          "link": "https://toyokeizai.net/articles/-/938418?utm_source=rss&utm_medium=http&utm_campaign=link_back",
+          "date": "Sat, 21 Mar 2026 06:30:00 +0900",
+          "description": "前回までは、百貨店空白地帯に満を持して出店されたロビンソン百貨店の、誕生から消滅までの顛末をお伝え…",
+          "source": "toyokeizai"
+        },
+        {
+          "title": "売り切れ続出｢セブンのカップうどん｣の\"凄さ\" | コンビニ | 東洋経済オンライン",
+          "link": "https://toyokeizai.net/articles/-/938569?utm_source=rss&utm_medium=http&utm_campaign=link_back",
+          "date": "Sat, 21 Mar 2026 06:15:00 +0900",
+          "description": "いま、とてつもない勢いで日本中のタイムラインを席巻しているPB商品がある。セブン-イレブンと明星食品…",
+          "source": "toyokeizai"
+        },
+        {
+          "title": "パキスタン･アフガニスタンの戦争がもたらす意味 | アジア諸国 | 東洋経済オンライン",
+          "link": "https://toyokeizai.net/articles/-/938659?utm_source=rss&utm_medium=http&utm_campaign=link_back",
+          "date": "Sat, 21 Mar 2026 06:00:00 +0900",
+          "description": "世界の耳目がアメリカ＝イスラエル・イラン戦争に集まるなか、イランやホルムズ海峡のすぐ隣で「もう1つ…",
+          "source": "toyokeizai"
+        },
+        {
+          "title": "SNSで炎上､テストの｢トンデモ採点｣が起きる事情 | 東洋経済education×ICT | 東洋経済オンライン",
+          "link": "https://toyokeizai.net/articles/-/937513?utm_source=rss&utm_medium=http&utm_campaign=link_back",
+          "date": "Sat, 21 Mar 2026 06:00:00 +0900",
+          "description": "定期的に、X（旧Twitter）などのSNSでは「トンデモ採点」や「理不尽な減点」が話題になり、実際のテスト…",
+          "source": "toyokeizai"
+        },
+        {
+          "title": "\"週休3日\"導入できない企業が負う本当のリスク | リーダーシップ・教養・資格・スキル | 東洋経済オンライン",
+          "link": "https://toyokeizai.net/articles/-/938071?utm_source=rss&utm_medium=http&utm_campaign=link_back",
+          "date": "Sat, 21 Mar 2026 05:45:00 +0900",
+          "description": "日本の企業を取り巻く人材環境は、ここ数年で大きく変わった。人手不足は慢性化し、賃上げの圧力は年々強…",
+          "source": "toyokeizai"
+        },
+        {
+          "title": "高市外交｢大人のやり取り｣の成果と重い代償 | 政策 | 東洋経済オンライン",
+          "link": "https://toyokeizai.net/articles/-/938753?utm_source=rss&utm_medium=http&utm_campaign=link_back",
+          "date": "Sat, 21 Mar 2026 05:30:00 +0900",
+          "description": "「今回の首脳会談は、スポーツにたとえれば“ドロー”なら御の字。ホルムズ海峡への関与について協力を求…",
+          "source": "toyokeizai"
+        },
+        {
+          "title": "アクセス微妙｢多摩の廃墟モール｣衰退劇の顛末 | 廃墟モールの経済学 | 東洋経済オンライン",
+          "link": "https://toyokeizai.net/articles/-/938513?utm_source=rss&utm_medium=http&utm_campaign=link_back",
+          "date": "Sat, 21 Mar 2026 05:05:00 +0900",
+          "description": "前編では、廃墟化している東京都多摩市の「クロスガーデン多摩」の現状をリポートし、要因は①競合施設の…",
+          "source": "toyokeizai"
+        },
+        {
+          "title": "空床だらけで閑散｢多摩の廃墟モール｣失敗の要因 | 廃墟モールの経済学 | 東洋経済オンライン",
+          "link": "https://toyokeizai.net/articles/-/938511?utm_source=rss&utm_medium=http&utm_campaign=link_back",
+          "date": "Sat, 21 Mar 2026 05:00:00 +0900",
+          "description": "サンリオピューロランドで有名な東京都多摩市の多摩センター駅。駅前には「丘の上プラザ」や「丘の上パテ…",
+          "source": "toyokeizai"
+        },
         {
           "title": "｢失敗から成長する新人｣を育てる4つのお作法 | 就職四季報プラスワン | 東洋経済オンライン",
           "link": "https://toyokeizai.net/articles/-/937974?utm_source=rss&utm_medium=http&utm_campaign=link_back",
@@ -761,114 +866,9 @@
           "date": "Fri, 20 Mar 2026 11:30:00 +0900",
           "description": "3月17日は「みんなで考えるSDGsの日」。【いま改めて読みたい一冊】大人の学びなおしに最適の「伝記まん…",
           "source": "toyokeizai"
-        },
-        {
-          "title": "人間の\"労働好き\"を明らかにするヒットゲーム | ゲーム・エンタメ | 東洋経済オンライン",
-          "link": "https://toyokeizai.net/articles/-/938416?utm_source=rss&utm_medium=http&utm_campaign=link_back",
-          "date": "Fri, 20 Mar 2026 11:00:00 +0900",
-          "description": "2026年3月6日、『Slay the Spire 2』というゲームが発売された。このタイトルを知らない読者も多いかもし…",
-          "source": "toyokeizai"
-        },
-        {
-          "title": "｢格安iPhone･Mac｣10万円切りお得モデル投入の訳 | インターネット | 東洋経済オンライン",
-          "link": "https://toyokeizai.net/articles/-/938350?utm_source=rss&utm_medium=http&utm_campaign=link_back",
-          "date": "Fri, 20 Mar 2026 10:30:00 +0900",
-          "description": "創業50周年に向けて怒涛の製品発表を続けるアップル社。だが、多くの新製品の中で光るのが、どちらも10万…",
-          "source": "toyokeizai"
-        },
-        {
-          "title": "｢ダメな自分｣認めるのが怖いエリート意外な結論 | リーダーシップ・教養・資格・スキル | 東洋経済オンライン",
-          "link": "https://toyokeizai.net/articles/-/936130?utm_source=rss&utm_medium=http&utm_campaign=link_back",
-          "date": "Fri, 20 Mar 2026 10:02:00 +0900",
-          "description": "私は学校の成績がよかったため、男性的な社会でなにかを切り拓いていってほしいと周囲から期待されていま…",
-          "source": "toyokeizai"
-        },
-        {
-          "title": "働かない20代を悩ませるあまりにも残酷な矛盾 | リーダーシップ・教養・資格・スキル | 東洋経済オンライン",
-          "link": "https://toyokeizai.net/articles/-/936129?utm_source=rss&utm_medium=http&utm_campaign=link_back",
-          "date": "Fri, 20 Mar 2026 10:01:00 +0900",
-          "description": "以前、古屋さん（リクルートワークス研究所主任研究員の古屋星斗氏）のご著書を読んでおもしろく感じたこ…",
-          "source": "toyokeizai"
-        },
-        {
-          "title": "東大ハーバードでも投資に失敗する｢想定外要因｣ | リーダーシップ・教養・資格・スキル | 東洋経済オンライン",
-          "link": "https://toyokeizai.net/articles/-/936127?utm_source=rss&utm_medium=http&utm_campaign=link_back",
-          "date": "Fri, 20 Mar 2026 10:00:00 +0900",
-          "description": "私はかつて、投資において典型的な「ダメパターン」を踏み抜いた経験があります。20代後半、社会人として…",
-          "source": "toyokeizai"
-        },
-        {
-          "title": "産むなら援助なし｢内密出産｣救えない日本の実情 | 医療・病院 | 東洋経済オンライン",
-          "link": "https://toyokeizai.net/articles/-/936504?utm_source=rss&utm_medium=http&utm_campaign=link_back",
-          "date": "Fri, 20 Mar 2026 09:30:00 +0900",
-          "description": "「赤ちゃんポストは、赤ちゃんの命を救うための最終手段です。本来は、赤ちゃんポストの必要がない社会を…",
-          "source": "toyokeizai"
-        },
-        {
-          "title": "東京初｢赤ちゃんポスト｣1年…希望と葛藤の現場 | 医療・病院 | 東洋経済オンライン",
-          "link": "https://toyokeizai.net/articles/-/936503?utm_source=rss&utm_medium=http&utm_campaign=link_back",
-          "date": "Fri, 20 Mar 2026 09:30:00 +0900",
-          "description": "賛育会病院の“赤ちゃんポスト”である「ベビーバスケット」に、初めて新生児が預けられたときのことを、…",
-          "source": "toyokeizai"
-        },
-        {
-          "title": "昭和10年｢超変わりモン社長｣が入手した極秘情報 | コンクリートの船 | 東洋経済オンライン",
-          "link": "https://toyokeizai.net/articles/-/937866?utm_source=rss&utm_medium=http&utm_campaign=link_back",
-          "date": "Fri, 20 Mar 2026 09:00:00 +0900",
-          "description": "太平洋戦争末期、資材不足の日本で民間の一企業がコンクリートの船を造った。それは、一企業の社長の想い…",
-          "source": "toyokeizai"
-        },
-        {
-          "title": "インスリン導入間近｢50代男性｣が回避できたワケ | 健康 | 東洋経済オンライン",
-          "link": "https://toyokeizai.net/articles/-/936064?utm_source=rss&utm_medium=http&utm_campaign=link_back",
-          "date": "Fri, 20 Mar 2026 08:30:00 +0900",
-          "description": "からだに不安を感じたとしても、「面倒だし、何をどうすればいいのかわからない……」そんな気持ちになる…",
-          "source": "toyokeizai"
-        },
-        {
-          "title": "｢SaaSの死｣がここまで騒がれる\"本当の理由\" | 企業経営･会計･制度 | 東洋経済オンライン",
-          "link": "https://toyokeizai.net/articles/-/936724?utm_source=rss&utm_medium=http&utm_campaign=link_back",
-          "date": "Fri, 20 Mar 2026 08:15:00 +0900",
-          "description": "「最近、CMでよく見かけるSaaSが危ないんじゃない？」先日、コンサル仲間の友人たちとの会話で、話題が「S…",
-          "source": "toyokeizai"
-        },
-        {
-          "title": "就活はデスゲーム｢氷河期世代｣の過酷すぎる人生 | 就職・転職 | 東洋経済オンライン",
-          "link": "https://toyokeizai.net/articles/-/938636?utm_source=rss&utm_medium=http&utm_campaign=link_back",
-          "date": "Fri, 20 Mar 2026 08:01:00 +0900",
-          "description": "「今年度内を目途に新たな支援プログラムを取りまとめる」高市早苗首相は2月26日の参議院本会議で、いわ…",
-          "source": "toyokeizai"
-        },
-        {
-          "title": "｢毎日祈られ､差別され…｣46歳､氷河期世代の絶望 | 祈られすぎた氷河期世代は軍神に転生し復讐の刃を振り下ろす | 東洋経済オンライン",
-          "link": "https://toyokeizai.net/articles/-/938385?utm_source=rss&utm_medium=http&utm_campaign=link_back",
-          "date": "Fri, 20 Mar 2026 08:00:00 +0900",
-          "description": "氷河期世代で不遇な日々を送る非正規社員の佐藤正晴（46歳）。会社の非道な扱いで妹の死に目にも会えず、…",
-          "source": "toyokeizai"
-        },
-        {
-          "title": "本州進出中止で4億円の違約金､ニトリ会長の独白 | 経営 | 東洋経済オンライン",
-          "link": "https://toyokeizai.net/articles/-/938027?utm_source=rss&utm_medium=http&utm_campaign=link_back",
-          "date": "Fri, 20 Mar 2026 07:45:00 +0900",
-          "description": "1980年代後半、ニトリの店舗は北海道全域に広がり、道内での知名度は定着。「いよいよ本州進出」と行きた…",
-          "source": "toyokeizai"
-        },
-        {
-          "title": "【26年版】全国地価｢上昇率｣ランキングTOP500 | 不動産 | 東洋経済オンライン",
-          "link": "https://toyokeizai.net/articles/-/938555?utm_source=rss&utm_medium=http&utm_campaign=link_back",
-          "date": "Fri, 20 Mar 2026 07:30:00 +0900",
-          "description": "昨日配信した「【2026年版】全国『地価』ランキングTOP502地点 坪単価“1億円超え”は10地点､首位は驚き…",
-          "source": "toyokeizai"
-        },
-        {
-          "title": "大人気豚まんチェーン｢関西圏から出ない｣訳 | 出張なのに、チェーン店ですか？ | 東洋経済オンライン",
-          "link": "https://toyokeizai.net/articles/-/937386?utm_source=rss&utm_medium=http&utm_campaign=link_back",
-          "date": "Fri, 20 Mar 2026 07:00:00 +0900",
-          "description": "新幹線の車内、後ろからあの匂いがする。551蓬莱（以下、551）の豚まんを誰かが買っている。「いいなあ」…",
-          "source": "toyokeizai"
         }
       ],
-      "fetchedAt": "2026-03-20T12:32:44.098Z",
+      "fetchedAt": "2026-03-21T01:02:37.612Z",
       "error": null
     },
     "reddit": {
@@ -881,10 +881,17 @@
           "source": "reddit"
         },
         {
-          "title": "Microservices and the First Law of Distributed Objects",
-          "link": "https://www.reddit.com/r/programming/comments/1ryn7ry/microservices_and_the_first_law_of_distributed/",
-          "date": "2026-03-20T04:57:43+00:00",
-          "description": "&#32; submitted by &#32; /u/lelanthran [link] &#32; [comments]",
+          "title": "Java is fast, code might not be",
+          "link": "https://www.reddit.com/r/programming/comments/1rz1qu3/java_is_fast_code_might_not_be/",
+          "date": "2026-03-20T16:56:50+00:00",
+          "description": "&#32; submitted by &#32; /u/ketralnis [link] &#32; [comments]",
+          "source": "reddit"
+        },
+        {
+          "title": "Delphi 13.1 Released, with ARM64 support",
+          "link": "https://www.reddit.com/r/programming/comments/1rz2fqq/delphi_131_released_with_arm64_support/",
+          "date": "2026-03-20T17:22:06+00:00",
+          "description": "&#32; submitted by &#32; /u/ketralnis [link] &#32; [comments]",
           "source": "reddit"
         },
         {
@@ -895,6 +902,55 @@
           "source": "reddit"
         },
         {
+          "title": "No Semicolons Needed",
+          "link": "https://www.reddit.com/r/programming/comments/1rz2hkx/no_semicolons_needed/",
+          "date": "2026-03-20T17:24:02+00:00",
+          "description": "&#32; submitted by &#32; /u/ketralnis [link] &#32; [comments]",
+          "source": "reddit"
+        },
+        {
+          "title": "What we heard about Rust's challenges, and how we can address them",
+          "link": "https://www.reddit.com/r/programming/comments/1rz2cuj/what_we_heard_about_rusts_challenges_and_how_we/",
+          "date": "2026-03-20T17:19:10+00:00",
+          "description": "&#32; submitted by &#32; /u/ketralnis [link] &#32; [comments]",
+          "source": "reddit"
+        },
+        {
+          "title": "Emacs Internal #01: is a Lisp Runtime in C, Not an Editor",
+          "link": "https://www.reddit.com/r/programming/comments/1rz2c7z/emacs_internal_01_is_a_lisp_runtime_in_c_not_an/",
+          "date": "2026-03-20T17:18:33+00:00",
+          "description": "&#32; submitted by &#32; /u/ketralnis [link] &#32; [comments]",
+          "source": "reddit"
+        },
+        {
+          "title": "VisiCalc Reconstructed",
+          "link": "https://www.reddit.com/r/programming/comments/1rz1m6z/visicalc_reconstructed/",
+          "date": "2026-03-20T16:52:03+00:00",
+          "description": "&#32; submitted by &#32; /u/ketralnis [link] &#32; [comments]",
+          "source": "reddit"
+        },
+        {
+          "title": "Tony Hoare and His Imprint on Computer Science",
+          "link": "https://www.reddit.com/r/programming/comments/1rz98pm/tony_hoare_and_his_imprint_on_computer_science/",
+          "date": "2026-03-20T21:43:35+00:00",
+          "description": "&#32; submitted by &#32; /u/mttd [link] &#32; [comments]",
+          "source": "reddit"
+        },
+        {
+          "title": "The Good, the Bad, and the Leaky: jemalloc, bumpalo, and mimalloc in meilisearch",
+          "link": "https://www.reddit.com/r/programming/comments/1rz2a4h/the_good_the_bad_and_the_leaky_jemalloc_bumpalo/",
+          "date": "2026-03-20T17:16:22+00:00",
+          "description": "&#32; submitted by &#32; /u/ketralnis [link] &#32; [comments]",
+          "source": "reddit"
+        },
+        {
+          "title": "Microservices and the First Law of Distributed Objects",
+          "link": "https://www.reddit.com/r/programming/comments/1ryn7ry/microservices_and_the_first_law_of_distributed/",
+          "date": "2026-03-20T04:57:43+00:00",
+          "description": "&#32; submitted by &#32; /u/lelanthran [link] &#32; [comments]",
+          "source": "reddit"
+        },
+        {
           "title": "The FP Article I Can't Seem to Finish · cekrem.github.io",
           "link": "https://www.reddit.com/r/programming/comments/1ryssrv/the_fp_article_i_cant_seem_to_finish/",
           "date": "2026-03-20T10:38:49+00:00",
@@ -902,10 +958,80 @@
           "source": "reddit"
         },
         {
-          "title": "How much has AI deskilled you? (Quiz of SREs)",
-          "link": "https://www.reddit.com/r/programming/comments/1ryumrq/how_much_has_ai_deskilled_you_quiz_of_sres/",
-          "date": "2026-03-20T12:15:05+00:00",
-          "description": "&#32; submitted by &#32; /u/ankit01-oss [link] &#32; [comments]",
+          "title": "Flash-KMeans: Fast and Memory-Efficient Exact K-Means",
+          "link": "https://www.reddit.com/r/programming/comments/1rz1n9m/flashkmeans_fast_and_memoryefficient_exact_kmeans/",
+          "date": "2026-03-20T16:53:11+00:00",
+          "description": "&#32; submitted by &#32; /u/ketralnis [link] &#32; [comments]",
+          "source": "reddit"
+        },
+        {
+          "title": "Bitfield Pitfalls",
+          "link": "https://www.reddit.com/r/programming/comments/1rz2kyq/bitfield_pitfalls/",
+          "date": "2026-03-20T17:27:34+00:00",
+          "description": "&#32; submitted by &#32; /u/ketralnis [link] &#32; [comments]",
+          "source": "reddit"
+        },
+        {
+          "title": "random thing at a hackathon got 200 people using it.",
+          "link": "https://www.reddit.com/r/programming/comments/1rzdu3u/random_thing_at_a_hackathon_got_200_people_using/",
+          "date": "2026-03-21T00:54:51+00:00",
+          "description": "during a hackathon as a quick experiment. It’s a browser-based tennis game where your body controls a 3D player using just your webcam. You open a link, allow camera access, and swing your arm like yo",
+          "source": "reddit"
+        },
+        {
+          "title": "From Oscilloscope to Wireshark: A UDP Story",
+          "link": "https://www.reddit.com/r/programming/comments/1rz2hs2/from_oscilloscope_to_wireshark_a_udp_story/",
+          "date": "2026-03-20T17:24:15+00:00",
+          "description": "&#32; submitted by &#32; /u/ketralnis [link] &#32; [comments]",
+          "source": "reddit"
+        },
+        {
+          "title": "Introduction to PTX Optimization",
+          "link": "https://www.reddit.com/r/programming/comments/1rz4m5q/introduction_to_ptx_optimization/",
+          "date": "2026-03-20T18:44:52+00:00",
+          "description": "Wrote a guide on PTX optimization, from basics to tensor cores. Covers why FlashAttention uses PTX mma instead of WMMA, async copies, cache hints, and warp shuffles. &#32; submitted by &#32; /u/Venom_",
+          "source": "reddit"
+        },
+        {
+          "title": "Binary Fuse Filters: Fast and Smaller Than Xor Filters",
+          "link": "https://www.reddit.com/r/programming/comments/1rz2qc3/binary_fuse_filters_fast_and_smaller_than_xor/",
+          "date": "2026-03-20T17:33:12+00:00",
+          "description": "&#32; submitted by &#32; /u/ketralnis [link] &#32; [comments]",
+          "source": "reddit"
+        },
+        {
+          "title": "Running an Engineering Papers Reading Guild at Zalando",
+          "link": "https://www.reddit.com/r/programming/comments/1rz2pyk/running_an_engineering_papers_reading_guild_at/",
+          "date": "2026-03-20T17:32:47+00:00",
+          "description": "&#32; submitted by &#32; /u/ketralnis [link] &#32; [comments]",
+          "source": "reddit"
+        },
+        {
+          "title": "Monuses and Heaps",
+          "link": "https://www.reddit.com/r/programming/comments/1rz2or2/monuses_and_heaps/",
+          "date": "2026-03-20T17:31:29+00:00",
+          "description": "&#32; submitted by &#32; /u/ketralnis [link] &#32; [comments]",
+          "source": "reddit"
+        },
+        {
+          "title": "Introducing dial9: a flight recorder for Tokio",
+          "link": "https://www.reddit.com/r/programming/comments/1rz2o5t/introducing_dial9_a_flight_recorder_for_tokio/",
+          "date": "2026-03-20T17:30:53+00:00",
+          "description": "&#32; submitted by &#32; /u/ketralnis [link] &#32; [comments]",
+          "source": "reddit"
+        },
+        {
+          "title": "The Tailless Deno",
+          "link": "https://www.reddit.com/r/programming/comments/1rz2kv4/the_tailless_deno/",
+          "date": "2026-03-20T17:27:27+00:00",
+          "description": "&#32; submitted by &#32; /u/ketralnis [link] &#32; [comments]",
+          "source": "reddit"
+        },
+        {
+          "title": "100+ Kernel Bugs in 30 Days",
+          "link": "https://www.reddit.com/r/programming/comments/1rz2ati/100_kernel_bugs_in_30_days/",
+          "date": "2026-03-20T17:17:04+00:00",
+          "description": "&#32; submitted by &#32; /u/ketralnis [link] &#32; [comments]",
           "source": "reddit"
         },
         {
@@ -923,129 +1049,31 @@
           "source": "reddit"
         },
         {
-          "title": "How I found CVE-2026-33017, an unauthenticated RCE in Langflow, by reading the code",
-          "link": "https://www.reddit.com/r/programming/comments/1rybo2x/how_i_found_cve202633017_an_unauthenticated_rce/",
-          "date": "2026-03-19T20:37:43+00:00",
-          "description": "I wrote up a vulnerability research case study on how I found CVE-2026-33017, an unauthenticated RCE in Langflow. The key lesson was that the original problem was bigger than one vulnerable function. ",
+          "title": "Microsoft announces sweeping Windows changes",
+          "link": "https://www.reddit.com/r/technology/comments/1rz66f2/microsoft_announces_sweeping_windows_changes/",
+          "date": "2026-03-20T19:44:15+00:00",
+          "description": "&#32; submitted by &#32; /u/tekz [link] &#32; [comments]",
           "source": "reddit"
         },
         {
-          "title": "Conway's Game of Life, in real life",
-          "link": "https://www.reddit.com/r/programming/comments/1rybyv6/conways_game_of_life_in_real_life/",
-          "date": "2026-03-19T20:49:07+00:00",
-          "description": "&#32; submitted by &#32; /u/SpecialistLady [link] &#32; [comments]",
+          "title": "Amazon Prime Video is about to get worse — again",
+          "link": "https://www.reddit.com/r/technology/comments/1rz1ku7/amazon_prime_video_is_about_to_get_worse_again/",
+          "date": "2026-03-20T16:50:38+00:00",
+          "description": "&#32; submitted by &#32; /u/PrixDevnovaVillain [link] &#32; [comments]",
           "source": "reddit"
         },
         {
-          "title": "noq, noq, who's there?",
-          "link": "https://www.reddit.com/r/programming/comments/1ryd238/noq_noq_whos_there/",
-          "date": "2026-03-19T21:30:33+00:00",
-          "description": "&#32; submitted by &#32; /u/SpecialistLady [link] &#32; [comments]",
+          "title": "Thousands have swooned over this MAGA dream girl. She’s made with AI.",
+          "link": "https://www.reddit.com/r/technology/comments/1ryyz20/thousands_have_swooned_over_this_maga_dream_girl/",
+          "date": "2026-03-20T15:14:17+00:00",
+          "description": "&#32; submitted by &#32; /u/BusyHands_ [link] &#32; [comments]",
           "source": "reddit"
         },
         {
-          "title": "Is the Strategy Pattern an ultimate solution for low coupling?",
-          "link": "https://www.reddit.com/r/programming/comments/1rxxirh/is_the_strategy_pattern_an_ultimate_solution_for/",
-          "date": "2026-03-19T11:10:11+00:00",
-          "description": "&#32; submitted by &#32; /u/Adventurous-Salt8514 [link] &#32; [comments]",
-          "source": "reddit"
-        },
-        {
-          "title": "Detecting Defects in Software Systems",
-          "link": "https://www.reddit.com/r/programming/comments/1ry7x5c/detecting_defects_in_software_systems/",
-          "date": "2026-03-19T18:09:20+00:00",
-          "description": "&#32; submitted by &#32; /u/Fuckyescamels [link] &#32; [comments]",
-          "source": "reddit"
-        },
-        {
-          "title": "Upcoming free API",
-          "link": "https://www.reddit.com/r/programming/comments/1ryuvgx/upcoming_free_api/",
-          "date": "2026-03-20T12:26:48+00:00",
-          "description": "I call it RandomAPI but there are huge security flaws still so I’m just teasing you guys &#32; submitted by &#32; /u/Empty_Writer2756 [link] &#32; [comments]",
-          "source": "reddit"
-        },
-        {
-          "title": "How Kernel Anti-Cheats Work: A Deep Dive into Modern Game Protection",
-          "link": "https://www.reddit.com/r/programming/comments/1rxjea3/how_kernel_anticheats_work_a_deep_dive_into/",
-          "date": "2026-03-18T23:03:20+00:00",
-          "description": "&#32; submitted by &#32; /u/Stackitu [link] &#32; [comments]",
-          "source": "reddit"
-        },
-        {
-          "title": "I'm building Alcove Congress: local-first semantic search over congressional and legislative records with ADA Title II accessibility built in. Happy to demo. The tools are built and running.",
-          "link": "https://www.reddit.com/r/programming/comments/1rynco1/im_building_alcove_congress_localfirst_semantic/",
-          "date": "2026-03-20T05:05:07+00:00",
-          "description": "&#32; submitted by &#32; /u/Pro777 [link] &#32; [comments]",
-          "source": "reddit"
-        },
-        {
-          "title": "500,000 people in Norway downloaded the app… so it got rebuilt after 2 years",
-          "link": "https://www.reddit.com/r/programming/comments/1ryurdn/500000_people_in_norway_downloaded_the_app_so_it/",
-          "date": "2026-03-20T12:21:12+00:00",
-          "description": "Hey! Back in 2016 I made a simple drinking game app just for fun. From time to time I&#39;ve made a few small tweaks, but nothing big really. Over time it somehow grew to 500,000+ downloads in Norway(",
-          "source": "reddit"
-        },
-        {
-          "title": "How do you reduce development cost without sacrificing quality?",
-          "link": "https://www.reddit.com/r/programming/comments/1ryrtno/how_do_you_reduce_development_cost_without/",
-          "date": "2026-03-20T09:39:45+00:00",
-          "description": "I’ve been thinking about how teams can reduce development costs without compromising quality. In many projects, there’s pressure to move fast while staying within budget. But cutting the wrong corners",
-          "source": "reddit"
-        },
-        {
-          "title": "How Much Stack Space Do You Have? Estimating Remaining Stack in C on Linux",
-          "link": "https://www.reddit.com/r/programming/comments/1rygj3p/how_much_stack_space_do_you_have_estimating/",
-          "date": "2026-03-19T23:47:15+00:00",
-          "description": "&#32; submitted by &#32; /u/Yairlenga [link] &#32; [comments]",
-          "source": "reddit"
-        },
-        {
-          "title": "The Data Structures of Roads",
-          "link": "https://www.reddit.com/r/programming/comments/1rxgkva/the_data_structures_of_roads/",
-          "date": "2026-03-18T21:14:47+00:00",
-          "description": "&#32; submitted by &#32; /u/mttd [link] &#32; [comments]",
-          "source": "reddit"
-        },
-        {
-          "title": "Vercel vs Netlify in 2026: The Platform War That's Reshaping How We Deploy",
-          "link": "https://www.reddit.com/r/programming/comments/1rykpyo/vercel_vs_netlify_in_2026_the_platform_war_thats/",
-          "date": "2026-03-20T02:52:08+00:00",
-          "description": "&#32; submitted by &#32; /u/CitrusPancakes [link] &#32; [comments]",
-          "source": "reddit"
-        },
-        {
-          "title": "JavaScript's date parser is out of control and needs to be stopped",
-          "link": "https://www.reddit.com/r/programming/comments/1rx4lb3/javascripts_date_parser_is_out_of_control_and/",
-          "date": "2026-03-18T13:56:19+00:00",
-          "description": "I recently spent an afternoon learning that JavaScript has a very generous definition of &quot;date.&quot; new Date(&quot;2020-01-23&quot;) // Wed Jan 22 2020 19:00:00 GMT-0500 Makes sense. ISO format",
-          "source": "reddit"
-        },
-        {
-          "title": "Supply-chain attack using invisible code hits GitHub and other repositories",
-          "link": "https://www.reddit.com/r/programming/comments/1rxagta/supplychain_attack_using_invisible_code_hits/",
-          "date": "2026-03-18T17:35:00+00:00",
-          "description": "&#32; submitted by &#32; /u/BiggieCheeseFan88 [link] &#32; [comments]",
-          "source": "reddit"
-        },
-        {
-          "title": "Time-based encryption algorithm where the key changes every second — try it live",
-          "link": "https://www.reddit.com/r/programming/comments/1ryr2vr/timebased_encryption_algorithm_where_the_key/",
-          "date": "2026-03-20T08:52:14+00:00",
-          "description": "I’ve been working on something different from traditional encryption systems. Instead of static keys, this algorithm uses TIME itself as the key. It’s called Kaalka Encryption (v5.0.0), and it generat",
-          "source": "reddit"
-        },
-        {
-          "title": "learn the basics of css #css #html #javascript #colors #design",
-          "link": "https://www.reddit.com/r/programming/comments/1ryo90k/learn_the_basics_of_css_css_html_javascript/",
-          "date": "2026-03-20T05:56:32+00:00",
-          "description": "&#32; submitted by &#32; /u/Accurate_Fig_1854 [link] &#32; [comments]",
-          "source": "reddit"
-        },
-        {
-          "title": "Using a fault tolerant trie for address matching",
-          "link": "https://www.reddit.com/r/programming/comments/1ry9pvl/using_a_fault_tolerant_trie_for_address_matching/",
-          "date": "2026-03-19T19:23:41+00:00",
-          "description": "&#32; submitted by &#32; /u/fagnerbrack [link] &#32; [comments]",
+          "title": "U.S President FCC lets Nexstar buy Tegna and blow way past 39% TV ownership cap | Brendan Carr lets U.S President-favorite Nexstar exceed national station ownership limit.",
+          "link": "https://www.reddit.com/r/technology/comments/1rz7fh4/us_president_fcc_lets_nexstar_buy_tegna_and_blow/",
+          "date": "2026-03-20T20:32:24+00:00",
+          "description": "&#32; submitted by &#32; /u/ControlCAD [link] &#32; [comments]",
           "source": "reddit"
         },
         {
@@ -1056,6 +1084,48 @@
           "source": "reddit"
         },
         {
+          "title": "Pinterest CEO calls for ban on social media for youth under 16",
+          "link": "https://www.reddit.com/r/technology/comments/1ryymuw/pinterest_ceo_calls_for_ban_on_social_media_for/",
+          "date": "2026-03-20T15:01:35+00:00",
+          "description": "&#32; submitted by &#32; /u/sr_local [link] &#32; [comments]",
+          "source": "reddit"
+        },
+        {
+          "title": "RIP Metaverse, an $80 Billion Dumpster Fire Nobody Wanted | Who could have possibly predicted this, besides everyone?",
+          "link": "https://www.reddit.com/r/technology/comments/1rz25l5/rip_metaverse_an_80_billion_dumpster_fire_nobody/",
+          "date": "2026-03-20T17:12:00+00:00",
+          "description": "&#32; submitted by &#32; /u/Hrmbee [link] &#32; [comments]",
+          "source": "reddit"
+        },
+        {
+          "title": "Microsoft’s return-to-office policy creates a return to slower commutes, traffic analysis shows",
+          "link": "https://www.reddit.com/r/technology/comments/1rz2grg/microsofts_returntooffice_policy_creates_a_return/",
+          "date": "2026-03-20T17:23:09+00:00",
+          "description": "&#32; submitted by &#32; /u/north_canadian_ice [link] &#32; [comments]",
+          "source": "reddit"
+        },
+        {
+          "title": "Walmart secures two AI pricing patents, raising dynamic pricing concerns",
+          "link": "https://www.reddit.com/r/technology/comments/1ryvlei/walmart_secures_two_ai_pricing_patents_raising/",
+          "date": "2026-03-20T13:00:10+00:00",
+          "description": "&#32; submitted by &#32; /u/AdSpecialist6598 [link] &#32; [comments]",
+          "source": "reddit"
+        },
+        {
+          "title": "Microsoft: KB5079473 breaks internet access to Windows 11 Teams, Edge, OneDrive, Copilot",
+          "link": "https://www.reddit.com/r/technology/comments/1rz04g2/microsoft_kb5079473_breaks_internet_access_to/",
+          "date": "2026-03-20T15:56:37+00:00",
+          "description": "&#32; submitted by &#32; /u/lurker_bee [link] &#32; [comments]",
+          "source": "reddit"
+        },
+        {
+          "title": "Closure of Strait of Hormuz is 'greatest global energy security threat in history,' warns IEA chief",
+          "link": "https://www.reddit.com/r/technology/comments/1rz8t7w/closure_of_strait_of_hormuz_is_greatest_global/",
+          "date": "2026-03-20T21:26:24+00:00",
+          "description": "&#32; submitted by &#32; /u/geoxol [link] &#32; [comments]",
+          "source": "reddit"
+        },
+        {
           "title": "RFK Jr. has destroyed over a quarter of health dept's expert panels | Under Kennedy, the health dept. has wiped out 75 advisory boards, corrupted others.",
           "link": "https://www.reddit.com/r/technology/comments/1ryh7rp/rfk_jr_has_destroyed_over_a_quarter_of_health/",
           "date": "2026-03-20T00:15:39+00:00",
@@ -1063,10 +1133,31 @@
           "source": "reddit"
         },
         {
-          "title": "U.S. tech execs smuggled Nvidia chips to China, prosecutors say",
-          "link": "https://www.reddit.com/r/technology/comments/1ryeh5h/us_tech_execs_smuggled_nvidia_chips_to_china/",
-          "date": "2026-03-19T22:24:17+00:00",
-          "description": "&#32; submitted by &#32; /u/Puginator [link] &#32; [comments]",
+          "title": "All the wrong EVs are getting canceled",
+          "link": "https://www.reddit.com/r/technology/comments/1rz0mnk/all_the_wrong_evs_are_getting_canceled/",
+          "date": "2026-03-20T16:15:04+00:00",
+          "description": "&#32; submitted by &#32; /u/TripleShotPls [link] &#32; [comments]",
+          "source": "reddit"
+        },
+        {
+          "title": "Marc Andreessen is a philosophical zombie | Silicon Valley innovates again",
+          "link": "https://www.reddit.com/r/technology/comments/1rz3cmw/marc_andreessen_is_a_philosophical_zombie_silicon/",
+          "date": "2026-03-20T17:56:40+00:00",
+          "description": "&#32; submitted by &#32; /u/Hrmbee [link] &#32; [comments]",
+          "source": "reddit"
+        },
+        {
+          "title": "Polymarket Says It Deals in Truth, but Its Social Feeds Are Filled With Falsehoods",
+          "link": "https://www.reddit.com/r/technology/comments/1rz48ah/polymarket_says_it_deals_in_truth_but_its_social/",
+          "date": "2026-03-20T18:30:02+00:00",
+          "description": "&#32; submitted by &#32; /u/Unusual-State1827 [link] &#32; [comments]",
+          "source": "reddit"
+        },
+        {
+          "title": "DOGE Goes Nuclear: How Trump Invited Silicon Valley Into America’s Nuclear Power Regulator",
+          "link": "https://www.reddit.com/r/technology/comments/1rz5vm8/doge_goes_nuclear_how_trump_invited_silicon/",
+          "date": "2026-03-20T19:32:39+00:00",
+          "description": "&#32; submitted by &#32; /u/abrownn [link] &#32; [comments]",
           "source": "reddit"
         },
         {
@@ -1077,59 +1168,17 @@
           "source": "reddit"
         },
         {
-          "title": "Online bot traffic will exceed human traffic by 2027, Cloudflare CEO says",
-          "link": "https://www.reddit.com/r/technology/comments/1ryfw7g/online_bot_traffic_will_exceed_human_traffic_by/",
-          "date": "2026-03-19T23:20:52+00:00",
-          "description": "&#32; submitted by &#32; /u/Logical_Welder3467 [link] &#32; [comments]",
+          "title": "‘It does feel like an intimidation campaign’: why is US tech giant Palantir suing a small Swiss magazine?",
+          "link": "https://www.reddit.com/r/technology/comments/1ryuhla/it_does_feel_like_an_intimidation_campaign_why_is/",
+          "date": "2026-03-20T12:08:03+00:00",
+          "description": "&#32; submitted by &#32; /u/tacticaldodo [link] &#32; [comments]",
           "source": "reddit"
         },
         {
-          "title": "A rogue Al agent triggered a major security alert at Meta, by taking action without approval that led to the exposure of sensitive company and user data",
-          "link": "https://www.reddit.com/r/technology/comments/1ryc49c/a_rogue_al_agent_triggered_a_major_security_alert/",
-          "date": "2026-03-19T20:54:57+00:00",
-          "description": "&#32; submitted by &#32; /u/FinnFarrow [link] &#32; [comments]",
-          "source": "reddit"
-        },
-        {
-          "title": "FBI admits buying Americans' location data and says it won't stop",
-          "link": "https://www.reddit.com/r/technology/comments/1rxzv9x/fbi_admits_buying_americans_location_data_and/",
-          "date": "2026-03-19T13:04:37+00:00",
-          "description": "&#32; submitted by &#32; /u/AdSpecialist6598 [link] &#32; [comments]",
-          "source": "reddit"
-        },
-        {
-          "title": "YouTube is asking users if videos “feel like AI slop” to flag low-quality content",
-          "link": "https://www.reddit.com/r/technology/comments/1rykq36/youtube_is_asking_users_if_videos_feel_like_ai/",
-          "date": "2026-03-20T02:52:17+00:00",
-          "description": "&#32; submitted by &#32; /u/moeka_8962 [link] &#32; [comments]",
-          "source": "reddit"
-        },
-        {
-          "title": "Firefox 149 will offer a free built-in VPN, split views, tab notes and optional AI windows",
-          "link": "https://www.reddit.com/r/technology/comments/1ry70i7/firefox_149_will_offer_a_free_builtin_vpn_split/",
-          "date": "2026-03-19T17:37:08+00:00",
-          "description": "&#32; submitted by &#32; /u/SaveDnet-FRed0 [link] &#32; [comments]",
-          "source": "reddit"
-        },
-        {
-          "title": "Gamers Rebel Against Nvidia’s DLSS 5 ‘AI Slop Filter’",
-          "link": "https://www.reddit.com/r/technology/comments/1ryblmn/gamers_rebel_against_nvidias_dlss_5_ai_slop_filter/",
-          "date": "2026-03-19T20:35:15+00:00",
-          "description": "&#32; submitted by &#32; /u/inthetownwhere [link] &#32; [comments]",
-          "source": "reddit"
-        },
-        {
-          "title": "Windows 11’s free video editor Clipchamp now requires OneDrive",
-          "link": "https://www.reddit.com/r/technology/comments/1ry5kpq/windows_11s_free_video_editor_clipchamp_now/",
-          "date": "2026-03-19T16:44:41+00:00",
-          "description": "&#32; submitted by &#32; /u/KryssCom [link] &#32; [comments]",
-          "source": "reddit"
-        },
-        {
-          "title": "Jeff Bezos is reportedly seeking $100 billion for a new fund, the likes of which will be used to buy up companies in major industrial sectors and, ultimately, modernize and automate them with AI",
-          "link": "https://www.reddit.com/r/technology/comments/1ryfvka/jeff_bezos_is_reportedly_seeking_100_billion_for/",
-          "date": "2026-03-19T23:20:06+00:00",
-          "description": "&#32; submitted by &#32; /u/Logical_Welder3467 [link] &#32; [comments]",
+          "title": "Ubisoft lays off 105 people at Red Storm, the studio co-founded 30 years ago by Tom Clancy, converts it to a support role | The studio that created the famed Rainbow Six and Ghost Recon series is now effectively dead.",
+          "link": "https://www.reddit.com/r/technology/comments/1ryxgw2/ubisoft_lays_off_105_people_at_red_storm_the/",
+          "date": "2026-03-20T14:17:27+00:00",
+          "description": "&#32; submitted by &#32; /u/ControlCAD [link] &#32; [comments]",
           "source": "reddit"
         },
         {
@@ -1140,275 +1189,135 @@
           "source": "reddit"
         },
         {
-          "title": "US F-35 damaged by suspected Iranian fire makes emergency landing, sources say",
-          "link": "https://www.reddit.com/r/technology/comments/1ry503k/us_f35_damaged_by_suspected_iranian_fire_makes/",
-          "date": "2026-03-19T16:23:40+00:00",
-          "description": "&#32; submitted by &#32; /u/Mr_strelac [link] &#32; [comments]",
+          "title": "Google Search is now using AI to replace headlines",
+          "link": "https://www.reddit.com/r/technology/comments/1ryycqe/google_search_is_now_using_ai_to_replace_headlines/",
+          "date": "2026-03-20T14:51:11+00:00",
+          "description": "&#32; submitted by &#32; /u/Well_Socialized [link] &#32; [comments]",
           "source": "reddit"
         },
         {
-          "title": "Bring Back the Burned CD: They’re a love language. And a reminder of the hope we once had.",
-          "link": "https://www.reddit.com/r/technology/comments/1ryjuxw/bring_back_the_burned_cd_theyre_a_love_language/",
-          "date": "2026-03-20T02:13:08+00:00",
-          "description": "&#32; submitted by &#32; /u/ubcstaffer123 [link] &#32; [comments]",
+          "title": "U.S. tech execs smuggled Nvidia chips to China, prosecutors say",
+          "link": "https://www.reddit.com/r/technology/comments/1ryeh5h/us_tech_execs_smuggled_nvidia_chips_to_china/",
+          "date": "2026-03-19T22:24:17+00:00",
+          "description": "&#32; submitted by &#32; /u/Puginator [link] &#32; [comments]",
           "source": "reddit"
         },
         {
-          "title": "Ferrari Boss: Touch Buttons Cost Half As Much As Physical Controls",
-          "link": "https://www.reddit.com/r/technology/comments/1rxwxc6/ferrari_boss_touch_buttons_cost_half_as_much_as/",
-          "date": "2026-03-19T10:36:57+00:00",
-          "description": "&#32; submitted by &#32; /u/DonkeyFuel [link] &#32; [comments]",
+          "title": "Online bot traffic will exceed human traffic by 2027, Cloudflare CEO says",
+          "link": "https://www.reddit.com/r/technology/comments/1ryfw7g/online_bot_traffic_will_exceed_human_traffic_by/",
+          "date": "2026-03-19T23:20:52+00:00",
+          "description": "&#32; submitted by &#32; /u/Logical_Welder3467 [link] &#32; [comments]",
           "source": "reddit"
         },
         {
-          "title": "China's transition to electric vehicles softens the effect of the Iran war",
-          "link": "https://www.reddit.com/r/technology/comments/1ry9934/chinas_transition_to_electric_vehicles_softens/",
-          "date": "2026-03-19T18:57:33+00:00",
-          "description": "&#32; submitted by &#32; /u/PhantomBraved [link] &#32; [comments]",
+          "title": "YouTube is asking users if videos “feel like AI slop” to flag low-quality content",
+          "link": "https://www.reddit.com/r/technology/comments/1rykq36/youtube_is_asking_users_if_videos_feel_like_ai/",
+          "date": "2026-03-20T02:52:17+00:00",
+          "description": "&#32; submitted by &#32; /u/moeka_8962 [link] &#32; [comments]",
           "source": "reddit"
         },
         {
-          "title": "Patreon CEO calls AI companies' fair use argument 'bogus,' says creators should be paid",
-          "link": "https://www.reddit.com/r/technology/comments/1ry26a6/patreon_ceo_calls_ai_companies_fair_use_argument/",
-          "date": "2026-03-19T14:38:17+00:00",
-          "description": "&#32; submitted by &#32; /u/tylerthe-theatre [link] &#32; [comments]",
-          "source": "reddit"
-        },
-        {
-          "title": "US charges 3 tied to Super Micro Computer with helping smuggle billions of dollars of AI chips to China",
-          "link": "https://www.reddit.com/r/technology/comments/1rysisj/us_charges_3_tied_to_super_micro_computer_with/",
-          "date": "2026-03-20T10:22:06+00:00",
-          "description": "&#32; submitted by &#32; /u/talkingatoms [link] &#32; [comments]",
-          "source": "reddit"
-        },
-        {
-          "title": "Tinder Plans to Let AI Scan Your Camera Roll | In a feature the dating app says is set to roll out in the U.S. later this spring, Tinder plans to access users' camera rolls to pick photos and determine what they're into",
-          "link": "https://www.reddit.com/r/technology/comments/1ry304w/tinder_plans_to_let_ai_scan_your_camera_roll_in_a/",
-          "date": "2026-03-19T15:09:33+00:00",
-          "description": "&#32; submitted by &#32; /u/Hrmbee [link] &#32; [comments]",
-          "source": "reddit"
-        },
-        {
-          "title": "Nearly 150 retired federal and state judges have filed an amicus brief supporting Anthropic in its lawsuit against the Pentagon",
-          "link": "https://www.reddit.com/r/technology/comments/1ry7l9o/nearly_150_retired_federal_and_state_judges_have/",
-          "date": "2026-03-19T17:57:55+00:00",
+          "title": "A rogue Al agent triggered a major security alert at Meta, by taking action without approval that led to the exposure of sensitive company and user data",
+          "link": "https://www.reddit.com/r/technology/comments/1ryc49c/a_rogue_al_agent_triggered_a_major_security_alert/",
+          "date": "2026-03-19T20:54:57+00:00",
           "description": "&#32; submitted by &#32; /u/FinnFarrow [link] &#32; [comments]",
-          "source": "reddit"
-        },
-        {
-          "title": "4chan hit with £450,000 UK fine over age checks",
-          "link": "https://www.reddit.com/r/technology/comments/1rxxvfm/4chan_hit_with_450000_uk_fine_over_age_checks/",
-          "date": "2026-03-19T11:29:10+00:00",
-          "description": "&#32; submitted by &#32; /u/Beo1217 [link] &#32; [comments]",
-          "source": "reddit"
-        },
-        {
-          "title": "Tesla’s Full Self-Driving is on the cusp of a recall",
-          "link": "https://www.reddit.com/r/technology/comments/1ry1w2u/teslas_full_selfdriving_is_on_the_cusp_of_a_recall/",
-          "date": "2026-03-19T14:27:45+00:00",
-          "description": "&#32; submitted by &#32; /u/collogue [link] &#32; [comments]",
-          "source": "reddit"
-        },
-        {
-          "title": "‘It does feel like an intimidation campaign’: why is US tech giant Palantir suing a small Swiss magazine?",
-          "link": "https://www.reddit.com/r/technology/comments/1ryuhla/it_does_feel_like_an_intimidation_campaign_why_is/",
-          "date": "2026-03-20T12:08:03+00:00",
-          "description": "&#32; submitted by &#32; /u/tacticaldodo [link] &#32; [comments]",
-          "source": "reddit"
-        },
-        {
-          "title": "Pentagon replies to Anthropic's lawsuit; says: Refusal to accept the government's contractual terms is not protected",
-          "link": "https://www.reddit.com/r/technology/comments/1rxvrun/pentagon_replies_to_anthropics_lawsuit_says/",
-          "date": "2026-03-19T09:29:41+00:00",
-          "description": "&#32; submitted by &#32; /u/No_Top_9023 [link] &#32; [comments]",
           "source": "reddit"
         }
       ],
-      "fetchedAt": "2026-03-20T12:32:44.652Z",
+      "fetchedAt": "2026-03-21T01:02:38.076Z",
       "error": null
     },
     "bbc": {
       "items": [
         {
-          "title": "Civil trial against Gerry Adams over IRA bombings withdrawn",
-          "link": "https://www.bbc.com/news/articles/cyv1p930gq4o?at_medium=RSS&at_campaign=rss",
-          "date": "Fri, 20 Mar 2026 12:27:20 GMT",
-          "description": "A lawyer for the claimants said on Friday that proceedings would be \"discontinued\".",
+          "title": "UK allows US to use bases to strike Strait of Hormuz targets",
+          "link": "https://www.bbc.com/news/articles/c36rny6xgppo?at_medium=RSS&at_campaign=rss",
+          "date": "Fri, 20 Mar 2026 20:22:08 GMT",
+          "description": "Downing Street said ministers approved the expansion after accusing Iran of \"reckless strikes\".",
           "source": "bbc"
         },
         {
-          "title": "Typical energy bill forecast to rise by £332 a year in July",
-          "link": "https://www.bbc.com/news/articles/cede1nn8wp5o?at_medium=RSS&at_campaign=rss",
-          "date": "Fri, 20 Mar 2026 12:08:57 GMT",
-          "description": "Cornwall Insight says the recent surge in energy prices due to the Iran war is set to push up household bills.",
+          "title": "Work from home and drive more slowly to save energy, global body urges",
+          "link": "https://www.bbc.com/news/articles/cvg4540d0g4o?at_medium=RSS&at_campaign=rss",
+          "date": "Fri, 20 Mar 2026 15:05:03 GMT",
+          "description": "People should change how they travel, work and cook to tackle the energy price crisis, the International Energy Agency says.",
           "source": "bbc"
         },
         {
-          "title": "Norway's crown princess breaks silence on Epstein links: 'I was manipulated and deceived'",
-          "link": "https://www.bbc.com/news/articles/cde5y63y3n7o?at_medium=RSS&at_campaign=rss",
-          "date": "Fri, 20 Mar 2026 10:43:00 GMT",
-          "description": "Crown Princess Mette Marit tells Norwegian TV she wishes she had never met the late sex offender.",
+          "title": "Dame Jenni Murray, former BBC Woman's Hour presenter, dies at 75",
+          "link": "https://www.bbc.com/news/articles/cpwj8e25ddgo?at_medium=RSS&at_campaign=rss",
+          "date": "Fri, 20 Mar 2026 18:34:23 GMT",
+          "description": "She was the Radio 4 programme's longest-serving presenter, having left in 2020 after 33 years.",
           "source": "bbc"
         },
         {
-          "title": "Greg James completes Comic Relief challenge, raising more than £4m",
-          "link": "https://www.bbc.com/news/articles/clyxw9wr73no?at_medium=RSS&at_campaign=rss",
-          "date": "Fri, 20 Mar 2026 10:45:45 GMT",
-          "description": "The Radio 1 host cycled 1,000km (630 miles) on a tandem bike over the course of eight days.",
+          "title": "'I feel so grateful to be alive,' says Kent University meningitis survivor",
+          "link": "https://www.bbc.com/news/videos/cp3ld6dq4d1o?at_medium=RSS&at_campaign=rss",
+          "date": "Fri, 20 Mar 2026 16:31:06 GMT",
+          "description": "Annabelle Mackay, 21, has spoken to the BBC about her experience surviving meningitis.",
           "source": "bbc"
         },
         {
-          "title": "Sir John Curtice: Why Labour's Brexit focus has shifted from Leavers to Remainers",
-          "link": "https://www.bbc.com/news/articles/c4gjn1d74jlo?at_medium=RSS&at_campaign=rss",
-          "date": "Fri, 20 Mar 2026 00:01:51 GMT",
-          "description": "Will the pursuit of a closer relationship with the EU risk courting electoral disaster by alienating Brexit-backing voters?",
+          "title": "Chuck Norris, martial artist and Hollywood movie star, dies aged 86",
+          "link": "https://www.bbc.com/news/articles/c0le8e5jg1xo?at_medium=RSS&at_campaign=rss",
+          "date": "Fri, 20 Mar 2026 20:41:21 GMT",
+          "description": "The actor was known for Walker, Texas Ranger and The Way of the Dragon films - and numerous online memes.",
           "source": "bbc"
         },
         {
-          "title": "Officer reportedly leaks location of French aircraft carrier with Strava run",
-          "link": "https://www.bbc.com/news/articles/cd9vdel17wqo?at_medium=RSS&at_campaign=rss",
-          "date": "Fri, 20 Mar 2026 12:13:43 GMT",
-          "description": "The 35-minute workout reveals the vessel's location as it heads towards the Middle East, Le Monde reports.",
-          "source": "bbc"
-        },
-        {
-          "title": "Lab-grown food pipe offers new hope for young patients",
-          "link": "https://www.bbc.com/news/articles/c4gdvv8j2j1o?at_medium=RSS&at_campaign=rss",
-          "date": "Fri, 20 Mar 2026 10:41:40 GMT",
-          "description": "UK scientists have grown fully functioning food pipes and successfully transplanted them into mini pigs, paving the way for human trials.",
-          "source": "bbc"
-        },
-        {
-          "title": "Mexican teen dies while being held in US immigration custody",
-          "link": "https://www.bbc.com/news/articles/cp84n0kn902o?at_medium=RSS&at_campaign=rss",
-          "date": "Fri, 20 Mar 2026 10:57:38 GMT",
-          "description": "Royer Perez-Jimenez died amid a surge of migrant deaths under Donald Trump's immigration crackdown.",
-          "source": "bbc"
-        },
-        {
-          "title": "Farage pauses Cameo account for security reasons, says Reform UK",
-          "link": "https://www.bbc.com/news/articles/c79jwxypp1ro?at_medium=RSS&at_campaign=rss",
-          "date": "Fri, 20 Mar 2026 10:34:23 GMT",
-          "description": "It comes after a Guardian investigation suggests the party leader recorded supportive messages for a convicted rioter and a neo-Nazi event.",
-          "source": "bbc"
-        },
-        {
-          "title": "The Salt Path author confirms she wrote secret first book - despite claiming to be debut writer",
-          "link": "https://www.bbc.com/news/articles/cj32vx61x6lo?at_medium=RSS&at_campaign=rss",
-          "date": "Fri, 20 Mar 2026 06:12:02 GMT",
-          "description": "Raynor and Moth Winn published a book they hoped would help get them out of debt, the BBC confirms.",
-          "source": "bbc"
-        },
-        {
-          "title": "'You can't smell Nowruz in the air': Iran marks Persian new year under threat of strikes",
-          "link": "https://www.bbc.com/news/articles/cvgkg8p7zlko?at_medium=RSS&at_campaign=rss",
-          "date": "Fri, 20 Mar 2026 00:04:34 GMT",
-          "description": "Iranians speak to the BBC about preparing for the Nowruz new year festival during the war.",
-          "source": "bbc"
-        },
-        {
-          "title": "Nearly 100 ships pass the Hormuz Strait - who is getting through?",
-          "link": "https://www.bbc.com/news/articles/c4geg0eeyjeo?at_medium=RSS&at_campaign=rss",
-          "date": "Fri, 20 Mar 2026 00:04:57 GMT",
-          "description": "Just under 100 ships have passed thorough the Strait of Hormuz since the start of March, according to data analysed by BBC Verify.",
-          "source": "bbc"
-        },
-        {
-          "title": "Netanyahu says Israel 'acted alone' in attack on Iranian gas field",
-          "link": "https://www.bbc.com/news/articles/c2k3jgy9vq3o?at_medium=RSS&at_campaign=rss",
-          "date": "Thu, 19 Mar 2026 22:41:40 GMT",
-          "description": "Speaking at a news conference, the Israeli leader said Trump had requested that there be no further such attacks.",
-          "source": "bbc"
-        },
-        {
-          "title": "Ros Atkins on... Trump's mixed messages on the war",
-          "link": "https://www.bbc.com/news/videos/c747lk0geldo?at_medium=RSS&at_campaign=rss",
-          "date": "Thu, 19 Mar 2026 20:58:34 GMT",
-          "description": "The BBC’s Analysis Editor looks at President Trump’s mixed messages on the war with Iran.",
-          "source": "bbc"
-        },
-        {
-          "title": "Russia, China and the US – the global winners and losers of the Iran war",
-          "link": "https://www.bbc.com/news/articles/c3wlwnn05zqo?at_medium=RSS&at_campaign=rss",
-          "date": "Fri, 20 Mar 2026 00:08:53 GMT",
-          "description": "As the conflict triggers economic disruption some risk being hit hard, while others stand to benefit.",
-          "source": "bbc"
-        },
-        {
-          "title": "BTS return from military service - but does their album live up to the hype?",
-          "link": "https://www.bbc.com/news/articles/c070eg32dryo?at_medium=RSS&at_campaign=rss",
-          "date": "Fri, 20 Mar 2026 04:04:50 GMT",
-          "description": "The band's 10th album sees them return to the rebellious, rap-heavy sound of their early days.",
-          "source": "bbc"
-        },
-        {
-          "title": "What are the symptoms of meningitis and how is it spread?",
-          "link": "https://www.bbc.com/news/articles/c7432klgyldo?at_medium=RSS&at_campaign=rss",
-          "date": "Fri, 20 Mar 2026 11:54:53 GMT",
-          "description": "Two people have died following an \"unpredecented\" outbreak of meningitis in Kent.",
-          "source": "bbc"
-        },
-        {
-          "title": "Five members of my family drowned in a car. I want my surviving daughter to live life",
-          "link": "https://www.bbc.com/news/articles/cqlgqq6qg26o?at_medium=RSS&at_campaign=rss",
-          "date": "Fri, 20 Mar 2026 00:00:30 GMT",
-          "description": "Rioghnach McGrotty was four months old when she was rescued from a car that slid off a pier after a day at the seaside.",
-          "source": "bbc"
-        },
-        {
-          "title": "Weekly quiz: How did this man accidentally turn himself blue?",
-          "link": "https://www.bbc.com/news/articles/cwyd7xjw2r3o?at_medium=RSS&at_campaign=rss",
-          "date": "Thu, 19 Mar 2026 17:34:53 GMT",
-          "description": "How much attention did you pay to what happened in the world over the past seven days?",
-          "source": "bbc"
-        },
-        {
-          "title": "Inside the world of preppers getting ready for society's collapse",
-          "link": "https://www.bbc.com/news/articles/c33j0rdnry1o?at_medium=RSS&at_campaign=rss",
-          "date": "Fri, 20 Mar 2026 06:12:17 GMT",
-          "description": "From floods and fires to national security cyberattacks, how can you prepare for the worst?",
-          "source": "bbc"
-        },
-        {
-          "title": "Traitors, Amandaland and Idris Elba - get set for Comic Relief",
+          "title": "Traitors and Idris Elba help Comic Relief raise £30m",
           "link": "https://www.bbc.com/news/articles/cvg3gnlwn10o?at_medium=RSS&at_campaign=rss",
-          "date": "Fri, 20 Mar 2026 01:10:02 GMT",
-          "description": "The charity telethon takes place on Friday night and will be hosted by Davina McCall.",
+          "date": "Sat, 21 Mar 2026 00:50:46 GMT",
+          "description": "The annual charity telethon was hosted by Davina McCall and featured appearances from Idris Elba, Katherine Ryan and Catherine Tate.",
           "source": "bbc"
         },
         {
-          "title": "Faisal Islam: Iran war is having a dramatic effect on the UK economy",
-          "link": "https://www.bbc.com/news/articles/c33lnd1gxxro?at_medium=RSS&at_campaign=rss",
-          "date": "Thu, 19 Mar 2026 16:21:28 GMT",
-          "description": "The knock-on effects of the war in the Gulf go beyond a hold on interest rates and are set to reverberate for months.",
+          "title": "Elon Musk misled Twitter investors, jury finds",
+          "link": "https://www.bbc.com/news/articles/c62j3yl842eo?at_medium=RSS&at_campaign=rss",
+          "date": "Fri, 20 Mar 2026 23:44:09 GMT",
+          "description": "A San Francisco jury concludes Musk’s claims in 2022 were damaging to a group of Twitter investors.",
           "source": "bbc"
         },
         {
-          "title": "IT failure leaves Hargreaves Lansdown clients unable to make transactions",
-          "link": "https://www.bbc.com/news/articles/cx2reyjdyjzo?at_medium=RSS&at_campaign=rss",
-          "date": "Fri, 20 Mar 2026 11:57:18 GMT",
-          "description": "The finance firm has apologised for the disruption to its website and app, which has angered many customers.",
+          "title": "Reform suspends Scotland candidate less than a day after he was announced",
+          "link": "https://www.bbc.com/news/articles/cj375v264rko?at_medium=RSS&at_campaign=rss",
+          "date": "Fri, 20 Mar 2026 18:54:55 GMT",
+          "description": "Scotland leader Malcolm Offord told BBC Radio Scotland that the party had \"spent a lot of time on vetting\" candidates",
           "source": "bbc"
         },
         {
-          "title": "Lily Allen's West End Girl portrait goes on show at National Portrait Gallery",
-          "link": "https://www.bbc.com/news/articles/cew7l8nr5jeo?at_medium=RSS&at_campaign=rss",
-          "date": "Fri, 20 Mar 2026 11:15:50 GMT",
-          "description": "The painting by Spanish artist Nieves Gonzalez was used on the cover of the singer's latest album.",
+          "title": "Iranian man arrested trying to enter Faslane nuclear base",
+          "link": "https://www.bbc.com/news/articles/c80mej47xz0o?at_medium=RSS&at_campaign=rss",
+          "date": "Fri, 20 Mar 2026 16:03:24 GMT",
+          "description": "A 34-year-old man and a 31-year-old woman were arrested at HM Naval Base Clyde, which houses UK's nuclear-armed submarines, on Thursday.",
           "source": "bbc"
         },
         {
-          "title": "Natural History Museum takes top spot as UK's most popular attraction",
-          "link": "https://www.bbc.com/news/articles/c70n09pz4y1o?at_medium=RSS&at_campaign=rss",
-          "date": "Fri, 20 Mar 2026 00:05:07 GMT",
-          "description": "The venue broke the record for the most visitors to any museum or gallery in a single year.",
+          "title": "Ukraine-Hungary oil pipeline row threatens EU loan",
+          "link": "https://www.bbc.com/news/articles/cr71rkeg7xxo?at_medium=RSS&at_campaign=rss",
+          "date": "Fri, 20 Mar 2026 20:16:29 GMT",
+          "description": "Kyiv and Budapest disagree on how badly damaged a hub in western Ukraine bombed by Russia really is, as its oil flow remains suspended.",
           "source": "bbc"
         },
         {
-          "title": "Tailgating at football matches to become criminal offence",
-          "link": "https://www.bbc.com/sport/football/articles/cj0v8z7pm6eo?at_medium=RSS&at_campaign=rss",
-          "date": "Fri, 20 Mar 2026 00:01:16 GMT",
-          "description": "Entering a football match in England and Wales without a ticket will become a criminal offence under new laws.",
+          "title": "Tenerife hit by snow as Storm Therese brings wind and rain to Canary Islands",
+          "link": "https://www.bbc.com/weather/articles/cr51n7yd7v5o?at_medium=RSS&at_campaign=rss",
+          "date": "Fri, 20 Mar 2026 13:26:59 GMT",
+          "description": "Authorities in Tenerife have activated their emergency plans with roads closed and events cancelled as weather warnings are in force.",
+          "source": "bbc"
+        },
+        {
+          "title": "Iranian strikes on bases used by US caused $800m in damage, new analysis shows",
+          "link": "https://www.bbc.com/news/articles/cddq7j48p35o?at_medium=RSS&at_campaign=rss",
+          "date": "Fri, 20 Mar 2026 22:34:05 GMT",
+          "description": "Much of the damage was caused in initial retaliatory strikes by Iran in the week after the US and Israel launched its operation.",
+          "source": "bbc"
+        },
+        {
+          "title": "Watch: Israeli strike next to British journalist is not AI-generated",
+          "link": "https://www.bbc.com/news/videos/c62k8xgjkggo?at_medium=RSS&at_campaign=rss",
+          "date": "Fri, 20 Mar 2026 18:52:38 GMT",
+          "description": "The video of the strike, hitting just metres from RT's Steve Sweeney and his crew, was recorded on Thursday in southern Lebanon.",
           "source": "bbc"
         },
         {
@@ -1419,17 +1328,94 @@
           "source": "bbc"
         },
         {
-          "title": "UK set for temperature rollercoaster as chilly nights follow warm days",
-          "link": "https://www.bbc.com/weather/articles/c99500mplgeo?at_medium=RSS&at_campaign=rss",
-          "date": "Fri, 20 Mar 2026 09:04:13 GMT",
-          "description": "March is a fickle time for temperatures in the UK and can see some huge swings from day to night.",
+          "title": "Nearly 100 ships pass the Hormuz Strait - who is getting through?",
+          "link": "https://www.bbc.com/news/articles/c4geg0eeyjeo?at_medium=RSS&at_campaign=rss",
+          "date": "Fri, 20 Mar 2026 00:04:57 GMT",
+          "description": "Just under 100 ships have passed thorough the Strait of Hormuz since the start of March, according to data analysed by BBC Verify.",
           "source": "bbc"
         },
         {
-          "title": "Hungary's Orbán accused of disloyalty and blackmail over Ukraine loan veto",
-          "link": "https://www.bbc.com/news/articles/cq6jrvgqeejo?at_medium=RSS&at_campaign=rss",
-          "date": "Fri, 20 Mar 2026 11:33:17 GMT",
-          "description": "The Hungarian leader says a pipeline carrying Russian oil through Ukraine to Hungary must be repaired before any funds can be released.",
+          "title": "Watch: BBC asks Chuck Norris about being a 'successful, really terrible' actor",
+          "link": "https://www.bbc.com/news/videos/c4g5d8579zyo?at_medium=RSS&at_campaign=rss",
+          "date": "Fri, 20 Mar 2026 16:00:09 GMT",
+          "description": "The Hollywood action star, who got his big screen break alongside Bruce Lee in 1972's Way Of The Dragon, has died aged 86.",
+          "source": "bbc"
+        },
+        {
+          "title": "Sir Chris Hoy says terminal cancer diagnosis taught him how to live",
+          "link": "https://www.bbc.com/news/articles/c78x88gvx13o?at_medium=RSS&at_campaign=rss",
+          "date": "Fri, 20 Mar 2026 06:22:07 GMT",
+          "description": "The six times Olympic cycling champion says a \"bucket list\" is less important than learning to appreciate special small things \"in the moment\".",
+          "source": "bbc"
+        },
+        {
+          "title": "Sir John Curtice: Why Labour's Brexit focus has shifted from Leavers to Remainers",
+          "link": "https://www.bbc.com/news/articles/c4gjn1d74jlo?at_medium=RSS&at_campaign=rss",
+          "date": "Fri, 20 Mar 2026 00:01:51 GMT",
+          "description": "Will the pursuit of a closer relationship with the EU risk courting electoral disaster by alienating Brexit-backing voters?",
+          "source": "bbc"
+        },
+        {
+          "title": "One final experiment? Unpicking Tuchel's latest England squad",
+          "link": "https://www.bbc.com/sport/football/articles/clyrnrgp6k6o?at_medium=RSS&at_campaign=rss",
+          "date": "Fri, 20 Mar 2026 14:52:17 GMT",
+          "description": "Thomas Tuchel's expanded England squad offers hope to forgotten men but shows problems before the World Cup, writes Phil McNulty.",
+          "source": "bbc"
+        },
+        {
+          "title": "Weekly quiz: How did this man accidentally turn himself blue?",
+          "link": "https://www.bbc.com/news/articles/cwyd7xjw2r3o?at_medium=RSS&at_campaign=rss",
+          "date": "Thu, 19 Mar 2026 17:34:53 GMT",
+          "description": "How much attention did you pay to what happened in the world over the past seven days?",
+          "source": "bbc"
+        },
+        {
+          "title": "Luke Littler applies to trademark his face to combat AI fakes",
+          "link": "https://www.bbc.com/news/articles/c5y7374x9n4o?at_medium=RSS&at_campaign=rss",
+          "date": "Fri, 20 Mar 2026 16:16:30 GMT",
+          "description": "The darts star's image has been used legally on darts merchandise, snacks and fashion brands.",
+          "source": "bbc"
+        },
+        {
+          "title": "Starmer most popular PM - in Toby Jug sales",
+          "link": "https://www.bbc.com/news/articles/cp385808jk2o?at_medium=RSS&at_campaign=rss",
+          "date": "Fri, 20 Mar 2026 18:55:33 GMT",
+          "description": "Toby Jugs depicting Sir Keir outsold all other prime ministers in the Parliament shop in 2025.",
+          "source": "bbc"
+        },
+        {
+          "title": "Jehovah's Witnesses ease rules on blood transfusions",
+          "link": "https://www.bbc.com/news/articles/c62j31539dwo?at_medium=RSS&at_campaign=rss",
+          "date": "Fri, 20 Mar 2026 19:37:39 GMT",
+          "description": "Jehovah's Witnesses will allow members to have their own blood removed, stored, and \"given back\" in medical procedures.",
+          "source": "bbc"
+        },
+        {
+          "title": "Coroner 'not satisfied' boxing legend Ricky Hatton intended to take own life",
+          "link": "https://www.bbc.com/news/articles/cede1z1q946o?at_medium=RSS&at_campaign=rss",
+          "date": "Fri, 20 Mar 2026 15:20:40 GMT",
+          "description": "Former boxing world champion Ricky Hatton was found \"unresponsive\" at his home in September.",
+          "source": "bbc"
+        },
+        {
+          "title": "Thousands attend Europe's biggest Eid celebration",
+          "link": "https://www.bbc.com/news/articles/cm29n77771go?at_medium=RSS&at_campaign=rss",
+          "date": "Fri, 20 Mar 2026 16:38:16 GMT",
+          "description": "Birmingham's Small Heath Park attracts huge crowds as Muslims mark the end of Ramadan.",
+          "source": "bbc"
+        },
+        {
+          "title": "Civil case against Gerry Adams over IRA bombings withdrawn",
+          "link": "https://www.bbc.com/news/articles/cyv1p930gq4o?at_medium=RSS&at_campaign=rss",
+          "date": "Fri, 20 Mar 2026 15:08:19 GMT",
+          "description": "A lawyer for the claimants said on Friday that proceedings would be \"discontinued\".",
+          "source": "bbc"
+        },
+        {
+          "title": "CBS News shuts down radio service after nearly 100 years",
+          "link": "https://www.bbc.com/news/articles/cn439d9pqpvo?at_medium=RSS&at_campaign=rss",
+          "date": "Fri, 20 Mar 2026 18:27:48 GMT",
+          "description": "In a memo to staff, editor-in-chief Barri Weiss and president Tom Cibrowski say the decision is \"necessary\" but \"not an easy one\".",
           "source": "bbc"
         },
         {
@@ -1440,10 +1426,10 @@
           "source": "bbc"
         },
         {
-          "title": "Are US and Israel Aligned On Iran War?",
-          "link": "https://www.bbc.co.uk/sounds/play/p0n6h04c?at_medium=RSS&at_campaign=rss",
-          "date": "Thu, 19 Mar 2026 18:10:00 GMT",
-          "description": "Energy prices soar after missile exchanges between Israel and Iran.",
+          "title": "The Week: The War In Iran Escalates",
+          "link": "https://www.bbc.co.uk/sounds/play/p0n6h0cj?at_medium=RSS&at_campaign=rss",
+          "date": "Fri, 20 Mar 2026 13:00:00 GMT",
+          "description": "Has President Trump lost control of the war in Iran?",
           "source": "bbc"
         },
         {
@@ -1454,42 +1440,56 @@
           "source": "bbc"
         },
         {
-          "title": "Garner, Calvert-Lewin and Steele in England squad",
-          "link": "https://www.bbc.com/sport/football/articles/cre1d33gr3no?at_medium=RSS&at_campaign=rss",
-          "date": "Fri, 20 Mar 2026 10:09:35 GMT",
-          "description": "Thomas Tuchel says England's upcoming camp is the \"last opportunity for players to compete for their ticket\" to the World Cup this summer.",
+          "title": "Man Utd fury at 'astonishing' and 'baffling' penalty decisions",
+          "link": "https://www.bbc.com/sport/football/articles/cwyd7rklyeyo?at_medium=RSS&at_campaign=rss",
+          "date": "Sat, 21 Mar 2026 00:15:37 GMT",
+          "description": "Manchester United are left furious over \"astonishing\" refereeing decisions as two penalties were given and one was not in their draw at Bournemouth.",
           "source": "bbc"
         },
         {
-          "title": "O'Sullivan makes snooker's highest break with historic 153",
-          "link": "https://www.bbc.com/sport/snooker/articles/cn4391l3lvxo?at_medium=RSS&at_campaign=rss",
-          "date": "Fri, 20 Mar 2026 08:36:08 GMT",
-          "description": "Ronnie O'Sullivan creates more snooker history by making the sport's highest-ever professional break with a 153 at the World Open in Yushan.",
+          "title": "No contact, no World Cup place? What went wrong for Alexander-Arnold?",
+          "link": "https://www.bbc.com/sport/football/articles/c75knk1gzvgo?at_medium=RSS&at_campaign=rss",
+          "date": "Fri, 20 Mar 2026 15:35:56 GMT",
+          "description": "Trent Alexander-Arnold's omission from Thomas Tuchel's biggest England squad is the latest blow to his stop-start international career and casts huge doubt on his hopes of playing at the World Cup.",
           "source": "bbc"
         },
         {
-          "title": "Tailgating at matches to become criminal offence",
-          "link": "https://www.bbc.com/sport/football/articles/cj0v8z7pm6eo?at_medium=RSS&at_campaign=rss",
-          "date": "Fri, 20 Mar 2026 00:01:16 GMT",
-          "description": "Entering a football match in England and Wales without a ticket will become a criminal offence under new laws.",
+          "title": "GB's Azu fourth at World Indoors in 'one of best 60m races of all time'",
+          "link": "https://www.bbc.com/sport/athletics/articles/c5yw8z3dz5ko?at_medium=RSS&at_campaign=rss",
+          "date": "Fri, 20 Mar 2026 21:38:23 GMT",
+          "description": "Defending champion Jeremiah Azu narrowly misses out on a medal in \"one of the best 60m races of all time\" at the World Athletics Indoor Championships.",
           "source": "bbc"
         },
         {
-          "title": "Seven uncapped players in new-era Red Roses squad",
-          "link": "https://www.bbc.com/sport/rugby-union/articles/clyjgnyr792o?at_medium=RSS&at_campaign=rss",
-          "date": "Fri, 20 Mar 2026 09:05:17 GMT",
-          "description": "Head coach John Mitchell includes a clutch of new faces in England's Women's Six Nations squad as he aims to build on September's Rugby World Cup triumph.",
+          "title": "Maguire sent off as Bournemouth fight back to draw with Man Utd",
+          "link": "https://www.bbc.com/sport/football/videos/c62lrlke5ypo?at_medium=RSS&at_campaign=rss",
+          "date": "Fri, 20 Mar 2026 22:47:02 GMT",
+          "description": "Despite taking the lead twice, Manchester United are held to a 2-2 draw at Bournemouth and have Harry Maguire sent off as they drop points in the race for a top-four finish in the Premier League.",
           "source": "bbc"
         },
         {
-          "title": "Has Rosenior made his goalkeeping problem worse?",
-          "link": "https://www.bbc.com/sport/football/articles/cy0dx0x1vkro?at_medium=RSS&at_campaign=rss",
-          "date": "Fri, 20 Mar 2026 07:39:36 GMT",
-          "description": "There is increased scrutiny of Chelsea head coach Liam Rosenior, with his decision not to name a first-choice goalkeeper chief among the criticism he now faces.",
+          "title": "One final experiment? Unpicking Tuchel's latest England squad",
+          "link": "https://www.bbc.com/sport/football/articles/clyrnrgp6k6o?at_medium=RSS&at_campaign=rss",
+          "date": "Fri, 20 Mar 2026 14:52:17 GMT",
+          "description": "Thomas Tuchel's expanded England squad offers hope to forgotten men but shows problems before the World Cup, writes Phil McNulty.",
+          "source": "bbc"
+        },
+        {
+          "title": "Coroner 'not satisfied' Hatton intended to take his own life",
+          "link": "https://www.bbc.com/news/articles/cede1z1q946o?at_medium=RSS&at_campaign=rss",
+          "date": "Fri, 20 Mar 2026 15:20:40 GMT",
+          "description": "Former boxing world champion Ricky Hatton was found \"unresponsive\" at his home in September.",
+          "source": "bbc"
+        },
+        {
+          "title": "Would WSL meet Fifa's new female coach rules?",
+          "link": "https://www.bbc.com/sport/football/articles/c5yxke8mjgpo?at_medium=RSS&at_campaign=rss",
+          "date": "Fri, 20 Mar 2026 18:46:44 GMT",
+          "description": "BBC Sport explores whether the Women's Super League would be ready for Fifa's new female coach requirements.",
           "source": "bbc"
         }
       ],
-      "fetchedAt": "2026-03-20T12:32:44.990Z",
+      "fetchedAt": "2026-03-21T01:02:38.279Z",
       "error": null
     }
   }
