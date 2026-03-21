@@ -541,9 +541,10 @@ export default function TransientNotes() {
             className="mt-6 rounded-3xl border border-dark-600 bg-dark-800/60 p-6"
           >
             <div className="mb-5">
-              <p className="text-xs uppercase tracking-[0.28em] text-amber-300/70">Triage</p>
-              <h3 className="mt-2 text-2xl font-semibold text-white">未完了TODO一覧</h3>
-              <p className="mt-1 text-sm text-gray-400">やり忘れをルーティンごとにまとめて確認できます。</p>
+              <h3 className="text-xs font-semibold uppercase tracking-[0.28em] text-amber-300/70">
+                Triage / 未完了TODO一覧
+              </h3>
+              <p className="mt-2 text-sm text-gray-400">やり忘れをルーティンごとにまとめて確認できます。</p>
             </div>
 
             <AnimatePresence mode="wait">
