@@ -683,21 +683,15 @@ export default function TransientNotes() {
         transition={{ duration: 0.75, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
         className="border-t border-dark-700 pt-6"
       >
-        <ul className="space-y-4 text-sm leading-7 text-gray-300">
+        <ul className="space-y-2 text-sm leading-6 text-gray-300">
           <li>
-            <span className="font-semibold text-white">作成</span>
-            <br />
-            テンプレートから当日ノートを自動で揃え、必要なら個別に再生成する。
+            <span className="font-semibold text-white">作成:</span> テンプレートから当日ノートを自動で揃え、必要なら個別に再生成する。
           </li>
           <li>
-            <span className="font-semibold text-white">使用</span>
-            <br />
-            チェックと短い記入だけに絞り、長期管理には使わない。
+            <span className="font-semibold text-white">使用:</span> チェックと短い記入だけに絞り、長期管理には使わない。
           </li>
           <li>
-            <span className="font-semibold text-white">消去</span>
-            <br />
-            日付が変わると自動削除され、履歴として蓄積されない。
+            <span className="font-semibold text-white">消去:</span> 日付が変わると自動削除され、履歴として蓄積されない。
           </li>
         </ul>
       </motion.section>
