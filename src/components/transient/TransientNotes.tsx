@@ -388,7 +388,7 @@ export default function TransientNotes() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-        className="grid gap-6 xl:grid-cols-[1.1fr_0.9fr]"
+        className="space-y-6"
       >
         <motion.div layout className="rounded-3xl border border-dark-600 bg-dark-800/70 p-6">
           <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
@@ -532,173 +532,86 @@ export default function TransientNotes() {
               </div>
             )}
           </motion.div>
-        </motion.div>
 
-        <motion.div layout className="rounded-3xl border border-dark-600 bg-dark-800/70 p-6">
-          <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
-            <div>
-              <p className="text-xs uppercase tracking-[0.28em] text-cyan-300/70">Templates</p>
-              <h3 className="mt-2 text-2xl font-semibold text-white">テンプレート</h3>
-              <p className="mt-1 text-sm text-gray-400">{templateCountLabel}</p>
+          <motion.div
+            layout
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.85, delay: 0.18, ease: [0.22, 1, 0.36, 1] }}
+            className="mt-6 rounded-3xl border border-dark-600 bg-dark-800/60 p-6"
+          >
+            <div className="mb-5">
+              <p className="text-xs uppercase tracking-[0.28em] text-amber-300/70">Triage</p>
+              <h3 className="mt-2 text-2xl font-semibold text-white">未完了TODO一覧</h3>
+              <p className="mt-1 text-sm text-gray-400">やり忘れをルーティンごとにまとめて確認できます。</p>
             </div>
-            <div className="flex flex-wrap gap-2">
-              <button
-                onClick={() => setTemplatesOpen((current) => !current)}
-                type="button"
-                className="rounded-full border border-dark-500 px-4 py-2 text-sm text-gray-300 transition-colors hover:border-cyan-400/40 hover:text-white"
-              >
-                {templatesOpen ? '閉じる' : '開く'}
-              </button>
-              <button
-                onClick={() => {
-                  setTemplatesOpen(true);
-                  resetTemplateForm();
-                }}
-                type="button"
-                className="rounded-full border border-dark-500 px-4 py-2 text-sm text-gray-300 transition-colors hover:border-cyan-400/40 hover:text-white"
-              >
-                新規作成
-              </button>
-            </div>
-          </div>
 
-          <AnimatePresence mode="wait" initial={false}>
-            {templatesOpen ? (
-              <motion.div
-                key="templates-open"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={fadeTransition}
-              >
-                <div className="mb-6 space-y-3">
+            <AnimatePresence mode="wait">
+              {incompleteGroups.length === 0 ? (
+                <motion.div
+                  key="triage-empty"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={fadeTransition}
+                  className="rounded-2xl border border-dashed border-dark-500 bg-dark-900/30 px-6 py-12 text-center"
+                >
+                  <p className="text-lg font-medium text-white">未完了のTODOはありません</p>
+                  <p className="mt-2 text-sm leading-6 text-gray-400">この日の取りこぼしは解消されています。</p>
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="triage-list"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={fadeTransition}
+                  className="space-y-4"
+                >
                   <AnimatePresence initial={false}>
-                    {templates.map((template) => (
+                    {incompleteGroups.map((group) => (
                       <motion.div
-                        key={template.id}
+                        key={group.noteId}
                         layout
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         transition={fadeTransition}
-                        className={`rounded-2xl border p-4 transition-colors ${
-                          selectedTemplateId === template.id
-                            ? 'border-cyan-400/50 bg-cyan-400/10'
-                            : 'border-dark-600 bg-dark-900/40'
-                        }`}
+                        className="rounded-2xl border border-dark-600 bg-dark-900/45 p-5"
                       >
-                    <div className="flex flex-wrap items-start justify-between gap-3">
-                      <div className="flex-1 min-w-0">
-                        <button
-                          onClick={() => setSelectedTemplateId(template.id)}
-                          type="button"
-                          className="text-left"
-                        >
-                          <p className="text-lg font-semibold text-white">{template.name}</p>
-                          <p className="mt-1 text-sm text-gray-400">{template.summary}</p>
-                        </button>
-                      </div>
-                      <div className="flex gap-2">
-                        <button
-                          onClick={() => handleEditTemplate(template)}
-                          type="button"
-                          className="rounded-full border border-dark-500 px-3 py-1 text-xs text-gray-300 transition-colors hover:border-cyan-400/40 hover:text-white"
-                        >
-                          編集
-                        </button>
-                        <button
-                          onClick={() => handleDeleteTemplate(template.id)}
-                          type="button"
-                          className="rounded-full border border-red-500/30 px-3 py-1 text-xs text-red-300 transition-colors hover:bg-red-500/10"
-                        >
-                          削除
-                        </button>
-                      </div>
-                    </div>
-                    <ul className="mt-4 space-y-2">
-                      {template.items.map((item) => (
-                        <li key={item} className="flex items-center gap-3 text-sm text-gray-300">
-                          <span className="h-2 w-2 rounded-full bg-cyan-300/70" />
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
+                        <div className="mb-4 flex items-center justify-between gap-3">
+                          <p className="text-lg font-semibold text-white">{group.title}</p>
+                          <p className="text-xs uppercase tracking-[0.2em] text-gray-500">
+                            {group.items.length} incomplete
+                          </p>
+                        </div>
+
+                        <ul className="space-y-3">
+                          {group.items.map((item) => (
+                            <li
+                              key={item.id}
+                              className="flex items-center justify-between gap-3 rounded-xl border border-dark-700 bg-dark-800/70 px-4 py-3"
+                            >
+                              <span className="text-sm text-gray-200">{item.text}</span>
+                              <button
+                                onClick={() => handleVanishItem(group.noteId, item.id)}
+                                type="button"
+                                className="rounded-full border border-amber-500/25 bg-amber-500/10 px-3 py-1 text-xs text-amber-200 transition-colors hover:bg-amber-500/20"
+                              >
+                                削除
+                              </button>
+                            </li>
+                          ))}
+                        </ul>
                       </motion.div>
                     ))}
                   </AnimatePresence>
-                </div>
-
-                <motion.div layout className="rounded-2xl border border-dark-600 bg-dark-900/50 p-5">
-                  <h4 className="text-lg font-semibold text-white">
-                    {editingTemplateId ? 'テンプレートを編集' : 'テンプレートを追加'}
-                  </h4>
-                  <div className="mt-4 grid gap-4">
-                    <label className="grid gap-2 text-sm text-gray-300">
-                      <span>テンプレート名</span>
-                      <input
-                        ref={templateNameInputRef}
-                        type="text"
-                        value={templateName}
-                        onChange={(event) => setTemplateName(event.target.value)}
-                        placeholder="例: 外出前チェック"
-                        className="rounded-xl border border-dark-500 bg-dark-800 px-4 py-3 text-white outline-none transition-colors focus:border-cyan-400/50"
-                      />
-                    </label>
-                    <label className="grid gap-2 text-sm text-gray-300">
-                      <span>概要</span>
-                      <input
-                        type="text"
-                        value={templateSummary}
-                        onChange={(event) => setTemplateSummary(event.target.value)}
-                        placeholder="例: その瞬間だけ確認したい内容"
-                        className="rounded-xl border border-dark-500 bg-dark-800 px-4 py-3 text-white outline-none transition-colors focus:border-cyan-400/50"
-                      />
-                    </label>
-                    <label className="grid gap-2 text-sm text-gray-300">
-                      <span>チェック項目</span>
-                      <textarea
-                        value={templateItemsText}
-                        onChange={(event) => setTemplateItemsText(event.target.value)}
-                        rows={6}
-                        placeholder={'1行に1項目\n鍵を持った\n財布を持った\nスマホを持った'}
-                        className="rounded-xl border border-dark-500 bg-dark-800 px-4 py-3 text-white outline-none transition-colors focus:border-cyan-400/50"
-                      />
-                    </label>
-                    <div className="flex flex-wrap gap-3">
-                      <button
-                        onClick={handleSaveTemplate}
-                        type="button"
-                        className="rounded-full bg-cyan-400/15 px-5 py-2.5 text-sm font-medium text-cyan-200 transition-colors hover:bg-cyan-400/25"
-                      >
-                        {editingTemplateId ? '更新する' : '追加する'}
-                      </button>
-                      {editingTemplateId && (
-                        <button
-                          onClick={resetTemplateForm}
-                          type="button"
-                          className="rounded-full border border-dark-500 px-5 py-2.5 text-sm text-gray-300 transition-colors hover:border-dark-400 hover:text-white"
-                        >
-                          キャンセル
-                        </button>
-                      )}
-                    </div>
-                  </div>
                 </motion.div>
-              </motion.div>
-            ) : (
-              <motion.p
-                key="templates-closed"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={fadeTransition}
-                className="text-sm text-gray-500"
-              >
-                テンプレート一覧と編集フォームは閉じています。必要なときだけ開いてください。
-              </motion.p>
-            )}
-          </AnimatePresence>
+              )}
+            </AnimatePresence>
+          </motion.div>
         </motion.div>
+
       </motion.section>
 
       <motion.section
@@ -720,82 +633,171 @@ export default function TransientNotes() {
         </ul>
       </motion.section>
 
-      <motion.section
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.85, delay: 0.18, ease: [0.22, 1, 0.36, 1] }}
-        className="rounded-3xl border border-dark-600 bg-dark-800/60 p-6"
-      >
-        <div className="mb-5">
-          <p className="text-xs uppercase tracking-[0.28em] text-amber-300/70">Triage</p>
-          <h3 className="mt-2 text-2xl font-semibold text-white">未完了TODO一覧</h3>
-          <p className="mt-1 text-sm text-gray-400">やり忘れをルーティンごとにまとめて確認できます。</p>
+      <motion.div layout className="rounded-3xl border border-dark-600 bg-dark-800/70 p-6">
+        <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p className="text-xs uppercase tracking-[0.28em] text-cyan-300/70">Templates</p>
+            <h3 className="mt-2 text-2xl font-semibold text-white">テンプレート</h3>
+            <p className="mt-1 text-sm text-gray-400">{templateCountLabel}</p>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <button
+              onClick={() => setTemplatesOpen((current) => !current)}
+              type="button"
+              className="rounded-full border border-dark-500 px-4 py-2 text-sm text-gray-300 transition-colors hover:border-cyan-400/40 hover:text-white"
+            >
+              {templatesOpen ? '閉じる' : '開く'}
+            </button>
+            <button
+              onClick={() => {
+                setTemplatesOpen(true);
+                resetTemplateForm();
+              }}
+              type="button"
+              className="rounded-full border border-dark-500 px-4 py-2 text-sm text-gray-300 transition-colors hover:border-cyan-400/40 hover:text-white"
+            >
+              新規作成
+            </button>
+          </div>
         </div>
 
-        <AnimatePresence mode="wait">
-          {incompleteGroups.length === 0 ? (
+        <AnimatePresence mode="wait" initial={false}>
+          {templatesOpen ? (
             <motion.div
-              key="triage-empty"
+              key="templates-open"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={fadeTransition}
-              className="rounded-2xl border border-dashed border-dark-500 bg-dark-900/30 px-6 py-12 text-center"
             >
-              <p className="text-lg font-medium text-white">未完了のTODOはありません</p>
-              <p className="mt-2 text-sm leading-6 text-gray-400">この日の取りこぼしは解消されています。</p>
-            </motion.div>
-          ) : (
-            <motion.div
-              key="triage-list"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={fadeTransition}
-              className="space-y-4"
-            >
-              <AnimatePresence initial={false}>
-                {incompleteGroups.map((group) => (
-                  <motion.div
-                    key={group.noteId}
-                    layout
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={fadeTransition}
-                    className="rounded-2xl border border-dark-600 bg-dark-900/45 p-5"
-                  >
-                    <div className="mb-4 flex items-center justify-between gap-3">
-                      <p className="text-lg font-semibold text-white">{group.title}</p>
-                      <p className="text-xs uppercase tracking-[0.2em] text-gray-500">
-                        {group.items.length} incomplete
-                      </p>
-                    </div>
-
-                    <ul className="space-y-3">
-                      {group.items.map((item) => (
-                        <li
-                          key={item.id}
-                          className="flex items-center justify-between gap-3 rounded-xl border border-dark-700 bg-dark-800/70 px-4 py-3"
-                        >
-                          <span className="text-sm text-gray-200">{item.text}</span>
+              <div className="mb-6 space-y-3">
+                <AnimatePresence initial={false}>
+                  {templates.map((template) => (
+                    <motion.div
+                      key={template.id}
+                      layout
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={fadeTransition}
+                      className={`rounded-2xl border p-4 transition-colors ${
+                        selectedTemplateId === template.id
+                          ? 'border-cyan-400/50 bg-cyan-400/10'
+                          : 'border-dark-600 bg-dark-900/40'
+                      }`}
+                    >
+                      <div className="flex flex-wrap items-start justify-between gap-3">
+                        <div className="flex-1 min-w-0">
                           <button
-                            onClick={() => handleVanishItem(group.noteId, item.id)}
+                            onClick={() => setSelectedTemplateId(template.id)}
                             type="button"
-                            className="rounded-full border border-amber-500/25 bg-amber-500/10 px-3 py-1 text-xs text-amber-200 transition-colors hover:bg-amber-500/20"
+                            className="text-left"
+                          >
+                            <p className="text-lg font-semibold text-white">{template.name}</p>
+                            <p className="mt-1 text-sm text-gray-400">{template.summary}</p>
+                          </button>
+                        </div>
+                        <div className="flex gap-2">
+                          <button
+                            onClick={() => handleEditTemplate(template)}
+                            type="button"
+                            className="rounded-full border border-dark-500 px-3 py-1 text-xs text-gray-300 transition-colors hover:border-cyan-400/40 hover:text-white"
+                          >
+                            編集
+                          </button>
+                          <button
+                            onClick={() => handleDeleteTemplate(template.id)}
+                            type="button"
+                            className="rounded-full border border-red-500/30 px-3 py-1 text-xs text-red-300 transition-colors hover:bg-red-500/10"
                           >
                             削除
                           </button>
-                        </li>
-                      ))}
-                    </ul>
-                  </motion.div>
-                ))}
-              </AnimatePresence>
+                        </div>
+                      </div>
+                      <ul className="mt-4 space-y-2">
+                        {template.items.map((item) => (
+                          <li key={item} className="flex items-center gap-3 text-sm text-gray-300">
+                            <span className="h-2 w-2 rounded-full bg-cyan-300/70" />
+                            {item}
+                          </li>
+                        ))}
+                      </ul>
+                    </motion.div>
+                  ))}
+                </AnimatePresence>
+              </div>
+
+              <motion.div layout className="rounded-2xl border border-dark-600 bg-dark-900/50 p-5">
+                <h4 className="text-lg font-semibold text-white">
+                  {editingTemplateId ? 'テンプレートを編集' : 'テンプレートを追加'}
+                </h4>
+                <div className="mt-4 grid gap-4">
+                  <label className="grid gap-2 text-sm text-gray-300">
+                    <span>テンプレート名</span>
+                    <input
+                      ref={templateNameInputRef}
+                      type="text"
+                      value={templateName}
+                      onChange={(event) => setTemplateName(event.target.value)}
+                      placeholder="例: 外出前チェック"
+                      className="rounded-xl border border-dark-500 bg-dark-800 px-4 py-3 text-white outline-none transition-colors focus:border-cyan-400/50"
+                    />
+                  </label>
+                  <label className="grid gap-2 text-sm text-gray-300">
+                    <span>概要</span>
+                    <input
+                      type="text"
+                      value={templateSummary}
+                      onChange={(event) => setTemplateSummary(event.target.value)}
+                      placeholder="例: その瞬間だけ確認したい内容"
+                      className="rounded-xl border border-dark-500 bg-dark-800 px-4 py-3 text-white outline-none transition-colors focus:border-cyan-400/50"
+                    />
+                  </label>
+                  <label className="grid gap-2 text-sm text-gray-300">
+                    <span>チェック項目</span>
+                    <textarea
+                      value={templateItemsText}
+                      onChange={(event) => setTemplateItemsText(event.target.value)}
+                      rows={6}
+                      placeholder={'1行に1項目\n鍵を持った\n財布を持った\nスマホを持った'}
+                      className="rounded-xl border border-dark-500 bg-dark-800 px-4 py-3 text-white outline-none transition-colors focus:border-cyan-400/50"
+                    />
+                  </label>
+                  <div className="flex flex-wrap gap-3">
+                    <button
+                      onClick={handleSaveTemplate}
+                      type="button"
+                      className="rounded-full bg-cyan-400/15 px-5 py-2.5 text-sm font-medium text-cyan-200 transition-colors hover:bg-cyan-400/25"
+                    >
+                      {editingTemplateId ? '更新する' : '追加する'}
+                    </button>
+                    {editingTemplateId && (
+                      <button
+                        onClick={resetTemplateForm}
+                        type="button"
+                        className="rounded-full border border-dark-500 px-5 py-2.5 text-sm text-gray-300 transition-colors hover:border-dark-400 hover:text-white"
+                      >
+                        キャンセル
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </motion.div>
             </motion.div>
+          ) : (
+            <motion.p
+              key="templates-closed"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={fadeTransition}
+              className="text-sm text-gray-500"
+            >
+              テンプレート一覧と編集フォームは閉じています。必要なときだけ開いてください。
+            </motion.p>
           )}
         </AnimatePresence>
-      </motion.section>
+      </motion.div>
     </div>
   );
 }
