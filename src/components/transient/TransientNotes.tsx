@@ -418,9 +418,10 @@ export default function TransientNotes() {
                       transition={fadeTransition}
                       className="rounded-2xl border border-dark-600 bg-dark-900/45 p-5"
                     >
-                  <div className="sticky top-[70px] z-10 -mx-5 -mt-5 mb-4 flex flex-wrap items-start justify-between gap-3 overflow-hidden border-b border-dark-700 bg-dark-900/80 px-5 py-4 backdrop-blur-xl">
-                    <div className="pointer-events-none absolute inset-y-0 left-0 w-12 bg-gradient-to-r from-dark-900/95 via-dark-900/60 to-transparent blur-lg opacity-80" />
-                    <div className="pointer-events-none absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-dark-900/95 via-dark-900/60 to-transparent blur-lg opacity-80" />
+                  <div className="sticky top-[65px] z-10 -mx-5 -mt-5 mb-4 flex flex-wrap items-start justify-between gap-3 overflow-hidden border-b border-dark-700 bg-dark-900/72 px-5 py-4 backdrop-blur-xl">
+                    <div className="pointer-events-none absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-dark-900 via-dark-900/85 to-transparent blur-xl opacity-95" />
+                    <div className="pointer-events-none absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-dark-900 via-dark-900/85 to-transparent blur-xl opacity-95" />
+                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/4 via-transparent to-transparent opacity-70" />
                     <div className="relative z-10">
                       <p className="text-lg font-semibold text-white">{note.title}</p>
                       <p className="mt-1 text-xs uppercase tracking-[0.2em] text-gray-500">
