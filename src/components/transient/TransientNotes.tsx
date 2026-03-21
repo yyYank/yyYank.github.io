@@ -167,18 +167,21 @@ export default function TransientNotes() {
   const [copied, setCopied] = useState(false);
   const [todayKey, setTodayKey] = useState('');
   const [templatesOpen, setTemplatesOpen] = useState(false);
+  const initializedRef = useRef(false);
   const templateNameInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const storedTemplates = loadTemplates();
-    const storedNotes = loadNotes().notes;
+    const loadedNotes = loadNotes();
+    const storedNotes = loadedNotes.notes;
     const syncedNotes = synchronizeNotesWithTemplates(storedNotes, storedTemplates);
 
     setTemplates(storedTemplates);
     setNotes(syncedNotes);
     setSelectedTemplateId(storedTemplates[0]?.id ?? '');
-    setTodayKey(getTodayKey());
+    setTodayKey(loadedNotes.date);
     saveNotes(syncedNotes);
+    initializedRef.current = true;
   }, []);
 
   useEffect(() => {
@@ -193,6 +196,10 @@ export default function TransientNotes() {
   }, [templates, selectedTemplateId]);
 
   useEffect(() => {
+    if (!initializedRef.current) {
+      return;
+    }
+
     if (templates.length === 0) {
       setNotes([]);
       localStorage.removeItem(NOTE_STORAGE_KEY);
