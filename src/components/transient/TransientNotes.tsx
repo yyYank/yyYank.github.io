@@ -117,6 +117,45 @@ function formatDateTime(value: string): string {
   }).format(date);
 }
 
+function createNoteFromTemplate(template: Template): TransientNote {
+  return {
+    id: createId('note'),
+    templateId: template.id,
+    title: template.name,
+    createdAt: new Date().toISOString(),
+    items: template.items.map((item) => ({
+      id: createId('item'),
+      text: item,
+      checked: false,
+    })),
+    memo: '',
+  };
+}
+
+function synchronizeNotesWithTemplates(
+  currentNotes: TransientNote[],
+  templates: Template[]
+): TransientNote[] {
+  return templates.map((template) => {
+    const existingNote = currentNotes.find((note) => note.templateId === template.id);
+
+    if (!existingNote) {
+      return createNoteFromTemplate(template);
+    }
+
+    return {
+      ...existingNote,
+      title: template.name,
+      items: template.items.map((itemText) => {
+        const existingItem = existingNote.items.find((item) => item.text === itemText);
+        return existingItem
+          ? { ...existingItem, text: itemText }
+          : { id: createId('item'), text: itemText, checked: false };
+      }),
+    };
+  });
+}
+
 export default function TransientNotes() {
   const [templates, setTemplates] = useState<Template[]>([]);
   const [notes, setNotes] = useState<TransientNote[]>([]);
@@ -132,12 +171,14 @@ export default function TransientNotes() {
 
   useEffect(() => {
     const storedTemplates = loadTemplates();
-    const storedNotes = loadNotes();
+    const storedNotes = loadNotes().notes;
+    const syncedNotes = synchronizeNotesWithTemplates(storedNotes, storedTemplates);
 
     setTemplates(storedTemplates);
-    setNotes(storedNotes.notes);
+    setNotes(syncedNotes);
     setSelectedTemplateId(storedTemplates[0]?.id ?? '');
-    setTodayKey(storedNotes.date);
+    setTodayKey(getTodayKey());
+    saveNotes(syncedNotes);
   }, []);
 
   useEffect(() => {
@@ -152,17 +193,32 @@ export default function TransientNotes() {
   }, [templates, selectedTemplateId]);
 
   useEffect(() => {
+    if (templates.length === 0) {
+      setNotes([]);
+      localStorage.removeItem(NOTE_STORAGE_KEY);
+      return;
+    }
+
+    setNotes((currentNotes) => {
+      const syncedNotes = synchronizeNotesWithTemplates(currentNotes, templates);
+      saveNotes(syncedNotes);
+      return syncedNotes;
+    });
+  }, [templates]);
+
+  useEffect(() => {
     const timer = window.setInterval(() => {
       const currentDay = getTodayKey();
       if (currentDay !== todayKey) {
         setTodayKey(currentDay);
-        setNotes([]);
-        localStorage.removeItem(NOTE_STORAGE_KEY);
+        const nextNotes = synchronizeNotesWithTemplates([], templates);
+        setNotes(nextNotes);
+        saveNotes(nextNotes);
       }
     }, 60 * 1000);
 
     return () => window.clearInterval(timer);
-  }, [todayKey]);
+  }, [templates, todayKey]);
 
   const activeTemplate = useMemo(
     () => templates.find((template) => template.id === selectedTemplateId) ?? null,
@@ -237,20 +293,11 @@ export default function TransientNotes() {
       return;
     }
 
-    const nextNote: TransientNote = {
-      id: createId('note'),
-      templateId: activeTemplate.id,
-      title: activeTemplate.name,
-      createdAt: new Date().toISOString(),
-      items: activeTemplate.items.map((item) => ({
-        id: createId('item'),
-        text: item,
-        checked: false,
-      })),
-      memo: '',
-    };
+    const nextNote = createNoteFromTemplate(activeTemplate);
+    const updatedNotes = notes.some((note) => note.templateId === activeTemplate.id)
+      ? notes.map((note) => (note.templateId === activeTemplate.id ? nextNote : note))
+      : [nextNote, ...notes];
 
-    const updatedNotes = [nextNote, ...notes];
     setNotes(updatedNotes);
     saveNotes(updatedNotes);
   };
@@ -313,7 +360,7 @@ export default function TransientNotes() {
                 type="button"
                 className="rounded-full bg-emerald-400/15 px-4 py-2 text-sm font-medium text-emerald-200 transition-colors hover:bg-emerald-400/25 disabled:cursor-not-allowed disabled:opacity-40"
               >
-                テンプレートから生成
+                再生成
               </button>
               <button
                 onClick={handleCopyToday}
@@ -328,7 +375,7 @@ export default function TransientNotes() {
 
           <div className="mb-6 rounded-2xl border border-dark-600 bg-dark-900/50 p-5">
             <label className="grid gap-2 text-sm text-gray-300">
-              <span>生成元テンプレート</span>
+              <span>再生成するテンプレート</span>
               <select
                 value={selectedTemplateId}
                 onChange={(event) => setSelectedTemplateId(event.target.value)}
@@ -354,7 +401,7 @@ export default function TransientNotes() {
             <div className="rounded-2xl border border-dashed border-dark-500 bg-dark-900/30 px-6 py-12 text-center">
               <p className="text-lg font-medium text-white">まだ当日ノートはありません</p>
               <p className="mt-2 text-sm leading-6 text-gray-400">
-                テンプレートを選んで生成すると、今日だけ使えるチェックメモを作れます。
+                テンプレートから自動で作られる当日ノートがここに並びます。
               </p>
             </div>
           ) : (
@@ -570,7 +617,7 @@ export default function TransientNotes() {
           <li>
             <span className="font-semibold text-white">作成</span>
             <br />
-            テンプレートを選び、その日の実行用ノートを生成する。
+            テンプレートから当日ノートを自動で揃え、必要なら個別に再生成する。
           </li>
           <li>
             <span className="font-semibold text-white">使用</span>
