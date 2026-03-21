@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 
 interface Template {
   id: string;
@@ -50,6 +51,11 @@ const DEFAULT_TEMPLATES: Template[] = [
     items: ['鍵を閉めた', '火元を確認した', 'アラームを設定した', '明日の持ち物を置いた'],
   },
 ];
+
+const fadeTransition = {
+  duration: 0.22,
+  ease: 'easeInOut' as const,
+};
 
 function createId(prefix: string): string {
   return `${prefix}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
@@ -352,8 +358,13 @@ export default function TransientNotes() {
 
   return (
     <div className="space-y-8">
-      <section className="grid gap-6 xl:grid-cols-[1.1fr_0.9fr]">
-        <div className="rounded-3xl border border-dark-600 bg-dark-800/70 p-6">
+      <motion.section
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.4, ease: 'easeOut' }}
+        className="grid gap-6 xl:grid-cols-[1.1fr_0.9fr]"
+      >
+        <motion.div layout className="rounded-3xl border border-dark-600 bg-dark-800/70 p-6">
           <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
             <div>
               <p className="text-xs uppercase tracking-[0.28em] text-emerald-300/70">Today</p>
@@ -380,7 +391,7 @@ export default function TransientNotes() {
             </div>
           </div>
 
-          <div className="mb-6 rounded-2xl border border-dark-600 bg-dark-900/50 p-5">
+          <motion.div layout className="mb-6 rounded-2xl border border-dark-600 bg-dark-900/50 p-5">
             <label className="grid gap-2 text-sm text-gray-300">
               <span>再生成するテンプレート</span>
               <select
@@ -402,22 +413,43 @@ export default function TransientNotes() {
                 <p className="mt-1 text-sm text-gray-400">{activeTemplate.summary}</p>
               </div>
             )}
-          </div>
+          </motion.div>
 
-          {notes.length === 0 ? (
-            <div className="rounded-2xl border border-dashed border-dark-500 bg-dark-900/30 px-6 py-12 text-center">
-              <p className="text-lg font-medium text-white">まだ当日ノートはありません</p>
-              <p className="mt-2 text-sm leading-6 text-gray-400">
-                テンプレートから自動で作られる当日ノートがここに並びます。
-              </p>
-            </div>
-          ) : (
-            <div className="space-y-4">
-              {notes.map((note) => (
-                <article
-                  key={note.id}
-                  className="rounded-2xl border border-dark-600 bg-dark-900/45 p-5"
-                >
+          <AnimatePresence mode="wait">
+            {notes.length === 0 ? (
+              <motion.div
+                key="notes-empty"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={fadeTransition}
+                className="rounded-2xl border border-dashed border-dark-500 bg-dark-900/30 px-6 py-12 text-center"
+              >
+                <p className="text-lg font-medium text-white">まだ当日ノートはありません</p>
+                <p className="mt-2 text-sm leading-6 text-gray-400">
+                  テンプレートから自動で作られる当日ノートがここに並びます。
+                </p>
+              </motion.div>
+            ) : (
+              <motion.div
+                key="notes-list"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={fadeTransition}
+                className="space-y-4"
+              >
+                <AnimatePresence initial={false}>
+                  {notes.map((note) => (
+                    <motion.article
+                      key={note.id}
+                      layout
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={fadeTransition}
+                      className="rounded-2xl border border-dark-600 bg-dark-900/45 p-5"
+                    >
                   <div className="sticky top-20 z-10 -mx-5 -mt-5 mb-4 flex flex-wrap items-start justify-between gap-3 border-b border-dark-700 bg-dark-900/95 px-5 py-4 backdrop-blur">
                     <div>
                       <p className="text-lg font-semibold text-white">{note.title}</p>
@@ -466,13 +498,15 @@ export default function TransientNotes() {
                       className="rounded-xl border border-dark-500 bg-dark-800 px-4 py-3 text-white outline-none transition-colors focus:border-emerald-400/50"
                     />
                   </label>
-                </article>
-              ))}
-            </div>
-          )}
-        </div>
+                    </motion.article>
+                  ))}
+                </AnimatePresence>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.div>
 
-        <div className="rounded-3xl border border-dark-600 bg-dark-800/70 p-6">
+        <motion.div layout className="rounded-3xl border border-dark-600 bg-dark-800/70 p-6">
           <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
             <div>
               <p className="text-xs uppercase tracking-[0.28em] text-cyan-300/70">Templates</p>
@@ -500,18 +534,31 @@ export default function TransientNotes() {
             </div>
           </div>
 
-          {templatesOpen && (
-            <>
-              <div className="mb-6 space-y-3">
-                {templates.map((template) => (
-                  <div
-                    key={template.id}
-                    className={`rounded-2xl border p-4 transition-colors ${
-                      selectedTemplateId === template.id
-                        ? 'border-cyan-400/50 bg-cyan-400/10'
-                        : 'border-dark-600 bg-dark-900/40'
-                    }`}
-                  >
+          <AnimatePresence mode="wait" initial={false}>
+            {templatesOpen ? (
+              <motion.div
+                key="templates-open"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={fadeTransition}
+              >
+                <div className="mb-6 space-y-3">
+                  <AnimatePresence initial={false}>
+                    {templates.map((template) => (
+                      <motion.div
+                        key={template.id}
+                        layout
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={fadeTransition}
+                        className={`rounded-2xl border p-4 transition-colors ${
+                          selectedTemplateId === template.id
+                            ? 'border-cyan-400/50 bg-cyan-400/10'
+                            : 'border-dark-600 bg-dark-900/40'
+                        }`}
+                      >
                     <div className="flex flex-wrap items-start justify-between gap-3">
                       <div className="flex-1 min-w-0">
                         <button
@@ -548,78 +595,90 @@ export default function TransientNotes() {
                         </li>
                       ))}
                     </ul>
-                  </div>
-                ))}
-              </div>
-
-              <div className="rounded-2xl border border-dark-600 bg-dark-900/50 p-5">
-                <h4 className="text-lg font-semibold text-white">
-                  {editingTemplateId ? 'テンプレートを編集' : 'テンプレートを追加'}
-                </h4>
-                <div className="mt-4 grid gap-4">
-                  <label className="grid gap-2 text-sm text-gray-300">
-                    <span>テンプレート名</span>
-                    <input
-                      ref={templateNameInputRef}
-                      type="text"
-                      value={templateName}
-                      onChange={(event) => setTemplateName(event.target.value)}
-                      placeholder="例: 外出前チェック"
-                      className="rounded-xl border border-dark-500 bg-dark-800 px-4 py-3 text-white outline-none transition-colors focus:border-cyan-400/50"
-                    />
-                  </label>
-                  <label className="grid gap-2 text-sm text-gray-300">
-                    <span>概要</span>
-                    <input
-                      type="text"
-                      value={templateSummary}
-                      onChange={(event) => setTemplateSummary(event.target.value)}
-                      placeholder="例: その瞬間だけ確認したい内容"
-                      className="rounded-xl border border-dark-500 bg-dark-800 px-4 py-3 text-white outline-none transition-colors focus:border-cyan-400/50"
-                    />
-                  </label>
-                  <label className="grid gap-2 text-sm text-gray-300">
-                    <span>チェック項目</span>
-                    <textarea
-                      value={templateItemsText}
-                      onChange={(event) => setTemplateItemsText(event.target.value)}
-                      rows={6}
-                      placeholder={'1行に1項目\n鍵を持った\n財布を持った\nスマホを持った'}
-                      className="rounded-xl border border-dark-500 bg-dark-800 px-4 py-3 text-white outline-none transition-colors focus:border-cyan-400/50"
-                    />
-                  </label>
-                  <div className="flex flex-wrap gap-3">
-                    <button
-                      onClick={handleSaveTemplate}
-                      type="button"
-                      className="rounded-full bg-cyan-400/15 px-5 py-2.5 text-sm font-medium text-cyan-200 transition-colors hover:bg-cyan-400/25"
-                    >
-                      {editingTemplateId ? '更新する' : '追加する'}
-                    </button>
-                    {editingTemplateId && (
-                      <button
-                        onClick={resetTemplateForm}
-                        type="button"
-                        className="rounded-full border border-dark-500 px-5 py-2.5 text-sm text-gray-300 transition-colors hover:border-dark-400 hover:text-white"
-                      >
-                        キャンセル
-                      </button>
-                    )}
-                  </div>
+                      </motion.div>
+                    ))}
+                  </AnimatePresence>
                 </div>
-              </div>
-            </>
-          )}
 
-          {!templatesOpen && (
-            <p className="text-sm text-gray-500">
-              テンプレート一覧と編集フォームは閉じています。必要なときだけ開いてください。
-            </p>
-          )}
-        </div>
-      </section>
+                <motion.div layout className="rounded-2xl border border-dark-600 bg-dark-900/50 p-5">
+                  <h4 className="text-lg font-semibold text-white">
+                    {editingTemplateId ? 'テンプレートを編集' : 'テンプレートを追加'}
+                  </h4>
+                  <div className="mt-4 grid gap-4">
+                    <label className="grid gap-2 text-sm text-gray-300">
+                      <span>テンプレート名</span>
+                      <input
+                        ref={templateNameInputRef}
+                        type="text"
+                        value={templateName}
+                        onChange={(event) => setTemplateName(event.target.value)}
+                        placeholder="例: 外出前チェック"
+                        className="rounded-xl border border-dark-500 bg-dark-800 px-4 py-3 text-white outline-none transition-colors focus:border-cyan-400/50"
+                      />
+                    </label>
+                    <label className="grid gap-2 text-sm text-gray-300">
+                      <span>概要</span>
+                      <input
+                        type="text"
+                        value={templateSummary}
+                        onChange={(event) => setTemplateSummary(event.target.value)}
+                        placeholder="例: その瞬間だけ確認したい内容"
+                        className="rounded-xl border border-dark-500 bg-dark-800 px-4 py-3 text-white outline-none transition-colors focus:border-cyan-400/50"
+                      />
+                    </label>
+                    <label className="grid gap-2 text-sm text-gray-300">
+                      <span>チェック項目</span>
+                      <textarea
+                        value={templateItemsText}
+                        onChange={(event) => setTemplateItemsText(event.target.value)}
+                        rows={6}
+                        placeholder={'1行に1項目\n鍵を持った\n財布を持った\nスマホを持った'}
+                        className="rounded-xl border border-dark-500 bg-dark-800 px-4 py-3 text-white outline-none transition-colors focus:border-cyan-400/50"
+                      />
+                    </label>
+                    <div className="flex flex-wrap gap-3">
+                      <button
+                        onClick={handleSaveTemplate}
+                        type="button"
+                        className="rounded-full bg-cyan-400/15 px-5 py-2.5 text-sm font-medium text-cyan-200 transition-colors hover:bg-cyan-400/25"
+                      >
+                        {editingTemplateId ? '更新する' : '追加する'}
+                      </button>
+                      {editingTemplateId && (
+                        <button
+                          onClick={resetTemplateForm}
+                          type="button"
+                          className="rounded-full border border-dark-500 px-5 py-2.5 text-sm text-gray-300 transition-colors hover:border-dark-400 hover:text-white"
+                        >
+                          キャンセル
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                </motion.div>
+              </motion.div>
+            ) : (
+              <motion.p
+                key="templates-closed"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={fadeTransition}
+                className="text-sm text-gray-500"
+              >
+                テンプレート一覧と編集フォームは閉じています。必要なときだけ開いてください。
+              </motion.p>
+            )}
+          </AnimatePresence>
+        </motion.div>
+      </motion.section>
 
-      <section className="border-t border-dark-700 pt-6">
+      <motion.section
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.35, delay: 0.05, ease: 'easeOut' }}
+        className="border-t border-dark-700 pt-6"
+      >
         <ul className="space-y-4 text-sm leading-7 text-gray-300">
           <li>
             <span className="font-semibold text-white">作成</span>
@@ -637,7 +696,7 @@ export default function TransientNotes() {
             日付が変わると自動削除され、履歴として蓄積されない。
           </li>
         </ul>
-      </section>
+      </motion.section>
     </div>
   );
 }
