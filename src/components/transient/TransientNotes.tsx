@@ -371,49 +371,15 @@ export default function TransientNotes() {
               <h3 className="mt-2 text-2xl font-semibold text-white">当日限定ノート</h3>
               <p className="mt-1 text-sm text-gray-400">{noteCountLabel}</p>
             </div>
-            <div className="flex flex-wrap gap-2">
-              <button
-                onClick={handleCreateNote}
-                disabled={!activeTemplate}
-                type="button"
-                className="rounded-full bg-emerald-400/15 px-4 py-2 text-sm font-medium text-emerald-200 transition-colors hover:bg-emerald-400/25 disabled:cursor-not-allowed disabled:opacity-40"
-              >
-                再生成
-              </button>
-              <button
-                onClick={handleCopyToday}
-                disabled={notes.length === 0}
-                type="button"
-                className="rounded-full border border-dark-500 px-4 py-2 text-sm text-gray-300 transition-colors hover:border-emerald-400/30 hover:text-white disabled:cursor-not-allowed disabled:opacity-40"
-              >
-                {copied ? 'コピー済み' : '当日内容をコピー'}
-              </button>
-            </div>
+            <button
+              onClick={handleCopyToday}
+              disabled={notes.length === 0}
+              type="button"
+              className="rounded-full border border-dark-500 px-4 py-2 text-sm text-gray-300 transition-colors hover:border-emerald-400/30 hover:text-white disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              {copied ? 'コピー済み' : '当日内容をコピー'}
+            </button>
           </div>
-
-          <motion.div layout className="mb-6 rounded-2xl border border-dark-600 bg-dark-900/50 p-5">
-            <label className="grid gap-2 text-sm text-gray-300">
-              <span>再生成するテンプレート</span>
-              <select
-                value={selectedTemplateId}
-                onChange={(event) => setSelectedTemplateId(event.target.value)}
-                className="rounded-xl border border-dark-500 bg-dark-800 px-4 py-3 text-white outline-none transition-colors focus:border-emerald-400/50"
-              >
-                {templates.map((template) => (
-                  <option key={template.id} value={template.id}>
-                    {template.name}
-                  </option>
-                ))}
-              </select>
-            </label>
-
-            {activeTemplate && (
-              <div className="mt-4 rounded-2xl border border-emerald-400/15 bg-emerald-400/5 p-4">
-                <p className="text-sm font-medium text-white">{activeTemplate.name}</p>
-                <p className="mt-1 text-sm text-gray-400">{activeTemplate.summary}</p>
-              </div>
-            )}
-          </motion.div>
 
           <AnimatePresence mode="wait">
             {notes.length === 0 ? (
@@ -504,6 +470,40 @@ export default function TransientNotes() {
               </motion.div>
             )}
           </AnimatePresence>
+
+          <motion.div layout className="mt-6 rounded-2xl border border-dark-600 bg-dark-900/50 p-5">
+            <div className="flex flex-wrap items-end gap-3">
+              <label className="grid flex-1 gap-2 text-sm text-gray-300 min-w-[220px]">
+                <span>再生成するテンプレート</span>
+                <select
+                  value={selectedTemplateId}
+                  onChange={(event) => setSelectedTemplateId(event.target.value)}
+                  className="rounded-xl border border-dark-500 bg-dark-800 px-4 py-3 text-white outline-none transition-colors focus:border-emerald-400/50"
+                >
+                  {templates.map((template) => (
+                    <option key={template.id} value={template.id}>
+                      {template.name}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <button
+                onClick={handleCreateNote}
+                disabled={!activeTemplate}
+                type="button"
+                className="rounded-full bg-emerald-400/15 px-4 py-2 text-sm font-medium text-emerald-200 transition-colors hover:bg-emerald-400/25 disabled:cursor-not-allowed disabled:opacity-40"
+              >
+                再生成
+              </button>
+            </div>
+
+            {activeTemplate && (
+              <div className="mt-4 rounded-2xl border border-emerald-400/15 bg-emerald-400/5 p-4">
+                <p className="text-sm font-medium text-white">{activeTemplate.name}</p>
+                <p className="mt-1 text-sm text-gray-400">{activeTemplate.summary}</p>
+              </div>
+            )}
+          </motion.div>
         </motion.div>
 
         <motion.div layout className="rounded-3xl border border-dark-600 bg-dark-800/70 p-6">
