@@ -174,6 +174,7 @@ export default function TransientNotes() {
   const [todayKey, setTodayKey] = useState('');
   const [templatesOpen, setTemplatesOpen] = useState(false);
   const [isHydrated, setIsHydrated] = useState(false);
+  const [showDoneSummary, setShowDoneSummary] = useState(false);
   const templateNameInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -257,6 +258,21 @@ export default function TransientNotes() {
         }))
         .filter((group) => group.items.length > 0),
     [notes]
+  );
+  const completedGroups = useMemo(
+    () =>
+      notes
+        .map((note) => ({
+          noteId: note.id,
+          title: note.title,
+          items: note.items.filter((item) => item.checked),
+        }))
+        .filter((group) => group.items.length > 0),
+    [notes]
+  );
+  const completedCount = useMemo(
+    () => completedGroups.reduce((sum, group) => sum + group.items.length, 0),
+    [completedGroups]
   );
 
   const resetTemplateForm = () => {
@@ -799,6 +815,94 @@ export default function TransientNotes() {
           )}
         </AnimatePresence>
       </motion.div>
+
+      <motion.section
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.9, delay: 0.24, ease: [0.22, 1, 0.36, 1] }}
+        className="flex justify-center pt-2"
+      >
+        <button
+          onClick={() => setShowDoneSummary(true)}
+          type="button"
+          className="rounded-full border border-emerald-400/25 bg-emerald-400/10 px-6 py-3 text-sm font-medium text-emerald-100 transition-colors hover:bg-emerald-400/18"
+        >
+          今日やったこと
+        </button>
+      </motion.section>
+
+      <AnimatePresence>
+        {showDoneSummary && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={fadeTransition}
+            className="fixed inset-0 z-[60] flex items-center justify-center bg-dark-900/70 px-4 backdrop-blur-sm"
+            onClick={() => setShowDoneSummary(false)}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.96 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.98 }}
+              transition={fadeTransition}
+              className="w-full max-w-2xl rounded-3xl border border-emerald-400/20 bg-dark-800/95 p-6 shadow-2xl shadow-emerald-950/20"
+              onClick={(event) => event.stopPropagation()}
+            >
+              <div className="mb-6 flex items-start justify-between gap-4">
+                <div>
+                  <p className="text-xs uppercase tracking-[0.28em] text-emerald-300/70">Today</p>
+                  <h3 className="mt-2 text-2xl font-semibold text-white">
+                    今日達成したTODOは… {completedCount}件でした！おつかれさまでした 🎉
+                  </h3>
+                </div>
+                <button
+                  onClick={() => setShowDoneSummary(false)}
+                  type="button"
+                  className="rounded-full border border-dark-500 px-3 py-1 text-sm text-gray-300 transition-colors hover:border-dark-400 hover:text-white"
+                >
+                  閉じる
+                </button>
+              </div>
+
+              {completedGroups.length === 0 ? (
+                <div className="rounded-2xl border border-dashed border-dark-500 bg-dark-900/35 px-6 py-10 text-center">
+                  <p className="text-lg font-medium text-white">まだ完了したTODOはありません</p>
+                  <p className="mt-2 text-sm leading-6 text-gray-400">
+                    今日の達成は、これからここに積み上がっていきます。
+                  </p>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {completedGroups.map((group) => (
+                    <div
+                      key={group.noteId}
+                      className="rounded-2xl border border-dark-600 bg-dark-900/45 p-5"
+                    >
+                      <div className="mb-3 flex items-center justify-between gap-3">
+                        <p className="text-lg font-semibold text-white">{group.title}</p>
+                        <p className="text-xs uppercase tracking-[0.2em] text-emerald-300/70">
+                          {group.items.length} done
+                        </p>
+                      </div>
+                      <ul className="space-y-2">
+                        {group.items.map((item) => (
+                          <li
+                            key={item.id}
+                            className="rounded-xl border border-dark-700 bg-dark-800/70 px-4 py-3 text-sm text-gray-200"
+                          >
+                            {item.text}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
