@@ -247,6 +247,17 @@ export default function TransientNotes() {
 
   const templateCountLabel = `${templates.length} template${templates.length === 1 ? '' : 's'}`;
   const noteCountLabel = `${notes.length} transient note${notes.length === 1 ? '' : 's'} for today`;
+  const incompleteGroups = useMemo(
+    () =>
+      notes
+        .map((note) => ({
+          noteId: note.id,
+          title: note.title,
+          items: note.items.filter((item) => !item.checked),
+        }))
+        .filter((group) => group.items.length > 0),
+    [notes]
+  );
 
   const resetTemplateForm = () => {
     setEditingTemplateId(null);
@@ -345,6 +356,19 @@ export default function TransientNotes() {
     setNotes(updatedNotes);
   };
 
+  const handleVanishItem = (noteId: string, itemId: string) => {
+    const updatedNotes = notes.map((note) =>
+      note.id !== noteId
+        ? note
+        : {
+            ...note,
+            items: note.items.filter((item) => item.id !== itemId),
+          }
+    );
+
+    setNotes(updatedNotes);
+  };
+
   const handleCopyToday = async () => {
     const lines = notes.flatMap((note) => [
       `# ${note.title}`,
@@ -370,8 +394,7 @@ export default function TransientNotes() {
           <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
             <div>
               <p className="text-xs uppercase tracking-[0.28em] text-emerald-300/70">Today</p>
-              <h3 className="mt-2 text-2xl font-semibold text-white">当日限定ノート</h3>
-              <p className="mt-1 text-sm text-gray-400">{noteCountLabel}</p>
+              <p className="mt-2 text-sm text-gray-400">{noteCountLabel}</p>
             </div>
             <button
               onClick={handleCopyToday}
@@ -695,6 +718,83 @@ export default function TransientNotes() {
             <span className="font-semibold text-white">消去:</span> 日付が変わると自動削除され、履歴として蓄積されない。
           </li>
         </ul>
+      </motion.section>
+
+      <motion.section
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.85, delay: 0.18, ease: [0.22, 1, 0.36, 1] }}
+        className="rounded-3xl border border-dark-600 bg-dark-800/60 p-6"
+      >
+        <div className="mb-5">
+          <p className="text-xs uppercase tracking-[0.28em] text-amber-300/70">Triage</p>
+          <h3 className="mt-2 text-2xl font-semibold text-white">未完了TODO一覧</h3>
+          <p className="mt-1 text-sm text-gray-400">やり忘れをルーティンごとにまとめて確認できます。</p>
+        </div>
+
+        <AnimatePresence mode="wait">
+          {incompleteGroups.length === 0 ? (
+            <motion.div
+              key="triage-empty"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={fadeTransition}
+              className="rounded-2xl border border-dashed border-dark-500 bg-dark-900/30 px-6 py-12 text-center"
+            >
+              <p className="text-lg font-medium text-white">未完了のTODOはありません</p>
+              <p className="mt-2 text-sm leading-6 text-gray-400">この日の取りこぼしは解消されています。</p>
+            </motion.div>
+          ) : (
+            <motion.div
+              key="triage-list"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={fadeTransition}
+              className="space-y-4"
+            >
+              <AnimatePresence initial={false}>
+                {incompleteGroups.map((group) => (
+                  <motion.div
+                    key={group.noteId}
+                    layout
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={fadeTransition}
+                    className="rounded-2xl border border-dark-600 bg-dark-900/45 p-5"
+                  >
+                    <div className="mb-4 flex items-center justify-between gap-3">
+                      <p className="text-lg font-semibold text-white">{group.title}</p>
+                      <p className="text-xs uppercase tracking-[0.2em] text-gray-500">
+                        {group.items.length} incomplete
+                      </p>
+                    </div>
+
+                    <ul className="space-y-3">
+                      {group.items.map((item) => (
+                        <li
+                          key={item.id}
+                          className="flex items-center justify-between gap-3 rounded-xl border border-dark-700 bg-dark-800/70 px-4 py-3"
+                        >
+                          <span className="text-sm text-gray-200">{item.text}</span>
+                          <button
+                            onClick={() => handleVanishItem(group.noteId, item.id)}
+                            type="button"
+                            className="rounded-full border border-amber-500/25 bg-amber-500/10 px-3 py-1 text-xs text-amber-200 transition-colors hover:bg-amber-500/20"
+                          >
+                            削除
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </motion.section>
     </div>
   );
