@@ -173,7 +173,7 @@ export default function TransientNotes() {
   const [copied, setCopied] = useState(false);
   const [todayKey, setTodayKey] = useState('');
   const [templatesOpen, setTemplatesOpen] = useState(false);
-  const initializedRef = useRef(false);
+  const [isHydrated, setIsHydrated] = useState(false);
   const templateNameInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -186,8 +186,7 @@ export default function TransientNotes() {
     setNotes(syncedNotes);
     setSelectedTemplateId(storedTemplates[0]?.id ?? '');
     setTodayKey(loadedNotes.date);
-    saveNotes(syncedNotes);
-    initializedRef.current = true;
+    setIsHydrated(true);
   }, []);
 
   useEffect(() => {
@@ -202,36 +201,44 @@ export default function TransientNotes() {
   }, [templates, selectedTemplateId]);
 
   useEffect(() => {
-    if (!initializedRef.current) {
+    if (!isHydrated) {
       return;
     }
 
     if (templates.length === 0) {
       setNotes([]);
-      localStorage.removeItem(NOTE_STORAGE_KEY);
       return;
     }
 
     setNotes((currentNotes) => {
-      const syncedNotes = synchronizeNotesWithTemplates(currentNotes, templates);
-      saveNotes(syncedNotes);
-      return syncedNotes;
+      return synchronizeNotesWithTemplates(currentNotes, templates);
     });
-  }, [templates]);
+  }, [isHydrated, templates]);
 
   useEffect(() => {
+    if (!isHydrated) {
+      return;
+    }
+
+    saveNotes(notes);
+  }, [isHydrated, notes]);
+
+  useEffect(() => {
+    if (!isHydrated) {
+      return;
+    }
+
     const timer = window.setInterval(() => {
       const currentDay = getTodayKey();
       if (currentDay !== todayKey) {
         setTodayKey(currentDay);
         const nextNotes = synchronizeNotesWithTemplates([], templates);
         setNotes(nextNotes);
-        saveNotes(nextNotes);
       }
     }, 60 * 1000);
 
     return () => window.clearInterval(timer);
-  }, [templates, todayKey]);
+  }, [isHydrated, templates, todayKey]);
 
   const activeTemplate = useMemo(
     () => templates.find((template) => template.id === selectedTemplateId) ?? null,
@@ -294,7 +301,6 @@ export default function TransientNotes() {
 
     const updatedNotes = notes.filter((note) => note.templateId !== templateId);
     setNotes(updatedNotes);
-    saveNotes(updatedNotes);
 
     if (editingTemplateId === templateId) {
       resetTemplateForm();
@@ -312,7 +318,6 @@ export default function TransientNotes() {
       : [nextNote, ...notes];
 
     setNotes(updatedNotes);
-    saveNotes(updatedNotes);
   };
 
   const handleToggleItem = (noteId: string, itemId: string) => {
@@ -328,19 +333,16 @@ export default function TransientNotes() {
     );
 
     setNotes(updatedNotes);
-    saveNotes(updatedNotes);
   };
 
   const handleChangeMemo = (noteId: string, memo: string) => {
     const updatedNotes = notes.map((note) => (note.id === noteId ? { ...note, memo } : note));
     setNotes(updatedNotes);
-    saveNotes(updatedNotes);
   };
 
   const handleDeleteNote = (noteId: string) => {
     const updatedNotes = notes.filter((note) => note.id !== noteId);
     setNotes(updatedNotes);
-    saveNotes(updatedNotes);
   };
 
   const handleCopyToday = async () => {
