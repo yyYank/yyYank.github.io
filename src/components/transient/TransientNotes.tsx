@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import CelebrationConfetti from './CelebrationConfetti';
 
 interface Template {
   id: string;
@@ -69,21 +70,6 @@ const fadeTransition = {
   duration: 0.55,
   ease: [0.22, 1, 0.36, 1] as const,
 };
-
-const celebratoryBursts = [
-  { id: 'left-top-outer', side: 'left', edge: 'top', anchor: 6, offset: '14%', color: 'bg-amber-300', size: 'h-2 w-2', x: 116, y: -72, drift: 312, sway: 34, rotate: 210, delay: 0.02 },
-  { id: 'left-top-inner', side: 'left', edge: 'top', anchor: 44, offset: '22%', color: 'bg-emerald-300', size: 'h-2.5 w-1.5', x: 132, y: -26, drift: 336, sway: 42, rotate: 160, delay: 0.08 },
-  { id: 'left-top-mid', side: 'left', edge: 'top', anchor: 82, offset: '10%', color: 'bg-sky-300', size: 'h-1.5 w-4', x: 126, y: -86, drift: 352, sway: 38, rotate: 248, delay: 0.14 },
-  { id: 'right-top-outer', side: 'right', edge: 'top', anchor: 6, offset: '14%', color: 'bg-amber-300', size: 'h-2 w-2', x: -116, y: -72, drift: 312, sway: -34, rotate: -210, delay: 0.02 },
-  { id: 'right-top-inner', side: 'right', edge: 'top', anchor: 44, offset: '22%', color: 'bg-emerald-300', size: 'h-2.5 w-1.5', x: -132, y: -26, drift: 336, sway: -42, rotate: -160, delay: 0.08 },
-  { id: 'right-top-mid', side: 'right', edge: 'top', anchor: 82, offset: '10%', color: 'bg-sky-300', size: 'h-1.5 w-4', x: -126, y: -86, drift: 352, sway: -38, rotate: -248, delay: 0.14 },
-  { id: 'left-bottom-outer', side: 'left', edge: 'bottom', anchor: 6, offset: '14%', color: 'bg-rose-300', size: 'h-3 w-1.5', x: 114, y: -178, drift: 248, sway: 28, rotate: 132, delay: 0.18 },
-  { id: 'left-bottom-inner', side: 'left', edge: 'bottom', anchor: 44, offset: '22%', color: 'bg-white', size: 'h-1.5 w-1.5', x: 148, y: -224, drift: 264, sway: 34, rotate: 184, delay: 0.24 },
-  { id: 'left-bottom-mid', side: 'left', edge: 'bottom', anchor: 82, offset: '8%', color: 'bg-amber-200', size: 'h-1.5 w-4', x: 128, y: -198, drift: 278, sway: 30, rotate: 228, delay: 0.3 },
-  { id: 'right-bottom-outer', side: 'right', edge: 'bottom', anchor: 6, offset: '14%', color: 'bg-rose-300', size: 'h-3 w-1.5', x: -114, y: -178, drift: 248, sway: -28, rotate: -132, delay: 0.18 },
-  { id: 'right-bottom-inner', side: 'right', edge: 'bottom', anchor: 44, offset: '22%', color: 'bg-white', size: 'h-1.5 w-1.5', x: -148, y: -224, drift: 264, sway: -34, rotate: -184, delay: 0.24 },
-  { id: 'right-bottom-mid', side: 'right', edge: 'bottom', anchor: 82, offset: '8%', color: 'bg-amber-200', size: 'h-1.5 w-4', x: -128, y: -198, drift: 278, sway: -30, rotate: -228, delay: 0.3 },
-] as const;
 
 function createId(prefix: string): string {
   return `${prefix}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
@@ -995,17 +981,41 @@ export default function TransientNotes() {
                             onClick={() => handleMoveTemplate(template.id, 'up')}
                             disabled={template.order === 1}
                             type="button"
-                            className="rounded-full border border-dark-500 px-2.5 py-1 text-xs text-gray-300 transition-colors hover:border-cyan-400/40 hover:text-white disabled:cursor-not-allowed disabled:opacity-35"
+                            aria-label="上に移動"
+                            className="flex h-8 w-8 items-center justify-center rounded-full border border-dark-500 text-gray-300 transition-colors hover:border-cyan-400/40 hover:text-white disabled:cursor-not-allowed disabled:opacity-35"
                           >
-                            ∧
+                            <svg
+                              aria-hidden="true"
+                              viewBox="0 0 16 16"
+                              className="h-3.5 w-3.5"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="1.8"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            >
+                              <path d="M3.5 9.5 8 5l4.5 4.5" />
+                            </svg>
                           </button>
                           <button
                             onClick={() => handleMoveTemplate(template.id, 'down')}
                             disabled={template.order === templates.length}
                             type="button"
-                            className="rounded-full border border-dark-500 px-2.5 py-1 text-xs text-gray-300 transition-colors hover:border-cyan-400/40 hover:text-white disabled:cursor-not-allowed disabled:opacity-35"
+                            aria-label="下に移動"
+                            className="flex h-8 w-8 items-center justify-center rounded-full border border-dark-500 text-gray-300 transition-colors hover:border-cyan-400/40 hover:text-white disabled:cursor-not-allowed disabled:opacity-35"
                           >
-                            ∨
+                            <svg
+                              aria-hidden="true"
+                              viewBox="0 0 16 16"
+                              className="h-3.5 w-3.5"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="1.8"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            >
+                              <path d="M3.5 6.5 8 11l4.5-4.5" />
+                            </svg>
                           </button>
                           <button
                             onClick={() => handleEditTemplate(template)}
@@ -1141,40 +1151,7 @@ export default function TransientNotes() {
               className="relative w-full max-w-lg overflow-hidden rounded-3xl border border-emerald-400/20 bg-dark-800/95 p-5 shadow-2xl shadow-emerald-950/20"
               onClick={(event) => event.stopPropagation()}
             >
-              <div className="pointer-events-none absolute inset-0 overflow-hidden">
-                {celebratoryBursts.map((burst) => (
-                  <motion.span
-                    key={burst.id}
-                    initial={{
-                      opacity: 0,
-                      x: 0,
-                      y: 0,
-                      rotate: 0,
-                      scale: 0.6,
-                    }}
-                    animate={{
-                      opacity: [0, 1, 1, 0.65, 0],
-                      x: [0, burst.x * 0.85, burst.x + burst.sway, burst.x - burst.sway * 0.7, burst.x + burst.sway * 0.35],
-                      y: [0, burst.y * 0.72, burst.y * 0.9, burst.drift * 0.38, burst.drift],
-                      rotate: [0, burst.rotate * 0.45, burst.rotate, burst.rotate * 1.55, burst.rotate * 2.1],
-                      scale: [0.6, 1, 0.96, 0.9],
-                    }}
-                    transition={{
-                      duration: 8,
-                      delay: burst.delay,
-                      times: [0, 0.04, 0.1, 0.64, 1],
-                      ease: [0.18, 0.9, 0.24, 1],
-                    }}
-                    className={`absolute ${burst.size} ${burst.color} rounded-sm shadow-[0_0_18px_rgba(255,255,255,0.12)]`}
-                    style={{
-                      ...(burst.side === 'left'
-                        ? { left: `${burst.anchor}px` }
-                        : { right: `${burst.anchor}px` }),
-                      ...(burst.edge === 'top' ? { top: burst.offset } : { bottom: burst.offset }),
-                    }}
-                  />
-                ))}
-              </div>
+              <CelebrationConfetti />
 
               <div className="mb-5 flex items-start justify-between gap-4">
                 <div className="min-w-0">
