@@ -65,6 +65,19 @@ const fadeTransition = {
   ease: [0.22, 1, 0.36, 1] as const,
 };
 
+const celebratoryBursts = [
+  { id: 'left-1', side: 'left', top: '18%', color: 'bg-amber-300', size: 'h-2 w-2', x: 108, y: -64, rotate: 210, delay: 0.02 },
+  { id: 'left-2', side: 'left', top: '26%', color: 'bg-emerald-300', size: 'h-2.5 w-1.5', x: 132, y: -20, rotate: 160, delay: 0.08 },
+  { id: 'left-3', side: 'left', top: '12%', color: 'bg-sky-300', size: 'h-1.5 w-4', x: 124, y: -82, rotate: 248, delay: 0.12 },
+  { id: 'left-4', side: 'left', top: '34%', color: 'bg-rose-300', size: 'h-3 w-1.5', x: 96, y: -6, rotate: 132, delay: 0.16 },
+  { id: 'left-5', side: 'left', top: '20%', color: 'bg-white', size: 'h-1.5 w-1.5', x: 150, y: -42, rotate: 184, delay: 0.22 },
+  { id: 'right-1', side: 'right', top: '18%', color: 'bg-amber-300', size: 'h-2 w-2', x: -108, y: -64, rotate: -210, delay: 0.02 },
+  { id: 'right-2', side: 'right', top: '26%', color: 'bg-emerald-300', size: 'h-2.5 w-1.5', x: -132, y: -20, rotate: -160, delay: 0.08 },
+  { id: 'right-3', side: 'right', top: '12%', color: 'bg-sky-300', size: 'h-1.5 w-4', x: -124, y: -82, rotate: -248, delay: 0.12 },
+  { id: 'right-4', side: 'right', top: '34%', color: 'bg-rose-300', size: 'h-3 w-1.5', x: -96, y: -6, rotate: -132, delay: 0.16 },
+  { id: 'right-5', side: 'right', top: '20%', color: 'bg-white', size: 'h-1.5 w-1.5', x: -150, y: -42, rotate: -184, delay: 0.22 },
+] as const;
+
 function createId(prefix: string): string {
   return `${prefix}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
 }
@@ -1012,9 +1025,38 @@ export default function TransientNotes() {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.98 }}
               transition={fadeTransition}
-              className="w-full max-w-lg rounded-3xl border border-emerald-400/20 bg-dark-800/95 p-5 shadow-2xl shadow-emerald-950/20"
+              className="relative w-full max-w-lg overflow-hidden rounded-3xl border border-emerald-400/20 bg-dark-800/95 p-5 shadow-2xl shadow-emerald-950/20"
               onClick={(event) => event.stopPropagation()}
             >
+              <div className="pointer-events-none absolute inset-x-0 top-0 h-28 overflow-hidden">
+                {celebratoryBursts.map((burst) => (
+                  <motion.span
+                    key={burst.id}
+                    initial={{
+                      opacity: 0,
+                      x: 0,
+                      y: 0,
+                      rotate: 0,
+                      scale: 0.6,
+                    }}
+                    animate={{
+                      opacity: [0, 1, 1, 0],
+                      x: [0, burst.x],
+                      y: [0, burst.y, 16],
+                      rotate: [0, burst.rotate],
+                      scale: [0.6, 1, 0.92],
+                    }}
+                    transition={{
+                      duration: 1.35,
+                      delay: burst.delay,
+                      ease: [0.16, 1, 0.3, 1],
+                    }}
+                    className={`absolute ${burst.side === 'left' ? 'left-6' : 'right-6'} ${burst.size} ${burst.color} rounded-sm shadow-[0_0_18px_rgba(255,255,255,0.12)]`}
+                    style={{ top: burst.top }}
+                  />
+                ))}
+              </div>
+
               <div className="mb-5 flex items-start justify-between gap-4">
                 <div className="min-w-0">
                   <p className="text-xs uppercase tracking-[0.28em] text-emerald-300/70">Today</p>
