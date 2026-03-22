@@ -28,6 +28,7 @@ interface TransientNote {
 interface StoredNotes {
   date: string;
   notes: TransientNote[];
+  deletedTemplateIds: string[];
 }
 
 interface PersistentTodo {
@@ -149,22 +150,26 @@ function loadNotes(): StoredNotes {
   try {
     const raw = localStorage.getItem(NOTE_STORAGE_KEY);
     if (!raw) {
-      return { date: today, notes: [] };
+      return { date: today, notes: [], deletedTemplateIds: [] };
     }
 
     const parsed = JSON.parse(raw) as StoredNotes;
     if (parsed.date !== today) {
-      return { date: today, notes: [] };
+      return { date: today, notes: [], deletedTemplateIds: [] };
     }
 
-    return parsed;
+    return {
+      date: parsed.date,
+      notes: parsed.notes ?? [],
+      deletedTemplateIds: parsed.deletedTemplateIds ?? [],
+    };
   } catch {
-    return { date: today, notes: [] };
+    return { date: today, notes: [], deletedTemplateIds: [] };
   }
 }
 
-function saveNotes(notes: TransientNote[]): void {
-  const payload: StoredNotes = { date: getTodayKey(), notes };
+function saveNotes(notes: TransientNote[], deletedTemplateIds: string[]): void {
+  const payload: StoredNotes = { date: getTodayKey(), notes, deletedTemplateIds };
   localStorage.setItem(NOTE_STORAGE_KEY, JSON.stringify(payload));
 }
 
@@ -215,9 +220,12 @@ function createNoteFromTemplate(template: Template): TransientNote {
 
 function synchronizeNotesWithTemplates(
   currentNotes: TransientNote[],
-  templates: Template[]
+  templates: Template[],
+  deletedTemplateIds: string[]
 ): TransientNote[] {
-  return templates.map((template) => {
+  return templates
+    .filter((template) => !deletedTemplateIds.includes(template.id))
+    .map((template) => {
     const existingNote = currentNotes.find((note) => note.templateId === template.id);
 
     if (!existingNote) {
@@ -258,17 +266,24 @@ export default function TransientNotes() {
   const [showDoneSummary, setShowDoneSummary] = useState(false);
   const [tomorrowTodos, setTomorrowTodos] = useState<PersistentTodo[]>([]);
   const [tomorrowTodoDraft, setTomorrowTodoDraft] = useState('');
+  const [deletedTemplateIds, setDeletedTemplateIds] = useState<string[]>([]);
   const templateNameInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const storedTemplates = loadTemplates();
     const loadedNotes = loadNotes();
     const storedNotes = loadedNotes.notes;
+    const storedDeletedTemplateIds = loadedNotes.deletedTemplateIds;
     const storedTomorrowTodos = loadTomorrowTodos();
-    const syncedNotes = synchronizeNotesWithTemplates(storedNotes, storedTemplates);
+    const syncedNotes = synchronizeNotesWithTemplates(
+      storedNotes,
+      storedTemplates,
+      storedDeletedTemplateIds
+    );
 
     setTemplates(storedTemplates);
     setNotes(syncedNotes);
+    setDeletedTemplateIds(storedDeletedTemplateIds);
     setTomorrowTodos(storedTomorrowTodos);
     setSelectedTemplateId(storedTemplates[0]?.id ?? '');
     setTodayKey(loadedNotes.date);
@@ -297,17 +312,17 @@ export default function TransientNotes() {
     }
 
     setNotes((currentNotes) => {
-      return synchronizeNotesWithTemplates(currentNotes, templates);
+      return synchronizeNotesWithTemplates(currentNotes, templates, deletedTemplateIds);
     });
-  }, [isHydrated, templates]);
+  }, [deletedTemplateIds, isHydrated, templates]);
 
   useEffect(() => {
     if (!isHydrated) {
       return;
     }
 
-    saveNotes(notes);
-  }, [isHydrated, notes]);
+    saveNotes(notes, deletedTemplateIds);
+  }, [deletedTemplateIds, isHydrated, notes]);
 
   useEffect(() => {
     if (!isHydrated) {
@@ -326,7 +341,8 @@ export default function TransientNotes() {
       const currentDay = getTodayKey();
       if (currentDay !== todayKey) {
         setTodayKey(currentDay);
-        const nextNotes = synchronizeNotesWithTemplates([], templates);
+        const nextNotes = synchronizeNotesWithTemplates([], templates, []);
+        setDeletedTemplateIds([]);
         setNotes(nextNotes);
       }
     }, 60 * 1000);
@@ -451,6 +467,9 @@ export default function TransientNotes() {
       ? notes.map((note) => (note.templateId === activeTemplate.id ? nextNote : note))
       : [nextNote, ...notes];
 
+    setDeletedTemplateIds((current) =>
+      current.filter((templateId) => templateId !== activeTemplate.id)
+    );
     setNotes(updatedNotes);
   };
 
@@ -475,7 +494,13 @@ export default function TransientNotes() {
   };
 
   const handleDeleteNote = (noteId: string) => {
+    const targetNote = notes.find((note) => note.id === noteId);
     const updatedNotes = notes.filter((note) => note.id !== noteId);
+    if (targetNote) {
+      setDeletedTemplateIds((current) =>
+        current.includes(targetNote.templateId) ? current : [...current, targetNote.templateId]
+      );
+    }
     setNotes(updatedNotes);
   };
 
