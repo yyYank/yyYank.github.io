@@ -66,18 +66,18 @@ const fadeTransition = {
 };
 
 const celebratoryBursts = [
-  { id: 'left-top-1', side: 'left', edge: 'top', offset: '18%', color: 'bg-amber-300', size: 'h-2 w-2', x: 108, y: -64, drift: 172, rotate: 210, delay: 0.02 },
-  { id: 'left-top-2', side: 'left', edge: 'top', offset: '26%', color: 'bg-emerald-300', size: 'h-2.5 w-1.5', x: 132, y: -20, drift: 188, rotate: 160, delay: 0.08 },
-  { id: 'left-top-3', side: 'left', edge: 'top', offset: '12%', color: 'bg-sky-300', size: 'h-1.5 w-4', x: 124, y: -82, drift: 204, rotate: 248, delay: 0.12 },
-  { id: 'right-top-1', side: 'right', edge: 'top', offset: '18%', color: 'bg-amber-300', size: 'h-2 w-2', x: -108, y: -64, drift: 172, rotate: -210, delay: 0.02 },
-  { id: 'right-top-2', side: 'right', edge: 'top', offset: '26%', color: 'bg-emerald-300', size: 'h-2.5 w-1.5', x: -132, y: -20, drift: 188, rotate: -160, delay: 0.08 },
-  { id: 'right-top-3', side: 'right', edge: 'top', offset: '12%', color: 'bg-sky-300', size: 'h-1.5 w-4', x: -124, y: -82, drift: 204, rotate: -248, delay: 0.12 },
-  { id: 'left-bottom-1', side: 'left', edge: 'bottom', offset: '18%', color: 'bg-rose-300', size: 'h-3 w-1.5', x: 110, y: -168, drift: 64, rotate: 132, delay: 0.16 },
-  { id: 'left-bottom-2', side: 'left', edge: 'bottom', offset: '26%', color: 'bg-white', size: 'h-1.5 w-1.5', x: 146, y: -212, drift: 48, rotate: 184, delay: 0.22 },
-  { id: 'left-bottom-3', side: 'left', edge: 'bottom', offset: '10%', color: 'bg-amber-200', size: 'h-1.5 w-4', x: 124, y: -186, drift: 72, rotate: 228, delay: 0.28 },
-  { id: 'right-bottom-1', side: 'right', edge: 'bottom', offset: '18%', color: 'bg-rose-300', size: 'h-3 w-1.5', x: -110, y: -168, drift: 64, rotate: -132, delay: 0.16 },
-  { id: 'right-bottom-2', side: 'right', edge: 'bottom', offset: '26%', color: 'bg-white', size: 'h-1.5 w-1.5', x: -146, y: -212, drift: 48, rotate: -184, delay: 0.22 },
-  { id: 'right-bottom-3', side: 'right', edge: 'bottom', offset: '10%', color: 'bg-amber-200', size: 'h-1.5 w-4', x: -124, y: -186, drift: 72, rotate: -228, delay: 0.28 },
+  { id: 'left-top-1', side: 'left', edge: 'top', offset: '18%', color: 'bg-amber-300', size: 'h-2 w-2', x: 108, y: -64, drift: 172, sway: 26, rotate: 210, delay: 0.02 },
+  { id: 'left-top-2', side: 'left', edge: 'top', offset: '26%', color: 'bg-emerald-300', size: 'h-2.5 w-1.5', x: 132, y: -20, drift: 188, sway: 34, rotate: 160, delay: 0.08 },
+  { id: 'left-top-3', side: 'left', edge: 'top', offset: '12%', color: 'bg-sky-300', size: 'h-1.5 w-4', x: 124, y: -82, drift: 204, sway: 30, rotate: 248, delay: 0.12 },
+  { id: 'right-top-1', side: 'right', edge: 'top', offset: '18%', color: 'bg-amber-300', size: 'h-2 w-2', x: -108, y: -64, drift: 172, sway: -26, rotate: -210, delay: 0.02 },
+  { id: 'right-top-2', side: 'right', edge: 'top', offset: '26%', color: 'bg-emerald-300', size: 'h-2.5 w-1.5', x: -132, y: -20, drift: 188, sway: -34, rotate: -160, delay: 0.08 },
+  { id: 'right-top-3', side: 'right', edge: 'top', offset: '12%', color: 'bg-sky-300', size: 'h-1.5 w-4', x: -124, y: -82, drift: 204, sway: -30, rotate: -248, delay: 0.12 },
+  { id: 'left-bottom-1', side: 'left', edge: 'bottom', offset: '18%', color: 'bg-rose-300', size: 'h-3 w-1.5', x: 110, y: -168, drift: 64, sway: 22, rotate: 132, delay: 0.16 },
+  { id: 'left-bottom-2', side: 'left', edge: 'bottom', offset: '26%', color: 'bg-white', size: 'h-1.5 w-1.5', x: 146, y: -212, drift: 48, sway: 28, rotate: 184, delay: 0.22 },
+  { id: 'left-bottom-3', side: 'left', edge: 'bottom', offset: '10%', color: 'bg-amber-200', size: 'h-1.5 w-4', x: 124, y: -186, drift: 72, sway: 24, rotate: 228, delay: 0.28 },
+  { id: 'right-bottom-1', side: 'right', edge: 'bottom', offset: '18%', color: 'bg-rose-300', size: 'h-3 w-1.5', x: -110, y: -168, drift: 64, sway: -22, rotate: -132, delay: 0.16 },
+  { id: 'right-bottom-2', side: 'right', edge: 'bottom', offset: '26%', color: 'bg-white', size: 'h-1.5 w-1.5', x: -146, y: -212, drift: 48, sway: -28, rotate: -184, delay: 0.22 },
+  { id: 'right-bottom-3', side: 'right', edge: 'bottom', offset: '10%', color: 'bg-amber-200', size: 'h-1.5 w-4', x: -124, y: -186, drift: 72, sway: -24, rotate: -228, delay: 0.28 },
 ] as const;
 
 function createId(prefix: string): string {
@@ -1043,16 +1043,16 @@ export default function TransientNotes() {
                     }}
                     animate={{
                       opacity: [0, 1, 1, 0.65, 0],
-                      x: [0, burst.x],
-                      y: [0, burst.y, burst.drift],
-                      rotate: [0, burst.rotate],
+                      x: [0, burst.x * 0.85, burst.x + burst.sway, burst.x - burst.sway * 0.7, burst.x + burst.sway * 0.35],
+                      y: [0, burst.y * 0.9, burst.y, burst.drift * 0.45, burst.drift],
+                      rotate: [0, burst.rotate * 0.45, burst.rotate, burst.rotate * 1.55, burst.rotate * 2.1],
                       scale: [0.6, 1, 0.96, 0.9],
                     }}
                     transition={{
                       duration: 4,
                       delay: burst.delay,
-                      times: [0, 0.1, 0.55, 0.82, 1],
-                      ease: 'easeOut',
+                      times: [0, 0.06, 0.18, 0.62, 1],
+                      ease: [0.18, 0.9, 0.24, 1],
                     }}
                     className={`absolute ${burst.side === 'left' ? 'left-6' : 'right-6'} ${burst.size} ${burst.color} rounded-sm shadow-[0_0_18px_rgba(255,255,255,0.12)]`}
                     style={burst.edge === 'top' ? { top: burst.offset } : { bottom: burst.offset }}
