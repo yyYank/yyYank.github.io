@@ -56,6 +56,70 @@ function getLauncherKick(
     : { x: [0, 6, -3, 0], y: [0, 4, -1, 0] };
 }
 
+function PartyPopperSvg({ side }: { side: (typeof celebratoryLaunchers)[number]['side'] }) {
+  const bodyGradientId = `popper-body-${side}`;
+  const shineGradientId = `popper-shine-${side}`;
+  const flareGradientId = `popper-flare-${side}`;
+  const mouthX = side === 'left' ? 47 : 13;
+
+  return (
+    <svg viewBox="0 0 60 44" className="absolute inset-0 h-full w-full overflow-visible">
+      <defs>
+        <linearGradient id={bodyGradientId} x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor={side === 'left' ? '#a5f3fc' : '#fde68a'} />
+          <stop offset="30%" stopColor={side === 'left' ? '#22d3ee' : '#f472b6'} />
+          <stop offset="72%" stopColor={side === 'left' ? '#4ade80' : '#fb7185'} />
+          <stop offset="100%" stopColor={side === 'left' ? '#0ea5e9' : '#be185d'} />
+        </linearGradient>
+        <linearGradient id={shineGradientId} x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stopColor="rgba(255,255,255,0.72)" />
+          <stop offset="100%" stopColor="rgba(255,255,255,0)" />
+        </linearGradient>
+        <radialGradient id={flareGradientId} cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="rgba(255,255,255,0.9)" />
+          <stop offset="100%" stopColor="rgba(255,255,255,0)" />
+        </radialGradient>
+      </defs>
+
+      <path
+        d={side === 'left' ? 'M9 22 L47 7 Q52 22 47 37 Z' : 'M51 22 L13 7 Q8 22 13 37 Z'}
+        fill={`url(#${bodyGradientId})`}
+        stroke="rgba(255,255,255,0.22)"
+        strokeWidth="1.2"
+      />
+      <path
+        d={side === 'left' ? 'M15 21 L43 11 L31 23 Z' : 'M45 21 L17 11 L29 23 Z'}
+        fill={`url(#${shineGradientId})`}
+        opacity="0.68"
+      />
+      <ellipse
+        cx={side === 'left' ? '16' : '44'}
+        cy="22"
+        rx="7.5"
+        ry="8.5"
+        fill="rgba(255,255,255,0.12)"
+      />
+      <rect
+        x={side === 'left' ? '45.5' : '10.5'}
+        y="17.4"
+        width="7"
+        height="9.2"
+        rx="3.4"
+        fill="rgba(255,255,255,0.22)"
+        stroke="rgba(255,255,255,0.34)"
+        strokeWidth="0.9"
+      />
+      <path
+        d={side === 'left' ? 'M39 12 L44 8' : 'M21 12 L16 8'}
+        stroke="rgba(255,255,255,0.5)"
+        strokeWidth="1.2"
+        strokeLinecap="round"
+      />
+      <circle cx={mouthX} cy="22" r="7.5" fill={`url(#${flareGradientId})`} opacity="0.42" />
+    </svg>
+  );
+}
+
 export default function CelebrationConfetti() {
   return (
     <div className="pointer-events-none absolute inset-0 overflow-hidden">
@@ -95,41 +159,10 @@ export default function CelebrationConfetti() {
             }}
             style={{
               transform: `rotate(${getLauncherRotation(launcher.side, launcher.edge)}deg)`,
-              transformOrigin: '18% 50%',
+              transformOrigin: '50% 50%',
             }}
           >
-            <div
-              className="absolute inset-0"
-              style={{
-                clipPath: 'polygon(6% 50%, 100% 0%, 100% 100%)',
-                background:
-                  launcher.edge === 'top'
-                    ? 'linear-gradient(135deg, rgba(254,240,138,0.98) 0%, rgba(251,191,36,0.96) 22%, rgba(244,114,182,0.92) 58%, rgba(190,24,93,0.92) 100%)'
-                    : 'linear-gradient(135deg, rgba(165,243,252,0.98) 0%, rgba(34,211,238,0.96) 24%, rgba(74,222,128,0.92) 62%, rgba(14,165,233,0.9) 100%)',
-              }}
-            />
-            <div
-              className="absolute inset-0 opacity-50"
-              style={{
-                clipPath:
-                  launcher.side === 'left'
-                    ? 'polygon(8% 50%, 100% 6%, 100% 18%, 24% 56%)'
-                    : 'polygon(0% 6%, 92% 50%, 76% 56%, 0% 18%)',
-                background: 'linear-gradient(180deg, rgba(255,255,255,0.55), rgba(255,255,255,0))',
-              }}
-            />
-            <div
-              className="absolute top-1/2 h-3 w-3 -translate-y-1/2 rounded-full bg-white/18 blur-[1px]"
-              style={launcher.side === 'left' ? { left: '4px' } : { right: '4px' }}
-            />
-            <div
-              className="absolute top-1/2 h-5 w-[5px] -translate-y-1/2 border border-white/30 bg-white/26"
-              style={
-                launcher.side === 'left'
-                  ? { right: '1px', borderRadius: '0 9999px 9999px 0' }
-                  : { left: '1px', borderRadius: '9999px 0 0 9999px' }
-              }
-            />
+            <PartyPopperSvg side={launcher.side} />
             <motion.div
               initial={{ opacity: 0, scale: 0.7 }}
               animate={{ opacity: [0, 0.9, 0], scale: [0.7, 1.6, 2.1] }}
@@ -140,7 +173,7 @@ export default function CelebrationConfetti() {
                 ease: [0.24, 1, 0.3, 1],
               }}
               className="absolute top-1/2 h-4 w-4 -translate-y-1/2 rounded-full border border-white/25"
-              style={launcher.side === 'left' ? { right: 0 } : { left: 0 }}
+              style={launcher.side === 'left' ? { right: '-2px' } : { left: '-2px' }}
             />
           </motion.div>
         </motion.div>
