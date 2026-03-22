@@ -1,18 +1,14 @@
 import { motion } from 'framer-motion';
 
 const celebratoryLaunchers = [
-  { id: 'left-top-outer', side: 'left', edge: 'top', anchor: 6, offset: '14%', x: 116, y: -72, drift: 920, sway: 34, rotate: 210, delay: 0.02 },
-  { id: 'left-top-inner', side: 'left', edge: 'top', anchor: 44, offset: '22%', x: 132, y: -26, drift: 948, sway: 42, rotate: 160, delay: 0.08 },
-  { id: 'left-top-mid', side: 'left', edge: 'top', anchor: 82, offset: '10%', x: 126, y: -86, drift: 976, sway: 38, rotate: 248, delay: 0.14 },
-  { id: 'right-top-outer', side: 'right', edge: 'top', anchor: 6, offset: '14%', x: -116, y: -72, drift: 920, sway: -34, rotate: -210, delay: 0.02 },
-  { id: 'right-top-inner', side: 'right', edge: 'top', anchor: 44, offset: '22%', x: -132, y: -26, drift: 948, sway: -42, rotate: -160, delay: 0.08 },
-  { id: 'right-top-mid', side: 'right', edge: 'top', anchor: 82, offset: '10%', x: -126, y: -86, drift: 976, sway: -38, rotate: -248, delay: 0.14 },
-  { id: 'left-bottom-outer', side: 'left', edge: 'bottom', anchor: 6, offset: '14%', x: 114, y: -178, drift: 248, sway: 28, rotate: 132, delay: 0.18 },
-  { id: 'left-bottom-inner', side: 'left', edge: 'bottom', anchor: 44, offset: '22%', x: 148, y: -224, drift: 264, sway: 34, rotate: 184, delay: 0.24 },
-  { id: 'left-bottom-mid', side: 'left', edge: 'bottom', anchor: 82, offset: '8%', x: 128, y: -198, drift: 278, sway: 30, rotate: 228, delay: 0.3 },
-  { id: 'right-bottom-outer', side: 'right', edge: 'bottom', anchor: 6, offset: '14%', x: -114, y: -178, drift: 248, sway: -28, rotate: -132, delay: 0.18 },
-  { id: 'right-bottom-inner', side: 'right', edge: 'bottom', anchor: 44, offset: '22%', x: -148, y: -224, drift: 264, sway: -34, rotate: -184, delay: 0.24 },
-  { id: 'right-bottom-mid', side: 'right', edge: 'bottom', anchor: 82, offset: '8%', x: -128, y: -198, drift: 278, sway: -30, rotate: -228, delay: 0.3 },
+  { id: 'left-top-far', side: 'left', edge: 'top', anchor: -10, offset: '12%', x: 126, y: -72, drift: 920, sway: 38, rotate: 220, delay: 0.02 },
+  { id: 'left-top-inner', side: 'left', edge: 'top', anchor: 42, offset: '20%', x: 136, y: -28, drift: 948, sway: 44, rotate: 162, delay: 0.08 },
+  { id: 'left-bottom-inner', side: 'left', edge: 'bottom', anchor: 42, offset: '20%', x: 150, y: -226, drift: 264, sway: 36, rotate: 184, delay: 0.22 },
+  { id: 'left-bottom-far', side: 'left', edge: 'bottom', anchor: -10, offset: '12%', x: 122, y: -182, drift: 252, sway: 30, rotate: 136, delay: 0.3 },
+  { id: 'right-top-far', side: 'right', edge: 'top', anchor: -10, offset: '12%', x: -126, y: -72, drift: 920, sway: -38, rotate: -220, delay: 0.02 },
+  { id: 'right-top-inner', side: 'right', edge: 'top', anchor: 42, offset: '20%', x: -136, y: -28, drift: 948, sway: -44, rotate: -162, delay: 0.08 },
+  { id: 'right-bottom-inner', side: 'right', edge: 'bottom', anchor: 42, offset: '20%', x: -150, y: -226, drift: 264, sway: -36, rotate: -184, delay: 0.22 },
+  { id: 'right-bottom-far', side: 'right', edge: 'bottom', anchor: -10, offset: '12%', x: -122, y: -182, drift: 252, sway: -30, rotate: -136, delay: 0.3 },
 ] as const;
 
 const celebratoryVariants = [
