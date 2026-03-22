@@ -21,6 +21,7 @@ interface TransientNote {
   createdAt: string;
   items: NoteItem[];
   memo: string;
+  hiddenItems: string[];
 }
 
 interface StoredNotes {
@@ -135,6 +136,7 @@ function createNoteFromTemplate(template: Template): TransientNote {
       checked: false,
     })),
     memo: '',
+    hiddenItems: [],
   };
 }
 
@@ -149,15 +151,20 @@ function synchronizeNotesWithTemplates(
       return createNoteFromTemplate(template);
     }
 
+    const hiddenItems = existingNote.hiddenItems ?? [];
+
     return {
       ...existingNote,
       title: template.name,
-      items: template.items.map((itemText) => {
-        const existingItem = existingNote.items.find((item) => item.text === itemText);
-        return existingItem
-          ? { ...existingItem, text: itemText }
-          : { id: createId('item'), text: itemText, checked: false };
-      }),
+      hiddenItems,
+      items: template.items
+        .filter((itemText) => !hiddenItems.includes(itemText))
+        .map((itemText) => {
+          const existingItem = existingNote.items.find((item) => item.text === itemText);
+          return existingItem
+            ? { ...existingItem, text: itemText }
+            : { id: createId('item'), text: itemText, checked: false };
+        }),
     };
   });
 }
@@ -376,10 +383,18 @@ export default function TransientNotes() {
     const updatedNotes = notes.map((note) =>
       note.id !== noteId
         ? note
-        : {
-            ...note,
-            items: note.items.filter((item) => item.id !== itemId),
-          }
+        : (() => {
+            const targetItem = note.items.find((item) => item.id === itemId);
+            if (!targetItem) {
+              return note;
+            }
+
+            return {
+              ...note,
+              items: note.items.filter((item) => item.id !== itemId),
+              hiddenItems: Array.from(new Set([...note.hiddenItems, targetItem.text])),
+            };
+          })()
     );
 
     setNotes(updatedNotes);
