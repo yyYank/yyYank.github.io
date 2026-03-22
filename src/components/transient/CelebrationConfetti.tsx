@@ -15,6 +15,9 @@ const celebratoryVariants = [
   { suffix: 'a', color: 'bg-amber-300', size: 'h-2 w-2', dx: 0, dy: 0, drift: 0, sway: 0, rotate: 0, delay: 0 },
   { suffix: 'b', color: 'bg-emerald-300', size: 'h-2.5 w-1.5', dx: 18, dy: -18, drift: 18, sway: 8, rotate: 36, delay: 0.08 },
   { suffix: 'c', color: 'bg-sky-300', size: 'h-1.5 w-4', dx: -14, dy: -34, drift: 36, sway: -6, rotate: -32, delay: 0.14 },
+  { suffix: 'd', color: 'bg-rose-300', size: 'h-3.5 w-1.5', dx: 10, dy: -8, drift: 28, sway: 12, rotate: 58, delay: 0.05 },
+  { suffix: 'e', color: 'bg-fuchsia-300', size: 'h-1.5 w-6', dx: -22, dy: -24, drift: 44, sway: -10, rotate: -48, delay: 0.12 },
+  { suffix: 'f', color: 'bg-pink-200', size: 'h-1 w-2.5', dx: 24, dy: -40, drift: 52, sway: 6, rotate: 74, delay: 0.18 },
 ] as const;
 
 const celebratoryBursts = celebratoryLaunchers.flatMap((launcher) =>
