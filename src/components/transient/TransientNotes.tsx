@@ -29,8 +29,15 @@ interface StoredNotes {
   notes: TransientNote[];
 }
 
+interface PersistentTodo {
+  id: string;
+  text: string;
+  checked: boolean;
+}
+
 const TEMPLATE_STORAGE_KEY = 'transient-note-templates';
 const NOTE_STORAGE_KEY = 'transient-notes';
+const TOMORROW_TODO_STORAGE_KEY = 'transient-tomorrow-todos';
 
 const DEFAULT_TEMPLATES: Template[] = [
   {
@@ -113,6 +120,24 @@ function saveNotes(notes: TransientNote[]): void {
   localStorage.setItem(NOTE_STORAGE_KEY, JSON.stringify(payload));
 }
 
+function loadTomorrowTodos(): PersistentTodo[] {
+  try {
+    const raw = localStorage.getItem(TOMORROW_TODO_STORAGE_KEY);
+    if (!raw) {
+      return [];
+    }
+
+    const parsed = JSON.parse(raw) as PersistentTodo[];
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveTomorrowTodos(todos: PersistentTodo[]): void {
+  localStorage.setItem(TOMORROW_TODO_STORAGE_KEY, JSON.stringify(todos));
+}
+
 function formatDateTime(value: string): string {
   const date = new Date(value);
 
@@ -182,16 +207,20 @@ export default function TransientNotes() {
   const [templatesOpen, setTemplatesOpen] = useState(false);
   const [isHydrated, setIsHydrated] = useState(false);
   const [showDoneSummary, setShowDoneSummary] = useState(false);
+  const [tomorrowTodos, setTomorrowTodos] = useState<PersistentTodo[]>([]);
+  const [tomorrowTodoDraft, setTomorrowTodoDraft] = useState('');
   const templateNameInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const storedTemplates = loadTemplates();
     const loadedNotes = loadNotes();
     const storedNotes = loadedNotes.notes;
+    const storedTomorrowTodos = loadTomorrowTodos();
     const syncedNotes = synchronizeNotesWithTemplates(storedNotes, storedTemplates);
 
     setTemplates(storedTemplates);
     setNotes(syncedNotes);
+    setTomorrowTodos(storedTomorrowTodos);
     setSelectedTemplateId(storedTemplates[0]?.id ?? '');
     setTodayKey(loadedNotes.date);
     setIsHydrated(true);
@@ -230,6 +259,14 @@ export default function TransientNotes() {
 
     saveNotes(notes);
   }, [isHydrated, notes]);
+
+  useEffect(() => {
+    if (!isHydrated) {
+      return;
+    }
+
+    saveTomorrowTodos(tomorrowTodos);
+  }, [isHydrated, tomorrowTodos]);
 
   useEffect(() => {
     if (!isHydrated) {
@@ -413,6 +450,33 @@ export default function TransientNotes() {
     window.setTimeout(() => setCopied(false), 1500);
   };
 
+  const handleAddTomorrowTodo = () => {
+    const text = tomorrowTodoDraft.trim();
+    if (!text) {
+      return;
+    }
+
+    setTomorrowTodos((current) => [
+      ...current,
+      {
+        id: createId('tomorrow-todo'),
+        text,
+        checked: false,
+      },
+    ]);
+    setTomorrowTodoDraft('');
+  };
+
+  const handleToggleTomorrowTodo = (todoId: string) => {
+    setTomorrowTodos((current) =>
+      current.map((todo) => (todo.id === todoId ? { ...todo, checked: !todo.checked } : todo))
+    );
+  };
+
+  const handleDeleteTomorrowTodo = (todoId: string) => {
+    setTomorrowTodos((current) => current.filter((todo) => todo.id !== todoId));
+  };
+
   return (
     <div className="space-y-8">
       <motion.section
@@ -529,6 +593,112 @@ export default function TransientNotes() {
               </motion.div>
             )}
           </AnimatePresence>
+
+          <motion.div layout className="mt-6 rounded-2xl border border-dark-600 bg-dark-900/50 p-5">
+            <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
+              <div>
+                <h3 className="text-xs font-semibold uppercase tracking-[0.28em] text-sky-300/70">
+                  Next / 明日用TODO
+                </h3>
+                <p className="mt-2 text-sm text-gray-400">
+                  日付が変わっても残る、持ち越し用のメモです。
+                </p>
+              </div>
+              <p className="text-xs uppercase tracking-[0.2em] text-gray-500">
+                {tomorrowTodos.length} persistent
+              </p>
+            </div>
+
+            <div className="flex flex-wrap items-end gap-3">
+              <label className="grid min-w-[220px] flex-1 gap-2 text-sm text-gray-300">
+                <span>追加するTODO</span>
+                <input
+                  type="text"
+                  value={tomorrowTodoDraft}
+                  onChange={(event) => setTomorrowTodoDraft(event.target.value)}
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter') {
+                      event.preventDefault();
+                      handleAddTomorrowTodo();
+                    }
+                  }}
+                  placeholder="明日へ残しておきたいこと"
+                  className="rounded-xl border border-dark-500 bg-dark-800 px-4 py-3 text-white outline-none transition-colors focus:border-sky-400/50"
+                />
+              </label>
+              <button
+                onClick={handleAddTomorrowTodo}
+                type="button"
+                className="rounded-full bg-sky-400/15 px-4 py-2 text-sm font-medium text-sky-200 transition-colors hover:bg-sky-400/25"
+              >
+                追加
+              </button>
+            </div>
+
+            <AnimatePresence mode="wait" initial={false}>
+              {tomorrowTodos.length === 0 ? (
+                <motion.div
+                  key="tomorrow-empty"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={fadeTransition}
+                  className="mt-4 rounded-2xl border border-dashed border-dark-500 bg-dark-900/30 px-6 py-10 text-center"
+                >
+                  <p className="text-lg font-medium text-white">明日へ残すTODOはありません</p>
+                  <p className="mt-2 text-sm leading-6 text-gray-400">
+                    持ち越したいことだけをここに置いておけます。
+                  </p>
+                </motion.div>
+              ) : (
+                <motion.ul
+                  key="tomorrow-list"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={fadeTransition}
+                  className="mt-4 space-y-3"
+                >
+                  <AnimatePresence initial={false}>
+                    {tomorrowTodos.map((todo) => (
+                      <motion.li
+                        key={todo.id}
+                        layout
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={fadeTransition}
+                        className="flex items-center justify-between gap-3 rounded-xl border border-dark-700 bg-dark-800/70 px-4 py-3"
+                      >
+                        <label className="flex min-w-0 flex-1 cursor-pointer items-center gap-3">
+                          <input
+                            type="checkbox"
+                            checked={todo.checked}
+                            onChange={() => handleToggleTomorrowTodo(todo.id)}
+                            className="h-4 w-4 accent-sky-400"
+                          />
+                          <span
+                            className={`truncate text-sm ${
+                              todo.checked ? 'text-gray-500 line-through' : 'text-gray-200'
+                            }`}
+                          >
+                            {todo.text}
+                          </span>
+                        </label>
+                        <button
+                          onClick={() => handleDeleteTomorrowTodo(todo.id)}
+                          type="button"
+                          className="rounded-full border border-red-500/25 bg-red-500/10 px-3 py-1 text-xs text-red-200 transition-colors hover:bg-red-500/20"
+                        >
+                          削除
+                        </button>
+                      </motion.li>
+                    ))}
+                  </AnimatePresence>
+                </motion.ul>
+              )}
+            </AnimatePresence>
+          </motion.div>
 
           <motion.div layout className="mt-6 rounded-2xl border border-dark-600 bg-dark-900/50 p-5">
             <div className="flex flex-wrap items-end gap-3">
