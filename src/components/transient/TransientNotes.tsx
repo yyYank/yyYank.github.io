@@ -1016,7 +1016,7 @@ export default function TransientNotes() {
               onClick={(event) => event.stopPropagation()}
             >
               <div className="mb-5 flex items-start justify-between gap-4">
-                <div>
+                <div className="min-w-0">
                   <p className="text-xs uppercase tracking-[0.28em] text-emerald-300/70">Today</p>
                   <h3 className="mt-2 text-lg font-semibold leading-snug text-white">
                     今日達成したTODOは… {completedCount}件でした！おつかれさまでした 🎉
@@ -1025,7 +1025,7 @@ export default function TransientNotes() {
                 <button
                   onClick={() => setShowDoneSummary(false)}
                   type="button"
-                  className="rounded-full border border-dark-500 px-3 py-1 text-sm text-gray-300 transition-colors hover:border-dark-400 hover:text-white"
+                  className="shrink-0 whitespace-nowrap rounded-full border border-dark-500 px-3 py-1 text-sm text-gray-300 transition-colors hover:border-dark-400 hover:text-white"
                 >
                   閉じる
                 </button>
