@@ -6,6 +6,7 @@ interface Template {
   name: string;
   summary: string;
   items: string[];
+  order: number;
 }
 
 interface NoteItem {
@@ -45,18 +46,21 @@ const DEFAULT_TEMPLATES: Template[] = [
     name: '朝のルーティン',
     summary: '外出前の短期確認用',
     items: ['鍵を持った', '財布を持った', 'スマホを持った', 'ゴミ出しを確認した'],
+    order: 1,
   },
   {
     id: 'midday-routine',
     name: '昼のルーティン',
     summary: '昼休みや移動前の確認用',
     items: ['午後の予定を確認した', '必要な持ち物を揃えた', '連絡が必要な相手を確認した'],
+    order: 2,
   },
   {
     id: 'night-routine',
     name: '夜のルーティン',
     summary: '就寝前の短期確認用',
     items: ['鍵を閉めた', '火元を確認した', 'アラームを設定した', '明日の持ち物を置いた'],
+    order: 3,
   },
 ];
 
@@ -92,22 +96,51 @@ function getTodayKey(): string {
   return `${year}-${month}-${day}`;
 }
 
+function sortTemplates(templates: Template[]): Template[] {
+  return [...templates].sort((a, b) => {
+    if (a.order !== b.order) {
+      return a.order - b.order;
+    }
+
+    return a.name.localeCompare(b.name, 'ja');
+  });
+}
+
+function normalizeTemplates(templates: Partial<Template>[]): Template[] {
+  return sortTemplates(
+    templates.map((template, index) => ({
+      id: template.id ?? createId('template'),
+      name: template.name ?? '',
+      summary: template.summary ?? '',
+      items: template.items ?? [],
+      order:
+        typeof template.order === 'number' && Number.isFinite(template.order)
+          ? template.order
+          : index + 1,
+    }))
+  );
+}
+
+function getNextTemplateOrder(templates: Template[]): number {
+  return templates.reduce((maxOrder, template) => Math.max(maxOrder, template.order), 0) + 1;
+}
+
 function loadTemplates(): Template[] {
   try {
     const raw = localStorage.getItem(TEMPLATE_STORAGE_KEY);
     if (!raw) {
-      return DEFAULT_TEMPLATES;
+      return sortTemplates(DEFAULT_TEMPLATES);
     }
 
-    const parsed = JSON.parse(raw) as Template[];
-    return parsed.length > 0 ? parsed : DEFAULT_TEMPLATES;
+    const parsed = JSON.parse(raw) as Partial<Template>[];
+    return parsed.length > 0 ? normalizeTemplates(parsed) : sortTemplates(DEFAULT_TEMPLATES);
   } catch {
-    return DEFAULT_TEMPLATES;
+    return sortTemplates(DEFAULT_TEMPLATES);
   }
 }
 
 function saveTemplates(templates: Template[]): void {
-  localStorage.setItem(TEMPLATE_STORAGE_KEY, JSON.stringify(templates));
+  localStorage.setItem(TEMPLATE_STORAGE_KEY, JSON.stringify(sortTemplates(templates)));
 }
 
 function loadNotes(): StoredNotes {
@@ -216,6 +249,7 @@ export default function TransientNotes() {
   const [templateName, setTemplateName] = useState('');
   const [templateSummary, setTemplateSummary] = useState('');
   const [templateItemsText, setTemplateItemsText] = useState('');
+  const [templateOrder, setTemplateOrder] = useState('');
   const [editingTemplateId, setEditingTemplateId] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const [todayKey, setTodayKey] = useState('');
@@ -339,6 +373,7 @@ export default function TransientNotes() {
     setTemplateName('');
     setTemplateSummary('');
     setTemplateItemsText('');
+    setTemplateOrder('');
   };
 
   const handleSaveTemplate = () => {
@@ -351,16 +386,28 @@ export default function TransientNotes() {
       return;
     }
 
+    const parsedOrder = Number(templateOrder);
+    const nextOrder =
+      Number.isFinite(parsedOrder) && parsedOrder > 0
+        ? Math.floor(parsedOrder)
+        : editingTemplateId
+          ? templates.find((template) => template.id === editingTemplateId)?.order ??
+            getNextTemplateOrder(templates)
+          : getNextTemplateOrder(templates);
+
     const nextTemplate: Template = {
       id: editingTemplateId ?? createId('template'),
       name: templateName.trim(),
       summary: templateSummary.trim() || '思い出すためだけのテンプレート',
       items,
+      order: nextOrder,
     };
 
-    const updatedTemplates = editingTemplateId
+    const updatedTemplates = sortTemplates(
+      editingTemplateId
       ? templates.map((template) => (template.id === editingTemplateId ? nextTemplate : template))
-      : [...templates, nextTemplate];
+      : [...templates, nextTemplate]
+    );
 
     setTemplates(updatedTemplates);
     saveTemplates(updatedTemplates);
@@ -375,13 +422,14 @@ export default function TransientNotes() {
     setTemplateName(template.name);
     setTemplateSummary(template.summary);
     setTemplateItemsText(template.items.join('\n'));
+    setTemplateOrder(String(template.order));
     window.setTimeout(() => {
       templateNameInputRef.current?.focus();
     }, 0);
   };
 
   const handleDeleteTemplate = (templateId: string) => {
-    const updatedTemplates = templates.filter((template) => template.id !== templateId);
+    const updatedTemplates = sortTemplates(templates.filter((template) => template.id !== templateId));
     setTemplates(updatedTemplates);
     saveTemplates(updatedTemplates);
 
@@ -850,6 +898,7 @@ export default function TransientNotes() {
               onClick={() => {
                 setTemplatesOpen(true);
                 resetTemplateForm();
+                setTemplateOrder(String(getNextTemplateOrder(templates)));
               }}
               type="button"
               className="rounded-full border border-dark-500 px-4 py-2 text-sm text-gray-300 transition-colors hover:border-cyan-400/40 hover:text-white"
@@ -891,7 +940,12 @@ export default function TransientNotes() {
                             type="button"
                             className="text-left"
                           >
-                            <p className="text-lg font-semibold text-white">{template.name}</p>
+                            <div className="flex flex-wrap items-center gap-2">
+                              <p className="text-lg font-semibold text-white">{template.name}</p>
+                              <span className="rounded-full border border-cyan-400/20 bg-cyan-400/10 px-2 py-0.5 text-[11px] uppercase tracking-[0.18em] text-cyan-200/80">
+                                {template.order}
+                              </span>
+                            </div>
                             <p className="mt-1 text-sm text-gray-400">{template.summary}</p>
                           </button>
                         </div>
@@ -948,6 +1002,18 @@ export default function TransientNotes() {
                       value={templateSummary}
                       onChange={(event) => setTemplateSummary(event.target.value)}
                       placeholder="例: その瞬間だけ確認したい内容"
+                      className="rounded-xl border border-dark-500 bg-dark-800 px-4 py-3 text-white outline-none transition-colors focus:border-cyan-400/50"
+                    />
+                  </label>
+                  <label className="grid gap-2 text-sm text-gray-300">
+                    <span>並び順</span>
+                    <input
+                      type="number"
+                      min={1}
+                      step={1}
+                      value={templateOrder}
+                      onChange={(event) => setTemplateOrder(event.target.value)}
+                      placeholder="1"
                       className="rounded-xl border border-dark-500 bg-dark-800 px-4 py-3 text-white outline-none transition-colors focus:border-cyan-400/50"
                     />
                   </label>
