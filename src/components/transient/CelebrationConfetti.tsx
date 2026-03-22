@@ -1,12 +1,12 @@
 import { motion } from 'framer-motion';
 
 const celebratoryLaunchers = [
-  { id: 'left-top-outer', side: 'left', edge: 'top', anchor: 6, offset: '14%', x: 116, y: -72, drift: 640, sway: 34, rotate: 210, delay: 0.02 },
-  { id: 'left-top-inner', side: 'left', edge: 'top', anchor: 44, offset: '22%', x: 132, y: -26, drift: 664, sway: 42, rotate: 160, delay: 0.08 },
-  { id: 'left-top-mid', side: 'left', edge: 'top', anchor: 82, offset: '10%', x: 126, y: -86, drift: 688, sway: 38, rotate: 248, delay: 0.14 },
-  { id: 'right-top-outer', side: 'right', edge: 'top', anchor: 6, offset: '14%', x: -116, y: -72, drift: 640, sway: -34, rotate: -210, delay: 0.02 },
-  { id: 'right-top-inner', side: 'right', edge: 'top', anchor: 44, offset: '22%', x: -132, y: -26, drift: 664, sway: -42, rotate: -160, delay: 0.08 },
-  { id: 'right-top-mid', side: 'right', edge: 'top', anchor: 82, offset: '10%', x: -126, y: -86, drift: 688, sway: -38, rotate: -248, delay: 0.14 },
+  { id: 'left-top-outer', side: 'left', edge: 'top', anchor: 6, offset: '14%', x: 116, y: -72, drift: 920, sway: 34, rotate: 210, delay: 0.02 },
+  { id: 'left-top-inner', side: 'left', edge: 'top', anchor: 44, offset: '22%', x: 132, y: -26, drift: 948, sway: 42, rotate: 160, delay: 0.08 },
+  { id: 'left-top-mid', side: 'left', edge: 'top', anchor: 82, offset: '10%', x: 126, y: -86, drift: 976, sway: 38, rotate: 248, delay: 0.14 },
+  { id: 'right-top-outer', side: 'right', edge: 'top', anchor: 6, offset: '14%', x: -116, y: -72, drift: 920, sway: -34, rotate: -210, delay: 0.02 },
+  { id: 'right-top-inner', side: 'right', edge: 'top', anchor: 44, offset: '22%', x: -132, y: -26, drift: 948, sway: -42, rotate: -160, delay: 0.08 },
+  { id: 'right-top-mid', side: 'right', edge: 'top', anchor: 82, offset: '10%', x: -126, y: -86, drift: 976, sway: -38, rotate: -248, delay: 0.14 },
   { id: 'left-bottom-outer', side: 'left', edge: 'bottom', anchor: 6, offset: '14%', x: 114, y: -178, drift: 248, sway: 28, rotate: 132, delay: 0.18 },
   { id: 'left-bottom-inner', side: 'left', edge: 'bottom', anchor: 44, offset: '22%', x: 148, y: -224, drift: 264, sway: 34, rotate: 184, delay: 0.24 },
   { id: 'left-bottom-mid', side: 'left', edge: 'bottom', anchor: 82, offset: '8%', x: 128, y: -198, drift: 278, sway: 30, rotate: 228, delay: 0.3 },
@@ -53,7 +53,7 @@ export default function CelebrationConfetti() {
             scale: 0.6,
           }}
           animate={{
-            opacity: [0, 1, 1, 0.82, 0],
+            opacity: [0, 1, 1, 0.88, 0],
             x: [
               0,
               burst.x * 0.85,
@@ -74,7 +74,7 @@ export default function CelebrationConfetti() {
           transition={{
             duration: 8,
             delay: burst.delay,
-            times: [0, 0.04, 0.1, 0.82, 1],
+            times: [0, 0.04, 0.1, 0.9, 1],
             ease: [0.18, 0.9, 0.24, 1],
           }}
           className={`absolute ${burst.size} ${burst.color} rounded-sm shadow-[0_0_18px_rgba(255,255,255,0.12)]`}
