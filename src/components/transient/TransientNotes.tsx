@@ -1012,13 +1012,13 @@ export default function TransientNotes() {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.98 }}
               transition={fadeTransition}
-              className="w-full max-w-2xl rounded-3xl border border-emerald-400/20 bg-dark-800/95 p-6 shadow-2xl shadow-emerald-950/20"
+              className="w-full max-w-lg rounded-3xl border border-emerald-400/20 bg-dark-800/95 p-5 shadow-2xl shadow-emerald-950/20"
               onClick={(event) => event.stopPropagation()}
             >
-              <div className="mb-6 flex items-start justify-between gap-4">
+              <div className="mb-5 flex items-start justify-between gap-4">
                 <div>
                   <p className="text-xs uppercase tracking-[0.28em] text-emerald-300/70">Today</p>
-                  <h3 className="mt-2 text-2xl font-semibold text-white">
+                  <h3 className="mt-2 text-lg font-semibold leading-snug text-white">
                     今日達成したTODOは… {completedCount}件でした！おつかれさまでした 🎉
                   </h3>
                 </div>
@@ -1032,33 +1032,20 @@ export default function TransientNotes() {
               </div>
 
               {completedGroups.length === 0 ? (
-                <div className="rounded-2xl border border-dashed border-dark-500 bg-dark-900/35 px-6 py-10 text-center">
-                  <p className="text-lg font-medium text-white">まだ完了したTODOはありません</p>
+                <div className="rounded-2xl border border-dashed border-dark-500 bg-dark-900/35 px-5 py-8 text-center">
+                  <p className="text-base font-medium text-white">まだ完了したTODOはありません</p>
                   <p className="mt-2 text-sm leading-6 text-gray-400">
                     今日の達成は、これからここに積み上がっていきます。
                   </p>
                 </div>
               ) : (
-                <div className="space-y-4">
+                <div className="space-y-4 text-sm text-gray-200">
                   {completedGroups.map((group) => (
-                    <div
-                      key={group.noteId}
-                      className="rounded-2xl border border-dark-600 bg-dark-900/45 p-5"
-                    >
-                      <div className="mb-3 flex items-center justify-between gap-3">
-                        <p className="text-lg font-semibold text-white">{group.title}</p>
-                        <p className="text-xs uppercase tracking-[0.2em] text-emerald-300/70">
-                          {group.items.length} done
-                        </p>
-                      </div>
-                      <ul className="space-y-2">
+                    <div key={group.noteId}>
+                      <p className="font-medium text-white">{group.title}</p>
+                      <ul className="mt-2 list-disc space-y-1 pl-5">
                         {group.items.map((item) => (
-                          <li
-                            key={item.id}
-                            className="rounded-xl border border-dark-700 bg-dark-800/70 px-4 py-3 text-sm text-gray-200"
-                          >
-                            {item.text}
-                          </li>
+                          <li key={item.id}>{item.text}</li>
                         ))}
                       </ul>
                     </div>
