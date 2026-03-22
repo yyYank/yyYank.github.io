@@ -1,12 +1,12 @@
 import { motion } from 'framer-motion';
 
 const celebratoryLaunchers = [
-  { id: 'left-top-far', side: 'left', edge: 'top', anchor: -10, offset: '12%', x: 126, y: -72, drift: 920, sway: 38, rotate: 220, delay: 0.02 },
-  { id: 'left-top-inner', side: 'left', edge: 'top', anchor: 42, offset: '20%', x: 136, y: -28, drift: 948, sway: 44, rotate: 162, delay: 0.08 },
+  { id: 'left-top-far', side: 'left', edge: 'top', anchor: -10, offset: '12%', x: 126, y: 148, drift: 920, sway: 38, rotate: 220, delay: 0.02 },
+  { id: 'left-top-inner', side: 'left', edge: 'top', anchor: 42, offset: '20%', x: 136, y: 172, drift: 948, sway: 44, rotate: 162, delay: 0.08 },
   { id: 'left-bottom-inner', side: 'left', edge: 'bottom', anchor: 42, offset: '20%', x: 150, y: -226, drift: 264, sway: 36, rotate: 184, delay: 0.22 },
   { id: 'left-bottom-far', side: 'left', edge: 'bottom', anchor: -10, offset: '12%', x: 122, y: -182, drift: 252, sway: 30, rotate: 136, delay: 0.3 },
-  { id: 'right-top-far', side: 'right', edge: 'top', anchor: -10, offset: '12%', x: -126, y: -72, drift: 920, sway: -38, rotate: -220, delay: 0.02 },
-  { id: 'right-top-inner', side: 'right', edge: 'top', anchor: 42, offset: '20%', x: -136, y: -28, drift: 948, sway: -44, rotate: -162, delay: 0.08 },
+  { id: 'right-top-far', side: 'right', edge: 'top', anchor: -10, offset: '12%', x: -126, y: 148, drift: 920, sway: -38, rotate: -220, delay: 0.02 },
+  { id: 'right-top-inner', side: 'right', edge: 'top', anchor: 42, offset: '20%', x: -136, y: 172, drift: 948, sway: -44, rotate: -162, delay: 0.08 },
   { id: 'right-bottom-inner', side: 'right', edge: 'bottom', anchor: 42, offset: '20%', x: -150, y: -226, drift: 264, sway: -36, rotate: -184, delay: 0.22 },
   { id: 'right-bottom-far', side: 'right', edge: 'bottom', anchor: -10, offset: '12%', x: -122, y: -182, drift: 252, sway: -30, rotate: -136, delay: 0.3 },
 ] as const;
@@ -42,18 +42,55 @@ const celebratoryBursts = celebratoryLaunchers.flatMap((launcher) =>
   }))
 );
 
+function getLauncherRotation(
+  side: (typeof celebratoryLaunchers)[number]['side'],
+  edge: (typeof celebratoryLaunchers)[number]['edge']
+): number {
+  if (side === 'left' && edge === 'top') {
+    return -52;
+  }
+  if (side === 'left' && edge === 'bottom') {
+    return 52;
+  }
+  if (side === 'right' && edge === 'top') {
+    return 52;
+  }
+  return -52;
+}
+
+function getLauncherKick(
+  side: (typeof celebratoryLaunchers)[number]['side'],
+  edge: (typeof celebratoryLaunchers)[number]['edge']
+): { x: number[]; y: number[] } {
+  if (side === 'left' && edge === 'top') {
+    return { x: [0, -6, 3, 0], y: [0, 5, 1, 0] };
+  }
+  if (side === 'left' && edge === 'bottom') {
+    return { x: [0, -6, 3, 0], y: [0, -5, -1, 0] };
+  }
+  if (side === 'right' && edge === 'top') {
+    return { x: [0, 6, -3, 0], y: [0, 5, 1, 0] };
+  }
+  return { x: [0, 6, -3, 0], y: [0, -5, -1, 0] };
+}
+
 export default function CelebrationConfetti() {
   return (
     <div className="pointer-events-none absolute inset-0 overflow-hidden">
       {celebratoryLaunchers.map((launcher) => (
         <motion.div
           key={`${launcher.id}-launcher`}
-          initial={{ opacity: 0, scale: 0.92 }}
-          animate={{ opacity: [0, 1, 1, 0.92], scale: [0.92, 1, 1] }}
+          initial={{ opacity: 0, scale: 0.92, x: 0, y: 0 }}
+          animate={{
+            opacity: [0, 1, 1, 0.9, 0],
+            scale: [0.92, 1.12, 0.96, 1, 0.94],
+            x: getLauncherKick(launcher.side, launcher.edge).x,
+            y: getLauncherKick(launcher.side, launcher.edge).y,
+          }}
           transition={{
-            duration: 0.9,
+            duration: 2.2,
             delay: launcher.delay,
-            times: [0, 0.2, 1],
+            times: [0, 0.12, 0.2, 0.58, 1],
             ease: [0.2, 0.9, 0.3, 1],
           }}
           className="absolute"
@@ -64,24 +101,55 @@ export default function CelebrationConfetti() {
             ...(launcher.edge === 'top' ? { top: launcher.offset } : { bottom: launcher.offset }),
           }}
         >
-          <div
-            className={`relative h-7 w-4 rounded-full border border-white/15 bg-gradient-to-b ${
-              launcher.edge === 'top'
-                ? 'from-amber-200/85 via-rose-300/80 to-fuchsia-500/80'
-                : 'from-sky-200/85 via-cyan-300/80 to-emerald-500/80'
-            } shadow-[0_0_18px_rgba(255,255,255,0.12)]`}
+          <motion.div
+            className="relative h-11 w-5 overflow-hidden rounded-[999px] border border-white/18 shadow-[0_8px_24px_rgba(0,0,0,0.28)]"
+            initial={{ scaleY: 1, scaleX: 1 }}
+            animate={{ scaleY: [1, 0.9, 1.02, 1], scaleX: [1, 1.14, 0.98, 1] }}
+            transition={{
+              duration: 0.56,
+              delay: launcher.delay,
+              times: [0, 0.24, 0.58, 1],
+              ease: [0.24, 1, 0.3, 1],
+            }}
             style={{
-              transform: `rotate(${launcher.side === 'left' ? -28 : 28}deg)`,
+              transform: `rotate(${getLauncherRotation(launcher.side, launcher.edge)}deg)`,
               transformOrigin: launcher.edge === 'top' ? '50% 100%' : '50% 0%',
+              background:
+                launcher.edge === 'top'
+                  ? 'linear-gradient(180deg, rgba(251,191,36,0.98) 0%, rgba(244,114,182,0.92) 48%, rgba(190,24,93,0.9) 100%)'
+                  : 'linear-gradient(180deg, rgba(34,211,238,0.98) 0%, rgba(74,222,128,0.9) 50%, rgba(14,165,233,0.88) 100%)',
             }}
           >
-            <div className="absolute inset-x-[3px] top-[3px] h-1.5 rounded-full bg-white/55 blur-[1px]" />
+            <div className="absolute inset-y-0 left-[4px] w-[3px] bg-white/28 blur-[1px]" />
+            <div className="absolute inset-y-0 right-[5px] w-[2px] bg-black/10" />
+            <div className="absolute inset-x-0 top-[8px] h-[2px] bg-white/30" />
+            <div className="absolute inset-x-0 top-[18px] h-[2px] bg-black/12" />
+            <div className="absolute inset-x-0 top-[28px] h-[2px] bg-white/22" />
+            <div className="absolute inset-x-[3px] top-[4px] h-2 rounded-full bg-white/35 blur-[1px]" />
             <div
-              className={`absolute left-1/2 h-2.5 w-2.5 -translate-x-1/2 rounded-full bg-white/70 blur-[2px] ${
+              className={`absolute left-1/2 h-3 w-3 -translate-x-1/2 rounded-full bg-white/70 blur-[2px] ${
                 launcher.edge === 'top' ? '-top-1' : '-bottom-1'
               }`}
             />
-          </div>
+            <div
+              className={`absolute left-1/2 h-2.5 w-2.5 -translate-x-1/2 rounded-full border border-white/30 bg-white/20 ${
+                launcher.edge === 'top' ? '-top-[2px]' : '-bottom-[2px]'
+              }`}
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.7 }}
+              animate={{ opacity: [0, 0.9, 0], scale: [0.7, 1.6, 2.1] }}
+              transition={{
+                duration: 0.42,
+                delay: launcher.delay + 0.02,
+                times: [0, 0.32, 1],
+                ease: [0.24, 1, 0.3, 1],
+              }}
+              className={`absolute left-1/2 h-4 w-4 -translate-x-1/2 rounded-full border border-white/25 ${
+                launcher.edge === 'top' ? '-top-2' : '-bottom-2'
+              }`}
+            />
+          </motion.div>
         </motion.div>
       ))}
 
