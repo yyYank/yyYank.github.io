@@ -2,8 +2,10 @@ import { motion } from 'framer-motion';
 
 const celebratoryLaunchers = [
   { id: 'left-bottom-inner', side: 'left', edge: 'bottom', anchor: 42, offset: '20%', x: 150, y: -226, drift: 264, sway: 36, rotate: 184, delay: 0.22 },
+  { id: 'left-bottom-mid', side: 'left', edge: 'bottom', anchor: 16, offset: '16%', x: 136, y: -204, drift: 258, sway: 32, rotate: 160, delay: 0.26 },
   { id: 'left-bottom-far', side: 'left', edge: 'bottom', anchor: -10, offset: '12%', x: 122, y: -182, drift: 252, sway: 30, rotate: 136, delay: 0.3 },
   { id: 'right-bottom-inner', side: 'right', edge: 'bottom', anchor: 42, offset: '20%', x: -150, y: -226, drift: 264, sway: -36, rotate: -184, delay: 0.22 },
+  { id: 'right-bottom-mid', side: 'right', edge: 'bottom', anchor: 16, offset: '16%', x: -136, y: -204, drift: 258, sway: -32, rotate: -160, delay: 0.26 },
   { id: 'right-bottom-far', side: 'right', edge: 'bottom', anchor: -10, offset: '12%', x: -122, y: -182, drift: 252, sway: -30, rotate: -136, delay: 0.3 },
 ] as const;
 
@@ -42,7 +44,7 @@ function getLauncherRotation(
   side: (typeof celebratoryLaunchers)[number]['side'],
   _edge: (typeof celebratoryLaunchers)[number]['edge']
 ): number {
-  return side === 'left' ? -42 : -138;
+  return side === 'left' ? -58 : 58;
 }
 
 function getLauncherKick(
@@ -92,7 +94,7 @@ export default function CelebrationConfetti() {
               ease: [0.24, 1, 0.3, 1],
             }}
             style={{
-              transform: `rotate(${getLauncherRotation(launcher.side, launcher.edge)}deg)`,
+              transform: `${launcher.side === 'right' ? 'scaleX(-1) ' : ''}rotate(${getLauncherRotation(launcher.side, launcher.edge)}deg)`,
               transformOrigin: '18% 50%',
             }}
           >
