@@ -45,6 +45,46 @@ const celebratoryBursts = celebratoryLaunchers.flatMap((launcher) =>
 export default function CelebrationConfetti() {
   return (
     <div className="pointer-events-none absolute inset-0 overflow-hidden">
+      {celebratoryLaunchers.map((launcher) => (
+        <motion.div
+          key={`${launcher.id}-launcher`}
+          initial={{ opacity: 0, scale: 0.92 }}
+          animate={{ opacity: [0, 1, 1, 0.92], scale: [0.92, 1, 1] }}
+          transition={{
+            duration: 0.9,
+            delay: launcher.delay,
+            times: [0, 0.2, 1],
+            ease: [0.2, 0.9, 0.3, 1],
+          }}
+          className="absolute"
+          style={{
+            ...(launcher.side === 'left'
+              ? { left: `${launcher.anchor - 2}px` }
+              : { right: `${launcher.anchor - 2}px` }),
+            ...(launcher.edge === 'top' ? { top: launcher.offset } : { bottom: launcher.offset }),
+          }}
+        >
+          <div
+            className={`relative h-7 w-4 rounded-full border border-white/15 bg-gradient-to-b ${
+              launcher.edge === 'top'
+                ? 'from-amber-200/85 via-rose-300/80 to-fuchsia-500/80'
+                : 'from-sky-200/85 via-cyan-300/80 to-emerald-500/80'
+            } shadow-[0_0_18px_rgba(255,255,255,0.12)]`}
+            style={{
+              transform: `rotate(${launcher.side === 'left' ? -28 : 28}deg)`,
+              transformOrigin: launcher.edge === 'top' ? '50% 100%' : '50% 0%',
+            }}
+          >
+            <div className="absolute inset-x-[3px] top-[3px] h-1.5 rounded-full bg-white/55 blur-[1px]" />
+            <div
+              className={`absolute left-1/2 h-2.5 w-2.5 -translate-x-1/2 rounded-full bg-white/70 blur-[2px] ${
+                launcher.edge === 'top' ? '-top-1' : '-bottom-1'
+              }`}
+            />
+          </div>
+        </motion.div>
+      ))}
+
       {celebratoryBursts.map((burst) => (
         <motion.span
           key={burst.id}
