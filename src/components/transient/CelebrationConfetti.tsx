@@ -44,7 +44,7 @@ function getLauncherRotation(
   side: (typeof celebratoryLaunchers)[number]['side'],
   _edge: (typeof celebratoryLaunchers)[number]['edge']
 ): number {
-  return side === 'left' ? -58 : 58;
+  return side === 'left' ? -72 : -108;
 }
 
 function getLauncherKick(
@@ -94,7 +94,7 @@ export default function CelebrationConfetti() {
               ease: [0.24, 1, 0.3, 1],
             }}
             style={{
-              transform: `${launcher.side === 'right' ? 'scaleX(-1) ' : ''}rotate(${getLauncherRotation(launcher.side, launcher.edge)}deg)`,
+              transform: `rotate(${getLauncherRotation(launcher.side, launcher.edge)}deg)`,
               transformOrigin: '18% 50%',
             }}
           >
@@ -111,12 +111,25 @@ export default function CelebrationConfetti() {
             <div
               className="absolute inset-0 opacity-50"
               style={{
-                clipPath: 'polygon(8% 50%, 100% 6%, 100% 18%, 24% 56%)',
+                clipPath:
+                  launcher.side === 'left'
+                    ? 'polygon(8% 50%, 100% 6%, 100% 18%, 24% 56%)'
+                    : 'polygon(0% 6%, 92% 50%, 76% 56%, 0% 18%)',
                 background: 'linear-gradient(180deg, rgba(255,255,255,0.55), rgba(255,255,255,0))',
               }}
             />
-            <div className="absolute left-[4px] top-1/2 h-3 w-3 -translate-y-1/2 rounded-full bg-white/18 blur-[1px]" />
-            <div className="absolute right-[1px] top-1/2 h-5 w-[5px] -translate-y-1/2 rounded-r-full border border-white/30 bg-white/26" />
+            <div
+              className="absolute top-1/2 h-3 w-3 -translate-y-1/2 rounded-full bg-white/18 blur-[1px]"
+              style={launcher.side === 'left' ? { left: '4px' } : { right: '4px' }}
+            />
+            <div
+              className="absolute top-1/2 h-5 w-[5px] -translate-y-1/2 border border-white/30 bg-white/26"
+              style={
+                launcher.side === 'left'
+                  ? { right: '1px', borderRadius: '0 9999px 9999px 0' }
+                  : { left: '1px', borderRadius: '9999px 0 0 9999px' }
+              }
+            />
             <motion.div
               initial={{ opacity: 0, scale: 0.7 }}
               animate={{ opacity: [0, 0.9, 0], scale: [0.7, 1.6, 2.1] }}
@@ -126,7 +139,8 @@ export default function CelebrationConfetti() {
                 times: [0, 0.32, 1],
                 ease: [0.24, 1, 0.3, 1],
               }}
-              className="absolute right-0 top-1/2 h-4 w-4 -translate-y-1/2 rounded-full border border-white/25"
+              className="absolute top-1/2 h-4 w-4 -translate-y-1/2 rounded-full border border-white/25"
+              style={launcher.side === 'left' ? { right: 0 } : { left: 0 }}
             />
           </motion.div>
         </motion.div>
