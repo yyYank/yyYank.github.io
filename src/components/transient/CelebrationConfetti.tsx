@@ -1,12 +1,8 @@
 import { motion } from 'framer-motion';
 
 const celebratoryLaunchers = [
-  { id: 'left-top-far', side: 'left', edge: 'top', anchor: -10, offset: '12%', x: 126, y: -182, drift: 920, sway: 38, rotate: 220, delay: 0.02 },
-  { id: 'left-top-inner', side: 'left', edge: 'top', anchor: 42, offset: '20%', x: 136, y: -216, drift: 948, sway: 44, rotate: 162, delay: 0.08 },
   { id: 'left-bottom-inner', side: 'left', edge: 'bottom', anchor: 42, offset: '20%', x: 150, y: -226, drift: 264, sway: 36, rotate: 184, delay: 0.22 },
   { id: 'left-bottom-far', side: 'left', edge: 'bottom', anchor: -10, offset: '12%', x: 122, y: -182, drift: 252, sway: 30, rotate: 136, delay: 0.3 },
-  { id: 'right-top-far', side: 'right', edge: 'top', anchor: -10, offset: '12%', x: -126, y: -182, drift: 920, sway: -38, rotate: -220, delay: 0.02 },
-  { id: 'right-top-inner', side: 'right', edge: 'top', anchor: 42, offset: '20%', x: -136, y: -216, drift: 948, sway: -44, rotate: -162, delay: 0.08 },
   { id: 'right-bottom-inner', side: 'right', edge: 'bottom', anchor: 42, offset: '20%', x: -150, y: -226, drift: 264, sway: -36, rotate: -184, delay: 0.22 },
   { id: 'right-bottom-far', side: 'right', edge: 'bottom', anchor: -10, offset: '12%', x: -122, y: -182, drift: 252, sway: -30, rotate: -136, delay: 0.3 },
 ] as const;
