@@ -1,12 +1,12 @@
 import { motion } from 'framer-motion';
 
 const celebratoryLaunchers = [
-  { id: 'left-top-far', side: 'left', edge: 'top', anchor: -10, offset: '12%', x: 126, y: 148, drift: 920, sway: 38, rotate: 220, delay: 0.02 },
-  { id: 'left-top-inner', side: 'left', edge: 'top', anchor: 42, offset: '20%', x: 136, y: 172, drift: 948, sway: 44, rotate: 162, delay: 0.08 },
+  { id: 'left-top-far', side: 'left', edge: 'top', anchor: -10, offset: '12%', x: 126, y: -182, drift: 920, sway: 38, rotate: 220, delay: 0.02 },
+  { id: 'left-top-inner', side: 'left', edge: 'top', anchor: 42, offset: '20%', x: 136, y: -216, drift: 948, sway: 44, rotate: 162, delay: 0.08 },
   { id: 'left-bottom-inner', side: 'left', edge: 'bottom', anchor: 42, offset: '20%', x: 150, y: -226, drift: 264, sway: 36, rotate: 184, delay: 0.22 },
   { id: 'left-bottom-far', side: 'left', edge: 'bottom', anchor: -10, offset: '12%', x: 122, y: -182, drift: 252, sway: 30, rotate: 136, delay: 0.3 },
-  { id: 'right-top-far', side: 'right', edge: 'top', anchor: -10, offset: '12%', x: -126, y: 148, drift: 920, sway: -38, rotate: -220, delay: 0.02 },
-  { id: 'right-top-inner', side: 'right', edge: 'top', anchor: 42, offset: '20%', x: -136, y: 172, drift: 948, sway: -44, rotate: -162, delay: 0.08 },
+  { id: 'right-top-far', side: 'right', edge: 'top', anchor: -10, offset: '12%', x: -126, y: -182, drift: 920, sway: -38, rotate: -220, delay: 0.02 },
+  { id: 'right-top-inner', side: 'right', edge: 'top', anchor: 42, offset: '20%', x: -136, y: -216, drift: 948, sway: -44, rotate: -162, delay: 0.08 },
   { id: 'right-bottom-inner', side: 'right', edge: 'bottom', anchor: 42, offset: '20%', x: -150, y: -226, drift: 264, sway: -36, rotate: -184, delay: 0.22 },
   { id: 'right-bottom-far', side: 'right', edge: 'bottom', anchor: -10, offset: '12%', x: -122, y: -182, drift: 252, sway: -30, rotate: -136, delay: 0.3 },
 ] as const;
@@ -44,34 +44,18 @@ const celebratoryBursts = celebratoryLaunchers.flatMap((launcher) =>
 
 function getLauncherRotation(
   side: (typeof celebratoryLaunchers)[number]['side'],
-  edge: (typeof celebratoryLaunchers)[number]['edge']
+  _edge: (typeof celebratoryLaunchers)[number]['edge']
 ): number {
-  if (side === 'left' && edge === 'top') {
-    return -52;
-  }
-  if (side === 'left' && edge === 'bottom') {
-    return 52;
-  }
-  if (side === 'right' && edge === 'top') {
-    return 52;
-  }
-  return -52;
+  return side === 'left' ? -42 : -138;
 }
 
 function getLauncherKick(
   side: (typeof celebratoryLaunchers)[number]['side'],
-  edge: (typeof celebratoryLaunchers)[number]['edge']
+  _edge: (typeof celebratoryLaunchers)[number]['edge']
 ): { x: number[]; y: number[] } {
-  if (side === 'left' && edge === 'top') {
-    return { x: [0, -6, 3, 0], y: [0, 5, 1, 0] };
-  }
-  if (side === 'left' && edge === 'bottom') {
-    return { x: [0, -6, 3, 0], y: [0, -5, -1, 0] };
-  }
-  if (side === 'right' && edge === 'top') {
-    return { x: [0, 6, -3, 0], y: [0, 5, 1, 0] };
-  }
-  return { x: [0, 6, -3, 0], y: [0, -5, -1, 0] };
+  return side === 'left'
+    ? { x: [0, -6, 3, 0], y: [0, 4, -1, 0] }
+    : { x: [0, 6, -3, 0], y: [0, 4, -1, 0] };
 }
 
 export default function CelebrationConfetti() {
@@ -102,7 +86,7 @@ export default function CelebrationConfetti() {
           }}
         >
           <motion.div
-            className="relative h-11 w-5 overflow-hidden rounded-[999px] border border-white/18 shadow-[0_8px_24px_rgba(0,0,0,0.28)]"
+            className="relative h-10 w-12 drop-shadow-[0_10px_22px_rgba(0,0,0,0.26)]"
             initial={{ scaleY: 1, scaleX: 1 }}
             animate={{ scaleY: [1, 0.9, 1.02, 1], scaleX: [1, 1.14, 0.98, 1] }}
             transition={{
@@ -113,29 +97,28 @@ export default function CelebrationConfetti() {
             }}
             style={{
               transform: `rotate(${getLauncherRotation(launcher.side, launcher.edge)}deg)`,
-              transformOrigin: launcher.edge === 'top' ? '50% 100%' : '50% 0%',
-              background:
-                launcher.edge === 'top'
-                  ? 'linear-gradient(180deg, rgba(251,191,36,0.98) 0%, rgba(244,114,182,0.92) 48%, rgba(190,24,93,0.9) 100%)'
-                  : 'linear-gradient(180deg, rgba(34,211,238,0.98) 0%, rgba(74,222,128,0.9) 50%, rgba(14,165,233,0.88) 100%)',
+              transformOrigin: '18% 50%',
             }}
           >
-            <div className="absolute inset-y-0 left-[4px] w-[3px] bg-white/28 blur-[1px]" />
-            <div className="absolute inset-y-0 right-[5px] w-[2px] bg-black/10" />
-            <div className="absolute inset-x-0 top-[8px] h-[2px] bg-white/30" />
-            <div className="absolute inset-x-0 top-[18px] h-[2px] bg-black/12" />
-            <div className="absolute inset-x-0 top-[28px] h-[2px] bg-white/22" />
-            <div className="absolute inset-x-[3px] top-[4px] h-2 rounded-full bg-white/35 blur-[1px]" />
             <div
-              className={`absolute left-1/2 h-3 w-3 -translate-x-1/2 rounded-full bg-white/70 blur-[2px] ${
-                launcher.edge === 'top' ? '-top-1' : '-bottom-1'
-              }`}
+              className="absolute inset-0"
+              style={{
+                clipPath: 'polygon(6% 50%, 100% 0%, 100% 100%)',
+                background:
+                  launcher.edge === 'top'
+                    ? 'linear-gradient(135deg, rgba(254,240,138,0.98) 0%, rgba(251,191,36,0.96) 22%, rgba(244,114,182,0.92) 58%, rgba(190,24,93,0.92) 100%)'
+                    : 'linear-gradient(135deg, rgba(165,243,252,0.98) 0%, rgba(34,211,238,0.96) 24%, rgba(74,222,128,0.92) 62%, rgba(14,165,233,0.9) 100%)',
+              }}
             />
             <div
-              className={`absolute left-1/2 h-2.5 w-2.5 -translate-x-1/2 rounded-full border border-white/30 bg-white/20 ${
-                launcher.edge === 'top' ? '-top-[2px]' : '-bottom-[2px]'
-              }`}
+              className="absolute inset-0 opacity-50"
+              style={{
+                clipPath: 'polygon(8% 50%, 100% 6%, 100% 18%, 24% 56%)',
+                background: 'linear-gradient(180deg, rgba(255,255,255,0.55), rgba(255,255,255,0))',
+              }}
             />
+            <div className="absolute left-[4px] top-1/2 h-3 w-3 -translate-y-1/2 rounded-full bg-white/18 blur-[1px]" />
+            <div className="absolute right-[1px] top-1/2 h-5 w-[5px] -translate-y-1/2 rounded-r-full border border-white/30 bg-white/26" />
             <motion.div
               initial={{ opacity: 0, scale: 0.7 }}
               animate={{ opacity: [0, 0.9, 0], scale: [0.7, 1.6, 2.1] }}
@@ -145,9 +128,7 @@ export default function CelebrationConfetti() {
                 times: [0, 0.32, 1],
                 ease: [0.24, 1, 0.3, 1],
               }}
-              className={`absolute left-1/2 h-4 w-4 -translate-x-1/2 rounded-full border border-white/25 ${
-                launcher.edge === 'top' ? '-top-2' : '-bottom-2'
-              }`}
+              className="absolute right-0 top-1/2 h-4 w-4 -translate-y-1/2 rounded-full border border-white/25"
             />
           </motion.div>
         </motion.div>
