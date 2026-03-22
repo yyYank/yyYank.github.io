@@ -71,18 +71,18 @@ const fadeTransition = {
 };
 
 const celebratoryBursts = [
-  { id: 'left-top-1', side: 'left', edge: 'top', offset: '18%', color: 'bg-amber-300', size: 'h-2 w-2', x: 108, y: -64, drift: 172, sway: 26, rotate: 210, delay: 0.02 },
-  { id: 'left-top-2', side: 'left', edge: 'top', offset: '26%', color: 'bg-emerald-300', size: 'h-2.5 w-1.5', x: 132, y: -20, drift: 188, sway: 34, rotate: 160, delay: 0.08 },
-  { id: 'left-top-3', side: 'left', edge: 'top', offset: '12%', color: 'bg-sky-300', size: 'h-1.5 w-4', x: 124, y: -82, drift: 204, sway: 30, rotate: 248, delay: 0.12 },
-  { id: 'right-top-1', side: 'right', edge: 'top', offset: '18%', color: 'bg-amber-300', size: 'h-2 w-2', x: -108, y: -64, drift: 172, sway: -26, rotate: -210, delay: 0.02 },
-  { id: 'right-top-2', side: 'right', edge: 'top', offset: '26%', color: 'bg-emerald-300', size: 'h-2.5 w-1.5', x: -132, y: -20, drift: 188, sway: -34, rotate: -160, delay: 0.08 },
-  { id: 'right-top-3', side: 'right', edge: 'top', offset: '12%', color: 'bg-sky-300', size: 'h-1.5 w-4', x: -124, y: -82, drift: 204, sway: -30, rotate: -248, delay: 0.12 },
-  { id: 'left-bottom-1', side: 'left', edge: 'bottom', offset: '18%', color: 'bg-rose-300', size: 'h-3 w-1.5', x: 110, y: -168, drift: 64, sway: 22, rotate: 132, delay: 0.16 },
-  { id: 'left-bottom-2', side: 'left', edge: 'bottom', offset: '26%', color: 'bg-white', size: 'h-1.5 w-1.5', x: 146, y: -212, drift: 48, sway: 28, rotate: 184, delay: 0.22 },
-  { id: 'left-bottom-3', side: 'left', edge: 'bottom', offset: '10%', color: 'bg-amber-200', size: 'h-1.5 w-4', x: 124, y: -186, drift: 72, sway: 24, rotate: 228, delay: 0.28 },
-  { id: 'right-bottom-1', side: 'right', edge: 'bottom', offset: '18%', color: 'bg-rose-300', size: 'h-3 w-1.5', x: -110, y: -168, drift: 64, sway: -22, rotate: -132, delay: 0.16 },
-  { id: 'right-bottom-2', side: 'right', edge: 'bottom', offset: '26%', color: 'bg-white', size: 'h-1.5 w-1.5', x: -146, y: -212, drift: 48, sway: -28, rotate: -184, delay: 0.22 },
-  { id: 'right-bottom-3', side: 'right', edge: 'bottom', offset: '10%', color: 'bg-amber-200', size: 'h-1.5 w-4', x: -124, y: -186, drift: 72, sway: -24, rotate: -228, delay: 0.28 },
+  { id: 'left-top-outer', side: 'left', edge: 'top', anchor: 6, offset: '14%', color: 'bg-amber-300', size: 'h-2 w-2', x: 116, y: -72, drift: 312, sway: 34, rotate: 210, delay: 0.02 },
+  { id: 'left-top-inner', side: 'left', edge: 'top', anchor: 44, offset: '22%', color: 'bg-emerald-300', size: 'h-2.5 w-1.5', x: 132, y: -26, drift: 336, sway: 42, rotate: 160, delay: 0.08 },
+  { id: 'left-top-mid', side: 'left', edge: 'top', anchor: 82, offset: '10%', color: 'bg-sky-300', size: 'h-1.5 w-4', x: 126, y: -86, drift: 352, sway: 38, rotate: 248, delay: 0.14 },
+  { id: 'right-top-outer', side: 'right', edge: 'top', anchor: 6, offset: '14%', color: 'bg-amber-300', size: 'h-2 w-2', x: -116, y: -72, drift: 312, sway: -34, rotate: -210, delay: 0.02 },
+  { id: 'right-top-inner', side: 'right', edge: 'top', anchor: 44, offset: '22%', color: 'bg-emerald-300', size: 'h-2.5 w-1.5', x: -132, y: -26, drift: 336, sway: -42, rotate: -160, delay: 0.08 },
+  { id: 'right-top-mid', side: 'right', edge: 'top', anchor: 82, offset: '10%', color: 'bg-sky-300', size: 'h-1.5 w-4', x: -126, y: -86, drift: 352, sway: -38, rotate: -248, delay: 0.14 },
+  { id: 'left-bottom-outer', side: 'left', edge: 'bottom', anchor: 6, offset: '14%', color: 'bg-rose-300', size: 'h-3 w-1.5', x: 114, y: -178, drift: 248, sway: 28, rotate: 132, delay: 0.18 },
+  { id: 'left-bottom-inner', side: 'left', edge: 'bottom', anchor: 44, offset: '22%', color: 'bg-white', size: 'h-1.5 w-1.5', x: 148, y: -224, drift: 264, sway: 34, rotate: 184, delay: 0.24 },
+  { id: 'left-bottom-mid', side: 'left', edge: 'bottom', anchor: 82, offset: '8%', color: 'bg-amber-200', size: 'h-1.5 w-4', x: 128, y: -198, drift: 278, sway: 30, rotate: 228, delay: 0.3 },
+  { id: 'right-bottom-outer', side: 'right', edge: 'bottom', anchor: 6, offset: '14%', color: 'bg-rose-300', size: 'h-3 w-1.5', x: -114, y: -178, drift: 248, sway: -28, rotate: -132, delay: 0.18 },
+  { id: 'right-bottom-inner', side: 'right', edge: 'bottom', anchor: 44, offset: '22%', color: 'bg-white', size: 'h-1.5 w-1.5', x: -148, y: -224, drift: 264, sway: -34, rotate: -184, delay: 0.24 },
+  { id: 'right-bottom-mid', side: 'right', edge: 'bottom', anchor: 82, offset: '8%', color: 'bg-amber-200', size: 'h-1.5 w-4', x: -128, y: -198, drift: 278, sway: -30, rotate: -228, delay: 0.3 },
 ] as const;
 
 function createId(prefix: string): string {
@@ -1160,13 +1160,18 @@ export default function TransientNotes() {
                       scale: [0.6, 1, 0.96, 0.9],
                     }}
                     transition={{
-                      duration: 4,
+                      duration: 8,
                       delay: burst.delay,
-                      times: [0, 0.05, 0.11, 0.58, 1],
+                      times: [0, 0.04, 0.1, 0.64, 1],
                       ease: [0.18, 0.9, 0.24, 1],
                     }}
-                    className={`absolute ${burst.side === 'left' ? 'left-6' : 'right-6'} ${burst.size} ${burst.color} rounded-sm shadow-[0_0_18px_rgba(255,255,255,0.12)]`}
-                    style={burst.edge === 'top' ? { top: burst.offset } : { bottom: burst.offset }}
+                    className={`absolute ${burst.size} ${burst.color} rounded-sm shadow-[0_0_18px_rgba(255,255,255,0.12)]`}
+                    style={{
+                      ...(burst.side === 'left'
+                        ? { left: `${burst.anchor}px` }
+                        : { right: `${burst.anchor}px` }),
+                      ...(burst.edge === 'top' ? { top: burst.offset } : { bottom: burst.offset }),
+                    }}
                   />
                 ))}
               </div>
