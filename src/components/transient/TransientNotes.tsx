@@ -66,16 +66,18 @@ const fadeTransition = {
 };
 
 const celebratoryBursts = [
-  { id: 'left-1', side: 'left', top: '18%', color: 'bg-amber-300', size: 'h-2 w-2', x: 108, y: -64, rotate: 210, delay: 0.02 },
-  { id: 'left-2', side: 'left', top: '26%', color: 'bg-emerald-300', size: 'h-2.5 w-1.5', x: 132, y: -20, rotate: 160, delay: 0.08 },
-  { id: 'left-3', side: 'left', top: '12%', color: 'bg-sky-300', size: 'h-1.5 w-4', x: 124, y: -82, rotate: 248, delay: 0.12 },
-  { id: 'left-4', side: 'left', top: '34%', color: 'bg-rose-300', size: 'h-3 w-1.5', x: 96, y: -6, rotate: 132, delay: 0.16 },
-  { id: 'left-5', side: 'left', top: '20%', color: 'bg-white', size: 'h-1.5 w-1.5', x: 150, y: -42, rotate: 184, delay: 0.22 },
-  { id: 'right-1', side: 'right', top: '18%', color: 'bg-amber-300', size: 'h-2 w-2', x: -108, y: -64, rotate: -210, delay: 0.02 },
-  { id: 'right-2', side: 'right', top: '26%', color: 'bg-emerald-300', size: 'h-2.5 w-1.5', x: -132, y: -20, rotate: -160, delay: 0.08 },
-  { id: 'right-3', side: 'right', top: '12%', color: 'bg-sky-300', size: 'h-1.5 w-4', x: -124, y: -82, rotate: -248, delay: 0.12 },
-  { id: 'right-4', side: 'right', top: '34%', color: 'bg-rose-300', size: 'h-3 w-1.5', x: -96, y: -6, rotate: -132, delay: 0.16 },
-  { id: 'right-5', side: 'right', top: '20%', color: 'bg-white', size: 'h-1.5 w-1.5', x: -150, y: -42, rotate: -184, delay: 0.22 },
+  { id: 'left-top-1', side: 'left', edge: 'top', offset: '18%', color: 'bg-amber-300', size: 'h-2 w-2', x: 108, y: -64, drift: 172, rotate: 210, delay: 0.02 },
+  { id: 'left-top-2', side: 'left', edge: 'top', offset: '26%', color: 'bg-emerald-300', size: 'h-2.5 w-1.5', x: 132, y: -20, drift: 188, rotate: 160, delay: 0.08 },
+  { id: 'left-top-3', side: 'left', edge: 'top', offset: '12%', color: 'bg-sky-300', size: 'h-1.5 w-4', x: 124, y: -82, drift: 204, rotate: 248, delay: 0.12 },
+  { id: 'right-top-1', side: 'right', edge: 'top', offset: '18%', color: 'bg-amber-300', size: 'h-2 w-2', x: -108, y: -64, drift: 172, rotate: -210, delay: 0.02 },
+  { id: 'right-top-2', side: 'right', edge: 'top', offset: '26%', color: 'bg-emerald-300', size: 'h-2.5 w-1.5', x: -132, y: -20, drift: 188, rotate: -160, delay: 0.08 },
+  { id: 'right-top-3', side: 'right', edge: 'top', offset: '12%', color: 'bg-sky-300', size: 'h-1.5 w-4', x: -124, y: -82, drift: 204, rotate: -248, delay: 0.12 },
+  { id: 'left-bottom-1', side: 'left', edge: 'bottom', offset: '18%', color: 'bg-rose-300', size: 'h-3 w-1.5', x: 110, y: -168, drift: 64, rotate: 132, delay: 0.16 },
+  { id: 'left-bottom-2', side: 'left', edge: 'bottom', offset: '26%', color: 'bg-white', size: 'h-1.5 w-1.5', x: 146, y: -212, drift: 48, rotate: 184, delay: 0.22 },
+  { id: 'left-bottom-3', side: 'left', edge: 'bottom', offset: '10%', color: 'bg-amber-200', size: 'h-1.5 w-4', x: 124, y: -186, drift: 72, rotate: 228, delay: 0.28 },
+  { id: 'right-bottom-1', side: 'right', edge: 'bottom', offset: '18%', color: 'bg-rose-300', size: 'h-3 w-1.5', x: -110, y: -168, drift: 64, rotate: -132, delay: 0.16 },
+  { id: 'right-bottom-2', side: 'right', edge: 'bottom', offset: '26%', color: 'bg-white', size: 'h-1.5 w-1.5', x: -146, y: -212, drift: 48, rotate: -184, delay: 0.22 },
+  { id: 'right-bottom-3', side: 'right', edge: 'bottom', offset: '10%', color: 'bg-amber-200', size: 'h-1.5 w-4', x: -124, y: -186, drift: 72, rotate: -228, delay: 0.28 },
 ] as const;
 
 function createId(prefix: string): string {
@@ -1028,7 +1030,7 @@ export default function TransientNotes() {
               className="relative w-full max-w-lg overflow-hidden rounded-3xl border border-emerald-400/20 bg-dark-800/95 p-5 shadow-2xl shadow-emerald-950/20"
               onClick={(event) => event.stopPropagation()}
             >
-              <div className="pointer-events-none absolute inset-x-0 top-0 h-28 overflow-hidden">
+              <div className="pointer-events-none absolute inset-0 overflow-hidden">
                 {celebratoryBursts.map((burst) => (
                   <motion.span
                     key={burst.id}
@@ -1040,19 +1042,20 @@ export default function TransientNotes() {
                       scale: 0.6,
                     }}
                     animate={{
-                      opacity: [0, 1, 1, 0],
+                      opacity: [0, 1, 1, 0.65, 0],
                       x: [0, burst.x],
-                      y: [0, burst.y, 16],
+                      y: [0, burst.y, burst.drift],
                       rotate: [0, burst.rotate],
-                      scale: [0.6, 1, 0.92],
+                      scale: [0.6, 1, 0.96, 0.9],
                     }}
                     transition={{
-                      duration: 1.35,
+                      duration: 4,
                       delay: burst.delay,
-                      ease: [0.16, 1, 0.3, 1],
+                      times: [0, 0.1, 0.55, 0.82, 1],
+                      ease: 'easeOut',
                     }}
                     className={`absolute ${burst.side === 'left' ? 'left-6' : 'right-6'} ${burst.size} ${burst.color} rounded-sm shadow-[0_0_18px_rgba(255,255,255,0.12)]`}
-                    style={{ top: burst.top }}
+                    style={burst.edge === 'top' ? { top: burst.offset } : { bottom: burst.offset }}
                   />
                 ))}
               </div>
