@@ -126,6 +126,13 @@ function getNextTemplateOrder(templates: Template[]): number {
   return templates.reduce((maxOrder, template) => Math.max(maxOrder, template.order), 0) + 1;
 }
 
+function reindexTemplates(templates: Template[]): Template[] {
+  return templates.map((template, index) => ({
+    ...template,
+    order: index + 1,
+  }));
+}
+
 function loadTemplates(): Template[] {
   try {
     const raw = localStorage.getItem(TEMPLATE_STORAGE_KEY);
@@ -257,7 +264,6 @@ export default function TransientNotes() {
   const [templateName, setTemplateName] = useState('');
   const [templateSummary, setTemplateSummary] = useState('');
   const [templateItemsText, setTemplateItemsText] = useState('');
-  const [templateOrder, setTemplateOrder] = useState('');
   const [editingTemplateId, setEditingTemplateId] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const [todayKey, setTodayKey] = useState('');
@@ -389,7 +395,6 @@ export default function TransientNotes() {
     setTemplateName('');
     setTemplateSummary('');
     setTemplateItemsText('');
-    setTemplateOrder('');
   };
 
   const handleSaveTemplate = () => {
@@ -402,21 +407,16 @@ export default function TransientNotes() {
       return;
     }
 
-    const parsedOrder = Number(templateOrder);
-    const nextOrder =
-      Number.isFinite(parsedOrder) && parsedOrder > 0
-        ? Math.floor(parsedOrder)
-        : editingTemplateId
-          ? templates.find((template) => template.id === editingTemplateId)?.order ??
-            getNextTemplateOrder(templates)
-          : getNextTemplateOrder(templates);
-
     const nextTemplate: Template = {
       id: editingTemplateId ?? createId('template'),
       name: templateName.trim(),
       summary: templateSummary.trim() || '思い出すためだけのテンプレート',
       items,
-      order: nextOrder,
+      order:
+        editingTemplateId
+          ? templates.find((template) => template.id === editingTemplateId)?.order ??
+            getNextTemplateOrder(templates)
+          : getNextTemplateOrder(templates),
     };
 
     const updatedTemplates = sortTemplates(
@@ -438,14 +438,15 @@ export default function TransientNotes() {
     setTemplateName(template.name);
     setTemplateSummary(template.summary);
     setTemplateItemsText(template.items.join('\n'));
-    setTemplateOrder(String(template.order));
     window.setTimeout(() => {
       templateNameInputRef.current?.focus();
     }, 0);
   };
 
   const handleDeleteTemplate = (templateId: string) => {
-    const updatedTemplates = sortTemplates(templates.filter((template) => template.id !== templateId));
+    const updatedTemplates = reindexTemplates(
+      sortTemplates(templates.filter((template) => template.id !== templateId))
+    );
     setTemplates(updatedTemplates);
     saveTemplates(updatedTemplates);
 
@@ -455,6 +456,27 @@ export default function TransientNotes() {
     if (editingTemplateId === templateId) {
       resetTemplateForm();
     }
+  };
+
+  const handleMoveTemplate = (templateId: string, direction: 'up' | 'down') => {
+    const sortedTemplates = sortTemplates(templates);
+    const currentIndex = sortedTemplates.findIndex((template) => template.id === templateId);
+    if (currentIndex === -1) {
+      return;
+    }
+
+    const targetIndex = direction === 'up' ? currentIndex - 1 : currentIndex + 1;
+    if (targetIndex < 0 || targetIndex >= sortedTemplates.length) {
+      return;
+    }
+
+    const reorderedTemplates = [...sortedTemplates];
+    const [movedTemplate] = reorderedTemplates.splice(currentIndex, 1);
+    reorderedTemplates.splice(targetIndex, 0, movedTemplate);
+
+    const updatedTemplates = reindexTemplates(reorderedTemplates);
+    setTemplates(updatedTemplates);
+    saveTemplates(updatedTemplates);
   };
 
   const handleCreateNote = () => {
@@ -923,7 +945,6 @@ export default function TransientNotes() {
               onClick={() => {
                 setTemplatesOpen(true);
                 resetTemplateForm();
-                setTemplateOrder(String(getNextTemplateOrder(templates)));
               }}
               type="button"
               className="rounded-full border border-dark-500 px-4 py-2 text-sm text-gray-300 transition-colors hover:border-cyan-400/40 hover:text-white"
@@ -965,16 +986,27 @@ export default function TransientNotes() {
                             type="button"
                             className="text-left"
                           >
-                            <div className="flex flex-wrap items-center gap-2">
-                              <p className="text-lg font-semibold text-white">{template.name}</p>
-                              <span className="rounded-full border border-cyan-400/20 bg-cyan-400/10 px-2 py-0.5 text-[11px] uppercase tracking-[0.18em] text-cyan-200/80">
-                                {template.order}
-                              </span>
-                            </div>
+                            <p className="text-lg font-semibold text-white">{template.name}</p>
                             <p className="mt-1 text-sm text-gray-400">{template.summary}</p>
                           </button>
                         </div>
                         <div className="flex gap-2">
+                          <button
+                            onClick={() => handleMoveTemplate(template.id, 'up')}
+                            disabled={template.order === 1}
+                            type="button"
+                            className="rounded-full border border-dark-500 px-2.5 py-1 text-xs text-gray-300 transition-colors hover:border-cyan-400/40 hover:text-white disabled:cursor-not-allowed disabled:opacity-35"
+                          >
+                            ∧
+                          </button>
+                          <button
+                            onClick={() => handleMoveTemplate(template.id, 'down')}
+                            disabled={template.order === templates.length}
+                            type="button"
+                            className="rounded-full border border-dark-500 px-2.5 py-1 text-xs text-gray-300 transition-colors hover:border-cyan-400/40 hover:text-white disabled:cursor-not-allowed disabled:opacity-35"
+                          >
+                            ∨
+                          </button>
                           <button
                             onClick={() => handleEditTemplate(template)}
                             type="button"
@@ -1027,18 +1059,6 @@ export default function TransientNotes() {
                       value={templateSummary}
                       onChange={(event) => setTemplateSummary(event.target.value)}
                       placeholder="例: その瞬間だけ確認したい内容"
-                      className="rounded-xl border border-dark-500 bg-dark-800 px-4 py-3 text-white outline-none transition-colors focus:border-cyan-400/50"
-                    />
-                  </label>
-                  <label className="grid gap-2 text-sm text-gray-300">
-                    <span>並び順</span>
-                    <input
-                      type="number"
-                      min={1}
-                      step={1}
-                      value={templateOrder}
-                      onChange={(event) => setTemplateOrder(event.target.value)}
-                      placeholder="1"
                       className="rounded-xl border border-dark-500 bg-dark-800 px-4 py-3 text-white outline-none transition-colors focus:border-cyan-400/50"
                     />
                   </label>
