@@ -1044,14 +1044,14 @@ export default function TransientNotes() {
                     animate={{
                       opacity: [0, 1, 1, 0.65, 0],
                       x: [0, burst.x * 0.85, burst.x + burst.sway, burst.x - burst.sway * 0.7, burst.x + burst.sway * 0.35],
-                      y: [0, burst.y * 0.9, burst.y, burst.drift * 0.45, burst.drift],
+                      y: [0, burst.y * 0.72, burst.y * 0.9, burst.drift * 0.38, burst.drift],
                       rotate: [0, burst.rotate * 0.45, burst.rotate, burst.rotate * 1.55, burst.rotate * 2.1],
                       scale: [0.6, 1, 0.96, 0.9],
                     }}
                     transition={{
                       duration: 4,
                       delay: burst.delay,
-                      times: [0, 0.06, 0.18, 0.62, 1],
+                      times: [0, 0.05, 0.11, 0.58, 1],
                       ease: [0.18, 0.9, 0.24, 1],
                     }}
                     className={`absolute ${burst.side === 'left' ? 'left-6' : 'right-6'} ${burst.size} ${burst.color} rounded-sm shadow-[0_0_18px_rgba(255,255,255,0.12)]`}
