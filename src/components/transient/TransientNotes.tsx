@@ -10,12 +10,25 @@ import {
   type Template,
   type TransientNote,
 } from './transientNoteState';
-
-interface PersistentTodo {
-  id: string;
-  text: string;
-  checked: boolean;
-}
+import {
+  addNoteItem,
+  addPersistentTodo,
+  changeNoteMemo,
+  createCopyText,
+  deleteNote,
+  deleteNoteItem,
+  deletePersistentTodo,
+  toggleNoteItem,
+  togglePersistentTodo,
+  type PersistentTodo,
+} from './transientNoteActions';
+import {
+  getNextTemplateOrder,
+  moveTemplate,
+  normalizeTemplates,
+  reindexTemplates,
+  sortTemplates,
+} from './transientTemplateState';
 
 const TEMPLATE_STORAGE_KEY = 'transient-note-templates';
 const NOTE_STORAGE_KEY = 'transient-notes';
@@ -56,42 +69,6 @@ function getTodayKey(): string {
   const month = String(now.getMonth() + 1).padStart(2, '0');
   const day = String(now.getDate()).padStart(2, '0');
   return `${year}-${month}-${day}`;
-}
-
-function sortTemplates(templates: Template[]): Template[] {
-  return [...templates].sort((a, b) => {
-    if (a.order !== b.order) {
-      return a.order - b.order;
-    }
-
-    return a.name.localeCompare(b.name, 'ja');
-  });
-}
-
-function normalizeTemplates(templates: Partial<Template>[]): Template[] {
-  return sortTemplates(
-    templates.map((template, index) => ({
-      id: template.id ?? createId('template'),
-      name: template.name ?? '',
-      summary: template.summary ?? '',
-      items: template.items ?? [],
-      order:
-        typeof template.order === 'number' && Number.isFinite(template.order)
-          ? template.order
-          : index + 1,
-    }))
-  );
-}
-
-function getNextTemplateOrder(templates: Template[]): number {
-  return templates.reduce((maxOrder, template) => Math.max(maxOrder, template.order), 0) + 1;
-}
-
-function reindexTemplates(templates: Template[]): Template[] {
-  return templates.map((template, index) => ({
-    ...template,
-    order: index + 1,
-  }));
 }
 
 function loadTemplates(): Template[] {
@@ -365,22 +342,7 @@ export default function TransientNotes() {
   };
 
   const handleMoveTemplate = (templateId: string, direction: 'up' | 'down') => {
-    const sortedTemplates = sortTemplates(templates);
-    const currentIndex = sortedTemplates.findIndex((template) => template.id === templateId);
-    if (currentIndex === -1) {
-      return;
-    }
-
-    const targetIndex = direction === 'up' ? currentIndex - 1 : currentIndex + 1;
-    if (targetIndex < 0 || targetIndex >= sortedTemplates.length) {
-      return;
-    }
-
-    const reorderedTemplates = [...sortedTemplates];
-    const [movedTemplate] = reorderedTemplates.splice(currentIndex, 1);
-    reorderedTemplates.splice(targetIndex, 0, movedTemplate);
-
-    const updatedTemplates = reindexTemplates(reorderedTemplates);
+    const updatedTemplates = moveTemplate(templates, templateId, direction);
     setTemplates(updatedTemplates);
     saveTemplates(updatedTemplates);
   };
@@ -402,58 +364,21 @@ export default function TransientNotes() {
   };
 
   const handleToggleItem = (noteId: string, itemId: string) => {
-    const updatedNotes = notes.map((note) =>
-      note.id !== noteId
-        ? note
-        : {
-            ...note,
-            items: note.items.map((item) =>
-              item.id === itemId ? { ...item, checked: !item.checked } : item
-            ),
-          }
-    );
-
-    setNotes(updatedNotes);
+    setNotes(toggleNoteItem(notes, noteId, itemId));
   };
 
   const handleChangeMemo = (noteId: string, memo: string) => {
-    const updatedNotes = notes.map((note) => (note.id === noteId ? { ...note, memo } : note));
-    setNotes(updatedNotes);
+    setNotes(changeNoteMemo(notes, noteId, memo));
   };
 
   const handleDeleteNote = (noteId: string) => {
-    const targetNote = notes.find((note) => note.id === noteId);
-    const updatedNotes = notes.filter((note) => note.id !== noteId);
-    if (targetNote) {
-      setDeletedTemplateIds((current) =>
-        current.includes(targetNote.templateId) ? current : [...current, targetNote.templateId]
-      );
-    }
-    setNotes(updatedNotes);
+    const nextState = deleteNote(notes, deletedTemplateIds, noteId);
+    setDeletedTemplateIds(nextState.deletedTemplateIds);
+    setNotes(nextState.notes);
   };
 
   const handleDeleteNoteItem = (noteId: string, itemId: string) => {
-    const updatedNotes = notes.map((note) =>
-      note.id !== noteId
-        ? note
-        : (() => {
-            const targetItem = note.items.find((item) => item.id === itemId);
-            if (!targetItem) {
-              return note;
-            }
-
-            return {
-              ...note,
-              items: note.items.filter((item) => item.id !== itemId),
-              hiddenItems:
-                targetItem.source === 'template'
-                  ? Array.from(new Set([...note.hiddenItems, targetItem.text]))
-                  : note.hiddenItems,
-            };
-          })()
-    );
-
-    setNotes(updatedNotes);
+    setNotes(deleteNoteItem(notes, noteId, itemId));
   };
 
   const handleAddNoteItem = (noteId: string) => {
@@ -462,65 +387,32 @@ export default function TransientNotes() {
       return;
     }
 
-    setNotes((currentNotes) =>
-      currentNotes.map((note) =>
-        note.id !== noteId
-          ? note
-          : {
-              ...note,
-              items: [
-                ...note.items,
-                {
-                  id: createId('item'),
-                  text,
-                  checked: false,
-                  source: 'extra',
-                },
-              ],
-            }
-      )
-    );
+    setNotes((currentNotes) => addNoteItem(currentNotes, noteId, text));
     setNoteItemDrafts((current) => ({ ...current, [noteId]: '' }));
   };
 
   const handleCopyToday = async () => {
-    const lines = notes.flatMap((note) => [
-      `# ${note.title}`,
-      ...note.items.map((item) => `- [${item.checked ? 'x' : ' '}] ${item.text}`),
-      note.memo ? `memo: ${note.memo}` : '',
-      '',
-    ]);
-
-    await navigator.clipboard.writeText(lines.join('\n').trim() || 'No transient notes');
+    await navigator.clipboard.writeText(createCopyText(notes));
     setCopied(true);
     window.setTimeout(() => setCopied(false), 1500);
   };
 
   const handleAddTomorrowTodo = () => {
-    const text = tomorrowTodoDraft.trim();
-    if (!text) {
+    const updatedTodos = addPersistentTodo(tomorrowTodos, tomorrowTodoDraft);
+    if (updatedTodos === tomorrowTodos) {
       return;
     }
 
-    setTomorrowTodos((current) => [
-      ...current,
-      {
-        id: createId('tomorrow-todo'),
-        text,
-        checked: false,
-      },
-    ]);
+    setTomorrowTodos(updatedTodos);
     setTomorrowTodoDraft('');
   };
 
   const handleToggleTomorrowTodo = (todoId: string) => {
-    setTomorrowTodos((current) =>
-      current.map((todo) => (todo.id === todoId ? { ...todo, checked: !todo.checked } : todo))
-    );
+    setTomorrowTodos((current) => togglePersistentTodo(current, todoId));
   };
 
   const handleDeleteTomorrowTodo = (todoId: string) => {
-    setTomorrowTodos((current) => current.filter((todo) => todo.id !== todoId));
+    setTomorrowTodos((current) => deletePersistentTodo(current, todoId));
   };
 
   return (
