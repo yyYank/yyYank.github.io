@@ -1,37 +1,15 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import CelebrationConfetti from './CelebrationConfetti';
-
-interface Template {
-  id: string;
-  name: string;
-  summary: string;
-  items: string[];
-  order: number;
-}
-
-interface NoteItem {
-  id: string;
-  text: string;
-  checked: boolean;
-  source: 'template' | 'extra';
-}
-
-interface TransientNote {
-  id: string;
-  templateId: string;
-  title: string;
-  createdAt: string;
-  items: NoteItem[];
-  memo: string;
-  hiddenItems: string[];
-}
-
-interface StoredNotes {
-  date: string;
-  notes: TransientNote[];
-  deletedTemplateIds: string[];
-}
+import {
+  createId,
+  createNoteFromTemplate,
+  normalizeStoredNotes,
+  synchronizeNotesWithTemplates,
+  type StoredNotes,
+  type Template,
+  type TransientNote,
+} from './transientNoteState';
 
 interface PersistentTodo {
   id: string;
@@ -71,10 +49,6 @@ const fadeTransition = {
   duration: 0.55,
   ease: [0.22, 1, 0.36, 1] as const,
 };
-
-function createId(prefix: string): string {
-  return `${prefix}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
-}
 
 function getTodayKey(): string {
   const now = new Date();
@@ -147,16 +121,8 @@ function loadNotes(): StoredNotes {
       return { date: today, notes: [], deletedTemplateIds: [] };
     }
 
-    const parsed = JSON.parse(raw) as StoredNotes;
-    if (parsed.date !== today) {
-      return { date: today, notes: [], deletedTemplateIds: [] };
-    }
-
-    return {
-      date: parsed.date,
-      notes: parsed.notes ?? [],
-      deletedTemplateIds: parsed.deletedTemplateIds ?? [],
-    };
+    const parsed = JSON.parse(raw);
+    return normalizeStoredNotes(parsed, today);
   } catch {
     return { date: today, notes: [], deletedTemplateIds: [] };
   }
@@ -194,60 +160,6 @@ function formatDateTime(value: string): string {
     hour: '2-digit',
     minute: '2-digit',
   }).format(date);
-}
-
-function createNoteFromTemplate(template: Template): TransientNote {
-  return {
-    id: createId('note'),
-    templateId: template.id,
-    title: template.name,
-    createdAt: new Date().toISOString(),
-    items: template.items.map((item) => ({
-      id: createId('item'),
-      text: item,
-      checked: false,
-      source: 'template',
-    })),
-    memo: '',
-    hiddenItems: [],
-  };
-}
-
-function synchronizeNotesWithTemplates(
-  currentNotes: TransientNote[],
-  templates: Template[],
-  deletedTemplateIds: string[]
-): TransientNote[] {
-  return templates
-    .filter((template) => !deletedTemplateIds.includes(template.id))
-    .map((template) => {
-    const existingNote = currentNotes.find((note) => note.templateId === template.id);
-
-    if (!existingNote) {
-      return createNoteFromTemplate(template);
-    }
-
-    const hiddenItems = existingNote.hiddenItems ?? [];
-    const templateItems = template.items
-      .filter((itemText) => !hiddenItems.includes(itemText))
-      .map((itemText) => {
-        const existingItem = existingNote.items.find(
-          (item) => item.text === itemText && item.source === 'template'
-        );
-
-        return existingItem
-          ? { ...existingItem, text: itemText, source: 'template' as const }
-          : { id: createId('item'), text: itemText, checked: false, source: 'template' as const };
-      });
-    const extraItems = existingNote.items.filter((item) => item.source === 'extra');
-
-    return {
-      ...existingNote,
-      title: template.name,
-      hiddenItems,
-      items: [...templateItems, ...extraItems],
-    };
-  });
 }
 
 export default function TransientNotes() {
