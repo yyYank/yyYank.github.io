@@ -14,6 +14,7 @@ interface NoteItem {
   id: string;
   text: string;
   checked: boolean;
+  source: 'template' | 'extra';
 }
 
 interface TransientNote {
@@ -205,6 +206,7 @@ function createNoteFromTemplate(template: Template): TransientNote {
       id: createId('item'),
       text: item,
       checked: false,
+      source: 'template',
     })),
     memo: '',
     hiddenItems: [],
@@ -226,19 +228,24 @@ function synchronizeNotesWithTemplates(
     }
 
     const hiddenItems = existingNote.hiddenItems ?? [];
+    const templateItems = template.items
+      .filter((itemText) => !hiddenItems.includes(itemText))
+      .map((itemText) => {
+        const existingItem = existingNote.items.find(
+          (item) => item.text === itemText && item.source === 'template'
+        );
+
+        return existingItem
+          ? { ...existingItem, text: itemText, source: 'template' as const }
+          : { id: createId('item'), text: itemText, checked: false, source: 'template' as const };
+      });
+    const extraItems = existingNote.items.filter((item) => item.source === 'extra');
 
     return {
       ...existingNote,
       title: template.name,
       hiddenItems,
-      items: template.items
-        .filter((itemText) => !hiddenItems.includes(itemText))
-        .map((itemText) => {
-          const existingItem = existingNote.items.find((item) => item.text === itemText);
-          return existingItem
-            ? { ...existingItem, text: itemText }
-            : { id: createId('item'), text: itemText, checked: false };
-        }),
+      items: [...templateItems, ...extraItems],
     };
   });
 }
@@ -259,6 +266,7 @@ export default function TransientNotes() {
   const [tomorrowTodos, setTomorrowTodos] = useState<PersistentTodo[]>([]);
   const [tomorrowTodoDraft, setTomorrowTodoDraft] = useState('');
   const [deletedTemplateIds, setDeletedTemplateIds] = useState<string[]>([]);
+  const [noteItemDrafts, setNoteItemDrafts] = useState<Record<string, string>>({});
   const templateNameInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -512,7 +520,7 @@ export default function TransientNotes() {
     setNotes(updatedNotes);
   };
 
-  const handleVanishItem = (noteId: string, itemId: string) => {
+  const handleDeleteNoteItem = (noteId: string, itemId: string) => {
     const updatedNotes = notes.map((note) =>
       note.id !== noteId
         ? note
@@ -525,12 +533,42 @@ export default function TransientNotes() {
             return {
               ...note,
               items: note.items.filter((item) => item.id !== itemId),
-              hiddenItems: Array.from(new Set([...note.hiddenItems, targetItem.text])),
+              hiddenItems:
+                targetItem.source === 'template'
+                  ? Array.from(new Set([...note.hiddenItems, targetItem.text]))
+                  : note.hiddenItems,
             };
           })()
     );
 
     setNotes(updatedNotes);
+  };
+
+  const handleAddNoteItem = (noteId: string) => {
+    const text = noteItemDrafts[noteId]?.trim();
+    if (!text) {
+      return;
+    }
+
+    setNotes((currentNotes) =>
+      currentNotes.map((note) =>
+        note.id !== noteId
+          ? note
+          : {
+              ...note,
+              items: [
+                ...note.items,
+                {
+                  id: createId('item'),
+                  text,
+                  checked: false,
+                  source: 'extra',
+                },
+              ],
+            }
+      )
+    );
+    setNoteItemDrafts((current) => ({ ...current, [noteId]: '' }));
   };
 
   const handleCopyToday = async () => {
@@ -654,24 +692,69 @@ export default function TransientNotes() {
                   <ul className="mt-4 space-y-3">
                     {note.items.map((item) => (
                       <li key={item.id}>
-                        <label className="flex cursor-pointer items-center gap-3 rounded-xl border border-dark-700 bg-dark-800/70 px-4 py-3 transition-colors hover:border-emerald-400/20">
-                          <input
-                            type="checkbox"
-                            checked={item.checked}
-                            onChange={() => handleToggleItem(note.id, item.id)}
-                            className="h-4 w-4 accent-emerald-400"
-                          />
-                          <span
-                            className={`text-sm ${
-                              item.checked ? 'text-gray-500 line-through' : 'text-gray-200'
-                            }`}
+                        <div className="flex items-center gap-3 rounded-xl border border-dark-700 bg-dark-800/70 px-4 py-3 transition-colors hover:border-emerald-400/20">
+                          <label className="flex min-w-0 flex-1 cursor-pointer items-center gap-3">
+                            <input
+                              type="checkbox"
+                              checked={item.checked}
+                              onChange={() => handleToggleItem(note.id, item.id)}
+                              className="h-4 w-4 accent-emerald-400"
+                            />
+                            <span
+                              className={`text-sm ${
+                                item.checked ? 'text-gray-500 line-through' : 'text-gray-200'
+                              }`}
+                            >
+                              {item.text}
+                            </span>
+                            {item.source === 'extra' && (
+                              <span className="rounded-full border border-emerald-400/20 bg-emerald-400/10 px-2 py-0.5 text-[10px] uppercase tracking-[0.16em] text-emerald-200/80">
+                                today only
+                              </span>
+                            )}
+                          </label>
+                          <button
+                            onClick={() => handleDeleteNoteItem(note.id, item.id)}
+                            type="button"
+                            className="rounded-full border border-red-500/25 bg-red-500/10 px-3 py-1 text-xs text-red-200 transition-colors hover:bg-red-500/20"
                           >
-                            {item.text}
-                          </span>
-                        </label>
+                            削除
+                          </button>
+                        </div>
                       </li>
                     ))}
                   </ul>
+
+                  <div className="mt-4 flex flex-wrap items-end gap-3">
+                    <label className="grid min-w-[220px] flex-1 gap-2 text-sm text-gray-300">
+                      <span>今日だけ追加するTODO</span>
+                      <input
+                        type="text"
+                        value={noteItemDrafts[note.id] ?? ''}
+                        onChange={(event) =>
+                          setNoteItemDrafts((current) => ({
+                            ...current,
+                            [note.id]: event.target.value,
+                          }))
+                        }
+                        onKeyDown={(event) => {
+                          if (event.key === 'Enter') {
+                            event.preventDefault();
+                            handleAddNoteItem(note.id);
+                          }
+                        }}
+                        placeholder="今日だけ必要なことを追加"
+                        className="rounded-xl border border-dark-500 bg-dark-800 px-4 py-3 text-white outline-none transition-colors focus:border-emerald-400/50"
+                      />
+                    </label>
+                    <button
+                      onClick={() => handleAddNoteItem(note.id)}
+                      type="button"
+                      className="rounded-full bg-emerald-400/15 px-4 py-2 text-sm font-medium text-emerald-200 transition-colors hover:bg-emerald-400/25"
+                    >
+                      追加
+                    </button>
+                  </div>
 
                   <label className="mt-4 grid gap-2 text-sm text-gray-300">
                     <span>一時メモ</span>
@@ -892,7 +975,7 @@ export default function TransientNotes() {
                             >
                               <span className="text-sm text-gray-200">{item.text}</span>
                               <button
-                                onClick={() => handleVanishItem(group.noteId, item.id)}
+                                onClick={() => handleDeleteNoteItem(group.noteId, item.id)}
                                 type="button"
                                 className="rounded-full border border-amber-500/25 bg-amber-500/10 px-3 py-1 text-xs text-amber-200 transition-colors hover:bg-amber-500/20"
                               >
