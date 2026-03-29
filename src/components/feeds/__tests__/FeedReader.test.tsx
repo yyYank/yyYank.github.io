@@ -192,7 +192,7 @@ describe('FeedReader', () => {
             weather_code: [1, 2],
             temperature_2m_max: [20, 21],
             temperature_2m_min: [12, 13],
-            precipitation_probability_max: [10, 20],
+            precipitation_probability_mean: [10, 20],
           },
         }), { status: 200 }));
       }

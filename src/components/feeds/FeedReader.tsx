@@ -456,7 +456,7 @@ async function fetchWeather(): Promise<WeatherData> {
 
   const responses = await Promise.allSettled(
     CITIES.map(async (city) => {
-      const url = `https://api.open-meteo.com/v1/forecast?latitude=${city.latitude}&longitude=${city.longitude}&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=Asia/Tokyo&forecast_days=2`;
+      const url = `https://api.open-meteo.com/v1/forecast?latitude=${city.latitude}&longitude=${city.longitude}&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_mean&timezone=Asia/Tokyo&forecast_days=2`;
       const res = await fetch(url, { cache: 'no-store' });
       if (!res.ok) throw new Error(`Weather ${city.name}: ${res.status}`);
       const json = await res.json();
@@ -473,7 +473,7 @@ async function fetchWeather(): Promise<WeatherData> {
         weatherCode: daily.weather_code[i],
         tempMax: daily.temperature_2m_max[i],
         tempMin: daily.temperature_2m_min[i],
-        precipProb: daily.precipitation_probability_max[i] ?? 0,
+        precipProb: daily.precipitation_probability_mean[i] ?? 0,
       }));
       results.push({ city, dates });
     }
