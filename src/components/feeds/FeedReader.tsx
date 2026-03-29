@@ -42,6 +42,7 @@ interface CacheData {
     holidays: Record<string, string>;
     exchangeRates: ExchangeRate[];
     loaded?: Partial<Record<LoadKey, boolean>>;
+    loadedAt?: Partial<Record<LoadKey, number>>;
   };
   expiresAt: number;
   staleUntil?: number;
@@ -104,9 +105,26 @@ function createErrorState(): Record<LoadKey, string | null> {
   };
 }
 
+function createLoadedAtState(value: number | null): Record<LoadKey, number | null> {
+  return {
+    hatena: value,
+    hackernews: value,
+    nikkei: value,
+    reuters: value,
+    toyokeizai: value,
+    reddit: value,
+    bbc: value,
+    weather: value,
+    holidays: value,
+    exchangeRates: value,
+  };
+}
+
 const CACHE_KEY = 'feeds-cache';
 const FAVORITES_KEY = 'feeds-favorites';
 const CACHE_STALE_MS = 7 * 24 * 60 * 60 * 1000;
+const WEATHER_CACHE_TTL_MS = 60 * 60 * 1000;
+const EXCHANGE_RATE_CACHE_TTL_MS = 60 * 60 * 1000;
 const FEED_FETCH_TIMEOUT_MS = 8000;
 const FEED_SNAPSHOT_PATH = '/feeds-data.json';
 
@@ -439,7 +457,7 @@ async function fetchWeather(): Promise<WeatherData> {
   const responses = await Promise.allSettled(
     CITIES.map(async (city) => {
       const url = `https://api.open-meteo.com/v1/forecast?latitude=${city.latitude}&longitude=${city.longitude}&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=Asia/Tokyo&forecast_days=2`;
-      const res = await fetch(url);
+      const res = await fetch(url, { cache: 'no-store' });
       if (!res.ok) throw new Error(`Weather ${city.name}: ${res.status}`);
       const json = await res.json();
       return { city: city.name, json };
@@ -600,6 +618,7 @@ export default function FeedReader() {
   const [copyMsg, setCopyMsg] = useState('');
   const loadingRef = useRef<Record<LoadKey, boolean>>(createLoadState(false));
   const loadedRef = useRef<Record<LoadKey, boolean>>(createLoadState(false));
+  const loadedAtRef = useRef<Record<LoadKey, number | null>>(createLoadedAtState(null));
   const snapshotAppliedRef = useRef(false);
   const enItems = useMemo(() => [...hackernews, ...reddit, ...bbc], [hackernews, reddit, bbc]);
   const translations = useTranslation(enItems);
@@ -623,6 +642,10 @@ export default function FeedReader() {
   const setLoadedKey = useCallback((key: LoadKey, value: boolean) => {
     loadedRef.current[key] = value;
     setLoadedMap((prev) => ({ ...prev, [key]: value }));
+  }, []);
+
+  const markLoadedAt = useCallback((key: LoadKey, value: number) => {
+    loadedAtRef.current[key] = value;
   }, []);
 
   const setErrorKey = useCallback((key: LoadKey, value: string | null) => {
@@ -689,6 +712,7 @@ export default function FeedReader() {
       const result = await loader();
       onSuccess(result);
       setLoadedKey(key, true);
+      markLoadedAt(key, Date.now());
       setShowingStaleCache(false);
       setErrorKey(key, null);
     } catch {
@@ -696,7 +720,7 @@ export default function FeedReader() {
     } finally {
       setLoadingKey(key, false);
     }
-  }, [setErrorKey, setLoadedKey, setLoadingKey]);
+  }, [markLoadedAt, setErrorKey, setLoadedKey, setLoadingKey]);
 
   const ensureFeedLoad = useCallback((key: FeedKey) => {
     switch (key) {
@@ -791,10 +815,24 @@ export default function FeedReader() {
     setExchangeRates(cached.data.exchangeRates ?? []);
 
     const cachedLoaded = cached.data.loaded ?? createLoadState(true);
+    const cachedLoadedAt = cached.data.loadedAt ?? {};
     const nextLoaded = createLoadState(false);
-    LOAD_KEYS.forEach((key) => { nextLoaded[key] = isFresh ? (cachedLoaded[key] ?? false) : false; });
+    const now = Date.now();
+    LOAD_KEYS.forEach((key) => {
+      const loadedAt = cachedLoadedAt[key] ?? null;
+      const ttl =
+        key === 'weather' ? WEATHER_CACHE_TTL_MS :
+          key === 'exchangeRates' ? EXCHANGE_RATE_CACHE_TTL_MS :
+            null;
+      const withinKeyTtl = ttl === null || (loadedAt !== null && (now - loadedAt) <= ttl);
+      nextLoaded[key] = isFresh ? ((cachedLoaded[key] ?? false) && withinKeyTtl) : false;
+    });
     loadedRef.current = nextLoaded;
     loadingRef.current = createLoadState(false);
+    loadedAtRef.current = {
+      ...createLoadedAtState(null),
+      ...cachedLoadedAt,
+    };
     setLoadedMap(nextLoaded);
     setLoadingMap(createLoadState(false));
     setErrorMap(createErrorState());
@@ -862,6 +900,7 @@ export default function FeedReader() {
       holidays,
       exchangeRates,
       loaded: loadedMap,
+      loadedAt: loadedAtRef.current,
     });
   }, [hatena, hackernews, nikkei, reuters, toyokeizai, reddit, bbc, weather, holidays, exchangeRates, loadedMap]);
 

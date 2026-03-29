@@ -141,6 +141,88 @@ describe('FeedReader', () => {
     expect(screen.getByText('直近のキャッシュを表示しています。バックグラウンドで再取得中です。')).toBeInTheDocument();
   });
 
+  it('refreshes weather when cached weather is older than its TTL', async () => {
+    const now = Date.now();
+    const cache = {
+      data: {
+        hatena: [],
+        hackernews: [],
+        nikkei: [],
+        reuters: [],
+        toyokeizai: [],
+        reddit: [],
+        bbc: [],
+        weather: [
+          {
+            city: '東京',
+            dates: [
+              { date: '2026-03-29', weatherCode: 63, tempMax: 10, tempMin: 4, precipProb: 90 },
+              { date: '2026-03-30', weatherCode: 63, tempMax: 11, tempMin: 5, precipProb: 90 },
+            ],
+          },
+        ],
+        holidays: {},
+        exchangeRates: [],
+        loaded: {
+          hatena: true,
+          hackernews: true,
+          nikkei: true,
+          reuters: true,
+          toyokeizai: true,
+          reddit: true,
+          bbc: true,
+          weather: true,
+          holidays: true,
+          exchangeRates: true,
+        },
+        loadedAt: {
+          weather: now - (2 * 60 * 60 * 1000),
+        },
+      },
+      expiresAt: now + 1000 * 60 * 60,
+    };
+    localStorageMock.setItem('feeds-cache', JSON.stringify(cache));
+
+    fetchMock.mockImplementation((input: string | URL | Request, init?: RequestInit) => {
+      if (String(input).startsWith('https://api.open-meteo.com/v1/forecast')) {
+        expect(init).toEqual(expect.objectContaining({ cache: 'no-store' }));
+        return Promise.resolve(new Response(JSON.stringify({
+          daily: {
+            time: ['2026-03-29', '2026-03-30'],
+            weather_code: [1, 2],
+            temperature_2m_max: [20, 21],
+            temperature_2m_min: [12, 13],
+            precipitation_probability_max: [10, 20],
+          },
+        }), { status: 200 }));
+      }
+      if (String(input) === '/feeds-data.json') {
+        return Promise.resolve(new Response(JSON.stringify({
+          generatedAt: '2026-03-29T00:00:00.000Z',
+          feeds: {
+            hatena: { items: [], fetchedAt: null, error: null },
+            hackernews: { items: [], fetchedAt: null, error: null },
+            nikkei: { items: [], fetchedAt: null, error: null },
+            reuters: { items: [], fetchedAt: null, error: null },
+            toyokeizai: { items: [], fetchedAt: null, error: null },
+            reddit: { items: [], fetchedAt: null, error: null },
+            bbc: { items: [], fetchedAt: null, error: null },
+          },
+        }), { status: 200 }));
+      }
+      return Promise.resolve(new Response('{}', { status: 200 }));
+    });
+
+    render(<FeedReader />);
+
+    expect(screen.getAllByText('☔ 90%')).toHaveLength(2);
+
+    await waitFor(() => {
+      expect(screen.getAllByText('☔ 10%')).toHaveLength(2);
+      expect(screen.getAllByText('☔ 20%')).toHaveLength(2);
+    });
+  });
+
   it('falls back to the secondary proxy when the first proxy fails', async () => {
     fetchMock
       .mockRejectedValueOnce(new Error('primary proxy down'))
