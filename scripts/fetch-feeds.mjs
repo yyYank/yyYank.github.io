@@ -15,6 +15,9 @@ const FEEDS = {
     'https://www.reddit.com/r/technology/.rss',
   ],
   bbc: 'https://feeds.bbci.co.uk/news/rss.xml',
+  cisa: 'https://www.cisa.gov/cybersecurity-advisories/all.xml',
+  darkreading: 'https://www.darkreading.com/rss.xml',
+  bleepingcomputer: 'https://www.bleepingcomputer.com/feed/',
 };
 
 function emptyEntry() {
@@ -113,6 +116,9 @@ async function loadPreviousSnapshot() {
         toyokeizai: emptyEntry(),
         reddit: emptyEntry(),
         bbc: emptyEntry(),
+        cisa: emptyEntry(),
+        darkreading: emptyEntry(),
+        bleepingcomputer: emptyEntry(),
       },
     };
   }

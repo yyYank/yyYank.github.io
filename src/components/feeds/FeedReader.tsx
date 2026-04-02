@@ -7,7 +7,7 @@ interface FeedItem {
   link: string;
   date: string;
   description: string;
-  source: 'hatena' | 'hackernews' | 'nikkei' | 'reuters' | 'toyokeizai' | 'reddit' | 'bbc';
+  source: 'hatena' | 'hackernews' | 'nikkei' | 'reuters' | 'toyokeizai' | 'reddit' | 'bbc' | 'cisa' | 'darkreading' | 'bleepingcomputer';
 }
 
 interface CityWeather {
@@ -38,6 +38,9 @@ interface CacheData {
     toyokeizai: FeedItem[];
     reddit: FeedItem[];
     bbc: FeedItem[];
+    cisa: FeedItem[];
+    darkreading: FeedItem[];
+    bleepingcomputer: FeedItem[];
     weather: WeatherData;
     holidays: Record<string, string>;
     exchangeRates: ExchangeRate[];
@@ -59,11 +62,11 @@ interface FeedSnapshotData {
   feeds: Record<FeedKey, FeedSnapshotEntry>;
 }
 
-type TabType = 'all' | 'hatena' | 'hackernews' | 'nikkei' | 'reuters' | 'toyokeizai' | 'reddit' | 'bbc' | 'favorites';
+type TabType = 'all' | 'hatena' | 'hackernews' | 'nikkei' | 'reuters' | 'toyokeizai' | 'reddit' | 'bbc' | 'cisa' | 'darkreading' | 'bleepingcomputer' | 'favorites';
 type FeedKey = FeedItem['source'];
 type LoadKey = FeedKey | 'weather' | 'holidays' | 'exchangeRates';
 
-const FEED_KEYS: FeedKey[] = ['hatena', 'hackernews', 'nikkei', 'reuters', 'toyokeizai', 'reddit', 'bbc'];
+const FEED_KEYS: FeedKey[] = ['hatena', 'hackernews', 'nikkei', 'reuters', 'toyokeizai', 'reddit', 'bbc', 'cisa', 'darkreading', 'bleepingcomputer'];
 const LOAD_KEYS: LoadKey[] = [...FEED_KEYS, 'weather', 'holidays', 'exchangeRates'];
 const FEED_LABELS: Record<FeedKey, string> = {
   hatena: 'はてブ IT',
@@ -73,6 +76,9 @@ const FEED_LABELS: Record<FeedKey, string> = {
   toyokeizai: '東洋経済',
   reddit: 'Reddit',
   bbc: 'BBC',
+  cisa: 'CISA',
+  darkreading: 'Dark Reading',
+  bleepingcomputer: 'BleepingComputer',
 };
 
 function createLoadState(value: boolean): Record<LoadKey, boolean> {
@@ -84,6 +90,9 @@ function createLoadState(value: boolean): Record<LoadKey, boolean> {
     toyokeizai: value,
     reddit: value,
     bbc: value,
+    cisa: value,
+    darkreading: value,
+    bleepingcomputer: value,
     weather: value,
     holidays: value,
     exchangeRates: value,
@@ -99,6 +108,9 @@ function createErrorState(): Record<LoadKey, string | null> {
     toyokeizai: null,
     reddit: null,
     bbc: null,
+    cisa: null,
+    darkreading: null,
+    bleepingcomputer: null,
     weather: null,
     holidays: null,
     exchangeRates: null,
@@ -114,6 +126,9 @@ function createLoadedAtState(value: number | null): Record<LoadKey, number | nul
     toyokeizai: value,
     reddit: value,
     bbc: value,
+    cisa: value,
+    darkreading: value,
+    bleepingcomputer: value,
     weather: value,
     holidays: value,
     exchangeRates: value,
@@ -137,6 +152,9 @@ const FEEDS = {
   redditProgramming: 'https://www.reddit.com/r/programming/.rss',
   redditTechnology: 'https://www.reddit.com/r/technology/.rss',
   bbc: 'https://feeds.bbci.co.uk/news/rss.xml',
+  cisa: 'https://www.cisa.gov/cybersecurity-advisories/all.xml',
+  darkreading: 'https://www.darkreading.com/rss.xml',
+  bleepingcomputer: 'https://www.bleepingcomputer.com/feed/',
 } as const;
 
 const CITIES = [
@@ -194,7 +212,7 @@ function useTranslation(items: FeedItem[]) {
   // Enqueue English titles for translation
   useEffect(() => {
     const enTitles = items
-      .filter((item) => item.source === 'hackernews' || item.source === 'reddit' || item.source === 'bbc')
+      .filter((item) => item.source === 'hackernews' || item.source === 'reddit' || item.source === 'bbc' || item.source === 'cisa' || item.source === 'darkreading' || item.source === 'bleepingcomputer')
       .map((item) => item.title)
       .filter((title) => !translations.has(title) && !queueRef.current.includes(title));
 
@@ -604,6 +622,9 @@ export default function FeedReader() {
   const [toyokeizai, setToyokeizai] = useState<FeedItem[]>([]);
   const [reddit, setReddit] = useState<FeedItem[]>([]);
   const [bbc, setBbc] = useState<FeedItem[]>([]);
+  const [cisa, setCisa] = useState<FeedItem[]>([]);
+  const [darkreading, setDarkreading] = useState<FeedItem[]>([]);
+  const [bleepingcomputer, setBleepingcomputer] = useState<FeedItem[]>([]);
   const [weather, setWeather] = useState<WeatherData>([]);
   const [holidays, setHolidays] = useState<Record<string, string>>({});
   const [exchangeRates, setExchangeRates] = useState<ExchangeRate[]>([]);
@@ -620,7 +641,7 @@ export default function FeedReader() {
   const loadedRef = useRef<Record<LoadKey, boolean>>(createLoadState(false));
   const loadedAtRef = useRef<Record<LoadKey, number | null>>(createLoadedAtState(null));
   const snapshotAppliedRef = useRef(false);
-  const enItems = useMemo(() => [...hackernews, ...reddit, ...bbc], [hackernews, reddit, bbc]);
+  const enItems = useMemo(() => [...hackernews, ...reddit, ...bbc, ...cisa, ...darkreading, ...bleepingcomputer], [hackernews, reddit, bbc, cisa, darkreading, bleepingcomputer]);
   const translations = useTranslation(enItems);
 
   const favoriteLinks = useMemo(() => new Set(favorites.map((f) => f.link)), [favorites]);
@@ -674,6 +695,15 @@ export default function FeedReader() {
         break;
       case 'bbc':
         setBbc(items);
+        break;
+      case 'cisa':
+        setCisa(items);
+        break;
+      case 'darkreading':
+        setDarkreading(items);
+        break;
+      case 'bleepingcomputer':
+        setBleepingcomputer(items);
         break;
     }
   }, []);
@@ -771,6 +801,24 @@ export default function FeedReader() {
           return parseRSS(xml, 'bbc');
         }, (items) => applyFeedItems('bbc', items));
         break;
+      case 'cisa':
+        void ensureLoad('cisa', async () => {
+          const xml = await fetchRssText(FEEDS.cisa, true);
+          return parseRSS(xml, 'cisa');
+        }, (items) => applyFeedItems('cisa', items));
+        break;
+      case 'darkreading':
+        void ensureLoad('darkreading', async () => {
+          const xml = await fetchRssText(FEEDS.darkreading, true);
+          return parseRSS(xml, 'darkreading');
+        }, (items) => applyFeedItems('darkreading', items));
+        break;
+      case 'bleepingcomputer':
+        void ensureLoad('bleepingcomputer', async () => {
+          const xml = await fetchRssText(FEEDS.bleepingcomputer, true);
+          return parseRSS(xml, 'bleepingcomputer');
+        }, (items) => applyFeedItems('bleepingcomputer', items));
+        break;
     }
   }, [applyFeedItems, ensureLoad, fetchRssText]);
 
@@ -810,6 +858,9 @@ export default function FeedReader() {
     setToyokeizai(cached.data.toyokeizai ?? []);
     setReddit(cached.data.reddit ?? []);
     setBbc(cached.data.bbc ?? []);
+    setCisa(cached.data.cisa ?? []);
+    setDarkreading(cached.data.darkreading ?? []);
+    setBleepingcomputer(cached.data.bleepingcomputer ?? []);
     setWeather(cached.data.weather ?? []);
     setHolidays(cached.data.holidays ?? {});
     setExchangeRates(cached.data.exchangeRates ?? []);
@@ -866,6 +917,12 @@ export default function FeedReader() {
               return reddit;
             case 'bbc':
               return bbc;
+            case 'cisa':
+              return cisa;
+            case 'darkreading':
+              return darkreading;
+            case 'bleepingcomputer':
+              return bleepingcomputer;
           }
         })();
 
@@ -879,7 +936,7 @@ export default function FeedReader() {
 
       snapshotAppliedRef.current = true;
     })();
-  }, [applyFeedItems, bbc, hackernews, hatena, nikkei, reddit, reuters, setErrorKey, toyokeizai]);
+  }, [applyFeedItems, bbc, bleepingcomputer, cisa, darkreading, hackernews, hatena, nikkei, reddit, reuters, setErrorKey, toyokeizai]);
 
   useEffect(() => {
     ensureTabLoaded(tab);
@@ -896,13 +953,16 @@ export default function FeedReader() {
       toyokeizai,
       reddit,
       bbc,
+      cisa,
+      darkreading,
+      bleepingcomputer,
       weather,
       holidays,
       exchangeRates,
       loaded: loadedMap,
       loadedAt: loadedAtRef.current,
     });
-  }, [hatena, hackernews, nikkei, reuters, toyokeizai, reddit, bbc, weather, holidays, exchangeRates, loadedMap]);
+  }, [hatena, hackernews, nikkei, reuters, toyokeizai, reddit, bbc, cisa, darkreading, bleepingcomputer, weather, holidays, exchangeRates, loadedMap]);
 
   const allItems = useMemo(() => {
     switch (tab) {
@@ -920,15 +980,21 @@ export default function FeedReader() {
         return reddit;
       case 'bbc':
         return bbc;
+      case 'cisa':
+        return cisa;
+      case 'darkreading':
+        return darkreading;
+      case 'bleepingcomputer':
+        return bleepingcomputer;
       case 'favorites':
         return favorites;
       case 'all':
-        return [...hatena, ...hackernews, ...nikkei, ...reuters, ...toyokeizai, ...reddit, ...bbc].sort((a, b) => {
+        return [...hatena, ...hackernews, ...nikkei, ...reuters, ...toyokeizai, ...reddit, ...bbc, ...cisa, ...darkreading, ...bleepingcomputer].sort((a, b) => {
           if (!a.date || !b.date) return 0;
           return new Date(b.date).getTime() - new Date(a.date).getTime();
         });
     }
-  }, [tab, hatena, hackernews, nikkei, reuters, toyokeizai, reddit, bbc, favorites]);
+  }, [tab, hatena, hackernews, nikkei, reuters, toyokeizai, reddit, bbc, cisa, darkreading, bleepingcomputer, favorites]);
 
   const feedFuse = useMemo(
     () =>
@@ -948,7 +1014,7 @@ export default function FeedReader() {
     return feedFuse.search(searchQuery).map((r) => r.item);
   }, [searchQuery, allItems, feedFuse]);
 
-  const totalItemCount = hatena.length + hackernews.length + nikkei.length + reuters.length + toyokeizai.length + reddit.length + bbc.length;
+  const totalItemCount = hatena.length + hackernews.length + nikkei.length + reuters.length + toyokeizai.length + reddit.length + bbc.length + cisa.length + darkreading.length + bleepingcomputer.length;
 
   const tabs: { key: TabType; label: string; count: number }[] = [
     { key: 'all', label: 'All', count: totalItemCount },
@@ -959,6 +1025,9 @@ export default function FeedReader() {
     { key: 'toyokeizai', label: '東洋経済', count: toyokeizai.length },
     { key: 'reddit', label: 'Reddit', count: reddit.length },
     { key: 'bbc', label: 'BBC', count: bbc.length },
+    { key: 'cisa', label: 'CISA', count: cisa.length },
+    { key: 'darkreading', label: 'Dark Reading', count: darkreading.length },
+    { key: 'bleepingcomputer', label: 'BleepingComputer', count: bleepingcomputer.length },
     { key: 'favorites', label: 'お気に入り', count: favorites.length },
   ];
 
@@ -1008,6 +1077,12 @@ export default function FeedReader() {
         return { className: 'bg-red-500/20 text-red-400', label: 'Reddit' };
       case 'bbc':
         return { className: 'bg-white/20 text-white', label: 'BBC' };
+      case 'cisa':
+        return { className: 'bg-sky-500/20 text-sky-300', label: 'CISA' };
+      case 'darkreading':
+        return { className: 'bg-amber-500/20 text-amber-300', label: 'Dark Reading' };
+      case 'bleepingcomputer':
+        return { className: 'bg-emerald-500/20 text-emerald-300', label: 'BleepingComputer' };
     }
   };
 
@@ -1146,7 +1221,7 @@ export default function FeedReader() {
                   <h3 className="text-gray-100 font-medium group-hover:text-accent-cyan transition-colors leading-snug">
                     {item.title}
                   </h3>
-                  {(item.source === 'hackernews' || item.source === 'reddit' || item.source === 'bbc') && translations.get(item.title) && (
+                  {(item.source === 'hackernews' || item.source === 'reddit' || item.source === 'bbc' || item.source === 'cisa' || item.source === 'darkreading' || item.source === 'bleepingcomputer') && translations.get(item.title) && (
                     <p className="text-gray-400 text-sm mt-0.5">
                       {translations.get(item.title)}
                     </p>

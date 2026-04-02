@@ -38,6 +38,13 @@ describe('FeedReader', () => {
     expect(screen.getByText('日経')).toBeInTheDocument();
   });
 
+  it('renders security feed tabs', () => {
+    render(<FeedReader />);
+    expect(screen.getByText('CISA')).toBeInTheDocument();
+    expect(screen.getByText('Dark Reading')).toBeInTheDocument();
+    expect(screen.getByText('BleepingComputer')).toBeInTheDocument();
+  });
+
   // キャッシュに為替データがある場合、USD/JPYとEUR/JPYレートが表示されることを検証する
   it('shows USD/JPY and EUR/JPY exchange rates when cache contains exchange rate data', async () => {
     const cache = {
