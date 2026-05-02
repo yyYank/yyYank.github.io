@@ -12,6 +12,7 @@ const PAGES = [
   { href: '/count/', label: 'Count', desc: '文字数カウント' },
   { href: '/img_paste/', label: 'Image Paste', desc: '画像ペースト・保存' },
   { href: '/sounds/', label: 'Audio Tool', desc: '音声変換・連結' },
+  { href: '/movie/', label: 'Movie Tool', desc: '動画トリミング' },
   { href: '/ocr/', label: 'OCR', desc: '付箋・メモOCR' },
   { href: '/transient/', label: 'Transient', desc: '当日限定ノート' },
 ];
