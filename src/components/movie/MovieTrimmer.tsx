@@ -36,30 +36,10 @@ export default function MovieTrimmer() {
     }
   };
 
-  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const nextFile = event.target.files?.[0];
-    if (!nextFile) return;
-
+  const loadSelectedFileData = async (nextFile: File, nextUrl: string) => {
     try {
       const nextData = new Uint8Array(await nextFile.arrayBuffer());
-      const nextUrl = URL.createObjectURL(nextFile);
-
-      setFile(nextFile);
       setFileData(nextData);
-      setVideoUrl((prev) => {
-        if (prev) URL.revokeObjectURL(prev);
-        return nextUrl;
-      });
-      setDuration(0);
-      setStartTime(0);
-      setEndTime(0);
-      setStartInput('0.0');
-      setEndInput('0.0');
-      setCurrentTime(0);
-      setIsPlaying(false);
-      setOutputBlob(null);
-      setOutputFilename(getTrimmedFilename(nextFile.name));
-      setStatus('動画メタデータを読み込み中...');
     } catch (error) {
       setFile(null);
       setFileData(null);
@@ -67,8 +47,34 @@ export default function MovieTrimmer() {
         if (prev) URL.revokeObjectURL(prev);
         return null;
       });
+      URL.revokeObjectURL(nextUrl);
       setStatus(`動画ファイルの読み込みに失敗しました: ${error instanceof Error ? error.message : String(error)}`);
     }
+  };
+
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const nextFile = event.target.files?.[0];
+    if (!nextFile) return;
+
+    const nextUrl = URL.createObjectURL(nextFile);
+    setFile(nextFile);
+    setFileData(null);
+    setVideoUrl((prev) => {
+      if (prev) URL.revokeObjectURL(prev);
+      return nextUrl;
+    });
+    setDuration(0);
+    setStartTime(0);
+    setEndTime(0);
+    setStartInput('0.0');
+    setEndInput('0.0');
+    setCurrentTime(0);
+    setIsPlaying(false);
+    setOutputBlob(null);
+    setOutputFilename(getTrimmedFilename(nextFile.name));
+    setStatus('動画メタデータを読み込み中...');
+
+    void loadSelectedFileData(nextFile, nextUrl);
   };
 
   useEffect(() => {

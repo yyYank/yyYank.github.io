@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import MovieTrimmer from '../MovieTrimmer';
@@ -214,5 +214,32 @@ describe('MovieTrimmer', () => {
     });
 
     expect(ffmpegMocks.readFile).not.toHaveBeenCalled();
+  });
+
+  it('shows the video preview before file bytes finish loading', async () => {
+    let resolveArrayBuffer!: (value: ArrayBuffer) => void;
+    const pendingArrayBuffer = new Promise<ArrayBuffer>((resolve) => {
+      resolveArrayBuffer = resolve;
+    });
+
+    const file = new File(['video'], 'slow.webm', { type: 'video/webm' });
+    Object.defineProperty(file, 'arrayBuffer', {
+      configurable: true,
+      value: vi.fn().mockReturnValue(pendingArrayBuffer),
+    });
+
+    render(<MovieTrimmer />);
+
+    await userEvent.upload(screen.getByLabelText('File Upload'), file);
+
+    await waitFor(() => {
+      expect(document.querySelector('video')).toBeInTheDocument();
+    });
+
+    expect(screen.getByText('動画メタデータを読み込み中...')).toBeInTheDocument();
+
+    await act(async () => {
+      resolveArrayBuffer(new Uint8Array([1, 2, 3]).buffer);
+    });
   });
 });
