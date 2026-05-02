@@ -254,7 +254,8 @@ export default function MovieTrimmer() {
       }
 
       const data = await ffmpeg.readFile(outputName);
-      setOutputBlob(new Blob([data], { type: outputType }));
+      const outputBytes = data instanceof Uint8Array ? data : new Uint8Array(data);
+      setOutputBlob(new Blob([outputBytes], { type: outputType }));
       setOutputFilename(nextFilename);
       setStatus('完了');
     } catch (error) {
@@ -273,8 +274,11 @@ export default function MovieTrimmer() {
       <p className="text-gray-400 text-sm">動画をブラウザ内でトリミングしてそのままダウンロード</p>
 
       <div>
-        <label className="block text-sm text-gray-400 mb-2">File Upload</label>
+        <label htmlFor="movie-upload" className="block text-sm text-gray-400 mb-2">
+          File Upload
+        </label>
         <input
+          id="movie-upload"
           type="file"
           accept="video/*"
           onChange={handleFileChange}
@@ -401,8 +405,11 @@ export default function MovieTrimmer() {
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs text-gray-400 mb-1">開始 (秒)</label>
+              <label htmlFor="movie-start-seconds" className="block text-xs text-gray-400 mb-1">
+                開始 (秒)
+              </label>
               <input
+                id="movie-start-seconds"
                 type="text"
                 inputMode="decimal"
                 value={startInput}
@@ -420,8 +427,11 @@ export default function MovieTrimmer() {
             </div>
 
             <div>
-              <label className="block text-xs text-gray-400 mb-1">終了 (秒)</label>
+              <label htmlFor="movie-end-seconds" className="block text-xs text-gray-400 mb-1">
+                終了 (秒)
+              </label>
               <input
+                id="movie-end-seconds"
                 type="text"
                 inputMode="decimal"
                 value={endInput}
