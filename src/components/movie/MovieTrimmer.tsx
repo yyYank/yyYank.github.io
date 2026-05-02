@@ -10,6 +10,7 @@ import {
 
 export default function MovieTrimmer() {
   const [file, setFile] = useState<File | null>(null);
+  const [fileData, setFileData] = useState<Uint8Array | null>(null);
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
   const [duration, setDuration] = useState(0);
   const [startTime, setStartTime] = useState(0);
@@ -35,26 +36,39 @@ export default function MovieTrimmer() {
     }
   };
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const nextFile = event.target.files?.[0];
     if (!nextFile) return;
 
-    const nextUrl = URL.createObjectURL(nextFile);
-    setFile(nextFile);
-    setVideoUrl((prev) => {
-      if (prev) URL.revokeObjectURL(prev);
-      return nextUrl;
-    });
-    setDuration(0);
-    setStartTime(0);
-    setEndTime(0);
-    setStartInput('0.0');
-    setEndInput('0.0');
-    setCurrentTime(0);
-    setIsPlaying(false);
-    setOutputBlob(null);
-    setOutputFilename(getTrimmedFilename(nextFile.name));
-    setStatus('動画メタデータを読み込み中...');
+    try {
+      const nextData = new Uint8Array(await nextFile.arrayBuffer());
+      const nextUrl = URL.createObjectURL(new Blob([nextData], { type: nextFile.type || 'video/mp4' }));
+
+      setFile(nextFile);
+      setFileData(nextData);
+      setVideoUrl((prev) => {
+        if (prev) URL.revokeObjectURL(prev);
+        return nextUrl;
+      });
+      setDuration(0);
+      setStartTime(0);
+      setEndTime(0);
+      setStartInput('0.0');
+      setEndInput('0.0');
+      setCurrentTime(0);
+      setIsPlaying(false);
+      setOutputBlob(null);
+      setOutputFilename(getTrimmedFilename(nextFile.name));
+      setStatus('動画メタデータを読み込み中...');
+    } catch (error) {
+      setFile(null);
+      setFileData(null);
+      setVideoUrl((prev) => {
+        if (prev) URL.revokeObjectURL(prev);
+        return null;
+      });
+      setStatus(`動画ファイルの読み込みに失敗しました: ${error instanceof Error ? error.message : String(error)}`);
+    }
   };
 
   useEffect(() => {
@@ -179,7 +193,7 @@ export default function MovieTrimmer() {
   };
 
   const handleTrim = async () => {
-    if (!file || !isReady) return;
+    if (!file || !fileData || !isReady) return;
 
     setLoading(true);
     setOutputBlob(null);
@@ -195,7 +209,7 @@ export default function MovieTrimmer() {
       const trimDuration = Math.max(0.1, endTime - startTime).toFixed(3);
 
       setStatus('トリミング中...');
-      await ffmpeg.writeFile(inputName, new Uint8Array(await file.arrayBuffer()));
+      await ffmpeg.writeFile(inputName, fileData);
 
       let outputName = copyOutputName;
       let outputType = file.type || `video/${ext}`;
