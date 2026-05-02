@@ -86,6 +86,10 @@ export default function MovieTrimmer() {
   };
 
   useEffect(() => {
+    void getFFmpeg();
+  }, []);
+
+  useEffect(() => {
     return () => {
       if (videoUrl) {
         URL.revokeObjectURL(videoUrl);

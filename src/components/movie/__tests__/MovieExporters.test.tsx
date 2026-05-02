@@ -147,4 +147,20 @@ describe('movie exporters', () => {
       expect(screen.getByText('変換完了')).toBeInTheDocument();
     });
   });
+
+  it('starts loading ffmpeg as soon as MovieTrimmer mounts', async () => {
+    render(<MovieTrimmer />);
+
+    await waitFor(() => {
+      expect(ffmpegMocks.getFFmpeg).toHaveBeenCalled();
+    });
+  });
+
+  it('starts loading ffmpeg as soon as MovToMp4Converter mounts', async () => {
+    render(<MovToMp4Converter />);
+
+    await waitFor(() => {
+      expect(ffmpegMocks.getFFmpeg).toHaveBeenCalled();
+    });
+  });
 });

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getFFmpeg } from '../../lib/ffmpeg';
 import DownloadButton from '../sounds/DownloadButton';
 import { encodeToMp4, readFileBytes, readOutputBlob, writeInputFile } from './movieExport';
@@ -9,6 +9,10 @@ export default function MovToMp4Converter() {
   const [outputFilename, setOutputFilename] = useState('output.mp4');
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState('');
+
+  useEffect(() => {
+    void getFFmpeg();
+  }, []);
 
   const handleConvert = async () => {
     if (!file) return;
