@@ -11,6 +11,7 @@ import {
   encodeToMp4,
   readFileBytes,
   readOutputBlob,
+  streamCopyTrim,
   writeInputFile,
 } from './movieExport';
 
@@ -236,28 +237,18 @@ export default function MovieTrimmer() {
       };
 
       if (exportMp4) {
-        setStatus('MP4としてトリミング中... 0%');
+        setStatus('範囲を切り出し中...');
+        await streamCopyTrim(ffmpeg, inputName, copyOutputName, startTime, Number(trimDuration));
+        setStatus('MP4に再エンコード中... 0%');
         await encodeToMp4(
           ffmpeg,
-          inputName,
+          copyOutputName,
           fallbackOutputName,
-          startTime,
-          Number(trimDuration),
-          reportProgress('MP4としてトリミング中...')
+          reportProgress('MP4に再エンコード中...')
         );
       } else {
         try {
-          await ffmpeg.exec([
-            '-ss',
-            startTime.toFixed(3),
-            '-t',
-            trimDuration.toFixed(3),
-            '-i',
-            inputName,
-            '-c',
-            'copy',
-            copyOutputName,
-          ]);
+          await streamCopyTrim(ffmpeg, inputName, copyOutputName, startTime, Number(trimDuration));
         } catch {
           setStatus('再エンコードでトリミング中... 0%');
           outputName = fallbackOutputName;
@@ -267,8 +258,6 @@ export default function MovieTrimmer() {
             ffmpeg,
             inputName,
             fallbackOutputName,
-            startTime,
-            Number(trimDuration),
             reportProgress('再エンコードでトリミング中...')
           );
         }

@@ -17,16 +17,33 @@ export async function writeInputFile(ffmpeg: FFmpeg, inputName: string, fileData
   await ffmpeg.writeFile(inputName, fileData);
 }
 
+export async function streamCopyTrim(
+  ffmpeg: FFmpeg,
+  inputName: string,
+  outputName: string,
+  startTime: number,
+  duration: number
+): Promise<void> {
+  await ffmpeg.exec([
+    '-ss',
+    startTime.toFixed(3),
+    '-t',
+    duration.toFixed(3),
+    '-i',
+    inputName,
+    '-c',
+    'copy',
+    outputName,
+  ]);
+}
+
 export async function encodeToMp4(
   ffmpeg: FFmpeg,
   inputName: string,
   outputName: string,
-  startTime: number | null,
-  duration?: number,
   onProgress?: (ratio: number) => void
 ): Promise<void> {
   const args = [
-    ...(startTime !== null ? ['-ss', startTime.toFixed(3)] : []),
     '-i',
     inputName,
     '-map',
@@ -41,10 +58,6 @@ export async function encodeToMp4(
     '+faststart',
     outputName,
   ];
-
-  if (duration !== undefined) {
-    args.splice(startTime !== null ? 2 : 0, 0, '-t', duration.toFixed(3));
-  }
 
   const handler = onProgress
     ? ({ progress }: { progress: number }) => onProgress(progress)

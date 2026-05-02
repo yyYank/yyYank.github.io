@@ -79,10 +79,11 @@ describe('movie exporters', () => {
       expect(screen.getByRole('button', { name: /Download clip_trimmed\.mp4/ })).toBeInTheDocument();
     });
 
-    expect(ffmpegMocks.exec.mock.calls[0]?.[0]).toContain('mpeg4');
+    expect(ffmpegMocks.exec.mock.calls[0]?.[0]).toContain('copy');
+    expect(ffmpegMocks.exec.mock.calls[1]?.[0]).toContain('mpeg4');
   });
 
-  it('uses re-encoding when mp4 export is selected', async () => {
+  it('trims with stream copy then re-encodes when mp4 export is selected', async () => {
     const file = new File(['video'], 'clip.webm', { type: 'video/webm' });
     Object.defineProperty(file, 'arrayBuffer', {
       configurable: true,
@@ -101,9 +102,11 @@ describe('movie exporters', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Trim' }));
 
     await waitFor(() => {
-      expect(ffmpegMocks.exec).toHaveBeenCalledTimes(1);
+      expect(ffmpegMocks.exec).toHaveBeenCalledTimes(2);
       expect(screen.getByText('完了')).toBeInTheDocument();
     });
+    expect(ffmpegMocks.exec.mock.calls[0]?.[0]).toContain('copy');
+    expect(ffmpegMocks.exec.mock.calls[1]?.[0]).toContain('mpeg4');
   });
 
   it('converts mov files to mp4', async () => {
