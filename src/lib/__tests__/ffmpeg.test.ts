@@ -20,7 +20,7 @@ describe('getFFmpeg', () => {
     await getFFmpeg();
 
     expect(loadMock.mock.calls[0]?.[0]).toEqual({
-      coreURL: '/ffmpeg-core-st/ffmpeg-core.js',
+      coreURL: '/ffmpeg-st-init.js',
       wasmURL: '/ffmpeg-core-st/ffmpeg-core.wasm',
     });
   });

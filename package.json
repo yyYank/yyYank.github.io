@@ -14,7 +14,7 @@
     "test:unit:watch": "vitest",
     "test:links": "node scripts/check-links.mjs",
     "test:links:kotlin-rev": "node scripts/check-links.mjs --scope=/kotlin-rev/",
-    "postinstall": "mkdir -p public/ffmpeg-core public/ffmpeg-core-st && cp node_modules/@ffmpeg/core-mt/dist/esm/ffmpeg-core.js node_modules/@ffmpeg/core-mt/dist/esm/ffmpeg-core.wasm node_modules/@ffmpeg/core-mt/dist/esm/ffmpeg-core.worker.js public/ffmpeg-core/ && cp node_modules/@ffmpeg/core/dist/esm/ffmpeg-core.js node_modules/@ffmpeg/core/dist/esm/ffmpeg-core.wasm public/ffmpeg-core-st/ && cp node_modules/coi-serviceworker/coi-serviceworker.min.js public/coi-serviceworker.js"
+    "postinstall": "mkdir -p public/ffmpeg-core public/ffmpeg-core-st && cp node_modules/@ffmpeg/core-mt/dist/esm/ffmpeg-core.js node_modules/@ffmpeg/core-mt/dist/esm/ffmpeg-core.wasm node_modules/@ffmpeg/core-mt/dist/esm/ffmpeg-core.worker.js public/ffmpeg-core/ && cp node_modules/@ffmpeg/core/dist/umd/ffmpeg-core.js node_modules/@ffmpeg/core/dist/umd/ffmpeg-core.wasm public/ffmpeg-core-st/ && cp node_modules/coi-serviceworker/coi-serviceworker.min.js public/coi-serviceworker.js"
   },
   "dependencies": {
     "@astrojs/mdx": "^5.0.1",
