@@ -1,16 +1,16 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import KotlinRevLayout from '../../layouts/KotlinRevLayout.astro';
-import { isTopLevelIndexSlug } from '../../lib/content';
+import { isTopLevelIndexId } from '../../lib/content';
 
-const allDocs = await getCollection('kotlinrev', ({ data }) => !data.draft);
-const indexDoc = allDocs.find((doc) => isTopLevelIndexSlug(doc.slug));
+const allDocs = (await getCollection('kotlinrev')).filter((doc) => !doc.data.draft);
+const indexDoc = allDocs.find((doc) => isTopLevelIndexId(doc.id));
 
 if (!indexDoc) {
   throw new Error('kotlinrev index document is missing.');
 }
 
-const { Content } = await indexDoc.render();
+const { Content } = await render(indexDoc);
 ---
 
 <KotlinRevLayout title={indexDoc.data.title} description={indexDoc.data.description}>

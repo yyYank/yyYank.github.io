@@ -1,18 +1,18 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import KotlinRevLayout from '../../layouts/KotlinRevLayout.astro';
-import { isTopLevelIndexSlug } from '../../lib/content';
+import { isTopLevelIndexId } from '../../lib/content';
 
 export async function getStaticPaths() {
-  const docs = await getCollection('kotlinrev', ({ data, slug }) => !data.draft && !isTopLevelIndexSlug(slug));
+  const docs = (await getCollection('kotlinrev')).filter((doc) => !doc.data.draft && !isTopLevelIndexId(doc.id));
   return docs.map(doc => ({
-    params: { slug: doc.slug },
+    params: { slug: doc.id },
     props: { doc }
   }));
 }
 
 const { doc } = Astro.props;
-const { Content } = await doc.render();
+const { Content } = await render(doc);
 ---
 
 <KotlinRevLayout title={doc.data.title} description={doc.data.description}>

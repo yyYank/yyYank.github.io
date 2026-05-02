@@ -1,7 +1,7 @@
-export function isTopLevelIndexSlug(slug: string | undefined | null): boolean {
-  if (typeof slug !== 'string') {
+export function isTopLevelIndexId(id: string | undefined | null): boolean {
+  if (typeof id !== 'string') {
     return false;
   }
 
-  return slug === '' || slug === 'index' || slug.endsWith('/index');
+  return id === '' || id === 'index' || id.endsWith('/index');
 }

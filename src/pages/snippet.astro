@@ -64,7 +64,7 @@ function extractSnippets(body: string, docTitle: string, source: string): Snippe
 
 const docs = await getCollection('docs', ({ data }) => !data.draft);
 const allSnippets = docs.flatMap(doc =>
-  extractSnippets(doc.body, doc.data.title, doc.slug)
+  extractSnippets(doc.body, doc.data.title, doc.id)
 );
 ---
 

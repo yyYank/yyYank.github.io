@@ -15,10 +15,10 @@ const { docs, currentSlug } = Astro.props;
     {docs.map(doc => (
       <li>
         <a
-          href={`/kotlin-rev/${doc.slug}/`}
+          href={`/kotlin-rev/${doc.id}/`}
           class:list={[
             'block py-2 px-3 rounded-lg transition-colors text-sm',
-            currentSlug === doc.slug
+            currentSlug === doc.id
               ? 'bg-accent-cyan/10 text-accent-cyan border border-accent-cyan/30'
               : 'text-gray-400 hover:text-white hover:bg-dark-700'
           ]}

@@ -1,9 +1,9 @@
 ---
 import DocsLayout from '../../layouts/DocsLayout.astro';
 import { getCollection } from 'astro:content';
-import { isTopLevelIndexSlug } from '../../lib/content';
+import { isTopLevelIndexId } from '../../lib/content';
 
-const allDocs = await getCollection('docs', ({ slug }) => !isTopLevelIndexSlug(slug));
+const allDocs = (await getCollection('docs')).filter((doc) => !isTopLevelIndexId(doc.id));
 const sortedDocs = allDocs.sort((a, b) => (a.data.order ?? 100) - (b.data.order ?? 100));
 ---
 
@@ -15,7 +15,7 @@ const sortedDocs = allDocs.sort((a, b) => (a.data.order ?? 100) - (b.data.order 
   <div class="grid gap-4 mt-8 not-prose">
     {sortedDocs.map(doc => (
       <a
-        href={`/docs/${doc.slug}/`}
+        href={`/docs/${doc.id}/`}
         class="block p-4 bg-dark-800 rounded-lg hover:bg-dark-700 transition-colors no-underline border border-dark-600 hover:border-accent-cyan/50"
       >
         <h3 class="text-lg font-semibold text-white mb-1">{doc.data.title}</h3>
