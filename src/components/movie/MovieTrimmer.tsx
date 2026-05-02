@@ -42,7 +42,7 @@ export default function MovieTrimmer() {
 
     try {
       const nextData = new Uint8Array(await nextFile.arrayBuffer());
-      const nextUrl = URL.createObjectURL(new Blob([nextData], { type: nextFile.type || 'video/mp4' }));
+      const nextUrl = URL.createObjectURL(nextFile);
 
       setFile(nextFile);
       setFileData(nextData);
