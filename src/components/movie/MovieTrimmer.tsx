@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-import { fetchFile } from '@ffmpeg/util';
 import { getFFmpeg } from '../../lib/ffmpeg';
 import DownloadButton from '../sounds/DownloadButton';
 import {
@@ -21,6 +20,7 @@ export default function MovieTrimmer() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [loopSelection, setLoopSelection] = useState(true);
   const [outputBlob, setOutputBlob] = useState<Blob | null>(null);
+  const [outputFilename, setOutputFilename] = useState('trimmed.mp4');
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState('');
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -53,6 +53,7 @@ export default function MovieTrimmer() {
     setCurrentTime(0);
     setIsPlaying(false);
     setOutputBlob(null);
+    setOutputFilename(getTrimmedFilename(nextFile.name));
     setStatus('動画メタデータを読み込み中...');
   };
 
@@ -187,25 +188,60 @@ export default function MovieTrimmer() {
       setStatus('ffmpegを読み込み中...');
       const ffmpeg = await getFFmpeg();
       const ext = file.name.split('.').pop()?.toLowerCase() ?? 'mp4';
-      const inputName = `trim_input.${ext}`;
-      const outputName = `trimmed.${ext}`;
+      const token = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+      const inputName = `trim-input-${token}.${ext}`;
+      const copyOutputName = `trimmed-copy-${token}.${ext}`;
+      const fallbackOutputName = `trimmed-${token}.mp4`;
+      const trimDuration = Math.max(0.1, endTime - startTime).toFixed(3);
 
       setStatus('トリミング中...');
-      await ffmpeg.writeFile(inputName, await fetchFile(file));
-      await ffmpeg.exec([
-        '-i',
-        inputName,
-        '-ss',
-        startTime.toFixed(3),
-        '-to',
-        endTime.toFixed(3),
-        '-c',
-        'copy',
-        outputName,
-      ]);
+      await ffmpeg.writeFile(inputName, new Uint8Array(await file.arrayBuffer()));
+
+      let outputName = copyOutputName;
+      let outputType = file.type || `video/${ext}`;
+      let nextFilename = getTrimmedFilename(file.name);
+
+      try {
+        await ffmpeg.exec([
+          '-ss',
+          startTime.toFixed(3),
+          '-t',
+          trimDuration,
+          '-i',
+          inputName,
+          '-c',
+          'copy',
+          copyOutputName,
+        ]);
+      } catch {
+        setStatus('再エンコードでトリミング中...');
+        outputName = fallbackOutputName;
+        outputType = 'video/mp4';
+        nextFilename = `${file.name.replace(/\.[^.]+$/, '')}_trimmed.mp4`;
+        await ffmpeg.exec([
+          '-ss',
+          startTime.toFixed(3),
+          '-t',
+          trimDuration,
+          '-i',
+          inputName,
+          '-map',
+          '0:v:0?',
+          '-map',
+          '0:a:0?',
+          '-c:v',
+          'mpeg4',
+          '-c:a',
+          'aac',
+          '-movflags',
+          '+faststart',
+          fallbackOutputName,
+        ]);
+      }
 
       const data = await ffmpeg.readFile(outputName);
-      setOutputBlob(new Blob([data], { type: file.type || `video/${ext}` }));
+      setOutputBlob(new Blob([data], { type: outputType }));
+      setOutputFilename(nextFilename);
       setStatus('完了');
     } catch (error) {
       setStatus(`エラー: ${error instanceof Error ? error.message : String(error)}`);
@@ -213,8 +249,6 @@ export default function MovieTrimmer() {
       setLoading(false);
     }
   };
-
-  const trimmedFilename = file ? getTrimmedFilename(file.name) : 'trimmed.mp4';
 
   return (
     <div className="bg-dark-800 border border-dark-600 rounded-xl p-6 space-y-4">
@@ -407,7 +441,7 @@ export default function MovieTrimmer() {
       )}
 
       {status && <p className="text-sm text-gray-400">{status}</p>}
-      {outputBlob && <DownloadButton blob={outputBlob} filename={trimmedFilename} />}
+      {outputBlob && <DownloadButton blob={outputBlob} filename={outputFilename} />}
     </div>
   );
 }
