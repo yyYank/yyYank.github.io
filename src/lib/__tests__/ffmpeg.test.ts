@@ -28,7 +28,7 @@ describe('getFFmpeg', () => {
 
     const config = loadMock.mock.calls[0]?.[0];
     expect(config).toMatchObject({
-      coreURL: '/ffmpeg-mt-init.js',
+      coreURL: '/ffmpeg-core/ffmpeg-core.js',
       wasmURL: '/ffmpeg-core/ffmpeg-core.wasm',
       workerURL: '/ffmpeg-core/ffmpeg-core.worker.js',
     });
@@ -44,7 +44,7 @@ describe('getFFmpeg', () => {
 
     const config = loadMock.mock.calls[0]?.[0];
     expect(config).toMatchObject({
-      coreURL: '/ffmpeg-st-init.js',
+      coreURL: '/ffmpeg-core-st/ffmpeg-core.js',
       wasmURL: '/ffmpeg-core-st/ffmpeg-core.wasm',
     });
     expect(config?.workerURL).toBeUndefined();

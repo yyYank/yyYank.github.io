@@ -16,12 +16,12 @@ export async function getFFmpeg(): Promise<FFmpeg> {
   if (!loaded) {
     const config = canUseSharedArrayBuffer()
       ? {
-          coreURL: '/ffmpeg-mt-init.js',
+          coreURL: '/ffmpeg-core/ffmpeg-core.js',
           wasmURL: '/ffmpeg-core/ffmpeg-core.wasm',
           workerURL: '/ffmpeg-core/ffmpeg-core.worker.js',
         }
       : {
-          coreURL: '/ffmpeg-st-init.js',
+          coreURL: '/ffmpeg-core-st/ffmpeg-core.js',
           wasmURL: '/ffmpeg-core-st/ffmpeg-core.wasm',
         };
     await ffmpeg.load(config);
