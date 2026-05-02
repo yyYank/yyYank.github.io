@@ -22,7 +22,8 @@ export async function encodeToMp4(
   inputName: string,
   outputName: string,
   startTime: number | null,
-  duration?: number
+  duration?: number,
+  onProgress?: (ratio: number) => void
 ): Promise<void> {
   const args = [
     ...(startTime !== null ? ['-ss', startTime.toFixed(3)] : []),
@@ -45,5 +46,13 @@ export async function encodeToMp4(
     args.splice(startTime !== null ? 2 : 0, 0, '-t', duration.toFixed(3));
   }
 
-  await ffmpeg.exec(args);
+  const handler = onProgress
+    ? ({ progress }: { progress: number }) => onProgress(progress)
+    : null;
+  if (handler) ffmpeg.on('progress', handler);
+  try {
+    await ffmpeg.exec(args);
+  } finally {
+    if (handler) ffmpeg.off('progress', handler);
+  }
 }

@@ -23,9 +23,12 @@ export default function MovToMp4Converter() {
       const outputName = 'output.mp4';
       const baseName = file.name.replace(/\.[^.]+$/, '');
 
-      setStatus('MOV を MP4 に変換中...');
+      setStatus('MOV を MP4 に変換中... 0%');
       await writeInputFile(ffmpeg, inputName, await readFileBytes(file));
-      await encodeToMp4(ffmpeg, inputName, outputName, null);
+      await encodeToMp4(ffmpeg, inputName, outputName, null, undefined, (ratio) => {
+        const clamped = Math.max(0, Math.min(1, ratio));
+        setStatus(`MOV を MP4 に変換中... ${Math.round(clamped * 100)}%`);
+      });
 
       setOutputBlob(await readOutputBlob(ffmpeg, outputName, 'video/mp4'));
       setOutputFilename(`${baseName}.mp4`);

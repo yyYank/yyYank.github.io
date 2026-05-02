@@ -230,9 +230,21 @@ export default function MovieTrimmer() {
       let outputType = exportMp4 ? 'video/mp4' : file.type || `video/${ext}`;
       let nextFilename = exportMp4 ? `${baseName}_trimmed.mp4` : getTrimmedFilename(file.name);
 
+      const reportProgress = (label: string) => (ratio: number) => {
+        const clamped = Math.max(0, Math.min(1, ratio));
+        setStatus(`${label} ${Math.round(clamped * 100)}%`);
+      };
+
       if (exportMp4) {
-        setStatus('MP4としてトリミング中...');
-        await encodeToMp4(ffmpeg, inputName, fallbackOutputName, startTime, Number(trimDuration));
+        setStatus('MP4としてトリミング中... 0%');
+        await encodeToMp4(
+          ffmpeg,
+          inputName,
+          fallbackOutputName,
+          startTime,
+          Number(trimDuration),
+          reportProgress('MP4としてトリミング中...')
+        );
       } else {
         try {
           await ffmpeg.exec([
@@ -247,11 +259,18 @@ export default function MovieTrimmer() {
             copyOutputName,
           ]);
         } catch {
-          setStatus('再エンコードでトリミング中...');
+          setStatus('再エンコードでトリミング中... 0%');
           outputName = fallbackOutputName;
           outputType = 'video/mp4';
           nextFilename = `${baseName}_trimmed.mp4`;
-          await encodeToMp4(ffmpeg, inputName, fallbackOutputName, startTime, Number(trimDuration));
+          await encodeToMp4(
+            ffmpeg,
+            inputName,
+            fallbackOutputName,
+            startTime,
+            Number(trimDuration),
+            reportProgress('再エンコードでトリミング中...')
+          );
         }
       }
 

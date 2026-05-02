@@ -7,16 +7,22 @@ const ffmpegMocks = vi.hoisted(() => {
   const writeFile = vi.fn();
   const exec = vi.fn();
   const readFile = vi.fn();
+  const on = vi.fn();
+  const off = vi.fn();
   const getFFmpeg = vi.fn(async () => ({
     writeFile,
     exec,
     readFile,
+    on,
+    off,
   }));
 
   return {
     writeFile,
     exec,
     readFile,
+    on,
+    off,
     getFFmpeg,
   };
 });
