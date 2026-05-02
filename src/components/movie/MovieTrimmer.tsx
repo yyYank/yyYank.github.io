@@ -64,71 +64,54 @@ export default function MovieTrimmer() {
     };
   }, [videoUrl]);
 
-  useEffect(() => {
+  const handleLoadedMetadata = () => {
     const video = videoRef.current;
     if (!video) return;
 
-    const handleLoadedMetadata = () => {
-      const nextDuration = Number.isFinite(video.duration) ? video.duration : 0;
-      if (nextDuration <= 0) {
-        setDuration(0);
-        setStartTime(0);
-        setEndTime(0);
-        setCurrentTime(0);
-        setStatus('動画の長さを取得できませんでした');
-        return;
-      }
-
-      setDuration(nextDuration);
+    const nextDuration = Number.isFinite(video.duration) ? video.duration : 0;
+    if (nextDuration <= 0) {
+      setDuration(0);
       setStartTime(0);
-      setEndTime(nextDuration);
-      setStartInput('0.0');
-      setEndInput(nextDuration.toFixed(1));
+      setEndTime(0);
       setCurrentTime(0);
-      setStatus('');
-    };
+      setStatus('動画の長さを取得できませんでした');
+      return;
+    }
 
-    const handleTimeUpdate = () => {
-      if (!isReady) return;
+    setDuration(nextDuration);
+    setStartTime(0);
+    setEndTime(nextDuration);
+    setStartInput('0.0');
+    setEndInput(nextDuration.toFixed(1));
+    setCurrentTime(0);
+    setStatus('');
+  };
 
-      const nextTime = video.currentTime;
-      setCurrentTime(nextTime);
+  const handleTimeUpdate = () => {
+    const video = videoRef.current;
+    if (!video || !isReady) return;
 
-      if (nextTime < endTime - 0.02) {
-        return;
-      }
+    const nextTime = video.currentTime;
+    setCurrentTime(nextTime);
 
-      if (loopSelection) {
-        video.currentTime = startTime;
-        void video.play();
-      } else {
-        video.pause();
-        video.currentTime = endTime;
-        setCurrentTime(endTime);
-      }
-    };
+    if (nextTime < endTime - 0.02) {
+      return;
+    }
 
-    const handlePlay = () => setIsPlaying(true);
-    const handlePause = () => setIsPlaying(false);
-    const handleEnded = () => setIsPlaying(false);
-    const handleError = () => setStatus('動画の読み込みに失敗しました');
+    if (loopSelection) {
+      video.currentTime = startTime;
+      void video.play();
+    } else {
+      video.pause();
+      video.currentTime = endTime;
+      setCurrentTime(endTime);
+    }
+  };
 
-    video.addEventListener('loadedmetadata', handleLoadedMetadata);
-    video.addEventListener('timeupdate', handleTimeUpdate);
-    video.addEventListener('play', handlePlay);
-    video.addEventListener('pause', handlePause);
-    video.addEventListener('ended', handleEnded);
-    video.addEventListener('error', handleError);
-
-    return () => {
-      video.removeEventListener('loadedmetadata', handleLoadedMetadata);
-      video.removeEventListener('timeupdate', handleTimeUpdate);
-      video.removeEventListener('play', handlePlay);
-      video.removeEventListener('pause', handlePause);
-      video.removeEventListener('ended', handleEnded);
-      video.removeEventListener('error', handleError);
-    };
-  }, [startTime, endTime, loopSelection, isReady]);
+  const handlePlay = () => setIsPlaying(true);
+  const handlePause = () => setIsPlaying(false);
+  const handleEnded = () => setIsPlaying(false);
+  const handleError = () => setStatus('動画の読み込みに失敗しました');
 
   useEffect(() => {
     const video = videoRef.current;
@@ -255,7 +238,20 @@ export default function MovieTrimmer() {
         <>
           <div className="rounded-xl border border-dark-600 bg-dark-900/50 p-4 space-y-4">
             <div className="aspect-video overflow-hidden rounded-lg bg-black">
-              <video ref={videoRef} src={videoUrl} preload="metadata" controls className="h-full w-full" />
+              <video
+                key={videoUrl}
+                ref={videoRef}
+                src={videoUrl}
+                preload="metadata"
+                controls
+                onLoadedMetadata={handleLoadedMetadata}
+                onTimeUpdate={handleTimeUpdate}
+                onPlay={handlePlay}
+                onPause={handlePause}
+                onEnded={handleEnded}
+                onError={handleError}
+                className="h-full w-full"
+              />
             </div>
 
             <div className="flex flex-wrap items-center gap-3">
