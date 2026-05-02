@@ -54,8 +54,6 @@ export async function encodeToMp4(
     'mpeg4',
     '-c:a',
     'aac',
-    '-movflags',
-    '+faststart',
     outputName,
   ];
 
