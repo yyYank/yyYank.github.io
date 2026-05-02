@@ -76,6 +76,30 @@ describe('movie exporters', () => {
     expect(ffmpegMocks.exec.mock.calls[0]?.[0]).toContain('mpeg4');
   });
 
+  it('uses re-encoding when mp4 export is selected', async () => {
+    const file = new File(['video'], 'clip.webm', { type: 'video/webm' });
+    Object.defineProperty(file, 'arrayBuffer', {
+      configurable: true,
+      value: vi.fn().mockResolvedValue(new Uint8Array([9, 8, 7]).buffer),
+    });
+
+    render(<MovieTrimmer />);
+
+    await userEvent.upload(screen.getByLabelText('File Upload'), file);
+
+    const video = document.querySelector('video') as HTMLVideoElement;
+    Object.defineProperty(video, 'duration', { configurable: true, value: 6 });
+    fireEvent.loadedMetadata(video);
+
+    await userEvent.selectOptions(screen.getByLabelText('出力形式'), 'mp4');
+    await userEvent.click(screen.getByRole('button', { name: 'Trim' }));
+
+    await waitFor(() => {
+      expect(ffmpegMocks.exec).toHaveBeenCalledTimes(1);
+      expect(screen.getByText('完了')).toBeInTheDocument();
+    });
+  });
+
   it('converts mov files to mp4', async () => {
     const file = new File(['video'], 'clip.mov', { type: 'video/quicktime' });
     Object.defineProperty(file, 'arrayBuffer', {
@@ -95,5 +119,23 @@ describe('movie exporters', () => {
     });
 
     expect(ffmpegMocks.exec.mock.calls[0]?.[0]).toContain('output.mp4');
+  });
+
+  it('uses re-encoding when converting mov to mp4', async () => {
+    const file = new File(['video'], 'clip.mov', { type: 'video/quicktime' });
+    Object.defineProperty(file, 'arrayBuffer', {
+      configurable: true,
+      value: vi.fn().mockResolvedValue(new Uint8Array([1, 2, 3]).buffer),
+    });
+
+    render(<MovToMp4Converter />);
+
+    await userEvent.upload(screen.getByLabelText('File Upload'), file);
+    await userEvent.click(screen.getByRole('button', { name: 'Convert to MP4' }));
+
+    await waitFor(() => {
+      expect(ffmpegMocks.exec).toHaveBeenCalledTimes(1);
+      expect(screen.getByText('変換完了')).toBeInTheDocument();
+    });
   });
 });

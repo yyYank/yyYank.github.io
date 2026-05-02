@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { getFFmpeg } from '../../lib/ffmpeg';
 import DownloadButton from '../sounds/DownloadButton';
+import { encodeToMp4, readFileBytes, readOutputBlob, writeInputFile } from './movieExport';
 
 export default function MovToMp4Converter() {
   const [file, setFile] = useState<File | null>(null);
@@ -23,31 +24,10 @@ export default function MovToMp4Converter() {
       const baseName = file.name.replace(/\.[^.]+$/, '');
 
       setStatus('MOV を MP4 に変換中...');
-      await ffmpeg.writeFile(inputName, new Uint8Array(await file.arrayBuffer()));
+      await writeInputFile(ffmpeg, inputName, await readFileBytes(file));
+      await encodeToMp4(ffmpeg, inputName, outputName, null);
 
-      try {
-        await ffmpeg.exec(['-i', inputName, '-c', 'copy', outputName]);
-      } catch {
-        await ffmpeg.exec([
-          '-i',
-          inputName,
-          '-map',
-          '0:v:0?',
-          '-map',
-          '0:a:0?',
-          '-c:v',
-          'mpeg4',
-          '-c:a',
-          'aac',
-          '-movflags',
-          '+faststart',
-          outputName,
-        ]);
-      }
-
-      const data = await ffmpeg.readFile(outputName);
-      const outputBytes = data instanceof Uint8Array ? data : new Uint8Array(data);
-      setOutputBlob(new Blob([outputBytes], { type: 'video/mp4' }));
+      setOutputBlob(await readOutputBlob(ffmpeg, outputName, 'video/mp4'));
       setOutputFilename(`${baseName}.mp4`);
       setStatus('変換完了');
     } catch (error) {

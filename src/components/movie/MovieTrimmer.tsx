@@ -7,6 +7,12 @@ import {
   formatVideoTime,
   getTrimmedFilename,
 } from './movieTrimmerUtils';
+import {
+  encodeToMp4,
+  readFileBytes,
+  readOutputBlob,
+  writeInputFile,
+} from './movieExport';
 
 export default function MovieTrimmer() {
   const [file, setFile] = useState<File | null>(null);
@@ -39,8 +45,7 @@ export default function MovieTrimmer() {
 
   const loadSelectedFileData = async (nextFile: File, nextUrl: string) => {
     try {
-      const nextData = new Uint8Array(await nextFile.arrayBuffer());
-      setFileData(nextData);
+      setFileData(await readFileBytes(nextFile));
     } catch (error) {
       setFile(null);
       setFileData(null);
@@ -215,10 +220,10 @@ export default function MovieTrimmer() {
       const inputName = `trim-input-${token}.${ext}`;
       const copyOutputName = `trimmed-copy-${token}.${ext}`;
       const fallbackOutputName = `trimmed-${token}.mp4`;
-      const trimDuration = Math.max(0.1, endTime - startTime).toFixed(3);
+      const trimDuration = Math.max(0.1, endTime - startTime);
 
       setStatus('トリミング中...');
-      await ffmpeg.writeFile(inputName, fileData);
+      await writeInputFile(ffmpeg, inputName, fileData);
 
       const exportMp4 = outputFormat === 'mp4';
       let outputName = exportMp4 ? fallbackOutputName : copyOutputName;
@@ -227,32 +232,14 @@ export default function MovieTrimmer() {
 
       if (exportMp4) {
         setStatus('MP4としてトリミング中...');
-        await ffmpeg.exec([
-          '-ss',
-          startTime.toFixed(3),
-          '-t',
-          trimDuration,
-          '-i',
-          inputName,
-          '-map',
-          '0:v:0?',
-          '-map',
-          '0:a:0?',
-          '-c:v',
-          'mpeg4',
-          '-c:a',
-          'aac',
-          '-movflags',
-          '+faststart',
-          fallbackOutputName,
-        ]);
+        await encodeToMp4(ffmpeg, inputName, fallbackOutputName, startTime, Number(trimDuration));
       } else {
         try {
           await ffmpeg.exec([
             '-ss',
             startTime.toFixed(3),
             '-t',
-            trimDuration,
+            trimDuration.toFixed(3),
             '-i',
             inputName,
             '-c',
@@ -264,31 +251,11 @@ export default function MovieTrimmer() {
           outputName = fallbackOutputName;
           outputType = 'video/mp4';
           nextFilename = `${baseName}_trimmed.mp4`;
-          await ffmpeg.exec([
-            '-ss',
-            startTime.toFixed(3),
-            '-t',
-            trimDuration,
-            '-i',
-            inputName,
-            '-map',
-            '0:v:0?',
-            '-map',
-            '0:a:0?',
-            '-c:v',
-            'mpeg4',
-            '-c:a',
-            'aac',
-            '-movflags',
-            '+faststart',
-            fallbackOutputName,
-          ]);
+          await encodeToMp4(ffmpeg, inputName, fallbackOutputName, startTime, Number(trimDuration));
         }
       }
 
-      const data = await ffmpeg.readFile(outputName);
-      const outputBytes = data instanceof Uint8Array ? data : new Uint8Array(data);
-      setOutputBlob(new Blob([outputBytes], { type: outputType }));
+      setOutputBlob(await readOutputBlob(ffmpeg, outputName, outputType));
       setOutputFilename(nextFilename);
       setStatus('完了');
     } catch (error) {
