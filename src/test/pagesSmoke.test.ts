@@ -16,6 +16,7 @@ const topLevelPages = [
   ['src/pages/img_paste.astro', '<ImagePaste client:load />'],
   ['src/pages/index.astro', '<PagesSection client:load />'],
   ['src/pages/movie.astro', '<MovieTrimmer client:load />'],
+  ['src/pages/movie.astro', '<MovToMp4Converter client:load />'],
   ['src/pages/ocr.astro', '付箋・メモOCR'],
   ['src/pages/random_pass.astro', '<PasswordGenerator client:load />'],
   ['src/pages/snippet.astro', '<SnippetSearch client:load snippets={allSnippets} />'],

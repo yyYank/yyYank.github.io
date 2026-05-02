@@ -12,6 +12,7 @@ export default function MovieTrimmer() {
   const [file, setFile] = useState<File | null>(null);
   const [fileData, setFileData] = useState<Uint8Array | null>(null);
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
+  const [outputFormat, setOutputFormat] = useState<'original' | 'mp4'>('original');
   const [duration, setDuration] = useState(0);
   const [startTime, setStartTime] = useState(0);
   const [endTime, setEndTime] = useState(0);
@@ -71,6 +72,7 @@ export default function MovieTrimmer() {
     setCurrentTime(0);
     setIsPlaying(false);
     setOutputBlob(null);
+    setOutputFormat('original');
     setOutputFilename(getTrimmedFilename(nextFile.name));
     setStatus('動画メタデータを読み込み中...');
 
@@ -208,6 +210,7 @@ export default function MovieTrimmer() {
       setStatus('ffmpegを読み込み中...');
       const ffmpeg = await getFFmpeg();
       const ext = file.name.split('.').pop()?.toLowerCase() ?? 'mp4';
+      const baseName = file.name.replace(/\.[^.]+$/, '');
       const token = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
       const inputName = `trim-input-${token}.${ext}`;
       const copyOutputName = `trimmed-copy-${token}.${ext}`;
@@ -217,27 +220,13 @@ export default function MovieTrimmer() {
       setStatus('トリミング中...');
       await ffmpeg.writeFile(inputName, fileData);
 
-      let outputName = copyOutputName;
-      let outputType = file.type || `video/${ext}`;
-      let nextFilename = getTrimmedFilename(file.name);
+      const exportMp4 = outputFormat === 'mp4';
+      let outputName = exportMp4 ? fallbackOutputName : copyOutputName;
+      let outputType = exportMp4 ? 'video/mp4' : file.type || `video/${ext}`;
+      let nextFilename = exportMp4 ? `${baseName}_trimmed.mp4` : getTrimmedFilename(file.name);
 
-      try {
-        await ffmpeg.exec([
-          '-ss',
-          startTime.toFixed(3),
-          '-t',
-          trimDuration,
-          '-i',
-          inputName,
-          '-c',
-          'copy',
-          copyOutputName,
-        ]);
-      } catch {
-        setStatus('再エンコードでトリミング中...');
-        outputName = fallbackOutputName;
-        outputType = 'video/mp4';
-        nextFilename = `${file.name.replace(/\.[^.]+$/, '')}_trimmed.mp4`;
+      if (exportMp4) {
+        setStatus('MP4としてトリミング中...');
         await ffmpeg.exec([
           '-ss',
           startTime.toFixed(3),
@@ -257,6 +246,44 @@ export default function MovieTrimmer() {
           '+faststart',
           fallbackOutputName,
         ]);
+      } else {
+        try {
+          await ffmpeg.exec([
+            '-ss',
+            startTime.toFixed(3),
+            '-t',
+            trimDuration,
+            '-i',
+            inputName,
+            '-c',
+            'copy',
+            copyOutputName,
+          ]);
+        } catch {
+          setStatus('再エンコードでトリミング中...');
+          outputName = fallbackOutputName;
+          outputType = 'video/mp4';
+          nextFilename = `${baseName}_trimmed.mp4`;
+          await ffmpeg.exec([
+            '-ss',
+            startTime.toFixed(3),
+            '-t',
+            trimDuration,
+            '-i',
+            inputName,
+            '-map',
+            '0:v:0?',
+            '-map',
+            '0:a:0?',
+            '-c:v',
+            'mpeg4',
+            '-c:a',
+            'aac',
+            '-movflags',
+            '+faststart',
+            fallbackOutputName,
+          ]);
+        }
       }
 
       const data = await ffmpeg.readFile(outputName);
@@ -453,6 +480,24 @@ export default function MovieTrimmer() {
               />
               <p className="text-xs text-gray-500 mt-0.5">{formatVideoTime(endTime)}</p>
             </div>
+          </div>
+
+          <div>
+            <label htmlFor="movie-output-format" className="block text-xs text-gray-400 mb-1">
+              出力形式
+            </label>
+            <select
+              id="movie-output-format"
+              value={outputFormat}
+              onChange={(event) => setOutputFormat(event.target.value as 'original' | 'mp4')}
+              className="w-full bg-dark-700 border border-dark-500 rounded-lg px-3 py-1.5 text-sm text-white"
+            >
+              <option value="original">元の形式を優先</option>
+              <option value="mp4">MP4</option>
+            </select>
+            <p className="text-xs text-gray-500 mt-0.5">
+              MP4 を選ぶと、トリミング結果を常に `*.mp4` で出力します。
+            </p>
           </div>
 
           <p className="text-sm text-gray-400">
