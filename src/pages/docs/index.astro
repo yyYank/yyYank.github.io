@@ -1,8 +1,9 @@
 ---
 import DocsLayout from '../../layouts/DocsLayout.astro';
 import { getCollection } from 'astro:content';
+import { isTopLevelIndexSlug } from '../../lib/content';
 
-const allDocs = await getCollection('docs');
+const allDocs = await getCollection('docs', ({ slug }) => !isTopLevelIndexSlug(slug));
 const sortedDocs = allDocs.sort((a, b) => (a.data.order ?? 100) - (b.data.order ?? 100));
 ---
 

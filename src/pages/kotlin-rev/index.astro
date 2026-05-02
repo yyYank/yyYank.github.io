@@ -1,9 +1,10 @@
 ---
 import { getCollection } from 'astro:content';
 import KotlinRevLayout from '../../layouts/KotlinRevLayout.astro';
+import { isTopLevelIndexSlug } from '../../lib/content';
 
 const allDocs = await getCollection('kotlinrev', ({ data }) => !data.draft);
-const indexDoc = allDocs.find((doc) => doc.slug === 'index');
+const indexDoc = allDocs.find((doc) => isTopLevelIndexSlug(doc.slug));
 
 if (!indexDoc) {
   throw new Error('kotlinrev index document is missing.');

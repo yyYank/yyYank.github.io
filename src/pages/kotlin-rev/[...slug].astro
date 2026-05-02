@@ -1,9 +1,10 @@
 ---
 import { getCollection } from 'astro:content';
 import KotlinRevLayout from '../../layouts/KotlinRevLayout.astro';
+import { isTopLevelIndexSlug } from '../../lib/content';
 
 export async function getStaticPaths() {
-  const docs = await getCollection('kotlinrev', ({ data, slug }) => !data.draft && slug !== 'index');
+  const docs = await getCollection('kotlinrev', ({ data, slug }) => !data.draft && !isTopLevelIndexSlug(slug));
   return docs.map(doc => ({
     params: { slug: doc.slug },
     props: { doc }
