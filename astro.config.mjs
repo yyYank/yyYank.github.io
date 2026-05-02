@@ -1,20 +1,24 @@
 import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import mdx from '@astrojs/mdx';
-import tailwind from '@astrojs/tailwind';
+import tailwindcss from 'tailwindcss';
 
 export default defineConfig({
   site: 'https://yyyank.github.io',
   integrations: [
     react(),
-    mdx(),
-    tailwind()
+    mdx()
   ],
   output: 'static',
   build: {
     assets: 'assets'
   },
   vite: {
+    css: {
+      postcss: {
+        plugins: [tailwindcss()],
+      },
+    },
     optimizeDeps: {
       exclude: ['@ffmpeg/ffmpeg', '@ffmpeg/util'],
     },
