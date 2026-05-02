@@ -14,7 +14,7 @@
     "test:unit:watch": "vitest",
     "test:links": "node scripts/check-links.mjs",
     "test:links:kotlin-rev": "node scripts/check-links.mjs --scope=/kotlin-rev/",
-    "postinstall": "mkdir -p public/ffmpeg-core && cp node_modules/@ffmpeg/core/dist/umd/ffmpeg-core.js node_modules/@ffmpeg/core/dist/umd/ffmpeg-core.wasm public/ffmpeg-core/"
+    "postinstall": "mkdir -p public/ffmpeg-core && cp node_modules/@ffmpeg/core-mt/dist/umd/ffmpeg-core.js node_modules/@ffmpeg/core-mt/dist/umd/ffmpeg-core.wasm node_modules/@ffmpeg/core-mt/dist/umd/ffmpeg-core.worker.js public/ffmpeg-core/ && cp node_modules/coi-serviceworker/coi-serviceworker.min.js public/coi-serviceworker.js"
   },
   "dependencies": {
     "@astrojs/mdx": "^5.0.1",
@@ -22,10 +22,12 @@
     "@astrojs/sitemap": "^3.1.0",
     "@astrojs/tailwind": "^2.1.3",
     "@ffmpeg/core": "^0.12.10",
+    "@ffmpeg/core-mt": "^0.12.10",
     "@ffmpeg/ffmpeg": "^0.12.15",
     "@ffmpeg/util": "^0.12.2",
     "@tailwindcss/typography": "^0.5.10",
     "astro": "^6.0.5",
+    "coi-serviceworker": "^0.1.7",
     "framer-motion": "^12.34.0",
     "fuse.js": "^7.1.0",
     "react": "^18.2.0",
