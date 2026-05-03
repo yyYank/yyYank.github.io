@@ -41,19 +41,27 @@ export async function encodeToMp4(
   ffmpeg: FFmpeg,
   inputName: string,
   outputName: string,
-  _onProgress?: (ratio: number) => void
+  onProgress?: (ratio: number) => void
 ): Promise<void> {
-  await ffmpeg.exec([
-    '-i',
-    inputName,
-    '-map',
-    '0:v:0?',
-    '-map',
-    '0:a:0?',
-    '-c:v',
-    'mpeg4',
-    '-c:a',
-    'aac',
-    outputName,
-  ]);
+  const handler = onProgress
+    ? ({ progress }: { progress: number }) => onProgress(progress)
+    : null;
+  if (handler) ffmpeg.on('progress', handler);
+  try {
+    await ffmpeg.exec([
+      '-i',
+      inputName,
+      '-map',
+      '0:v:0?',
+      '-map',
+      '0:a:0?',
+      '-c:v',
+      'mpeg4',
+      '-c:a',
+      'aac',
+      outputName,
+    ]);
+  } finally {
+    if (handler) ffmpeg.off('progress', handler);
+  }
 }

@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const SAMPLE = path.resolve(__dirname, '../test/fixtures/sample.mp4');
+const SAMPLE_30S = path.resolve(__dirname, '../test/fixtures/sample-30s.mp4');
 
 test('MovieTrimmer trims an mp4 and produces a downloadable blob', async ({ page }) => {
   page.on('pageerror', (err) => console.error('pageerror:', err.message));
@@ -27,6 +28,32 @@ test('MovieTrimmer trims an mp4 and produces a downloadable blob', async ({ page
 
   await expect(page.getByRole('button', { name: /Download/ })).toBeVisible({
     timeout: 90_000,
+  });
+});
+
+test('MovieTrimmer MP4 export re-encodes a 30-second fixture and reports progress', async ({ page }) => {
+  page.on('pageerror', (err) => console.error('pageerror:', err.message));
+
+  await page.goto('/movie/');
+
+  const fileInput = page.locator('#movie-upload');
+  await fileInput.setInputFiles(SAMPLE_30S);
+
+  await page.waitForFunction(() => {
+    const v = document.querySelector('video') as HTMLVideoElement | null;
+    return !!v && Number.isFinite(v.duration) && v.duration > 0;
+  }, { timeout: 30_000 });
+
+  await page.locator('#movie-output-format').selectOption('mp4');
+  await page.getByRole('button', { name: 'Trim' }).click();
+
+  // 進捗が0%以外まで進むことを確認（壊れていないことの保証）
+  await expect(
+    page.getByText(/MP4に再エンコード中\.\.\. ([1-9]\d?|100)%/),
+  ).toBeVisible({ timeout: 60_000 });
+
+  await expect(page.getByRole('button', { name: /Download/ })).toBeVisible({
+    timeout: 240_000,
   });
 });
 
