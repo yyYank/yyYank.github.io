@@ -32,6 +32,8 @@ export default function MovieTrimmer() {
   const [outputFilename, setOutputFilename] = useState('trimmed.mp4');
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [elapsedSeconds, setElapsedSeconds] = useState(0);
   const videoRef = useRef<HTMLVideoElement>(null);
   const isReady = duration > 0;
 
@@ -88,6 +90,16 @@ export default function MovieTrimmer() {
   useEffect(() => {
     void getFFmpeg();
   }, []);
+
+  useEffect(() => {
+    if (!loading) return;
+    const startedAt = Date.now();
+    setElapsedSeconds(0);
+    const id = window.setInterval(() => {
+      setElapsedSeconds(Math.floor((Date.now() - startedAt) / 1000));
+    }, 500);
+    return () => window.clearInterval(id);
+  }, [loading]);
 
   useEffect(() => {
     return () => {
@@ -214,6 +226,7 @@ export default function MovieTrimmer() {
     if (!file || !fileData || !isReady) return;
 
     setLoading(true);
+    setErrorMessage('');
     setOutputBlob(null);
 
     try {
@@ -271,7 +284,9 @@ export default function MovieTrimmer() {
       setOutputFilename(nextFilename);
       setStatus('完了');
     } catch (error) {
-      setStatus(`エラー: ${error instanceof Error ? error.message : String(error)}`);
+      const message = error instanceof Error ? error.message : String(error);
+      setStatus('');
+      setErrorMessage(`エラー: ${message}`);
     } finally {
       setLoading(false);
     }
@@ -491,10 +506,19 @@ export default function MovieTrimmer() {
           >
             {loading ? '処理中...' : 'Trim'}
           </button>
+          <p className="text-xs text-gray-500">
+            エンコードは数分〜十分程度時間がかかることがあります。
+          </p>
         </>
       )}
 
-      {status && <p className="text-sm text-gray-400">{status}</p>}
+      {status && (
+        <p className="text-sm text-gray-400">
+          {status}
+          {loading && <span className="ml-2 text-gray-500">（経過 {elapsedSeconds}秒）</span>}
+        </p>
+      )}
+      {errorMessage && <p className="text-sm text-red-400">{errorMessage}</p>}
       {outputBlob && <DownloadButton blob={outputBlob} filename={outputFilename} />}
     </div>
   );

@@ -9,15 +9,28 @@ export default function MovToMp4Converter() {
   const [outputFilename, setOutputFilename] = useState('output.mp4');
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [elapsedSeconds, setElapsedSeconds] = useState(0);
 
   useEffect(() => {
     void getFFmpeg();
   }, []);
 
+  useEffect(() => {
+    if (!loading) return;
+    const startedAt = Date.now();
+    setElapsedSeconds(0);
+    const id = window.setInterval(() => {
+      setElapsedSeconds(Math.floor((Date.now() - startedAt) / 1000));
+    }, 500);
+    return () => window.clearInterval(id);
+  }, [loading]);
+
   const handleConvert = async () => {
     if (!file) return;
 
     setLoading(true);
+    setErrorMessage('');
     setOutputBlob(null);
 
     try {
@@ -27,18 +40,17 @@ export default function MovToMp4Converter() {
       const outputName = 'output.mp4';
       const baseName = file.name.replace(/\.[^.]+$/, '');
 
-      setStatus('MOV を MP4 に変換中... 0%');
+      setStatus('MOV を MP4 に変換中...');
       await writeInputFile(ffmpeg, inputName, await readFileBytes(file));
-      await encodeToMp4(ffmpeg, inputName, outputName, (ratio) => {
-        const clamped = Math.max(0, Math.min(1, ratio));
-        setStatus(`MOV を MP4 に変換中... ${Math.round(clamped * 100)}%`);
-      });
+      await encodeToMp4(ffmpeg, inputName, outputName);
 
       setOutputBlob(await readOutputBlob(ffmpeg, outputName, 'video/mp4'));
       setOutputFilename(`${baseName}.mp4`);
       setStatus('変換完了');
     } catch (error) {
-      setStatus(`エラー: ${error instanceof Error ? error.message : String(error)}`);
+      const message = error instanceof Error ? error.message : String(error);
+      setStatus('');
+      setErrorMessage(`エラー: ${message}`);
     } finally {
       setLoading(false);
     }
@@ -64,6 +76,7 @@ export default function MovToMp4Converter() {
             setFile(event.target.files?.[0] ?? null);
             setOutputBlob(null);
             setStatus('');
+            setErrorMessage('');
           }}
           className="block w-full text-sm text-gray-400 file:mr-3 file:py-1.5 file:px-4 file:rounded-lg file:border-0 file:text-sm file:bg-dark-700 file:text-gray-200 hover:file:bg-dark-600 cursor-pointer"
         />
@@ -77,8 +90,17 @@ export default function MovToMp4Converter() {
       >
         {loading ? '処理中...' : 'Convert to MP4'}
       </button>
+      <p className="text-xs text-gray-500">
+        エンコードは数分〜十分程度時間がかかることがあります。
+      </p>
 
-      {status && <p className="text-sm text-gray-400">{status}</p>}
+      {status && (
+        <p className="text-sm text-gray-400">
+          {status}
+          {loading && <span className="ml-2 text-gray-500">（経過 {elapsedSeconds}秒）</span>}
+        </p>
+      )}
+      {errorMessage && <p className="text-sm text-red-400">{errorMessage}</p>}
 
       {outputBlob && <DownloadButton blob={outputBlob} filename={outputFilename} />}
     </div>
