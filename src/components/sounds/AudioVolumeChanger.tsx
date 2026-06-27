@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import { fetchFile } from '@ffmpeg/util';
 import { getFFmpeg } from '../../lib/ffmpeg';
 import DownloadButton from './DownloadButton';
@@ -8,8 +8,43 @@ export default function AudioVolumeChanger() {
   const [volume, setVolume] = useState(1.0);
   const [outputBlob, setOutputBlob] = useState<Blob | null>(null);
   const [loading, setLoading] = useState(false);
+  const [playing, setPlaying] = useState(false);
   const [status, setStatus] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
+  const audioCtxRef = useRef<AudioContext | null>(null);
+  const audioBufferRef = useRef<AudioBuffer | null>(null);
+  const sourceRef = useRef<AudioBufferSourceNode | null>(null);
+  const gainRef = useRef<GainNode | null>(null);
+
+  const decodeFile = useCallback(async (f: File) => {
+    const ctx = new AudioContext();
+    const arrayBuffer = await f.arrayBuffer();
+    const audioBuffer = await ctx.decodeAudioData(arrayBuffer);
+    audioCtxRef.current = ctx;
+    audioBufferRef.current = audioBuffer;
+  }, []);
+
+  const handlePreview = useCallback(() => {
+    if (playing) {
+      sourceRef.current?.stop();
+      setPlaying(false);
+      return;
+    }
+    const ctx = audioCtxRef.current;
+    const buffer = audioBufferRef.current;
+    if (!ctx || !buffer) return;
+
+    const source = ctx.createBufferSource();
+    source.buffer = buffer;
+    const gain = ctx.createGain();
+    gain.gain.value = volume;
+    source.connect(gain).connect(ctx.destination);
+    source.onended = () => setPlaying(false);
+    source.start();
+    sourceRef.current = source;
+    gainRef.current = gain;
+    setPlaying(true);
+  }, [playing, volume]);
 
   const handleChange = async () => {
     if (!file) return;
@@ -51,10 +86,14 @@ export default function AudioVolumeChanger() {
           ref={inputRef}
           type="file"
           accept=".mp3,audio/mpeg"
-          onChange={(e) => {
-            setFile(e.target.files?.[0] ?? null);
+          onChange={async (e) => {
+            const f = e.target.files?.[0] ?? null;
+            setFile(f);
             setOutputBlob(null);
             setStatus('');
+            sourceRef.current?.stop();
+            setPlaying(false);
+            if (f) await decodeFile(f);
           }}
           className="block w-full text-sm text-gray-400 file:mr-3 file:py-1.5 file:px-4 file:rounded-lg file:border-0 file:text-sm file:bg-dark-700 file:text-gray-200 hover:file:bg-dark-600 cursor-pointer"
         />
@@ -80,6 +119,14 @@ export default function AudioVolumeChanger() {
           <span>3.0x</span>
         </div>
       </div>
+
+      <button
+        onClick={handlePreview}
+        disabled={!file}
+        className="w-full py-2 px-4 bg-dark-700 text-gray-200 font-semibold rounded-lg hover:bg-dark-600 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+      >
+        {playing ? 'Stop Preview' : 'Preview'}
+      </button>
 
       <button
         onClick={handleChange}
