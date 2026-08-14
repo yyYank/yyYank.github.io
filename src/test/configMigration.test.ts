@@ -34,9 +34,9 @@ describe('Astro v6 migration files', () => {
     expect(read('astro.config.mjs')).not.toMatch(/@astrojs\/tailwind/);
   });
 
-  it('keeps the movie page wired into the site navigation', () => {
-    expect(read('src', 'pages', 'movie.astro')).toMatch(/<MovieTrimmer client:load \/>/);
-    expect(read('src', 'components', 'Header.astro')).toMatch(/\{ href: '\/movie\/', label: 'Movie' \}/);
+  it('keeps the movie tool wired into the site navigation', () => {
+    expect(read('src', 'pages', 'toolkit.astro')).toMatch(/<MovieTrimmer client:load \/>/);
+    expect(read('src', 'components', 'Header.astro')).toMatch(/\{ href: '\/toolkit\/', label: 'Toolkit' \}/);
     expect(read('src', 'components', 'PagesSection.tsx')).toMatch(/\{ href: '\/movie\/', label: 'Movie Tool', desc: '動画トリミング' \}/);
   });
 });

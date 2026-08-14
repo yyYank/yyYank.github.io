@@ -10,6 +10,14 @@ export default defineConfig({
     mdx()
   ],
   output: 'static',
+  redirects: {
+    '/random_pass/': '/toolkit/?tab=random-pass',
+    '/count/': '/toolkit/?tab=count',
+    '/img_paste/': '/toolkit/?tab=img-paste',
+    '/sounds/': '/toolkit/?tab=audio',
+    '/movie/': '/toolkit/?tab=movie',
+    '/ocr/': '/toolkit/?tab=ocr',
+  },
   build: {
     assets: 'assets'
   },
