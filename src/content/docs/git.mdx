@@ -4,10 +4,10 @@ description: "Git関連のメモ"
 order: 4
 ---
 
-## developとmasterにマージ済みのローカルブランチを削除する
+## main/master/develop以外のマージ済みローカルブランチを削除する
 
 ```bash
-git branch --merged|egrep -v '\*|develop|master'|xargs git branch -d
+git branch --merged|egrep -v '\*|^ *(main|master|develop)$'|xargs git branch -d
 ```
 
 ## authorをammendしたいとき
