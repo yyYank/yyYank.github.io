@@ -2,12 +2,12 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 
 const pageLinks = [
-  { href: '/kotlin-rev/', label: '逆引きKotlin' },
-  { href: '/docs/', label: 'MEMO' },
-  { href: '/feeds/', label: 'Feeds' },
-  { href: '/toolkit/', label: 'Toolkit' },
-  { href: '/transient/', label: 'Transient' },
-  { href: '/diary/', label: 'Diary' },
+  { href: '/kotlin-rev/', icon: '📖', label: '逆引きKotlin' },
+  { href: '/docs/', icon: '📝', label: 'MEMO' },
+  { href: '/feeds/', icon: '📰', label: 'Feeds' },
+  { href: '/toolkit/', icon: '🧰', label: 'Toolkit' },
+  { href: '/transient/', icon: '🗒️', label: 'Transient' },
+  { href: '/diary/', icon: '📔', label: 'Diary' },
 ];
 ---
 
@@ -18,7 +18,6 @@ const pageLinks = [
         <span class="bg-gradient-to-r from-accent-cyan via-accent-purple to-accent-pink bg-clip-text text-transparent">yy_yank</span>
       </h1>
       <p class="text-xl text-gray-400">Japanese 'Yurufuwa' Programmer</p>
-      <p class="text-gray-500 mt-2">CELLORB Inc.</p>
       <a
         href="/profile/"
         class="inline-block mt-3 text-sm text-accent-cyan hover:text-accent-purple transition-colors underline underline-offset-4"
@@ -32,7 +31,7 @@ const pageLinks = [
             href={item.href}
             class="block p-4 bg-dark-800 border border-dark-600 rounded-lg text-gray-300 hover:text-accent-cyan hover:border-accent-cyan/40 transition-all"
           >
-            {item.label}
+            <span class="mr-1.5">{item.icon}</span>{item.label}
           </a>
         ))}
       </nav>
