@@ -1,0 +1,319 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { TwitterIcon, GitHubIcon, BloggerIcon, HatenaIcon, BlogIcon, MemoIcon, PodcastIcon } from '../components/Icons';
+import { FadeIn, StaggerContainer, StaggerItem, ScaleIn, HoverCard, TextSwitchAnimation } from '../components/Motion';
+import { TechBadgeList } from '../components/TechBadge';
+import PagesSection from '../components/PagesSection.tsx';
+---
+
+<BaseLayout title="Profile">
+  <div class="container mx-auto px-4 py-16">
+    <div class="max-w-4xl mx-auto">
+      <!-- Hero Section -->
+      <div class="text-center mb-16">
+        <ScaleIn client:visible>
+          <div class="relative inline-block mb-6">
+            <div class="absolute inset-0 bg-accent-cyan/20 rounded-full blur-xl"></div>
+            <img
+              src="https://avatars3.githubusercontent.com/u/3250718?v=3&s=460"
+              alt="yy_yank icon"
+              class="relative w-32 h-32 rounded-full border-2 border-accent-cyan/50 shadow-glow-cyan"
+            />
+          </div>
+        </ScaleIn>
+        <h1 class="text-5xl font-bold mb-4">
+          <TextSwitchAnimation
+            firstText=":"
+            secondText="yy_yank"
+            typingSequence={[':', ':q', ':q!']}
+            secondTypingSequence={['y', 'yy', 'yy_', 'yy_y', 'yy_ya', 'yy_yan', 'yy_yank']}
+            className="bg-gradient-to-r from-accent-cyan via-accent-purple to-accent-pink bg-clip-text text-transparent"
+            duration={1}
+            client:load
+          />
+        </h1>
+        <FadeIn delay={0.3} client:visible>
+          <p class="text-xl text-gray-400">Japanese 'Yurufuwa' Programmer</p>
+          <p class="text-gray-500 mt-2">CELLORB Inc.</p>
+        </FadeIn>
+      </div>
+
+      <!-- Tech Stack -->
+      <FadeIn client:visible>
+        <div class="mb-16">
+          <TechBadgeList techs={['Java', 'Kotlin', 'Go', 'Rust', 'TypeScript']} client:visible />
+        </div>
+      </FadeIn>
+
+      <!-- Links Grid -->
+      <StaggerContainer className="grid md:grid-cols-2 gap-6 mb-16" client:visible>
+        <StaggerItem>
+          <HoverCard client:visible>
+            <a
+              href="https://twitter.com/yy_yank"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="block p-6 bg-dark-800 border border-dark-600 rounded-xl hover:border-accent-cyan/50 hover:shadow-glow-cyan transition-all"
+            >
+              <h3 class="text-lg font-semibold text-white hover:text-accent-cyan transition-colors mb-2 flex items-center gap-2">
+                <TwitterIcon />
+                Twitter
+              </h3>
+              <p class="text-gray-400">@yy_yank</p>
+            </a>
+          </HoverCard>
+        </StaggerItem>
+
+        <StaggerItem>
+          <HoverCard client:visible>
+            <a
+              href="https://github.com/yyYank"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="block p-6 bg-dark-800 border border-dark-600 rounded-xl hover:border-accent-purple/50 hover:shadow-glow-purple transition-all"
+            >
+              <h3 class="text-lg font-semibold text-white hover:text-accent-purple transition-colors mb-2 flex items-center gap-2">
+                <GitHubIcon />
+                GitHub
+              </h3>
+              <p class="text-gray-400">github.com/yyYank</p>
+            </a>
+          </HoverCard>
+        </StaggerItem>
+      </StaggerContainer>
+
+      <!-- Pages Section -->
+      <PagesSection client:load />
+
+      <!-- Blog Section -->
+      <FadeIn client:visible>
+        <div class="mb-16">
+          <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="w-8 h-0.5 bg-accent-green"></span>
+            Blog
+          </h2>
+          <StaggerContainer className="space-y-4" staggerDelay={0.08} client:visible>
+            <StaggerItem>
+              <HoverCard client:visible>
+                <a
+                  href="https://yyyank.blogspot.jp/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="flex items-center gap-3 p-4 bg-dark-800/50 border border-dark-600 rounded-lg hover:bg-dark-700 transition-colors group"
+                >
+                  <span class="text-accent-green"><BloggerIcon /></span>
+                  <span class="text-gray-300 group-hover:text-accent-green transition-colors">プログラマのはしくれダイアリー</span>
+                </a>
+              </HoverCard>
+            </StaggerItem>
+            <StaggerItem>
+              <HoverCard client:visible>
+                <a
+                  href="https://yy-yank.hatenablog.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="flex items-center gap-3 p-4 bg-dark-800/50 border border-dark-600 rounded-lg hover:bg-dark-700 transition-colors group"
+                >
+                  <span class="text-accent-green"><HatenaIcon /></span>
+                  <span class="text-gray-300 group-hover:text-accent-green transition-colors">ヤンクの毛刈り</span>
+                </a>
+              </HoverCard>
+            </StaggerItem>
+            <StaggerItem>
+              <HoverCard client:visible>
+                <a
+                  href="https://sizu.me/yy_yank"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="flex items-center gap-3 p-4 bg-dark-800/50 border border-dark-600 rounded-lg hover:bg-dark-700 transition-colors group"
+                >
+                  <span class="text-accent-green"><BlogIcon /></span>
+                  <span class="text-gray-300 group-hover:text-accent-green transition-colors">しずかなインターネット</span>
+                </a>
+              </HoverCard>
+            </StaggerItem>
+            <StaggerItem>
+              <HoverCard client:visible>
+                <a
+                  href="https://qiita.com/yyYank"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="flex items-center gap-3 p-4 bg-dark-800/50 border border-dark-600 rounded-lg hover:bg-dark-700 transition-colors group"
+                >
+                  <span class="text-accent-green"><BlogIcon /></span>
+                  <span class="text-gray-300 group-hover:text-accent-green transition-colors">Qiita</span>
+                </a>
+              </HoverCard>
+            </StaggerItem>
+            <StaggerItem>
+              <HoverCard client:visible>
+                <a
+                  href="https://zenn.dev/yy_yank"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="flex items-center gap-3 p-4 bg-dark-800/50 border border-dark-600 rounded-lg hover:bg-dark-700 transition-colors group"
+                >
+                  <span class="text-accent-green"><BlogIcon /></span>
+                  <span class="text-gray-300 group-hover:text-accent-green transition-colors">Zenn</span>
+                </a>
+              </HoverCard>
+            </StaggerItem>
+          </StaggerContainer>
+        </div>
+      </FadeIn>
+
+      <!-- Podcast Section -->
+      <FadeIn direction="left" client:visible>
+        <div class="mb-16">
+          <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="w-8 h-0.5 bg-accent-cyan"></span>
+            <span class="text-accent-cyan"><PodcastIcon /></span>
+            Podcast
+          </h2>
+          <StaggerContainer className="space-y-4" staggerDelay={0.08} client:visible>
+            <StaggerItem>
+              <HoverCard client:visible>
+                <a
+                  href="https://open.spotify.com/show/10oTV1GgG4GRfbLcwunpJU"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="flex items-center gap-3 p-4 bg-dark-800/50 border border-dark-600 rounded-lg hover:bg-dark-700 transition-colors group"
+                >
+                  <span class="text-accent-cyan"><BlogIcon /></span>
+                  <span class="text-gray-300 group-hover:text-accent-cyan transition-colors">わいわいyankfm</span>
+                </a>
+              </HoverCard>
+            </StaggerItem>
+          </StaggerContainer>
+        </div>
+      </FadeIn>
+
+      <!-- Contributions Section -->
+      <FadeIn direction="left" client:visible>
+        <div class="mb-16">
+          <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="w-8 h-0.5 bg-accent-cyan"></span>
+            Contributions
+          </h2>
+          <StaggerContainer className="space-y-4" staggerDelay={0.08} client:visible>
+            <StaggerItem>
+              <HoverCard client:visible>
+                <a
+                  href="https://drive.google.com/file/d/0Bylpznm149-gTGRjOFRkWm9PODg/view"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="block p-4 bg-dark-800/50 border border-dark-600 rounded-lg hover:bg-dark-700 transition-colors"
+                >
+                  <span class="text-gray-300 hover:text-accent-cyan transition-colors">Kotlin助走読本</span>
+                </a>
+              </HoverCard>
+            </StaggerItem>
+            <StaggerItem>
+              <HoverCard client:visible>
+                <a
+                  href="https://www.amazon.co.jp/dp/B076Q2L1M6/ref=cm_sw_r_tw_awdo_c_x_LMA.BbPBEM027"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="block p-4 bg-dark-800/50 border border-dark-600 rounded-lg hover:bg-dark-700 transition-colors"
+                >
+                  <span class="text-gray-300 hover:text-accent-cyan transition-colors">Kotlinイン・アクション</span>
+                </a>
+              </HoverCard>
+            </StaggerItem>
+          </StaggerContainer>
+        </div>
+      </FadeIn>
+
+      <!-- Slides Section -->
+      <FadeIn direction="right" client:visible>
+        <div class="mb-16">
+          <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="w-8 h-0.5 bg-accent-purple"></span>
+            Slides
+          </h2>
+          <StaggerContainer className="grid md:grid-cols-2 gap-3" staggerDelay={0.05} client:visible>
+            {[
+              { url: 'https://www.slideshare.net/yyyank/server-side-kotlin-49030491', title: 'Server Side Kotlin' },
+              { url: 'https://www.slideshare.net/yyyank/kotlinver', title: 'Kotlinメジャーver リリースを前に' },
+              { url: 'https://www.slideshare.net/yyyank/java-55600699', title: 'Javaプログラマコーディングマイグレーション' },
+              { url: 'https://www.slideshare.net/yyyank/kotlin-58781668', title: 'Kotlinあるある言いたい' },
+              { url: 'https://www.slideshare.net/yyyank/kotlin-60377622', title: 'Kotlinこんなん出ましたけど' },
+              { url: 'https://www.slideshare.net/yyyank/ss-62257220', title: '絶対にぬるぽを出さない' },
+              { url: 'https://www.slideshare.net/yyyank/doma2-with-kotlin', title: 'Doma2 with Kotlin' },
+              { url: 'https://www.slideshare.net/yyyank/kuromojikotlin', title: 'KuromojiをKotlinで動かす' },
+              { url: 'https://www.slideshare.net/yyyank/javafizz-buzz', title: 'Javaで最強のfizz buzz' },
+              { url: 'https://www.slideshare.net/yyyank/kotlin-69542943', title: 'Kotlinソースコード探訪' },
+              { url: 'https://www.slideshare.net/yyyank/jvmjava-69784006', title: 'Jvm言語とJava、切っても切れないその関係' },
+              { url: 'https://www.slideshare.net/yyyank/vm-dalvikartjava-vm', title: 'VMの歩む道。Dalvik、ART、そしてJava VM' },
+              { url: 'https://www.slideshare.net/yyyank/javago', title: 'Javaプログラマのための頑張らないGo入門' },
+              { url: 'https://speakerdeck.com/yyyank/sabasaidokotlintoiuxuan-ze-zhi-toyuzabesu', title: 'サーバーサイドKotlinという選択肢とユーザベース' },
+              { url: 'https://speakerdeck.com/yyyank/debeziumdebian-geng-detakiyaputiyawoxue-bou-number-jjug-ccc', title: 'Debeziumで変更データキャプチャを学ぼう' },
+            ].map(slide => (
+              <StaggerItem>
+                <a
+                  href={slide.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="block p-3 text-sm bg-dark-800/50 border border-dark-600 rounded-lg text-gray-400 hover:text-accent-purple hover:bg-dark-700 transition-all truncate"
+                >
+                  {slide.title}
+                </a>
+              </StaggerItem>
+            ))}
+          </StaggerContainer>
+        </div>
+      </FadeIn>
+
+      <!-- Libraries Section -->
+      <FadeIn client:visible>
+        <div class="mb-16">
+          <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="w-8 h-0.5 bg-accent-green"></span>
+            Libraries
+          </h2>
+          <StaggerContainer className="flex flex-wrap gap-4" client:visible>
+            {[
+              { url: 'https://github.com/yyYank/Kebab', name: 'Kebab' },
+              { url: 'https://github.com/skrap-json4k/skrap-json4k', name: 'json4k' },
+              { url: 'https://github.com/yyYank/goodbye', name: 'goodbye' },
+            ].map(lib => (
+              <StaggerItem>
+                <HoverCard client:visible>
+                  <a
+                    href={lib.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="block px-6 py-3 bg-dark-700 border border-dark-500 rounded-lg text-accent-green hover:bg-dark-600 transition-colors font-mono"
+                  >
+                    {lib.name}
+                  </a>
+                </HoverCard>
+              </StaggerItem>
+            ))}
+          </StaggerContainer>
+        </div>
+      </FadeIn>
+
+      <!-- Tool Section -->
+      <FadeIn direction="left" client:visible>
+        <div class="mb-16">
+          <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+            <span class="w-8 h-0.5 bg-accent-cyan"></span>
+            Tool
+          </h2>
+          <HoverCard client:visible>
+            <a
+              href="https://github.com/yyYank/playwright-blockly"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-block px-6 py-3 bg-dark-700 border border-dark-500 rounded-lg text-accent-cyan hover:bg-dark-600 transition-colors font-mono"
+            >
+              playwright-blockly
+            </a>
+          </HoverCard>
+        </div>
+      </FadeIn>
+
+    </div>
+  </div>
+</BaseLayout>
