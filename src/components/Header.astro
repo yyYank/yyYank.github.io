@@ -4,12 +4,10 @@ import MobileMenu from './MobileMenu.tsx';
 const navItems = [
   { href: '/kotlin-rev/', label: '逆引きKotlin' },
   { href: '/docs/', label: 'MEMO' },
-  { href: '/snippet/', label: 'Snippet' },
   { href: '/feeds/', label: 'Feeds' },
   { href: '/toolkit/', label: 'Toolkit' },
   { href: '/transient/', label: 'Transient' },
-  { href: '/diary/', label: 'Diary' },
-  { href: '/', label: 'Profile' }
+  { href: '/diary/', label: 'Diary' }
 ];
 const pathname = Astro.url.pathname;
 const isKotlinRev = pathname.startsWith('/kotlin-rev/');

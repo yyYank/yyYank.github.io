@@ -17,6 +17,7 @@ export default defineConfig({
     '/sounds/': '/toolkit/?tab=audio',
     '/movie/': '/toolkit/?tab=movie',
     '/ocr/': '/toolkit/?tab=ocr',
+    '/snippet/': '/toolkit/?tab=snippet',
   },
   build: {
     assets: 'assets'

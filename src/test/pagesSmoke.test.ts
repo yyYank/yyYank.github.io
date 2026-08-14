@@ -20,7 +20,7 @@ const topLevelPages = [
   ['src/pages/toolkit.astro', '<OcrTool />'],
   ['src/pages/toolkit.astro', '<PasswordGenerator client:load />'],
   ['src/pages/toolkit.astro', '<AudioTrimmer client:load />'],
-  ['src/pages/snippet.astro', '<SnippetSearch client:load snippets={allSnippets} />'],
+  ['src/pages/toolkit.astro', '<SnippetSearch client:load snippets={allSnippets} />'],
   ['src/pages/transient.astro', '<TransientNotes client:load />'],
 ] as const;
 
