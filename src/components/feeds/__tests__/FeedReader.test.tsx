@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import FeedReader from '../FeedReader';
 
@@ -255,6 +255,23 @@ describe('FeedReader', () => {
       expect.stringContaining('https://api.allorigins.win/raw'),
       expect.objectContaining({ signal: expect.any(AbortSignal) })
     );
+  });
+
+  // cache resetボタンでfeeds-cacheのみ削除され、ブックマークとtransient noteは保持されることを検証する
+  it('clears only feeds-cache on cache reset, keeping favorites and transient notes', async () => {
+    localStorageMock.setItem('feeds-cache', JSON.stringify({ data: {}, expiresAt: Date.now() + 60_000 }));
+    localStorageMock.setItem('feeds-favorites', JSON.stringify([{ title: 'fav', link: 'https://example.com/fav', date: '', description: '', source: 'hatena' }]));
+    localStorageMock.setItem('transient-notes', JSON.stringify([{ id: 1, text: 'note' }]));
+
+    render(<FeedReader />);
+
+    fireEvent.click(screen.getByText('cache reset'));
+
+    // パスワード入力なしで即座にクリアされる
+    expect(screen.queryByPlaceholderText('password')).not.toBeInTheDocument();
+    expect(localStorageMock.getItem('feeds-cache')).toBeNull();
+    expect(localStorageMock.getItem('feeds-favorites')).not.toBeNull();
+    expect(localStorageMock.getItem('transient-notes')).not.toBeNull();
   });
 
   it('shows which feed failed without hiding successful items', async () => {

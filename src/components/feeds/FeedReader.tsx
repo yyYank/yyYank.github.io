@@ -1055,6 +1055,17 @@ export default function FeedReader() {
     return errorMap[tab] ? [tab] : [];
   }, [errorMap, failedFeedKeys, tab]);
 
+  const handleCacheReset = useCallback(() => {
+    loadedRef.current = createLoadState(false);
+    loadingRef.current = createLoadState(false);
+    loadedAtRef.current = createLoadedAtState(null);
+    setLoadedMap(createLoadState(false));
+    setLoadingMap(createLoadState(false));
+    setErrorMap(createErrorState());
+    setShowingStaleCache(false);
+    ensureTabLoaded(tab === 'favorites' ? 'all' : tab);
+  }, [ensureTabLoaded, tab]);
+
   useEffect(() => {
     if (!activeTabLoading) return;
     const id = setInterval(() => setSpinnerIdx((i) => (i + 1) % SPINNER_CHARS.length), 100);
@@ -1244,52 +1255,28 @@ export default function FeedReader() {
       </div>
 
       {/* Cache reset */}
-      <CacheReset />
+      <CacheReset onReset={handleCacheReset} />
     </div>
   );
 }
 
-function CacheReset() {
-  const [open, setOpen] = useState(false);
-  const [pw, setPw] = useState('');
+function CacheReset({ onReset }: { onReset: () => void }) {
   const [msg, setMsg] = useState('');
 
   const handleReset = () => {
-    if (pw !== 'io_hub_git_yank_yy') {
-      setMsg('パスワードが違います');
-      return;
-    }
     localStorage.removeItem(CACHE_KEY);
-    localStorage.removeItem(TRANSLATION_CACHE_KEY);
-    setMsg('キャッシュをクリアしました。リロードしてください。');
-    setPw('');
+    onReset();
+    setMsg('記事キャッシュをクリアしました。再取得中...');
   };
 
   return (
     <div className="mt-12 text-center">
       <button
-        onClick={() => setOpen(!open)}
+        onClick={handleReset}
         className="text-gray-700 text-xs hover:text-gray-500 transition-colors"
       >
         cache reset
       </button>
-      {open && (
-        <div className="mt-2 inline-flex items-center gap-2">
-          <input
-            type="password"
-            value={pw}
-            onChange={(e) => { setPw(e.target.value); setMsg(''); }}
-            placeholder="password"
-            className="bg-dark-700 border border-dark-600 rounded px-2 py-1 text-xs text-gray-300 w-40"
-          />
-          <button
-            onClick={handleReset}
-            className="bg-red-900/30 border border-red-500/30 rounded px-3 py-1 text-xs text-red-400 hover:bg-red-900/50 transition-colors"
-          >
-            reset
-          </button>
-        </div>
-      )}
       {msg && <p className="text-xs mt-1 text-gray-400">{msg}</p>}
     </div>
   );
