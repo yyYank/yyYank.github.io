@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
+  ensureCycleTemplates,
   getNextTemplateOrder,
   moveTemplate,
   normalizeTemplates,
@@ -58,5 +59,20 @@ describe('transientTemplateState', () => {
       'b',
       'c',
     ]);
+  });
+
+  // 既存テンプレートに週次・月次のデフォルトを末尾へ追加し、既にあれば重複追加しないことを検証する
+  it('appends weekly and monthly defaults once', () => {
+    const seeded = ensureCycleTemplates(sortTemplates(templates));
+    expect(seeded.map((template) => template.id)).toEqual([
+      'a',
+      'b',
+      'c',
+      'weekly-routine',
+      'monthly-routine',
+    ]);
+    expect(seeded[3]).toMatchObject({ cycle: 'weekly', order: 4 });
+    expect(seeded[4]).toMatchObject({ cycle: 'monthly', order: 5 });
+    expect(ensureCycleTemplates(seeded)).toHaveLength(5);
   });
 });

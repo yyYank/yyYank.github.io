@@ -23,16 +23,19 @@ import {
   type PersistentTodo,
 } from './transientNoteActions';
 import {
+  ensureCycleTemplates,
   getNextTemplateOrder,
   moveTemplate,
   normalizeTemplates,
   reindexTemplates,
   sortTemplates,
 } from './transientTemplateState';
+import { getPeriodRemainingDays, type Cycle } from './transientNoteState';
 
 const TEMPLATE_STORAGE_KEY = 'transient-note-templates';
 const NOTE_STORAGE_KEY = 'transient-notes';
 const TOMORROW_TODO_STORAGE_KEY = 'transient-tomorrow-todos';
+const CYCLE_SEED_KEY = 'transient-cycle-templates-seeded';
 
 const DEFAULT_TEMPLATES: Template[] = [
   {
@@ -58,6 +61,12 @@ const DEFAULT_TEMPLATES: Template[] = [
   },
 ];
 
+const CYCLE_LABELS: Record<Cycle, string> = {
+  daily: '毎日',
+  weekly: '毎週',
+  monthly: '毎月',
+};
+
 const fadeTransition = {
   duration: 0.55,
   ease: [0.22, 1, 0.36, 1] as const,
@@ -72,17 +81,27 @@ function getTodayKey(): string {
 }
 
 function loadTemplates(): Template[] {
+  let templates: Template[];
   try {
     const raw = localStorage.getItem(TEMPLATE_STORAGE_KEY);
     if (!raw) {
-      return sortTemplates(DEFAULT_TEMPLATES);
+      templates = sortTemplates(DEFAULT_TEMPLATES);
+    } else {
+      const parsed = JSON.parse(raw) as Partial<Template>[];
+      templates = parsed.length > 0 ? normalizeTemplates(parsed) : sortTemplates(DEFAULT_TEMPLATES);
     }
-
-    const parsed = JSON.parse(raw) as Partial<Template>[];
-    return parsed.length > 0 ? normalizeTemplates(parsed) : sortTemplates(DEFAULT_TEMPLATES);
   } catch {
-    return sortTemplates(DEFAULT_TEMPLATES);
+    templates = sortTemplates(DEFAULT_TEMPLATES);
   }
+
+  // 週次・月次のデフォルトは一度だけ既存テンプレートへ追加する(削除したユーザーに再追加しない)
+  if (!localStorage.getItem(CYCLE_SEED_KEY)) {
+    templates = ensureCycleTemplates(templates);
+    localStorage.setItem(CYCLE_SEED_KEY, '1');
+    saveTemplates(templates);
+  }
+
+  return templates;
 }
 
 function saveTemplates(templates: Template[]): void {
@@ -146,6 +165,8 @@ export default function TransientNotes() {
   const [templateName, setTemplateName] = useState('');
   const [templateSummary, setTemplateSummary] = useState('');
   const [templateItemsText, setTemplateItemsText] = useState('');
+  const [templateCycle, setTemplateCycle] = useState<Cycle>('daily');
+  const [snackbarDismissed, setSnackbarDismissed] = useState(false);
   const [editingTemplateId, setEditingTemplateId] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const [todayKey, setTodayKey] = useState('');
@@ -230,9 +251,9 @@ export default function TransientNotes() {
       const currentDay = getTodayKey();
       if (currentDay !== todayKey) {
         setTodayKey(currentDay);
-        const nextNotes = synchronizeNotesWithTemplates([], templates, []);
         setDeletedTemplateIds([]);
-        setNotes(nextNotes);
+        // 週次・月次は周期内ならチェック状態を保持したまま日次のみ再生成される
+        setNotes((currentNotes) => synchronizeNotesWithTemplates(currentNotes, templates, []));
       }
     }, 60 * 1000);
 
@@ -243,6 +264,30 @@ export default function TransientNotes() {
     () => templates.find((template) => template.id === selectedTemplateId) ?? null,
     [templates, selectedTemplateId]
   );
+
+  const templateCycleById = useMemo(() => {
+    const map = new Map<string, Cycle>();
+    templates.forEach((template) => map.set(template.id, template.cycle ?? 'daily'));
+    return map;
+  }, [templates]);
+  // todayKeyの更新で残日数を日次で再計算する
+  const weeklyRemaining = useMemo(() => getPeriodRemainingDays('weekly', new Date()), [todayKey]);
+  const monthlyRemaining = useMemo(() => getPeriodRemainingDays('monthly', new Date()), [todayKey]);
+  const firstMonthlyNote = useMemo(
+    () => notes.find((note) => templateCycleById.get(note.templateId) === 'monthly') ?? null,
+    [notes, templateCycleById]
+  );
+  const monthlyIncomplete = useMemo(
+    () =>
+      notes.some(
+        (note) =>
+          templateCycleById.get(note.templateId) === 'monthly' &&
+          note.items.some((item) => !item.checked)
+      ),
+    [notes, templateCycleById]
+  );
+  const showMonthlySnackbar =
+    isHydrated && !snackbarDismissed && monthlyIncomplete && monthlyRemaining <= 7;
 
   const templateCountLabel = `${templates.length} template${templates.length === 1 ? '' : 's'}`;
   const noteCountLabel = `${notes.length} transient note${notes.length === 1 ? '' : 's'} for today`;
@@ -278,6 +323,7 @@ export default function TransientNotes() {
     setTemplateName('');
     setTemplateSummary('');
     setTemplateItemsText('');
+    setTemplateCycle('daily');
   };
 
   const handleSaveTemplate = () => {
@@ -295,6 +341,7 @@ export default function TransientNotes() {
       name: templateName.trim(),
       summary: templateSummary.trim() || '思い出すためだけのテンプレート',
       items,
+      cycle: templateCycle,
       order:
         editingTemplateId
           ? templates.find((template) => template.id === editingTemplateId)?.order ??
@@ -321,6 +368,7 @@ export default function TransientNotes() {
     setTemplateName(template.name);
     setTemplateSummary(template.summary);
     setTemplateItemsText(template.items.join('\n'));
+    setTemplateCycle(template.cycle ?? 'daily');
     window.setTimeout(() => {
       templateNameInputRef.current?.focus();
     }, 0);
@@ -467,6 +515,7 @@ export default function TransientNotes() {
                   {notes.map((note) => (
                     <motion.article
                       key={note.id}
+                      id={`transient-note-${note.id}`}
                       layout
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
@@ -479,7 +528,19 @@ export default function TransientNotes() {
                     <div className="pointer-events-none absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-dark-900 via-dark-900/85 to-transparent blur-xl opacity-95" />
                     <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/4 via-transparent to-transparent opacity-70" />
                     <div className="relative z-10">
-                      <p className="text-lg font-semibold text-white">{note.title}</p>
+                      <div className="flex flex-wrap items-center gap-2">
+                        <p className="text-lg font-semibold text-white">{note.title}</p>
+                        {templateCycleById.get(note.templateId) === 'weekly' && (
+                          <span className="rounded-full border border-purple-400/30 bg-purple-400/10 px-2 py-0.5 text-xs text-purple-200">
+                            今週 あと{weeklyRemaining}日
+                          </span>
+                        )}
+                        {templateCycleById.get(note.templateId) === 'monthly' && (
+                          <span className="rounded-full border border-amber-400/30 bg-amber-400/10 px-2 py-0.5 text-xs text-amber-200">
+                            今月 あと{monthlyRemaining}日
+                          </span>
+                        )}
+                      </div>
                       <p className="mt-1 text-xs uppercase tracking-[0.2em] text-gray-500">
                         created {formatDateTime(note.createdAt)}
                       </p>
@@ -859,7 +920,12 @@ export default function TransientNotes() {
                             type="button"
                             className="text-left"
                           >
-                            <p className="text-lg font-semibold text-white">{template.name}</p>
+                            <p className="text-lg font-semibold text-white">
+                              {template.name}
+                              <span className="ml-2 align-middle rounded-full border border-dark-500 px-2 py-0.5 text-xs text-gray-400">
+                                {CYCLE_LABELS[template.cycle ?? 'daily']}
+                              </span>
+                            </p>
                             <p className="mt-1 text-sm text-gray-400">{template.summary}</p>
                           </button>
                         </div>
@@ -960,6 +1026,20 @@ export default function TransientNotes() {
                     />
                   </label>
                   <label className="grid gap-2 text-sm text-gray-300">
+                    <span>周期</span>
+                    <select
+                      value={templateCycle}
+                      onChange={(event) => setTemplateCycle(event.target.value as Cycle)}
+                      className="rounded-xl border border-dark-500 bg-dark-800 px-4 py-3 text-white outline-none transition-colors focus:border-cyan-400/50"
+                    >
+                      {(['daily', 'weekly', 'monthly'] as Cycle[]).map((cycle) => (
+                        <option key={cycle} value={cycle}>
+                          {CYCLE_LABELS[cycle]}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  <label className="grid gap-2 text-sm text-gray-300">
                     <span>チェック項目</span>
                     <textarea
                       value={templateItemsText}
@@ -1019,6 +1099,52 @@ export default function TransientNotes() {
           今日やったこと
         </button>
       </motion.section>
+
+      {/* 残日数の常時表示チップ */}
+      {isHydrated && (
+        <div className="fixed bottom-4 right-4 z-40 rounded-full border border-dark-500 bg-dark-800/90 px-4 py-2 text-xs text-gray-300 shadow-lg backdrop-blur">
+          <span className="text-purple-200">今週あと{weeklyRemaining}日</span>
+          <span className="mx-1.5 text-gray-600">/</span>
+          <span className="text-amber-200">今月あと{monthlyRemaining}日</span>
+        </div>
+      )}
+
+      {/* 月次未完了スナックバー(残り7日以内・最終日) */}
+      <AnimatePresence>
+        {showMonthlySnackbar && (
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 12 }}
+            transition={fadeTransition}
+            className="fixed bottom-16 left-1/2 z-50 flex -translate-x-1/2 items-center gap-2 rounded-full border border-amber-400/30 bg-dark-800/95 py-2 pl-5 pr-2 shadow-xl backdrop-blur"
+          >
+            <button
+              onClick={() => {
+                if (firstMonthlyNote) {
+                  document
+                    .getElementById(`transient-note-${firstMonthlyNote.id}`)
+                    ?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+              }}
+              type="button"
+              className="text-sm text-amber-100 transition-colors hover:text-white"
+            >
+              {monthlyRemaining === 0
+                ? '今月最終日です。毎月のルーティンが未完了です'
+                : `毎月のルーティンが未完了です(今月あと${monthlyRemaining}日)`}
+            </button>
+            <button
+              onClick={() => setSnackbarDismissed(true)}
+              type="button"
+              aria-label="閉じる"
+              className="flex h-7 w-7 items-center justify-center rounded-full border border-dark-500 text-xs text-gray-400 transition-colors hover:text-white"
+            >
+              ×
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <AnimatePresence>
         {showDoneSummary && (

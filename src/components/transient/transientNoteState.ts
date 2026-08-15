@@ -1,9 +1,12 @@
+export type Cycle = 'daily' | 'weekly' | 'monthly';
+
 export interface Template {
   id: string;
   name: string;
   summary: string;
   items: string[];
   order: number;
+  cycle?: Cycle;
 }
 
 export interface NoteItem {
@@ -21,6 +24,7 @@ export interface TransientNote {
   items: NoteItem[];
   memo: string;
   hiddenItems: string[];
+  periodKey?: string;
 }
 
 export interface StoredNotes {
@@ -41,13 +45,42 @@ export function createId(prefix: string): string {
   return `${prefix}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
 }
 
-export function normalizeStoredNotes(parsed: StoredNotesPayload, today: string): StoredNotes {
-  if (parsed.date !== today) {
-    return { date: today, notes: [], deletedTemplateIds: [] };
+function formatDateKey(date: Date): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+export function getPeriodKey(cycle: Cycle | undefined, now: Date): string {
+  if (cycle === 'weekly') {
+    const monday = new Date(now);
+    const offset = (now.getDay() + 6) % 7;
+    monday.setDate(now.getDate() - offset);
+    return formatDateKey(monday);
   }
+  if (cycle === 'monthly') {
+    return formatDateKey(now).slice(0, 7);
+  }
+  return formatDateKey(now);
+}
+
+export function getPeriodRemainingDays(cycle: Cycle | undefined, now: Date): number {
+  if (cycle === 'weekly') {
+    return 6 - ((now.getDay() + 6) % 7);
+  }
+  if (cycle === 'monthly') {
+    const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+    return lastDay - now.getDate();
+  }
+  return 0;
+}
+
+export function normalizeStoredNotes(parsed: StoredNotesPayload, today: string): StoredNotes {
+  const isSameDay = parsed.date === today;
 
   return {
-    date: parsed.date,
+    date: today,
     notes: (parsed.notes ?? []).map((note) => ({
       ...note,
       items: (note.items ?? []).map((item) => ({
@@ -57,17 +90,19 @@ export function normalizeStoredNotes(parsed: StoredNotesPayload, today: string):
         source: item.source === 'extra' ? 'extra' : 'template',
       })),
       hiddenItems: note.hiddenItems ?? [],
+      periodKey: note.periodKey ?? parsed.date,
     })),
-    deletedTemplateIds: parsed.deletedTemplateIds ?? [],
+    deletedTemplateIds: isSameDay ? parsed.deletedTemplateIds ?? [] : [],
   };
 }
 
-export function createNoteFromTemplate(template: Template): TransientNote {
+export function createNoteFromTemplate(template: Template, now: Date = new Date()): TransientNote {
   return {
     id: createId('note'),
     templateId: template.id,
     title: template.name,
-    createdAt: new Date().toISOString(),
+    createdAt: now.toISOString(),
+    periodKey: getPeriodKey(template.cycle, now),
     items: template.items.map((item) => ({
       id: createId('item'),
       text: item,
@@ -82,15 +117,20 @@ export function createNoteFromTemplate(template: Template): TransientNote {
 export function synchronizeNotesWithTemplates(
   currentNotes: TransientNote[],
   templates: Template[],
-  deletedTemplateIds: string[]
+  deletedTemplateIds: string[],
+  now: Date = new Date()
 ): TransientNote[] {
   return templates
     .filter((template) => !deletedTemplateIds.includes(template.id))
     .map((template) => {
       const existingNote = currentNotes.find((note) => note.templateId === template.id);
+      const currentPeriodKey = getPeriodKey(template.cycle, now);
 
-      if (!existingNote) {
-        return createNoteFromTemplate(template);
+      if (
+        !existingNote ||
+        (existingNote.periodKey !== undefined && existingNote.periodKey !== currentPeriodKey)
+      ) {
+        return createNoteFromTemplate(template, now);
       }
 
       const hiddenItems = existingNote.hiddenItems ?? [];
@@ -111,6 +151,7 @@ export function synchronizeNotesWithTemplates(
         ...existingNote,
         title: template.name,
         hiddenItems,
+        periodKey: existingNote.periodKey ?? currentPeriodKey,
         items: [...templateItems, ...extraItems],
       };
     });
