@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
+import React, { useState, useEffect, useReducer, useRef, useCallback, useMemo } from "react";
 import { CSS } from "./styles";
 import { useDrag } from "./useDrag";
 import { buildIdf, cosine, vectorize } from "./similarity";
@@ -7,35 +7,10 @@ import {
   ROOT, buildRows, childrenOf, descendantIds, eachFragment, flatTopics, flattenTexts,
   itemLabel, itemStamp, pathLabel, subtreeItems,
 } from "./tree";
+import { loadAll, saveAll, storeReducer, uid } from "./store";
 import type {
-  BundleItem, CardItem, Child, Frag, Item, ItemPatch, Persisted, Pos, Row, Topic,
+  BundleItem, CardItem, Frag, Item, ItemPatch, Pos, Row, Topic,
 } from "./types";
-
-/* ------------------------------------------------------------------ */
-/* storage                                                             */
-/* ------------------------------------------------------------------ */
-
-const KEY = "defrag:v6";
-
-async function loadAll(): Promise<Persisted | null> {
-  try {
-    const res = localStorage.getItem(KEY);
-    return res ? JSON.parse(res) : null;
-  } catch (e) {
-    return null;
-  }
-}
-async function saveAll(data: Persisted) {
-  try {
-    localStorage.setItem(KEY, JSON.stringify(data));
-  } catch (e) {}
-}
-
-/* ------------------------------------------------------------------ */
-/* helpers                                                             */
-/* ------------------------------------------------------------------ */
-
-const uid = () => Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
 
 function FolderIcon({ open }: { open?: boolean }) {
   return (
@@ -57,8 +32,8 @@ function FolderIcon({ open }: { open?: boolean }) {
 /* ------------------------------------------------------------------ */
 
 export default function Defrag() {
-  const [items, setItems] = useState<Item[]>([]);
-  const [topics, setTopics] = useState<Topic[]>([]);
+  const [store, dispatch] = useReducer(storeReducer, { items: [], topics: [] });
+  const { items, topics } = store;
   const [expanded, setExpanded] = useState<Record<string, boolean>>({});
   const [ready, setReady] = useState(false);
 
@@ -87,8 +62,11 @@ export default function Defrag() {
     loadAll().then((d) => {
       if (!alive) return;
       if (d) {
-        if (Array.isArray(d.items)) setItems(d.items);
-        if (Array.isArray(d.topics)) setTopics(d.topics);
+        dispatch({
+          type: "load",
+          items: Array.isArray(d.items) ? d.items : [],
+          topics: Array.isArray(d.topics) ? d.topics : [],
+        });
         if (d.expanded) setExpanded(d.expanded);
         if (d.here) setHere(d.here);
       }
@@ -136,7 +114,7 @@ export default function Defrag() {
   const add = (text: string) => {
     const v = text.trim();
     if (!v) return;
-    setItems((prev) => [{ id: uid(), kind: "card", text: v, createdAt: Date.now(), topicId: hereId }, ...prev]);
+    dispatch({ type: "addItem", item: { id: uid(), kind: "card", text: v, createdAt: Date.now(), topicId: hereId } });
     setFlash(Date.now());
   };
   const throwIt = () => {
@@ -168,102 +146,44 @@ export default function Defrag() {
 
   /* --- items --- */
 
-  const moveItem = (id: string, topicId?: string | null, beforeId?: string | null) => {
-    setItems((prev) => {
-      const from = prev.findIndex((i) => i.id === id);
-      if (from < 0) return prev;
-      const next = prev.slice();
-      const [m] = next.splice(from, 1);
-      const moved = { ...m, topicId: topicId || null };
-      if (beforeId) {
-        const at = next.findIndex((i) => i.id === beforeId);
-        next.splice(at < 0 ? next.length : at, 0, moved);
-      } else {
-        next.unshift(moved);
-      }
-      return next;
-    });
-  };
+  const moveItem = (id: string, topicId?: string | null, beforeId?: string | null) =>
+    dispatch({ type: "moveItem", id, topicId, beforeId });
 
-  const bundle = (dragId: string, targetId: string) => {
-    setItems((prev) => {
-      const di = prev.findIndex((i) => i.id === dragId);
-      const ti = prev.findIndex((i) => i.id === targetId);
-      if (di < 0 || ti < 0) return prev;
-      const next = prev.slice();
-      const src = next[di];
-      const dst = next[ti];
-      const kids: Child[] =
-        src.kind === "bundle" ? src.children : [{ id: src.id, text: src.text, createdAt: src.createdAt }];
-      next[ti] =
-        dst.kind === "bundle"
-          ? { ...dst, children: [...dst.children, ...kids] }
-          : {
-              id: uid(), kind: "bundle", title: "", createdAt: Date.now(), topicId: dst.topicId || null,
-              children: [{ id: dst.id, text: dst.text, createdAt: dst.createdAt }, ...kids],
-            };
-      next.splice(di, 1);
-      return next;
-    });
-  };
+  const bundle = (dragId: string, targetId: string) => dispatch({ type: "bundle", dragId, targetId });
 
-  const sortWithin = (tid: string, dir: "new" | "old") => {
-    setItems((prev) => {
-      const key = tid === ROOT ? null : tid;
-      const idx: number[] = [];
-      prev.forEach((it, i) => { if ((it.topicId || null) === key) idx.push(i); });
-      const vals = idx.map((i) => prev[i]).sort((a, b) =>
-        dir === "new" ? itemStamp(b) - itemStamp(a) : itemStamp(a) - itemStamp(b));
-      const next = prev.slice();
-      idx.forEach((i, k) => (next[i] = vals[k]));
-      return next;
-    });
-  };
+  const sortWithin = (tid: string, dir: "new" | "old") => dispatch({ type: "sortWithin", tid, dir });
 
   const trashItem = (id: string) => {
     const idx = items.findIndex((i) => i.id === id);
     if (idx < 0) return;
     const gone = items[idx];
-    setItems((p) => p.filter((i) => i.id !== id));
+    dispatch({ type: "removeItem", id });
     setTrash({ item: gone, index: idx });
   };
   const undoTrash = () => {
     if (!trash) return;
-    setItems((p) => { const n = p.slice(); n.splice(Math.min(trash.index, n.length), 0, trash.item); return n; });
+    dispatch({ type: "restoreItem", item: trash.item, index: trash.index });
     setTrash(null);
   };
 
-  const patchItem = (id: string, patch: ItemPatch) =>
-    setItems((p) => p.map((i) => (i.id === id ? ({ ...i, ...patch } as Item) : i)));
+  const patchItem = (id: string, patch: ItemPatch) => dispatch({ type: "patchItem", id, patch });
 
-  const unbundle = (id: string) =>
-    setItems((prev) => {
-      const idx = prev.findIndex((i) => i.id === id);
-      if (idx < 0) return prev;
-      const b = prev[idx] as BundleItem;
-      const loose: Item[] = b.children.map((c) => ({
-        id: c.id, kind: "card", text: c.text, createdAt: c.createdAt, topicId: b.topicId || null }));
-      const next = prev.slice();
-      next.splice(idx, 1, ...loose);
-      return next;
-    });
+  const unbundle = (id: string) => dispatch({ type: "unbundle", id });
 
   /* --- folders --- */
 
   const addFolder = (title: string, parentId?: string | null) => {
     const t: Topic = { id: uid(), title: title.trim() || "名前のないフォルダ", parentId: parentId || null, createdAt: Date.now() };
-    setTopics((p) => [...p, t]);
+    dispatch({ type: "addTopic", topic: t });
     if (parentId) setExpanded((c) => ({ ...c, [parentId]: true }));
     setHere(t.id);
   };
-  const patchFolder = (id: string, patch: Partial<Topic>) =>
-    setTopics((p) => p.map((t) => (t.id === id ? { ...t, ...patch } : t)));
+  const patchFolder = (id: string, patch: Partial<Topic>) => dispatch({ type: "patchTopic", id, patch });
 
   const removeFolder = (id: string) => {
     const t = topics.find((x) => x.id === id);
     const up = t ? t.parentId || null : null;
-    setTopics((p) => p.filter((x) => x.id !== id).map((x) => (x.parentId === id ? { ...x, parentId: up } : x)));
-    setItems((p) => p.map((i) => (i.topicId === id ? { ...i, topicId: up } : i)));
+    dispatch({ type: "removeFolder", id });
     setHere(up || ROOT);
   };
 
@@ -271,42 +191,19 @@ export default function Defrag() {
     if (dragId === newParentId) return;
     const pid = newParentId === ROOT ? null : newParentId;
     if (pid && descendantIds(topics, dragId).includes(pid)) return;
-    setTopics((p) => {
-      const t = p.find((x) => x.id === dragId);
-      if (!t) return p;
-      return [...p.filter((x) => x.id !== dragId), { ...t, parentId: pid }];
-    });
+    dispatch({ type: "nestFolder", dragId, newParentId });
     if (pid) setExpanded((c) => ({ ...c, [pid]: true }));
   };
 
-  const moveFolderBefore = (dragId: string, beforeId: string | null) => {
-    setTopics((p) => {
-      const t = p.find((x) => x.id === dragId);
-      if (!t) return p;
-      if (beforeId && descendantIds(p, dragId).includes(beforeId)) return p;
-      const target = beforeId ? p.find((x) => x.id === beforeId) : null;
-      const parentId = target ? target.parentId || null : null;
-      const next = p.filter((x) => x.id !== dragId);
-      const at = beforeId ? next.findIndex((x) => x.id === beforeId) : next.length;
-      next.splice(at < 0 ? next.length : at, 0, { ...t, parentId });
-      return next;
-    });
-  };
+  const moveFolderBefore = (dragId: string, beforeId: string | null) =>
+    dispatch({ type: "moveFolderBefore", dragId, beforeId });
 
   const promote = (id: string) => {
     const b = items.find((i) => i.id === id);
     if (!b || b.kind !== "bundle") return;
     const parent = b.topicId || null;
     const t: Topic = { id: uid(), title: b.title || "名前のないフォルダ", parentId: parent, createdAt: Date.now() };
-    setTopics((p) => [...p, t]);
-    setItems((prev) => {
-      const idx = prev.findIndex((i) => i.id === id);
-      const loose: Item[] = b.children.map((c) => ({
-        id: c.id, kind: "card", text: c.text, createdAt: c.createdAt, topicId: t.id }));
-      const next = prev.slice();
-      next.splice(idx, 1, ...loose);
-      return next;
-    });
+    dispatch({ type: "promote", id, topic: t });
     setExpanded((c) => ({ ...c, [t.id]: true, ...(parent ? { [parent]: true } : {}) }));
     setHere(t.id);
   };
