@@ -30,7 +30,9 @@ import {
   reindexTemplates,
   sortTemplates,
 } from './transientTemplateState';
-import { getPeriodRemainingDays, type Cycle } from './transientNoteState';
+import { type Cycle } from './transientNoteState';
+import { useCycleRoutine } from './useCycleRoutine';
+import { CycleBadge, CycleSnackbar, RemainingDaysChip } from './CycleReminder';
 
 const TEMPLATE_STORAGE_KEY = 'transient-note-templates';
 const NOTE_STORAGE_KEY = 'transient-notes';
@@ -166,10 +168,6 @@ export default function TransientNotes() {
   const [templateSummary, setTemplateSummary] = useState('');
   const [templateItemsText, setTemplateItemsText] = useState('');
   const [templateCycle, setTemplateCycle] = useState<Cycle>('daily');
-  const [dismissedSnackbars, setDismissedSnackbars] = useState<{ weekly: boolean; monthly: boolean }>({
-    weekly: false,
-    monthly: false,
-  });
   const [editingTemplateId, setEditingTemplateId] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const [todayKey, setTodayKey] = useState('');
@@ -273,44 +271,8 @@ export default function TransientNotes() {
     templates.forEach((template) => map.set(template.id, template.cycle ?? 'daily'));
     return map;
   }, [templates]);
-  // todayKeyの更新で残日数を日次で再計算する
-  const weeklyRemaining = useMemo(() => getPeriodRemainingDays('weekly', new Date()), [todayKey]);
-  const monthlyRemaining = useMemo(() => getPeriodRemainingDays('monthly', new Date()), [todayKey]);
-  const findCycleNote = (cycle: Cycle) =>
-    notes.find((note) => templateCycleById.get(note.templateId) === cycle) ?? null;
-  const hasIncomplete = (cycle: Cycle) =>
-    notes.some(
-      (note) =>
-        templateCycleById.get(note.templateId) === cycle &&
-        note.items.some((item) => !item.checked)
-    );
-  // 週次は残り1日以内(土日)、月次は残り7日以内に未完了があれば通知する
-  const snackbars = [
-    {
-      key: 'weekly' as const,
-      show:
-        isHydrated && !dismissedSnackbars.weekly && hasIncomplete('weekly') && weeklyRemaining <= 1,
-      note: findCycleNote('weekly'),
-      className: 'border-purple-400/30',
-      textClassName: 'text-purple-100',
-      message:
-        weeklyRemaining === 0
-          ? '今週最終日です。毎週のルーティンが未完了です'
-          : `毎週のルーティンが未完了です(今週あと${weeklyRemaining}日)`,
-    },
-    {
-      key: 'monthly' as const,
-      show:
-        isHydrated && !dismissedSnackbars.monthly && hasIncomplete('monthly') && monthlyRemaining <= 7,
-      note: findCycleNote('monthly'),
-      className: 'border-amber-400/30',
-      textClassName: 'text-amber-100',
-      message:
-        monthlyRemaining === 0
-          ? '今月最終日です。毎月のルーティンが未完了です'
-          : `毎月のルーティンが未完了です(今月あと${monthlyRemaining}日)`,
-    },
-  ];
+  const weeklyRoutine = useCycleRoutine('weekly', notes, templateCycleById, todayKey);
+  const monthlyRoutine = useCycleRoutine('monthly', notes, templateCycleById, todayKey);
 
   const templateCountLabel = `${templates.length} template${templates.length === 1 ? '' : 's'}`;
   const noteCountLabel = `${notes.length} transient note${notes.length === 1 ? '' : 's'} for today`;
@@ -554,14 +516,10 @@ export default function TransientNotes() {
                       <div className="flex flex-wrap items-center gap-2">
                         <p className="text-lg font-semibold text-white">{note.title}</p>
                         {templateCycleById.get(note.templateId) === 'weekly' && (
-                          <span className="rounded-full border border-purple-400/30 bg-purple-400/10 px-2 py-0.5 text-xs text-purple-200">
-                            今週 あと{weeklyRemaining}日
-                          </span>
+                          <CycleBadge cycle="weekly" remaining={weeklyRoutine.remaining} />
                         )}
                         {templateCycleById.get(note.templateId) === 'monthly' && (
-                          <span className="rounded-full border border-amber-400/30 bg-amber-400/10 px-2 py-0.5 text-xs text-amber-200">
-                            今月 あと{monthlyRemaining}日
-                          </span>
+                          <CycleBadge cycle="monthly" remaining={monthlyRoutine.remaining} />
                         )}
                       </div>
                       <p className="mt-1 text-xs uppercase tracking-[0.2em] text-gray-500">
@@ -1125,54 +1083,19 @@ export default function TransientNotes() {
 
       {/* 残日数の常時表示チップ */}
       {isHydrated && (
-        <div className="fixed bottom-4 right-4 z-40 rounded-full border border-dark-500 bg-dark-800/90 px-4 py-2 text-xs text-gray-300 shadow-lg backdrop-blur">
-          <span className="text-purple-200">今週あと{weeklyRemaining}日</span>
-          <span className="mx-1.5 text-gray-600">/</span>
-          <span className="text-amber-200">今月あと{monthlyRemaining}日</span>
-        </div>
+        <RemainingDaysChip
+          weeklyRemaining={weeklyRoutine.remaining}
+          monthlyRemaining={monthlyRoutine.remaining}
+        />
       )}
 
-      {/* 週次・月次の未完了スナックバー */}
-      <div className="fixed bottom-16 left-1/2 z-50 flex -translate-x-1/2 flex-col items-center gap-2">
-        <AnimatePresence>
-          {snackbars
-            .filter((snackbar) => snackbar.show)
-            .map((snackbar) => (
-              <motion.div
-                key={snackbar.key}
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 12 }}
-                transition={fadeTransition}
-                className={`flex items-center gap-2 rounded-full border bg-dark-800/95 py-2 pl-5 pr-2 shadow-xl backdrop-blur ${snackbar.className}`}
-              >
-                <button
-                  onClick={() => {
-                    if (snackbar.note) {
-                      document
-                        .getElementById(`transient-note-${snackbar.note.id}`)
-                        ?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    }
-                  }}
-                  type="button"
-                  className={`text-sm transition-colors hover:text-white ${snackbar.textClassName}`}
-                >
-                  {snackbar.message}
-                </button>
-                <button
-                  onClick={() =>
-                    setDismissedSnackbars((current) => ({ ...current, [snackbar.key]: true }))
-                  }
-                  type="button"
-                  aria-label="閉じる"
-                  className="flex h-7 w-7 items-center justify-center rounded-full border border-dark-500 text-xs text-gray-400 transition-colors hover:text-white"
-                >
-                  ×
-                </button>
-              </motion.div>
-            ))}
-        </AnimatePresence>
-      </div>
+      {/* 週次・月次の未完了スナックバー(週次は残り1日以内、月次は残り7日以内) */}
+      {isHydrated && (
+        <div className="fixed bottom-16 left-1/2 z-50 flex -translate-x-1/2 flex-col items-center gap-2">
+          <CycleSnackbar routine={weeklyRoutine} threshold={1} />
+          <CycleSnackbar routine={monthlyRoutine} threshold={7} />
+        </div>
+      )}
 
       <AnimatePresence>
         {showDoneSummary && (
