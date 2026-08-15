@@ -166,7 +166,10 @@ export default function TransientNotes() {
   const [templateSummary, setTemplateSummary] = useState('');
   const [templateItemsText, setTemplateItemsText] = useState('');
   const [templateCycle, setTemplateCycle] = useState<Cycle>('daily');
-  const [snackbarDismissed, setSnackbarDismissed] = useState(false);
+  const [dismissedSnackbars, setDismissedSnackbars] = useState<{ weekly: boolean; monthly: boolean }>({
+    weekly: false,
+    monthly: false,
+  });
   const [editingTemplateId, setEditingTemplateId] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const [todayKey, setTodayKey] = useState('');
@@ -273,21 +276,41 @@ export default function TransientNotes() {
   // todayKeyの更新で残日数を日次で再計算する
   const weeklyRemaining = useMemo(() => getPeriodRemainingDays('weekly', new Date()), [todayKey]);
   const monthlyRemaining = useMemo(() => getPeriodRemainingDays('monthly', new Date()), [todayKey]);
-  const firstMonthlyNote = useMemo(
-    () => notes.find((note) => templateCycleById.get(note.templateId) === 'monthly') ?? null,
-    [notes, templateCycleById]
-  );
-  const monthlyIncomplete = useMemo(
-    () =>
-      notes.some(
-        (note) =>
-          templateCycleById.get(note.templateId) === 'monthly' &&
-          note.items.some((item) => !item.checked)
-      ),
-    [notes, templateCycleById]
-  );
-  const showMonthlySnackbar =
-    isHydrated && !snackbarDismissed && monthlyIncomplete && monthlyRemaining <= 7;
+  const findCycleNote = (cycle: Cycle) =>
+    notes.find((note) => templateCycleById.get(note.templateId) === cycle) ?? null;
+  const hasIncomplete = (cycle: Cycle) =>
+    notes.some(
+      (note) =>
+        templateCycleById.get(note.templateId) === cycle &&
+        note.items.some((item) => !item.checked)
+    );
+  // 週次は残り1日以内(土日)、月次は残り7日以内に未完了があれば通知する
+  const snackbars = [
+    {
+      key: 'weekly' as const,
+      show:
+        isHydrated && !dismissedSnackbars.weekly && hasIncomplete('weekly') && weeklyRemaining <= 1,
+      note: findCycleNote('weekly'),
+      className: 'border-purple-400/30',
+      textClassName: 'text-purple-100',
+      message:
+        weeklyRemaining === 0
+          ? '今週最終日です。毎週のルーティンが未完了です'
+          : `毎週のルーティンが未完了です(今週あと${weeklyRemaining}日)`,
+    },
+    {
+      key: 'monthly' as const,
+      show:
+        isHydrated && !dismissedSnackbars.monthly && hasIncomplete('monthly') && monthlyRemaining <= 7,
+      note: findCycleNote('monthly'),
+      className: 'border-amber-400/30',
+      textClassName: 'text-amber-100',
+      message:
+        monthlyRemaining === 0
+          ? '今月最終日です。毎月のルーティンが未完了です'
+          : `毎月のルーティンが未完了です(今月あと${monthlyRemaining}日)`,
+    },
+  ];
 
   const templateCountLabel = `${templates.length} template${templates.length === 1 ? '' : 's'}`;
   const noteCountLabel = `${notes.length} transient note${notes.length === 1 ? '' : 's'} for today`;
@@ -1109,42 +1132,47 @@ export default function TransientNotes() {
         </div>
       )}
 
-      {/* 月次未完了スナックバー(残り7日以内・最終日) */}
-      <AnimatePresence>
-        {showMonthlySnackbar && (
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 12 }}
-            transition={fadeTransition}
-            className="fixed bottom-16 left-1/2 z-50 flex -translate-x-1/2 items-center gap-2 rounded-full border border-amber-400/30 bg-dark-800/95 py-2 pl-5 pr-2 shadow-xl backdrop-blur"
-          >
-            <button
-              onClick={() => {
-                if (firstMonthlyNote) {
-                  document
-                    .getElementById(`transient-note-${firstMonthlyNote.id}`)
-                    ?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                }
-              }}
-              type="button"
-              className="text-sm text-amber-100 transition-colors hover:text-white"
-            >
-              {monthlyRemaining === 0
-                ? '今月最終日です。毎月のルーティンが未完了です'
-                : `毎月のルーティンが未完了です(今月あと${monthlyRemaining}日)`}
-            </button>
-            <button
-              onClick={() => setSnackbarDismissed(true)}
-              type="button"
-              aria-label="閉じる"
-              className="flex h-7 w-7 items-center justify-center rounded-full border border-dark-500 text-xs text-gray-400 transition-colors hover:text-white"
-            >
-              ×
-            </button>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* 週次・月次の未完了スナックバー */}
+      <div className="fixed bottom-16 left-1/2 z-50 flex -translate-x-1/2 flex-col items-center gap-2">
+        <AnimatePresence>
+          {snackbars
+            .filter((snackbar) => snackbar.show)
+            .map((snackbar) => (
+              <motion.div
+                key={snackbar.key}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 12 }}
+                transition={fadeTransition}
+                className={`flex items-center gap-2 rounded-full border bg-dark-800/95 py-2 pl-5 pr-2 shadow-xl backdrop-blur ${snackbar.className}`}
+              >
+                <button
+                  onClick={() => {
+                    if (snackbar.note) {
+                      document
+                        .getElementById(`transient-note-${snackbar.note.id}`)
+                        ?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                  }}
+                  type="button"
+                  className={`text-sm transition-colors hover:text-white ${snackbar.textClassName}`}
+                >
+                  {snackbar.message}
+                </button>
+                <button
+                  onClick={() =>
+                    setDismissedSnackbars((current) => ({ ...current, [snackbar.key]: true }))
+                  }
+                  type="button"
+                  aria-label="閉じる"
+                  className="flex h-7 w-7 items-center justify-center rounded-full border border-dark-500 text-xs text-gray-400 transition-colors hover:text-white"
+                >
+                  ×
+                </button>
+              </motion.div>
+            ))}
+        </AnimatePresence>
+      </div>
 
       <AnimatePresence>
         {showDoneSummary && (
