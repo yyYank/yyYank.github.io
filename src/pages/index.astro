@@ -14,8 +14,8 @@ const pageLinks = [
 <BaseLayout title="yankなページ">
   <div class="container mx-auto px-4 py-16">
     <div class="max-w-2xl mx-auto text-center">
-      <h1 class="text-5xl font-bold mb-4">
-        <span class="bg-gradient-to-r from-accent-cyan via-accent-purple to-accent-pink bg-clip-text text-transparent">yankなページ</span>
+      <h1 class="text-5xl font-bold mb-4 overflow-hidden">
+        <span class="marquee-text inline-block bg-gradient-to-r from-accent-cyan via-accent-purple to-accent-pink bg-clip-text text-transparent">yankなページ</span>
       </h1>
       <a
         href="/profile/"
@@ -37,3 +37,16 @@ const pageLinks = [
     </div>
   </div>
 </BaseLayout>
+
+<style>
+  .marquee-text {
+    animation: marquee 8s linear infinite;
+  }
+  @keyframes marquee {
+    from { transform: translateX(100vw); }
+    to { transform: translateX(-100%); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .marquee-text { animation: none; }
+  }
+</style>
