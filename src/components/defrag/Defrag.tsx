@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { CSS } from "./styles";
+import { useDrag } from "./useDrag";
 
 /* ------------------------------------------------------------------ */
 /* types                                                               */
@@ -667,11 +668,6 @@ interface TreeRect {
   id: string; index: number; top: number; bottom: number; mid: number; h: number;
   parent?: string | null; droppable: boolean; band: number; sortable: boolean; isFolder?: boolean;
 }
-interface TreeHold {
-  id: string; type: "folder" | "item"; index: number; x: number; y: number;
-  el: HTMLElement; pid: number; mode: null | "drag" | "swipe" | "scroll";
-  timer?: ReturnType<typeof setTimeout>;
-}
 interface TreeDrag { id: string; kind: "item" | "folder"; index: number; startY: number; rects: TreeRect[] }
 interface TreeDragState {
   id: string | null; kind: "item" | "folder" | null; offset: number;
@@ -702,9 +698,7 @@ function Tree({ topics, items, expanded, here, countIn, onSelect, onToggle, onOp
 
   const listRef = useRef<HTMLDivElement>(null);
   const refs = useRef<Record<string, HTMLElement | null>>({});
-  const hold = useRef<TreeHold | null>(null);
   const drag = useRef<TreeDrag | null>(null);
-  const suppress = useRef(false);
 
   const [dragState, setDragState] = useState<TreeDragState>({ id: null, kind: null, offset: 0, slot: null, dropId: null });
   const [swipe, setSwipe] = useState<{ id: string | null; dx: number }>({ id: null, dx: 0 });
@@ -731,11 +725,9 @@ function Tree({ topics, items, expanded, here, countIn, onSelect, onToggle, onOp
     return out;
   };
 
-  const beginDrag = (id: string, kind: "item" | "folder", index: number, el: HTMLElement, pid: number, y: number) => {
+  const beginDrag = (id: string, kind: "item" | "folder", index: number, y: number) => {
     drag.current = { id, kind, index, startY: y, rects: measure(kind) };
     setDragState({ id, kind, offset: 0, slot: null, dropId: null });
-    suppress.current = true;
-    try { el.setPointerCapture(pid); } catch (e) {}
   };
 
   const dragMove = (e: React.PointerEvent) => {
@@ -796,65 +788,32 @@ function Tree({ topics, items, expanded, here, countIn, onSelect, onToggle, onOp
     }
   };
 
+  const { down, move, up, tapped, holdRef } = useDrag<{ row: Row; index: number }>({
+    isDragging: () => !!drag.current,
+    onHold: ({ row, index }, _el, point) =>
+      beginDrag(row.id, row.type === "item" ? "item" : "folder", index, point.y),
+    onDragMove: dragMove,
+    onDragEnd: finishDrag,
+    swipe: {
+      canSwipe: ({ row }) => row.type === "item",
+      onSwipeMove: ({ row }, dx) => setSwipe({ id: row.id, dx: Math.min(0, dx) }),
+      onSwipeEnd: ({ row }, el) => {
+        const w = el.offsetWidth || 320;
+        if (Math.abs(swipe.dx) > w * 0.36) onTrash(row.id);
+        setSwipe({ id: null, dx: 0 });
+      },
+    },
+  });
+
   useEffect(() => {
     const el = listRef.current;
     if (!el) return;
-    const block = (e: TouchEvent) => { if (drag.current || (hold.current && hold.current.mode === "swipe")) e.preventDefault(); };
+    const block = (e: TouchEvent) => {
+      if (drag.current || (holdRef.current && holdRef.current.mode === "swipe")) e.preventDefault();
+    };
     el.addEventListener("touchmove", block, { passive: false });
     return () => el.removeEventListener("touchmove", block);
-  }, []);
-
-  /* 押さえれば掴む、横に払えば捨てる、縦はスクロール */
-  const down = (e: React.PointerEvent, row: Row, i: number) => {
-    hold.current = { id: row.id, type: row.type, index: i, x: e.clientX, y: e.clientY,
-      el: e.currentTarget as HTMLElement, pid: e.pointerId, mode: null };
-    hold.current.timer = setTimeout(() => {
-      const h = hold.current;
-      if (!h || h.mode) return;
-      h.mode = "drag";
-      beginDrag(row.id, row.type === "item" ? "item" : "folder", i, h.el, h.pid, h.y);
-    }, 200);
-  };
-
-  const move = (e: React.PointerEvent) => {
-    if (drag.current) { dragMove(e); return; }
-    const h = hold.current;
-    if (!h) return;
-    const dx = e.clientX - h.x;
-    const dy = e.clientY - h.y;
-    if (!h.mode) {
-      if (h.type === "item" && Math.abs(dx) > 12 && Math.abs(dx) > Math.abs(dy)) {
-        h.mode = "swipe";
-        clearTimeout(h.timer);
-        suppress.current = true;
-        try { h.el.setPointerCapture(h.pid); } catch (err) {}
-      } else if (Math.abs(dx) > 12 || Math.abs(dy) > 9) {
-        h.mode = "scroll";
-        clearTimeout(h.timer);
-        hold.current = null;
-      }
-      return;
-    }
-    if (h.mode === "swipe") { e.preventDefault(); setSwipe({ id: h.id, dx: Math.min(0, dx) }); }
-  };
-
-  const up = () => {
-    if (drag.current) { finishDrag(); hold.current = null; return; }
-    const h = hold.current;
-    hold.current = null;
-    if (!h) return;
-    clearTimeout(h.timer);
-    if (h.mode === "swipe") {
-      const w = h.el.offsetWidth || 320;
-      if (Math.abs(swipe.dx) > w * 0.36) onTrash(h.id);
-      setSwipe({ id: null, dx: 0 });
-    }
-  };
-
-  const tapped = (fn: () => void) => () => {
-    if (suppress.current) { suppress.current = false; return; }
-    fn();
-  };
+  }, [holdRef]);
 
   const s = dragState;
 
@@ -899,7 +858,7 @@ function Tree({ topics, items, expanded, here, countIn, onSelect, onToggle, onOp
                 <div ref={(el) => { refs.current[row.id] = el; }} className="dfg-leaf"
                   data-dragging={dragging ? "1" : "0"} data-drop={s.dropId === row.id ? "1" : "0"}
                   style={{ transform: dx ? `translateX(${dx}px)` : undefined }}
-                  onPointerDown={(e) => down(e, row, i)}>
+                  onPointerDown={(e) => down(e, { row, index: i })}>
                   {it.kind === "bundle"
                     ? <span className="dfg-stackmark" />
                     : <span className="dfg-pip" style={{ background: ageColor(stamp) }} />}
@@ -921,7 +880,7 @@ function Tree({ topics, items, expanded, here, countIn, onSelect, onToggle, onOp
               data-on={here === row.id ? "1" : "0"}
               data-dragging={dragging ? "1" : "0"}
               data-drop={s.dropId === row.id ? "1" : "0"}
-              style={style} onPointerDown={(e) => down(e, row, i)}>
+              style={style} onPointerDown={(e) => down(e, { row, index: i })}>
               <div className="dfg-rails">
                 {Array.from({ length: row.depth }).map((_, k) => <i key={k} />)}
               </div>
@@ -1021,10 +980,6 @@ interface WallProps {
   onPos: (id: string, pos: Pos) => void;
   onDraft: () => void;
 }
-interface WallHold {
-  id: string; x: number; y: number; el: HTMLElement; pid: number;
-  mode: null | "drag"; timer?: ReturnType<typeof setTimeout>;
-}
 interface WallRect { id: string; cx: number; cy: number; w: number; h: number }
 interface WallDrag { id: string; x0: number; y0: number; base: Pos; rects: WallRect[] }
 
@@ -1032,9 +987,7 @@ function Wall({ topics, items, rootId, onOpenDrawer, onOpen, onBundle, onPos, on
   const list = useMemo(() => subtreeItems(topics, items, rootId), [topics, items, rootId]);
   const canvasRef = useRef<HTMLDivElement>(null);
   const refs = useRef<Record<string, HTMLElement | null>>({});
-  const hold = useRef<WallHold | null>(null);
   const drag = useRef<WallDrag | null>(null);
-  const suppress = useRef(false);
   const [st, setSt] = useState<{ id: string | null; x: number; y: number; dropId: string | null }>({ id: null, x: 0, y: 0, dropId: null });
 
   /* 未配置のものに初期位置を与える */
@@ -1069,56 +1022,39 @@ function Wall({ topics, items, rootId, onOpenDrawer, onOpen, onBundle, onPos, on
     return () => el.removeEventListener("touchmove", block);
   }, []);
 
-  const down = (e: React.PointerEvent, item: Item) => {
-    const base = item.pos || { x: 10, y: 10, r: 0 };
-    hold.current = { id: item.id, x: e.clientX, y: e.clientY, el: e.currentTarget as HTMLElement, pid: e.pointerId, mode: null };
-    hold.current.timer = setTimeout(() => {
-      const h = hold.current;
-      if (!h || h.mode) return;
-      h.mode = "drag";
-      suppress.current = true;
-      drag.current = { id: item.id, x0: h.x, y0: h.y, base, rects: measure() };
+  const { down, move, up, tapped } = useDrag<Item>({
+    /* 静止時間は仕様の0.2秒に統一(旧実装は180ms)。横はスワイプが無いので9pxで譲る */
+    cancelX: 9,
+    cancelY: 9,
+    isDragging: () => !!drag.current,
+    onHold: (item, _el, point) => {
+      const base = item.pos || { x: 10, y: 10, r: 0 };
+      drag.current = { id: item.id, x0: point.x, y0: point.y, base, rects: measure() };
       setSt({ id: item.id, x: base.x, y: base.y, dropId: null });
-      try { h.el.setPointerCapture(h.pid); } catch (err) {}
-    }, 180);
-  };
-
-  const move = (e: React.PointerEvent) => {
-    const d = drag.current;
-    if (!d) {
-      const h = hold.current;
-      if (h && !h.mode && (Math.abs(e.clientX - h.x) > 9 || Math.abs(e.clientY - h.y) > 9)) {
-        clearTimeout(h.timer);
-        hold.current = null;
+    },
+    onDragMove: (e) => {
+      const d = drag.current;
+      if (!d) return;
+      e.preventDefault();
+      const nx = Math.max(0, d.base.x + (e.clientX - d.x0));
+      const ny = Math.max(0, d.base.y + (e.clientY - d.y0));
+      let dropId: string | null = null;
+      for (const r of d.rects) {
+        if (r.id === d.id) continue;
+        if (Math.abs(e.clientX - r.cx) < r.w * 0.3 && Math.abs(e.clientY - r.cy) < r.h * 0.3) { dropId = r.id; break; }
       }
-      return;
-    }
-    e.preventDefault();
-    const nx = Math.max(0, d.base.x + (e.clientX - d.x0));
-    const ny = Math.max(0, d.base.y + (e.clientY - d.y0));
-    let dropId: string | null = null;
-    for (const r of d.rects) {
-      if (r.id === d.id) continue;
-      if (Math.abs(e.clientX - r.cx) < r.w * 0.3 && Math.abs(e.clientY - r.cy) < r.h * 0.3) { dropId = r.id; break; }
-    }
-    setSt({ id: d.id, x: nx, y: ny, dropId });
-  };
-
-  const up = () => {
-    const d = drag.current;
-    if (hold.current) { clearTimeout(hold.current.timer); hold.current = null; }
-    if (d) {
-      if (st.dropId) onBundle(d.id, st.dropId);
-      else onPos(d.id, { x: st.x, y: st.y, r: d.base.r || 0 });
-    }
-    drag.current = null;
-    setSt({ id: null, x: 0, y: 0, dropId: null });
-  };
-
-  const tapped = (fn: () => void) => () => {
-    if (suppress.current) { suppress.current = false; return; }
-    fn();
-  };
+      setSt({ id: d.id, x: nx, y: ny, dropId });
+    },
+    onDragEnd: () => {
+      const d = drag.current;
+      if (d) {
+        if (st.dropId) onBundle(d.id, st.dropId);
+        else onPos(d.id, { x: st.x, y: st.y, r: d.base.r || 0 });
+      }
+      drag.current = null;
+      setSt({ id: null, x: 0, y: 0, dropId: null });
+    },
+  });
 
   return (
     <div className="dfg-wall">
