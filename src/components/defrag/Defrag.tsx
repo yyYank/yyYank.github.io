@@ -1,22 +1,46 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
 
 /* ------------------------------------------------------------------ */
+/* types                                                               */
+/* ------------------------------------------------------------------ */
+
+interface Pos { x: number; y: number; r: number }
+interface Child { id: string; text: string; createdAt: number }
+interface CardItem {
+  id: string; kind: "card"; text: string; createdAt: number;
+  topicId: string | null; color?: string; pos?: Pos;
+}
+interface BundleItem {
+  id: string; kind: "bundle"; title: string; createdAt: number;
+  topicId: string | null; children: Child[]; color?: string; pos?: Pos;
+}
+type Item = CardItem | BundleItem;
+type ItemPatch = Partial<Omit<CardItem, "id" | "kind">> & Partial<Omit<BundleItem, "id" | "kind">>;
+interface Topic { id: string; title: string; parentId: string | null; createdAt: number }
+type FolderRow = { type: "folder"; id: string; topic: Topic; title: string; depth: number; parent: string | null };
+type ItemRow = { type: "item"; id: string; item: Item; depth: number; parent: string | null };
+type Row = FolderRow | ItemRow;
+interface Persisted {
+  items: Item[]; topics: Topic[]; expanded: Record<string, boolean>; here: string;
+}
+
+/* ------------------------------------------------------------------ */
 /* storage                                                             */
 /* ------------------------------------------------------------------ */
 
 const KEY = "defrag:v6";
 
-async function loadAll() {
+async function loadAll(): Promise<Persisted | null> {
   try {
-    const res = await window.storage.get(KEY);
-    return res ? JSON.parse(res.value) : null;
+    const res = localStorage.getItem(KEY);
+    return res ? JSON.parse(res) : null;
   } catch (e) {
     return null;
   }
 }
-async function saveAll(data) {
+async function saveAll(data: Persisted) {
   try {
-    await window.storage.set(KEY, JSON.stringify(data));
+    localStorage.setItem(KEY, JSON.stringify(data));
   } catch (e) {}
 }
 
@@ -27,9 +51,9 @@ async function saveAll(data) {
 const uid = () => Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
 const ROOT = "__root__";
 const DAY = 86400000;
-const daysAgo = (ts) => (Date.now() - ts) / DAY;
+const daysAgo = (ts: number) => (Date.now() - ts) / DAY;
 
-const AGE_STOPS = [
+const AGE_STOPS: [number, number[]][] = [
   [0, [232, 161, 58]],
   [3, [201, 138, 70]],
   [14, [122, 124, 130]],
@@ -37,7 +61,7 @@ const AGE_STOPS = [
   [120, [56, 74, 94]],
 ];
 
-function ageColor(ts) {
+function ageColor(ts: number) {
   const d = daysAgo(ts);
   const last = AGE_STOPS[AGE_STOPS.length - 1];
   if (d >= last[0]) return `rgb(${last[1].join(",")})`;
@@ -52,23 +76,23 @@ function ageColor(ts) {
   return `rgb(${c[0]},${c[1]},${c[2]})`;
 }
 
-const pad2 = (n) => String(n).padStart(2, "0");
+const pad2 = (n: number) => String(n).padStart(2, "0");
 
 /* 見るたびに変わらない表示にする */
-function absDate(ts, withTime) {
+function absDate(ts: number, withTime: boolean) {
   const d = new Date(ts);
   const y = d.getFullYear() === new Date().getFullYear() ? "" : `${d.getFullYear()}/`;
   const day = `${y}${pad2(d.getMonth() + 1)}/${pad2(d.getDate())}`;
   return withTime ? `${day} ${pad2(d.getHours())}:${pad2(d.getMinutes())}` : day;
 }
-const shortDate = (ts) => absDate(ts, false);
+const shortDate = (ts: number) => absDate(ts, false);
 
 /* 文字 n-gram (n=1,2,3) を出現回数つきで数える。日本語は漢字1文字が意味を持つので
    ユニグラムを落とさない。記号と空白だけ除く。 */
-function grams(text) {
+function grams(text: string) {
   const s = (text || "").replace(/[\s\u3000、。,.!?！？「」『』()（）ー\-~〜:：;；…・"'`]/g, "");
-  const m = new Map();
-  const bump = (g) => m.set(g, (m.get(g) || 0) + 1);
+  const m = new Map<string, number>();
+  const bump = (g: string) => m.set(g, (m.get(g) || 0) + 1);
   for (let i = 0; i < s.length; i++) {
     bump(s[i]);
     if (i + 2 <= s.length) bump(s.slice(i, i + 2));
@@ -78,21 +102,21 @@ function grams(text) {
 }
 
 /* ありふれた並びを軽くするための IDF。全断片から作り直す。 */
-function buildIdf(texts) {
-  const df = new Map();
+function buildIdf(texts: string[]) {
+  const df = new Map<string, number>();
   texts.forEach((t) => {
     new Set(grams(t).keys()).forEach((g) => df.set(g, (df.get(g) || 0) + 1));
   });
   const n = Math.max(1, texts.length);
-  const idf = new Map();
+  const idf = new Map<string, number>();
   df.forEach((c, g) => idf.set(g, Math.log((n + 1) / (c + 0.5))));
   return idf;
 }
 
 /* tf-idf ベクトルにして正規化。長さの違う断片を素直に比べられるようにする。 */
-function vectorize(text, idf) {
+function vectorize(text: string, idf: Map<string, number> | null) {
   const g = grams(text);
-  const v = new Map();
+  const v = new Map<string, number>();
   let norm = 0;
   g.forEach((tf, key) => {
     const w = (1 + Math.log(tf)) * (idf ? idf.get(key) || Math.log(2) : 1);
@@ -105,7 +129,7 @@ function vectorize(text, idf) {
   return v;
 }
 
-function cosine(a, b) {
+function cosine(a: Map<string, number>, b: Map<string, number>) {
   const [small, large] = a.size < b.size ? [a, b] : [b, a];
   let dot = 0;
   small.forEach((w, key) => {
@@ -116,29 +140,39 @@ function cosine(a, b) {
 }
 
 /* 単発で比べたいとき用。idf なしのコサイン。 */
-function similarity(a, b) {
+function similarity(a: string, b: string) {
   return cosine(vectorize(a, null), vectorize(b, null));
 }
 
-const flattenTexts = (i) => (i.kind === "bundle" ? i.children.map((c) => c.text) : [i.text]);
-const itemStamp = (i) => (i.kind === "bundle" ? i.children[0].createdAt : i.createdAt);
-const itemLabel = (i) => (i.kind === "bundle" ? i.title || "名前のない束" : i.text);
-const childrenOf = (topics, parentId) => topics.filter((t) => (t.parentId || null) === parentId);
+const flattenTexts = (i: Item) => (i.kind === "bundle" ? i.children.map((c) => c.text) : [i.text]);
+const itemStamp = (i: Item) => (i.kind === "bundle" ? i.children[0].createdAt : i.createdAt);
+const itemLabel = (i: Item) => (i.kind === "bundle" ? i.title || "名前のない束" : i.text);
+const childrenOf = (topics: Topic[], parentId: string | null) =>
+  topics.filter((t) => (t.parentId || null) === parentId);
 
-function descendantIds(topics, id, acc = []) {
+function descendantIds(topics: Topic[], id: string, acc: string[] = []) {
   childrenOf(topics, id).forEach((t) => { acc.push(t.id); descendantIds(topics, t.id, acc); });
   return acc;
 }
-function pathOf(topics, id) {
-  const out = [];
-  let cur = topics.find((t) => t.id === id);
-  while (cur) { out.unshift(cur); cur = cur.parentId ? topics.find((t) => t.id === cur.parentId) : null; }
+function pathOf(topics: Topic[], id: string) {
+  const out: Topic[] = [];
+  let cur: Topic | null | undefined = topics.find((t) => t.id === id);
+  while (cur) {
+    out.unshift(cur);
+    const parentId: string | null = cur.parentId;
+    cur = parentId ? topics.find((t) => t.id === parentId) : null;
+  }
   return out;
 }
-const pathLabel = (topics, id) =>
+const pathLabel = (topics: Topic[], id: string | null) =>
   id && id !== ROOT ? "/ " + pathOf(topics, id).map((t) => t.title).join(" / ") : "/";
 
-function flatTopics(topics, parentId = null, depth = 0, out = []) {
+function flatTopics(
+  topics: Topic[],
+  parentId: string | null = null,
+  depth = 0,
+  out: { topic: Topic; depth: number }[] = []
+) {
   childrenOf(topics, parentId).forEach((t) => {
     out.push({ topic: t, depth });
     flatTopics(topics, t.id, depth + 1, out);
@@ -147,9 +181,9 @@ function flatTopics(topics, parentId = null, depth = 0, out = []) {
 }
 
 /* explorer と同じ並び。フォルダが先、そのあと直下の断片。 */
-function buildRows(topics, items, isOpen) {
-  const out = [];
-  const walk = (parentId, depth) => {
+function buildRows(topics: Topic[], items: Item[], isOpen: (id: string) => boolean) {
+  const out: Row[] = [];
+  const walk = (parentId: string | null, depth: number) => {
     childrenOf(topics, parentId).forEach((t) => {
       out.push({ type: "folder", id: t.id, topic: t, title: t.title, depth, parent: t.parentId || null });
       if (isOpen(t.id)) {
@@ -402,7 +436,7 @@ const CSS = `
 @media (prefers-reduced-motion:reduce){.dfg *{animation:none!important;transition:none!important}}
 `;
 
-function FolderIcon({ open }) {
+function FolderIcon({ open }: { open?: boolean }) {
   return (
     <svg className="dfg-folder" viewBox="0 0 16 16" width="15" height="15" aria-hidden="true">
       {open ? (
@@ -422,9 +456,9 @@ function FolderIcon({ open }) {
 /* ------------------------------------------------------------------ */
 
 export default function Defrag() {
-  const [items, setItems] = useState([]);
-  const [topics, setTopics] = useState([]);
-  const [expanded, setExpanded] = useState({});
+  const [items, setItems] = useState<Item[]>([]);
+  const [topics, setTopics] = useState<Topic[]>([]);
+  const [expanded, setExpanded] = useState<Record<string, boolean>>({});
   const [ready, setReady] = useState(false);
 
   const [drawer, setDrawer] = useState(false);
@@ -433,19 +467,19 @@ export default function Defrag() {
   const [draft, setDraft] = useState("");
   const [quick, setQuick] = useState("");
   const [flash, setFlash] = useState(0);
-  const [echo, setEcho] = useState([]);
-  const [openId, setOpenId] = useState(null);
-  const [exportId, setExportId] = useState(null);
-  const [copyTopic, setCopyTopic] = useState(null);
-  const [newFolder, setNewFolder] = useState(null);
-  const [creating, setCreating] = useState(null);
-  const [folderMenu, setFolderMenu] = useState(null);
-  const [moving, setMoving] = useState(null);
-  const [trash, setTrash] = useState(null);
-  const [tab, setTab] = useState("compose");
-  const [editor, setEditor] = useState(null);
+  const [echo, setEcho] = useState<{ t: string; id: string; s: number }[]>([]);
+  const [openId, setOpenId] = useState<string | null>(null);
+  const [exportId, setExportId] = useState<string | null>(null);
+  const [copyTopic, setCopyTopic] = useState<string | null>(null);
+  const [newFolder, setNewFolder] = useState<{ parentId: string | null } | null>(null);
+  const [creating, setCreating] = useState<{ parentId: string | null } | null>(null);
+  const [folderMenu, setFolderMenu] = useState<string | null>(null);
+  const [moving, setMoving] = useState<Topic | null>(null);
+  const [trash, setTrash] = useState<{ item: Item; index: number } | null>(null);
+  const [tab, setTab] = useState<"compose" | "wall" | "viz">("compose");
+  const [editor, setEditor] = useState<string | null>(null);
 
-  const taRef = useRef(null);
+  const taRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     let alive = true;
@@ -459,7 +493,7 @@ export default function Defrag() {
       }
       setReady(true);
     });
-    return () => (alive = false);
+    return () => { alive = false; };
   }, []);
 
   useEffect(() => { if (ready) saveAll({ items, topics, expanded, here }); }, [items, topics, expanded, here, ready]);
@@ -469,16 +503,19 @@ export default function Defrag() {
   useEffect(() => {
     const el = document.querySelector(".dfg");
     if (!el) return;
-    let x0 = null;
-    const start = (e) => { const t = e.touches[0]; x0 = t && t.clientX < 22 ? t.clientX : null; };
-    const mv = (e) => {
+    let x0: number | null = null;
+    const start = (e: TouchEvent) => { const t = e.touches[0]; x0 = t && t.clientX < 22 ? t.clientX : null; };
+    const mv = (e: TouchEvent) => {
       if (x0 == null) return;
       const t = e.touches[0];
       if (t && t.clientX - x0 > 40) { setDrawer(true); x0 = null; }
     };
-    el.addEventListener("touchstart", start, { passive: true });
-    el.addEventListener("touchmove", mv, { passive: true });
-    return () => { el.removeEventListener("touchstart", start); el.removeEventListener("touchmove", mv); };
+    el.addEventListener("touchstart", start as EventListener, { passive: true });
+    el.addEventListener("touchmove", mv as EventListener, { passive: true });
+    return () => {
+      el.removeEventListener("touchstart", start as EventListener);
+      el.removeEventListener("touchmove", mv as EventListener);
+    };
   }, []);
   useEffect(() => {
     if (!echo.length) return;
@@ -495,7 +532,7 @@ export default function Defrag() {
   const hereId = here === ROOT ? null : here;
   const herePath = pathLabel(topics, here);
 
-  const add = (text) => {
+  const add = (text: string) => {
     const v = text.trim();
     if (!v) return;
     setItems((prev) => [{ id: uid(), kind: "card", text: v, createdAt: Date.now(), topicId: hereId }, ...prev]);
@@ -522,15 +559,15 @@ export default function Defrag() {
     () => items.reduce((n, it) => n + (it.kind === "bundle" ? it.children.length : 1), 0), [items]);
   const recent = useMemo(() => items.filter((i) => i.kind === "card").slice(0, 2), [items]);
 
-  const countIn = useCallback((tid) => {
+  const countIn = useCallback((tid: string) => {
     if (tid === ROOT) return items.filter((i) => !i.topicId).length;
-    const ids = [tid, ...descendantIds(topics, tid)];
+    const ids: (string | null)[] = [tid, ...descendantIds(topics, tid)];
     return items.filter((i) => ids.includes(i.topicId)).length;
   }, [items, topics]);
 
   /* --- items --- */
 
-  const moveItem = (id, topicId, beforeId) => {
+  const moveItem = (id: string, topicId?: string | null, beforeId?: string | null) => {
     setItems((prev) => {
       const from = prev.findIndex((i) => i.id === id);
       if (from < 0) return prev;
@@ -547,7 +584,7 @@ export default function Defrag() {
     });
   };
 
-  const bundle = (dragId, targetId) => {
+  const bundle = (dragId: string, targetId: string) => {
     setItems((prev) => {
       const di = prev.findIndex((i) => i.id === dragId);
       const ti = prev.findIndex((i) => i.id === targetId);
@@ -555,7 +592,8 @@ export default function Defrag() {
       const next = prev.slice();
       const src = next[di];
       const dst = next[ti];
-      const kids = src.kind === "bundle" ? src.children : [{ id: src.id, text: src.text, createdAt: src.createdAt }];
+      const kids: Child[] =
+        src.kind === "bundle" ? src.children : [{ id: src.id, text: src.text, createdAt: src.createdAt }];
       next[ti] =
         dst.kind === "bundle"
           ? { ...dst, children: [...dst.children, ...kids] }
@@ -568,10 +606,10 @@ export default function Defrag() {
     });
   };
 
-  const sortWithin = (tid, dir) => {
+  const sortWithin = (tid: string, dir: "new" | "old") => {
     setItems((prev) => {
       const key = tid === ROOT ? null : tid;
-      const idx = [];
+      const idx: number[] = [];
       prev.forEach((it, i) => { if ((it.topicId || null) === key) idx.push(i); });
       const vals = idx.map((i) => prev[i]).sort((a, b) =>
         dir === "new" ? itemStamp(b) - itemStamp(a) : itemStamp(a) - itemStamp(b));
@@ -581,7 +619,7 @@ export default function Defrag() {
     });
   };
 
-  const trashItem = (id) => {
+  const trashItem = (id: string) => {
     const idx = items.findIndex((i) => i.id === id);
     if (idx < 0) return;
     const gone = items[idx];
@@ -594,14 +632,15 @@ export default function Defrag() {
     setTrash(null);
   };
 
-  const patchItem = (id, patch) => setItems((p) => p.map((i) => (i.id === id ? { ...i, ...patch } : i)));
+  const patchItem = (id: string, patch: ItemPatch) =>
+    setItems((p) => p.map((i) => (i.id === id ? ({ ...i, ...patch } as Item) : i)));
 
-  const unbundle = (id) =>
+  const unbundle = (id: string) =>
     setItems((prev) => {
       const idx = prev.findIndex((i) => i.id === id);
       if (idx < 0) return prev;
-      const b = prev[idx];
-      const loose = b.children.map((c) => ({
+      const b = prev[idx] as BundleItem;
+      const loose: Item[] = b.children.map((c) => ({
         id: c.id, kind: "card", text: c.text, createdAt: c.createdAt, topicId: b.topicId || null }));
       const next = prev.slice();
       next.splice(idx, 1, ...loose);
@@ -610,15 +649,16 @@ export default function Defrag() {
 
   /* --- folders --- */
 
-  const addFolder = (title, parentId) => {
-    const t = { id: uid(), title: title.trim() || "名前のないフォルダ", parentId: parentId || null, createdAt: Date.now() };
+  const addFolder = (title: string, parentId?: string | null) => {
+    const t: Topic = { id: uid(), title: title.trim() || "名前のないフォルダ", parentId: parentId || null, createdAt: Date.now() };
     setTopics((p) => [...p, t]);
     if (parentId) setExpanded((c) => ({ ...c, [parentId]: true }));
     setHere(t.id);
   };
-  const patchFolder = (id, patch) => setTopics((p) => p.map((t) => (t.id === id ? { ...t, ...patch } : t)));
+  const patchFolder = (id: string, patch: Partial<Topic>) =>
+    setTopics((p) => p.map((t) => (t.id === id ? { ...t, ...patch } : t)));
 
-  const removeFolder = (id) => {
+  const removeFolder = (id: string) => {
     const t = topics.find((x) => x.id === id);
     const up = t ? t.parentId || null : null;
     setTopics((p) => p.filter((x) => x.id !== id).map((x) => (x.parentId === id ? { ...x, parentId: up } : x)));
@@ -626,7 +666,7 @@ export default function Defrag() {
     setHere(up || ROOT);
   };
 
-  const nestFolder = (dragId, newParentId) => {
+  const nestFolder = (dragId: string, newParentId: string | null) => {
     if (dragId === newParentId) return;
     const pid = newParentId === ROOT ? null : newParentId;
     if (pid && descendantIds(topics, dragId).includes(pid)) return;
@@ -638,7 +678,7 @@ export default function Defrag() {
     if (pid) setExpanded((c) => ({ ...c, [pid]: true }));
   };
 
-  const moveFolderBefore = (dragId, beforeId) => {
+  const moveFolderBefore = (dragId: string, beforeId: string | null) => {
     setTopics((p) => {
       const t = p.find((x) => x.id === dragId);
       if (!t) return p;
@@ -652,15 +692,15 @@ export default function Defrag() {
     });
   };
 
-  const promote = (id) => {
+  const promote = (id: string) => {
     const b = items.find((i) => i.id === id);
     if (!b || b.kind !== "bundle") return;
     const parent = b.topicId || null;
-    const t = { id: uid(), title: b.title || "名前のないフォルダ", parentId: parent, createdAt: Date.now() };
+    const t: Topic = { id: uid(), title: b.title || "名前のないフォルダ", parentId: parent, createdAt: Date.now() };
     setTopics((p) => [...p, t]);
     setItems((prev) => {
       const idx = prev.findIndex((i) => i.id === id);
-      const loose = b.children.map((c) => ({
+      const loose: Item[] = b.children.map((c) => ({
         id: c.id, kind: "card", text: c.text, createdAt: c.createdAt, topicId: t.id }));
       const next = prev.slice();
       next.splice(idx, 1, ...loose);
@@ -750,7 +790,7 @@ export default function Defrag() {
             onMenu={setFolderMenu}
             creating={creating}
             onCreate={(title) => {
-              if (title.trim()) addFolder(title, creating.parentId);
+              if (title.trim()) addFolder(title, creating?.parentId);
               setCreating(null);
             }}
             onCancelCreate={() => setCreating(null)}
@@ -844,7 +884,7 @@ export default function Defrag() {
         </Sheet>
       )}
 
-      {exportItem && (
+      {exportItem && exportItem.kind === "bundle" && (
         <Sheet onClose={() => setExportId(null)} title="束を書き出す">
           <BundleExport bundle={exportItem} />
         </Sheet>
@@ -857,24 +897,55 @@ export default function Defrag() {
 /* tree — ここが唯一の作業面                                            */
 /* ------------------------------------------------------------------ */
 
+interface TreeRect {
+  id: string; index: number; top: number; bottom: number; mid: number; h: number;
+  parent?: string | null; droppable: boolean; band: number; sortable: boolean; isFolder?: boolean;
+}
+interface TreeHold {
+  id: string; type: "folder" | "item"; index: number; x: number; y: number;
+  el: HTMLElement; pid: number; mode: null | "drag" | "swipe" | "scroll";
+  timer?: ReturnType<typeof setTimeout>;
+}
+interface TreeDrag { id: string; kind: "item" | "folder"; index: number; startY: number; rects: TreeRect[] }
+interface TreeDragState {
+  id: string | null; kind: "item" | "folder" | null; offset: number;
+  slot: number | null; dropId: string | null;
+}
+interface TreeProps {
+  topics: Topic[]; items: Item[]; expanded: Record<string, boolean>; here: string;
+  countIn: (tid: string) => number;
+  onSelect: (id: string) => void;
+  onToggle: (id: string) => void;
+  onOpenItem: (id: string) => void;
+  onMenu: (id: string) => void;
+  onNest: (dragId: string, newParentId: string) => void;
+  onFolderBefore: (dragId: string, beforeId: string | null) => void;
+  onMoveItem: (id: string, topicId?: string | null, beforeId?: string | null) => void;
+  onBundle: (dragId: string, targetId: string) => void;
+  onTrash: (id: string) => void;
+  creating: { parentId: string | null } | null;
+  onCreate: (title: string) => void;
+  onCancelCreate: () => void;
+}
+
 function Tree({ topics, items, expanded, here, countIn, onSelect, onToggle, onOpenItem, onMenu,
-  onNest, onFolderBefore, onMoveItem, onBundle, onTrash, creating, onCreate, onCancelCreate }) {
-  const isOpen = useCallback((id) => !!expanded[id], [expanded]);
+  onNest, onFolderBefore, onMoveItem, onBundle, onTrash, creating, onCreate, onCancelCreate }: TreeProps) {
+  const isOpen = useCallback((id: string) => !!expanded[id], [expanded]);
   const rows = useMemo(() => buildRows(topics, items, isOpen), [topics, items, isOpen]);
   const rootCount = useMemo(() => items.filter((i) => !i.topicId).length, [items]);
 
-  const listRef = useRef(null);
-  const refs = useRef({});
-  const hold = useRef(null);
-  const drag = useRef(null);
+  const listRef = useRef<HTMLDivElement>(null);
+  const refs = useRef<Record<string, HTMLElement | null>>({});
+  const hold = useRef<TreeHold | null>(null);
+  const drag = useRef<TreeDrag | null>(null);
   const suppress = useRef(false);
 
-  const [dragState, setDragState] = useState({ id: null, kind: null, offset: 0, slot: null, dropId: null });
-  const [swipe, setSwipe] = useState({ id: null, dx: 0 });
+  const [dragState, setDragState] = useState<TreeDragState>({ id: null, kind: null, offset: 0, slot: null, dropId: null });
+  const [swipe, setSwipe] = useState<{ id: string | null; dx: number }>({ id: null, dx: 0 });
 
   /* kind ごとに当たり判定を作る。フォルダは面で受け、断片は真ん中だけで束になる。 */
-  const measure = (kind) => {
-    const out = [];
+  const measure = (kind: "item" | "folder") => {
+    const out: TreeRect[] = [];
     rows.forEach((r, i) => {
       const el = refs.current[r.id];
       if (!el) return;
@@ -894,21 +965,21 @@ function Tree({ topics, items, expanded, here, countIn, onSelect, onToggle, onOp
     return out;
   };
 
-  const beginDrag = (id, kind, index, el, pid, y) => {
+  const beginDrag = (id: string, kind: "item" | "folder", index: number, el: HTMLElement, pid: number, y: number) => {
     drag.current = { id, kind, index, startY: y, rects: measure(kind) };
     setDragState({ id, kind, offset: 0, slot: null, dropId: null });
     suppress.current = true;
     try { el.setPointerCapture(pid); } catch (e) {}
   };
 
-  const dragMove = (e) => {
+  const dragMove = (e: React.PointerEvent) => {
     const d = drag.current;
     if (!d) return;
     e.preventDefault();
     const y = e.clientY;
-    let dropId = null;
-    let slot = null;
-    let over = null;
+    let dropId: string | null = null;
+    let slot: number | null = null;
+    let over: TreeRect | null = null;
     for (const r of d.rects) {
       if (r.id === d.id || !r.droppable) continue;
       if (y >= r.top && y <= r.bottom) { over = r; break; }
@@ -951,7 +1022,7 @@ function Tree({ topics, items, expanded, here, countIn, onSelect, onToggle, onOp
     }
     if (s.dropId) { onNest(d.id, s.dropId); return; }
     if (s.slot !== null && s.slot !== d.index && s.slot !== d.index + 1) {
-      let before = null;
+      let before: string | null = null;
       for (let k = s.slot; k < rows.length; k++) {
         if (rows[k].type === "folder") { before = rows[k].id; break; }
       }
@@ -962,15 +1033,15 @@ function Tree({ topics, items, expanded, here, countIn, onSelect, onToggle, onOp
   useEffect(() => {
     const el = listRef.current;
     if (!el) return;
-    const block = (e) => { if (drag.current || (hold.current && hold.current.mode === "swipe")) e.preventDefault(); };
+    const block = (e: TouchEvent) => { if (drag.current || (hold.current && hold.current.mode === "swipe")) e.preventDefault(); };
     el.addEventListener("touchmove", block, { passive: false });
     return () => el.removeEventListener("touchmove", block);
   }, []);
 
   /* 押さえれば掴む、横に払えば捨てる、縦はスクロール */
-  const down = (e, row, i) => {
+  const down = (e: React.PointerEvent, row: Row, i: number) => {
     hold.current = { id: row.id, type: row.type, index: i, x: e.clientX, y: e.clientY,
-      el: e.currentTarget, pid: e.pointerId, mode: null };
+      el: e.currentTarget as HTMLElement, pid: e.pointerId, mode: null };
     hold.current.timer = setTimeout(() => {
       const h = hold.current;
       if (!h || h.mode) return;
@@ -979,7 +1050,7 @@ function Tree({ topics, items, expanded, here, countIn, onSelect, onToggle, onOp
     }, 200);
   };
 
-  const move = (e) => {
+  const move = (e: React.PointerEvent) => {
     if (drag.current) { dragMove(e); return; }
     const h = hold.current;
     if (!h) return;
@@ -1014,7 +1085,7 @@ function Tree({ topics, items, expanded, here, countIn, onSelect, onToggle, onOp
     }
   };
 
-  const tapped = (fn) => () => {
+  const tapped = (fn: () => void) => () => {
     if (suppress.current) { suppress.current = false; return; }
     fn();
   };
@@ -1024,7 +1095,7 @@ function Tree({ topics, items, expanded, here, countIn, onSelect, onToggle, onOp
   return (
     <div className="dfg-tree" ref={listRef} data-drag={s.id ? "1" : "0"}
       onPointerMove={move} onPointerUp={up} onPointerCancel={up}>
-      <div className="dfg-rootrow" ref={(el) => (refs.current[ROOT] = el)}
+      <div className="dfg-rootrow" ref={(el) => { refs.current[ROOT] = el; }}
         data-on={here === ROOT ? "1" : "0"} data-drop={s.dropId === ROOT ? "1" : "0"}
         onClick={tapped(() => onSelect(ROOT))}>
         <span className="dfg-mono">/</span>
@@ -1045,7 +1116,7 @@ function Tree({ topics, items, expanded, here, countIn, onSelect, onToggle, onOp
 
       {rows.map((row, i) => {
         const dragging = s.id === row.id;
-        const style = { transform: dragging ? `translateY(${s.offset}px)` : undefined, zIndex: dragging ? 40 : undefined };
+        const style: React.CSSProperties = { transform: dragging ? `translateY(${s.offset}px)` : undefined, zIndex: dragging ? 40 : undefined };
 
         if (row.type === "item") {
           const it = row.item;
@@ -1059,7 +1130,7 @@ function Tree({ topics, items, expanded, here, countIn, onSelect, onToggle, onOp
               <span className="dfg-caretgap" />
               <div className="dfg-wrap">
                 {dx < 0 && <div className="dfg-swipebg" data-armed={Math.abs(dx) > 110 ? "1" : "0"}>捨てる</div>}
-                <div ref={(el) => (refs.current[row.id] = el)} className="dfg-leaf"
+                <div ref={(el) => { refs.current[row.id] = el; }} className="dfg-leaf"
                   data-dragging={dragging ? "1" : "0"} data-drop={s.dropId === row.id ? "1" : "0"}
                   style={{ transform: dx ? `translateX(${dx}px)` : undefined }}
                   onPointerDown={(e) => down(e, row, i)}>
@@ -1080,7 +1151,7 @@ function Tree({ topics, items, expanded, here, countIn, onSelect, onToggle, onOp
         return (
           <React.Fragment key={row.id}>
             {s.slot === i && s.id ? <div className="dfg-slot" style={{ marginLeft: row.depth * 27 + 52 }} /> : null}
-            <div ref={(el) => (refs.current[row.id] = el)} className="dfg-row"
+            <div ref={(el) => { refs.current[row.id] = el; }} className="dfg-row"
               data-on={here === row.id ? "1" : "0"}
               data-dragging={dragging ? "1" : "0"}
               data-drop={s.dropId === row.id ? "1" : "0"}
@@ -1118,9 +1189,9 @@ function Tree({ topics, items, expanded, here, countIn, onSelect, onToggle, onOp
 }
 
 
-function NewRow({ depth, onCommit, onCancel }) {
+function NewRow({ depth, onCommit, onCancel }: { depth: number; onCommit: (v: string) => void; onCancel: () => void }) {
   const [v, setV] = useState("");
-  const ref = useRef(null);
+  const ref = useRef<HTMLInputElement>(null);
   useEffect(() => { if (ref.current) ref.current.focus(); }, []);
   return (
     <div className="dfg-row">
@@ -1146,8 +1217,8 @@ function NewRow({ depth, onCommit, onCancel }) {
 /* 付箋の面 — フォルダ配下を一覧で見比べ、重ねて束ねる                  */
 /* ------------------------------------------------------------------ */
 
-function subtreeItems(topics, items, rootId) {
-  const ids = rootId === ROOT ? [null] : [rootId, ...descendantIds(topics, rootId)];
+function subtreeItems(topics: Topic[], items: Item[], rootId: string) {
+  const ids: (string | null)[] = rootId === ROOT ? [null] : [rootId, ...descendantIds(topics, rootId)];
   return items.filter((i) => ids.includes(i.topicId || null) || ids.includes(i.topicId));
 }
 
@@ -1159,10 +1230,10 @@ const NOTE_COLORS = [
   { id: "indigo", bg: "#BCC6F0", edge: "#6E7BC9" },
   { id: "olive",  bg: "#D2DFA4", edge: "#8DA34F" },
 ];
-const colorOf = (id) => NOTE_COLORS.find((c) => c.id === id) || NOTE_COLORS[0];
+const colorOf = (id?: string) => NOTE_COLORS.find((c) => c.id === id) || NOTE_COLORS[0];
 
 /* 置いた場所を覚える。まだ置かれていないものは、雑に散らしてから渡す。 */
-function scatter(i, w) {
+function scatter(i: number, w: number): Pos {
   const cols = 2;
   const cw = (w - 24) / cols;
   const col = i % cols;
@@ -1176,14 +1247,29 @@ function scatter(i, w) {
   };
 }
 
-function Wall({ topics, items, rootId, onOpenDrawer, onOpen, onBundle, onPos, onDraft }) {
+interface WallProps {
+  topics: Topic[]; items: Item[]; rootId: string;
+  onOpenDrawer: () => void;
+  onOpen: (id: string) => void;
+  onBundle: (dragId: string, targetId: string) => void;
+  onPos: (id: string, pos: Pos) => void;
+  onDraft: () => void;
+}
+interface WallHold {
+  id: string; x: number; y: number; el: HTMLElement; pid: number;
+  mode: null | "drag"; timer?: ReturnType<typeof setTimeout>;
+}
+interface WallRect { id: string; cx: number; cy: number; w: number; h: number }
+interface WallDrag { id: string; x0: number; y0: number; base: Pos; rects: WallRect[] }
+
+function Wall({ topics, items, rootId, onOpenDrawer, onOpen, onBundle, onPos, onDraft }: WallProps) {
   const list = useMemo(() => subtreeItems(topics, items, rootId), [topics, items, rootId]);
-  const canvasRef = useRef(null);
-  const refs = useRef({});
-  const hold = useRef(null);
-  const drag = useRef(null);
+  const canvasRef = useRef<HTMLDivElement>(null);
+  const refs = useRef<Record<string, HTMLElement | null>>({});
+  const hold = useRef<WallHold | null>(null);
+  const drag = useRef<WallDrag | null>(null);
   const suppress = useRef(false);
-  const [st, setSt] = useState({ id: null, x: 0, y: 0, dropId: null });
+  const [st, setSt] = useState<{ id: string | null; x: number; y: number; dropId: string | null }>({ id: null, x: 0, y: 0, dropId: null });
 
   /* 未配置のものに初期位置を与える */
   useEffect(() => {
@@ -1207,19 +1293,19 @@ function Wall({ topics, items, rootId, onOpenDrawer, onOpen, onBundle, onPos, on
       if (!el) return null;
       const b = el.getBoundingClientRect();
       return { id: it.id, cx: b.left + b.width / 2, cy: b.top + b.height / 2, w: b.width, h: b.height };
-    }).filter(Boolean);
+    }).filter((r): r is WallRect => r !== null);
 
   useEffect(() => {
     const el = canvasRef.current;
     if (!el) return;
-    const block = (e) => { if (drag.current) e.preventDefault(); };
+    const block = (e: TouchEvent) => { if (drag.current) e.preventDefault(); };
     el.addEventListener("touchmove", block, { passive: false });
     return () => el.removeEventListener("touchmove", block);
   }, []);
 
-  const down = (e, item) => {
+  const down = (e: React.PointerEvent, item: Item) => {
     const base = item.pos || { x: 10, y: 10, r: 0 };
-    hold.current = { id: item.id, x: e.clientX, y: e.clientY, el: e.currentTarget, pid: e.pointerId, mode: null };
+    hold.current = { id: item.id, x: e.clientX, y: e.clientY, el: e.currentTarget as HTMLElement, pid: e.pointerId, mode: null };
     hold.current.timer = setTimeout(() => {
       const h = hold.current;
       if (!h || h.mode) return;
@@ -1231,7 +1317,7 @@ function Wall({ topics, items, rootId, onOpenDrawer, onOpen, onBundle, onPos, on
     }, 180);
   };
 
-  const move = (e) => {
+  const move = (e: React.PointerEvent) => {
     const d = drag.current;
     if (!d) {
       const h = hold.current;
@@ -1244,7 +1330,7 @@ function Wall({ topics, items, rootId, onOpenDrawer, onOpen, onBundle, onPos, on
     e.preventDefault();
     const nx = Math.max(0, d.base.x + (e.clientX - d.x0));
     const ny = Math.max(0, d.base.y + (e.clientY - d.y0));
-    let dropId = null;
+    let dropId: string | null = null;
     for (const r of d.rects) {
       if (r.id === d.id) continue;
       if (Math.abs(e.clientX - r.cx) < r.w * 0.3 && Math.abs(e.clientY - r.cy) < r.h * 0.3) { dropId = r.id; break; }
@@ -1263,7 +1349,7 @@ function Wall({ topics, items, rootId, onOpenDrawer, onOpen, onBundle, onPos, on
     setSt({ id: null, x: 0, y: 0, dropId: null });
   };
 
-  const tapped = (fn) => () => {
+  const tapped = (fn: () => void) => () => {
     if (suppress.current) { suppress.current = false; return; }
     fn();
   };
@@ -1285,7 +1371,7 @@ function Wall({ topics, items, rootId, onOpenDrawer, onOpen, onBundle, onPos, on
             const stamp = itemStamp(it);
             const col = colorOf(it.color);
             return (
-              <div key={it.id} ref={(el) => (refs.current[it.id] = el)} className="dfg-note"
+              <div key={it.id} ref={(el) => { refs.current[it.id] = el; }} className="dfg-note"
                 data-bundle={it.kind === "bundle" ? "1" : "0"}
                 data-dragging={dragging ? "1" : "0"} data-drop={st.dropId === it.id ? "1" : "0"}
                 style={{
@@ -1321,8 +1407,10 @@ function Wall({ topics, items, rootId, onOpenDrawer, onOpen, onBundle, onPos, on
 
 const WEEK = ["日", "月", "火", "水", "木", "金", "土"];
 
-function eachFragment(items) {
-  const out = [];
+interface Frag { id: string; ownerId: string; text: string; createdAt: number; topicId: string | null }
+
+function eachFragment(items: Item[]) {
+  const out: Frag[] = [];
   items.forEach((it) => {
     if (it.kind === "bundle") {
       it.children.forEach((c) => out.push({ id: c.id, ownerId: it.id, text: c.text, createdAt: c.createdAt, topicId: it.topicId || null }));
@@ -1333,8 +1421,13 @@ function eachFragment(items) {
   return out;
 }
 
-function Viz({ topics, items, rootId, onOpen, onOpenDrawer }) {
-  const [mode, setMode] = useState("activity");
+interface VizProps {
+  topics: Topic[]; items: Item[]; rootId: string;
+  onOpen: (id: string) => void; onOpenDrawer: () => void;
+}
+
+function Viz({ topics, items, rootId, onOpen, onOpenDrawer }: VizProps) {
+  const [mode, setMode] = useState<"activity" | "clock" | "graph">("activity");
   const [scoped, setScoped] = useState(false);
 
   const source = useMemo(
@@ -1375,9 +1468,9 @@ function Viz({ topics, items, rootId, onOpen, onOpenDrawer }) {
 }
 
 /* 日ごとの投稿数 */
-function Activity({ frags }) {
+function Activity({ frags }: { frags: Frag[] }) {
   const { days, max } = useMemo(() => {
-    const m = new Map();
+    const m = new Map<number, number>();
     let min = Infinity;
     frags.forEach((f) => {
       const d = new Date(f.createdAt);
@@ -1387,7 +1480,7 @@ function Activity({ frags }) {
     });
     const today = new Date();
     const end = new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime();
-    const out = [];
+    const out: { t: number; n: number }[] = [];
     let mx = 1;
     for (let t = min; t <= end; t += DAY) {
       const n = m.get(t) || 0;
@@ -1434,7 +1527,7 @@ function Activity({ frags }) {
 }
 
 /* 曜日 × 時間帯 */
-function Clock({ frags }) {
+function Clock({ frags }: { frags: Frag[] }) {
   const { grid, max } = useMemo(() => {
     const g = Array.from({ length: 7 }, () => new Array(24).fill(0));
     let mx = 0;
@@ -1475,7 +1568,7 @@ function Clock({ frags }) {
 }
 
 /* 断片どうしの近さ。線を引くだけで、まとめはしない。 */
-function Graph({ frags, onOpen }) {
+function Graph({ frags, onOpen }: { frags: Frag[]; onOpen: (id: string) => void }) {
   const [level, setLevel] = useState(0.09);
   const list = useMemo(() => frags.slice(0, 140), [frags]);
 
@@ -1485,7 +1578,7 @@ function Graph({ frags, onOpen }) {
   }, [list]);
 
   const edges = useMemo(() => {
-    const out = [];
+    const out: { a: number; b: number; v: number }[] = [];
     for (let i = 0; i < list.length; i++) {
       for (let j = i + 1; j < list.length; j++) {
         const v = cosine(vecs[i], vecs[j]);
@@ -1576,18 +1669,18 @@ function Graph({ frags, onOpen }) {
 /* 下書き — フォルダ配下を繋いだ状態から書き始める                      */
 /* ------------------------------------------------------------------ */
 
-function Draft({ topics, items, rootId, onClose }) {
+function Draft({ topics, items, rootId, onClose }: { topics: Topic[]; items: Item[]; rootId: string; onClose: () => void }) {
   const initial = useMemo(() => {
-    const render = (it) => {
+    const render = (it: Item) => {
       if (it.kind === "bundle") {
         const head = it.title ? it.title + "\n\n" : "";
         return head + it.children.map((c) => c.text).join("\n\n");
       }
       return it.text;
     };
-    const section = (tid, depth) => {
+    const section = (tid: string, depth: number): string => {
       const t = topics.find((x) => x.id === tid);
-      const parts = [];
+      const parts: string[] = [];
       if (t) parts.push(`${"#".repeat(Math.min(depth + 1, 6))} ${t.title}`);
       const own = items.filter((i) => (i.topicId || null) === (tid === ROOT ? null : tid));
       if (own.length) parts.push(own.map(render).join("\n\n"));
@@ -1619,7 +1712,7 @@ function Draft({ topics, items, rootId, onClose }) {
 /* sheets                                                              */
 /* ------------------------------------------------------------------ */
 
-function Sheet({ title, onClose, children }) {
+function Sheet({ title, onClose, children }: { title?: string; onClose: () => void; children?: React.ReactNode }) {
   return (
     <>
       <div className="dfg-scrim" onClick={onClose} />
@@ -1634,9 +1727,11 @@ function Sheet({ title, onClose, children }) {
   );
 }
 
-function NewFolder({ parentName, onClose, onCreate }) {
+function NewFolder({ parentName, onClose, onCreate }: {
+  parentName?: string | null; onClose: () => void; onCreate: (title: string) => void;
+}) {
   const [v, setV] = useState("");
-  const ref = useRef(null);
+  const ref = useRef<HTMLInputElement>(null);
   useEffect(() => { if (ref.current) ref.current.focus(); }, []);
   return (
     <Sheet title={parentName ? `${parentName} の下に` : "フォルダを作る"} onClose={onClose}>
@@ -1653,7 +1748,18 @@ function NewFolder({ parentName, onClose, onCreate }) {
   );
 }
 
-function FolderMenu({ folder, onRename, onCopy, onWall, onDraft, onAddChild, onSort, onMove, onDelete, onClose }) {
+function FolderMenu({ folder, onRename, onCopy, onWall, onDraft, onAddChild, onSort, onMove, onDelete, onClose }: {
+  folder: Topic;
+  onRename: (v: string) => void;
+  onCopy: () => void;
+  onWall: () => void;
+  onDraft: () => void;
+  onAddChild: () => void;
+  onSort: (dir: "new" | "old") => void;
+  onMove: () => void;
+  onDelete: () => void;
+  onClose: () => void;
+}) {
   const [v, setV] = useState(folder.title);
   return (
     <Sheet title="フォルダ" onClose={onClose}>
@@ -1677,7 +1783,9 @@ function FolderMenu({ folder, onRename, onCopy, onWall, onDraft, onAddChild, onS
   );
 }
 
-function TopicRows({ topics, current, onPick }) {
+function TopicRows({ topics, current, onPick }: {
+  topics: Topic[]; current?: string | null; onPick: (id: string | null) => void;
+}) {
   const rows = useMemo(() => flatTopics(topics), [topics]);
   return (
     <>
@@ -1694,7 +1802,10 @@ function TopicRows({ topics, current, onPick }) {
   );
 }
 
-function PickSheet({ title, topics, current, onPick, onClose }) {
+function PickSheet({ title, topics, current, onPick, onClose }: {
+  title: string; topics: Topic[]; current?: string | null;
+  onPick: (id: string | null) => void; onClose: () => void;
+}) {
   return (
     <Sheet title={title} onClose={onClose}>
       <div className="dfg-sbody">
@@ -1704,7 +1815,7 @@ function PickSheet({ title, topics, current, onPick, onClose }) {
   );
 }
 
-function Palette({ value, onPick }) {
+function Palette({ value, onPick }: { value?: string; onPick: (id: string) => void }) {
   return (
     <div className="dfg-palette">
       {NOTE_COLORS.map((c) => (
@@ -1715,10 +1826,13 @@ function Palette({ value, onPick }) {
   );
 }
 
-function CardView({ card, items, topics, onMove, onColor, onDelete }) {
+function CardView({ card, items, topics, onMove, onColor, onDelete }: {
+  card: CardItem; items: Item[]; topics: Topic[];
+  onMove: (tid: string | null) => void; onColor: (c: string) => void; onDelete: () => void;
+}) {
   const [picking, setPicking] = useState(false);
   const near = useMemo(() => {
-    const pool = [];
+    const pool: string[] = [];
     items.forEach((it) => {
       if (it.id === card.id) return;
       flattenTexts(it).forEach((t) => pool.push(t));
@@ -1764,16 +1878,20 @@ function CardView({ card, items, topics, onMove, onColor, onDelete }) {
   );
 }
 
-function BundleView({ bundle, topics, onChange, onExport, onUnbundle, onPromote }) {
+function BundleView({ bundle, topics, onChange, onExport, onUnbundle, onPromote }: {
+  bundle: BundleItem; topics: Topic[];
+  onChange: (patch: ItemPatch) => void;
+  onExport: () => void; onUnbundle: () => void; onPromote: () => void;
+}) {
   const [picking, setPicking] = useState(false);
-  const move = (i, dir) => {
+  const move = (i: number, dir: number) => {
     const next = bundle.children.slice();
     const j = i + dir;
     if (j < 0 || j >= next.length) return;
     [next[i], next[j]] = [next[j], next[i]];
     onChange({ children: next });
   };
-  const drop = (i) => {
+  const drop = (i: number) => {
     const next = bundle.children.slice();
     next.splice(i, 1);
     onChange({ children: next });
@@ -1821,9 +1939,9 @@ function BundleView({ bundle, topics, onChange, onExport, onUnbundle, onPromote 
 /* copy                                                                */
 /* ------------------------------------------------------------------ */
 
-function useCopy(text) {
+function useCopy(text: string) {
   const [done, setDone] = useState(false);
-  const ref = useRef(null);
+  const ref = useRef<HTMLTextAreaElement>(null);
   const copy = async () => {
     try { await navigator.clipboard.writeText(text); }
     catch (e) { if (ref.current) ref.current.select(); }
@@ -1833,14 +1951,14 @@ function useCopy(text) {
   return { done, copy, ref };
 }
 
-function TopicCopy({ items, topics, topicId }) {
+function TopicCopy({ items, topics, topicId }: { items: Item[]; topics: Topic[]; topicId: string }) {
   const [md, setMd] = useState(true);
   const [dates, setDates] = useState(false);
   const [deep, setDeep] = useState(true);
 
   const text = useMemo(() => {
-    const line = (t, ts) => (dates ? `${shortDate(ts)}  ${t}` : t);
-    const renderItem = (it) => {
+    const line = (t: string, ts: number) => (dates ? `${shortDate(ts)}  ${t}` : t);
+    const renderItem = (it: Item) => {
       if (it.kind === "bundle") {
         const head = it.title ? (md ? `**${it.title}**` : it.title) : "";
         const body = it.children.map((c) => line(c.text, c.createdAt)).join("\n\n");
@@ -1848,7 +1966,7 @@ function TopicCopy({ items, topics, topicId }) {
       }
       return line(it.text, it.createdAt);
     };
-    const section = (tid, depth) => {
+    const section = (tid: string, depth: number): string => {
       const t = topics.find((x) => x.id === tid);
       if (!t) return "";
       const head = md ? `${"#".repeat(Math.min(depth + 1, 6))} ${t.title}` : t.title;
@@ -1885,7 +2003,7 @@ function TopicCopy({ items, topics, topicId }) {
   );
 }
 
-function BundleExport({ bundle }) {
+function BundleExport({ bundle }: { bundle: BundleItem }) {
   const initial = useMemo(() => {
     const head = bundle.title ? bundle.title + "\n\n" : "";
     return head + bundle.children.map((c) => c.text).join("\n\n");
