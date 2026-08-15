@@ -7,7 +7,7 @@ interface FeedItem {
   link: string;
   date: string;
   description: string;
-  source: 'hatena' | 'hackernews' | 'nikkei' | 'reuters' | 'toyokeizai' | 'reddit' | 'bbc' | 'cisa' | 'darkreading' | 'bleepingcomputer';
+  source: 'hatena' | 'hackernews' | 'nikkei' | 'reuters' | 'toyokeizai' | 'reddit' | 'bbc' | 'cisa' | 'darkreading' | 'bleepingcomputer' | 'github';
 }
 
 interface CityWeather {
@@ -41,6 +41,7 @@ interface CacheData {
     cisa: FeedItem[];
     darkreading: FeedItem[];
     bleepingcomputer: FeedItem[];
+    github: FeedItem[];
     weather: WeatherData;
     holidays: Record<string, string>;
     exchangeRates: ExchangeRate[];
@@ -62,11 +63,11 @@ interface FeedSnapshotData {
   feeds: Record<FeedKey, FeedSnapshotEntry>;
 }
 
-type TabType = 'all' | 'hatena' | 'hackernews' | 'nikkei' | 'reuters' | 'toyokeizai' | 'reddit' | 'bbc' | 'cisa' | 'darkreading' | 'bleepingcomputer' | 'favorites';
+type TabType = 'all' | 'hatena' | 'hackernews' | 'nikkei' | 'reuters' | 'toyokeizai' | 'reddit' | 'bbc' | 'cisa' | 'darkreading' | 'bleepingcomputer' | 'github' | 'favorites';
 type FeedKey = FeedItem['source'];
 type LoadKey = FeedKey | 'weather' | 'holidays' | 'exchangeRates';
 
-const FEED_KEYS: FeedKey[] = ['hatena', 'hackernews', 'nikkei', 'reuters', 'toyokeizai', 'reddit', 'bbc', 'cisa', 'darkreading', 'bleepingcomputer'];
+const FEED_KEYS: FeedKey[] = ['hatena', 'hackernews', 'nikkei', 'reuters', 'toyokeizai', 'reddit', 'bbc', 'cisa', 'darkreading', 'bleepingcomputer', 'github'];
 const LOAD_KEYS: LoadKey[] = [...FEED_KEYS, 'weather', 'holidays', 'exchangeRates'];
 const FEED_LABELS: Record<FeedKey, string> = {
   hatena: 'はてブ IT',
@@ -79,6 +80,7 @@ const FEED_LABELS: Record<FeedKey, string> = {
   cisa: 'CISA',
   darkreading: 'Dark Reading',
   bleepingcomputer: 'BleepingComputer',
+  github: 'GitHub',
 };
 
 function createLoadState(value: boolean): Record<LoadKey, boolean> {
@@ -93,6 +95,7 @@ function createLoadState(value: boolean): Record<LoadKey, boolean> {
     cisa: value,
     darkreading: value,
     bleepingcomputer: value,
+    github: value,
     weather: value,
     holidays: value,
     exchangeRates: value,
@@ -111,6 +114,7 @@ function createErrorState(): Record<LoadKey, string | null> {
     cisa: null,
     darkreading: null,
     bleepingcomputer: null,
+    github: null,
     weather: null,
     holidays: null,
     exchangeRates: null,
@@ -129,6 +133,7 @@ function createLoadedAtState(value: number | null): Record<LoadKey, number | nul
     cisa: value,
     darkreading: value,
     bleepingcomputer: value,
+    github: value,
     weather: value,
     holidays: value,
     exchangeRates: value,
@@ -373,6 +378,43 @@ function parseRSS(xml: string, source: FeedItem['source']): FeedItem[] {
   });
 
   return items;
+}
+
+const GITHUB_TREND_WINDOWS = [7, 14, 30, 90];
+const GITHUB_TREND_MIN_STARS = [100, 300, 1000];
+
+// 日付をシードに期間×スター下限をローテーションし、同日は同条件・日替わりで顔ぶれを分散させる
+export function getGitHubTrendCondition(now: Date = new Date()): { days: number; minStars: number } {
+  const daySeed = Math.floor(
+    new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime() / (24 * 60 * 60 * 1000)
+  );
+  return {
+    days: GITHUB_TREND_WINDOWS[daySeed % GITHUB_TREND_WINDOWS.length],
+    minStars: GITHUB_TREND_MIN_STARS[Math.floor(daySeed / GITHUB_TREND_WINDOWS.length) % GITHUB_TREND_MIN_STARS.length],
+  };
+}
+
+async function fetchGitHubTrending(): Promise<FeedItem[]> {
+  const { days, minStars } = getGitHubTrendCondition();
+  const since = new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+  const url = `https://api.github.com/search/repositories?q=${encodeURIComponent(`created:>${since} stars:>${minStars}`)}&sort=stars&order=desc&per_page=30`;
+  const res = await fetchWithTimeout(url, {}, FEED_FETCH_TIMEOUT_MS);
+  if (!res.ok) throw new Error(`GitHub search: ${res.status}`);
+  const json = await res.json();
+  interface GitHubRepo {
+    full_name: string;
+    html_url: string;
+    description: string | null;
+    created_at: string;
+    stargazers_count: number;
+  }
+  return ((json.items ?? []) as GitHubRepo[]).map((repo) => ({
+    title: `${repo.full_name} ★${repo.stargazers_count}`,
+    link: repo.html_url,
+    date: repo.created_at ?? '',
+    description: repo.description ?? '',
+    source: 'github' as const,
+  }));
 }
 
 async function fetchFeedSnapshot(): Promise<FeedSnapshotData | null> {
@@ -625,6 +667,7 @@ export default function FeedReader() {
   const [cisa, setCisa] = useState<FeedItem[]>([]);
   const [darkreading, setDarkreading] = useState<FeedItem[]>([]);
   const [bleepingcomputer, setBleepingcomputer] = useState<FeedItem[]>([]);
+  const [github, setGithub] = useState<FeedItem[]>([]);
   const [weather, setWeather] = useState<WeatherData>([]);
   const [holidays, setHolidays] = useState<Record<string, string>>({});
   const [exchangeRates, setExchangeRates] = useState<ExchangeRate[]>([]);
@@ -704,6 +747,9 @@ export default function FeedReader() {
         break;
       case 'bleepingcomputer':
         setBleepingcomputer(items);
+        break;
+      case 'github':
+        setGithub(items);
         break;
     }
   }, []);
@@ -819,6 +865,9 @@ export default function FeedReader() {
           return parseRSS(xml, 'bleepingcomputer');
         }, (items) => applyFeedItems('bleepingcomputer', items));
         break;
+      case 'github':
+        void ensureLoad('github', fetchGitHubTrending, (items) => applyFeedItems('github', items));
+        break;
     }
   }, [applyFeedItems, ensureLoad, fetchRssText]);
 
@@ -861,6 +910,7 @@ export default function FeedReader() {
     setCisa(cached.data.cisa ?? []);
     setDarkreading(cached.data.darkreading ?? []);
     setBleepingcomputer(cached.data.bleepingcomputer ?? []);
+    setGithub(cached.data.github ?? []);
     setWeather(cached.data.weather ?? []);
     setHolidays(cached.data.holidays ?? {});
     setExchangeRates(cached.data.exchangeRates ?? []);
@@ -923,6 +973,8 @@ export default function FeedReader() {
               return darkreading;
             case 'bleepingcomputer':
               return bleepingcomputer;
+            case 'github':
+              return github;
           }
         })();
 
@@ -936,7 +988,7 @@ export default function FeedReader() {
 
       snapshotAppliedRef.current = true;
     })();
-  }, [applyFeedItems, bbc, bleepingcomputer, cisa, darkreading, hackernews, hatena, nikkei, reddit, reuters, setErrorKey, toyokeizai]);
+  }, [applyFeedItems, bbc, bleepingcomputer, cisa, darkreading, github, hackernews, hatena, nikkei, reddit, reuters, setErrorKey, toyokeizai]);
 
   useEffect(() => {
     ensureTabLoaded(tab);
@@ -956,13 +1008,14 @@ export default function FeedReader() {
       cisa,
       darkreading,
       bleepingcomputer,
+      github,
       weather,
       holidays,
       exchangeRates,
       loaded: loadedMap,
       loadedAt: loadedAtRef.current,
     });
-  }, [hatena, hackernews, nikkei, reuters, toyokeizai, reddit, bbc, cisa, darkreading, bleepingcomputer, weather, holidays, exchangeRates, loadedMap]);
+  }, [hatena, hackernews, nikkei, reuters, toyokeizai, reddit, bbc, cisa, darkreading, bleepingcomputer, github, weather, holidays, exchangeRates, loadedMap]);
 
   const allItems = useMemo(() => {
     switch (tab) {
@@ -986,15 +1039,17 @@ export default function FeedReader() {
         return darkreading;
       case 'bleepingcomputer':
         return bleepingcomputer;
+      case 'github':
+        return github;
       case 'favorites':
         return favorites;
       case 'all':
-        return [...hatena, ...hackernews, ...nikkei, ...reuters, ...toyokeizai, ...reddit, ...bbc, ...cisa, ...darkreading, ...bleepingcomputer].sort((a, b) => {
+        return [...hatena, ...hackernews, ...nikkei, ...reuters, ...toyokeizai, ...reddit, ...bbc, ...cisa, ...darkreading, ...bleepingcomputer, ...github].sort((a, b) => {
           if (!a.date || !b.date) return 0;
           return new Date(b.date).getTime() - new Date(a.date).getTime();
         });
     }
-  }, [tab, hatena, hackernews, nikkei, reuters, toyokeizai, reddit, bbc, cisa, darkreading, bleepingcomputer, favorites]);
+  }, [tab, hatena, hackernews, nikkei, reuters, toyokeizai, reddit, bbc, cisa, darkreading, bleepingcomputer, github, favorites]);
 
   const feedFuse = useMemo(
     () =>
@@ -1014,7 +1069,7 @@ export default function FeedReader() {
     return feedFuse.search(searchQuery).map((r) => r.item);
   }, [searchQuery, allItems, feedFuse]);
 
-  const totalItemCount = hatena.length + hackernews.length + nikkei.length + reuters.length + toyokeizai.length + reddit.length + bbc.length + cisa.length + darkreading.length + bleepingcomputer.length;
+  const totalItemCount = hatena.length + hackernews.length + nikkei.length + reuters.length + toyokeizai.length + reddit.length + bbc.length + cisa.length + darkreading.length + bleepingcomputer.length + github.length;
 
   const tabs: { key: TabType; label: string; count: number }[] = [
     { key: 'all', label: 'All', count: totalItemCount },
@@ -1028,6 +1083,7 @@ export default function FeedReader() {
     { key: 'cisa', label: 'CISA', count: cisa.length },
     { key: 'darkreading', label: 'Dark Reading', count: darkreading.length },
     { key: 'bleepingcomputer', label: 'BleepingComputer', count: bleepingcomputer.length },
+    { key: 'github', label: 'GitHub', count: github.length },
     { key: 'favorites', label: 'お気に入り', count: favorites.length },
   ];
 
@@ -1094,6 +1150,8 @@ export default function FeedReader() {
         return { className: 'bg-amber-500/20 text-amber-300', label: 'Dark Reading' };
       case 'bleepingcomputer':
         return { className: 'bg-emerald-500/20 text-emerald-300', label: 'BleepingComputer' };
+      case 'github':
+        return { className: 'bg-gray-400/20 text-gray-200', label: 'GitHub' };
     }
   };
 
@@ -1173,6 +1231,13 @@ export default function FeedReader() {
         <div className="bg-yellow-900/20 border border-yellow-500/30 rounded-lg p-4 mb-6 text-yellow-200">
           直近のキャッシュを表示しています。バックグラウンドで再取得中です。
         </div>
+      )}
+
+      {/* GitHub trend condition */}
+      {tab === 'github' && (
+        <p className="mb-3 text-xs text-gray-500">
+          本日の条件: 直近{getGitHubTrendCondition().days}日作成・★{getGitHubTrendCondition().minStars}超(日替わり)
+        </p>
       )}
 
       {/* Feed items */}

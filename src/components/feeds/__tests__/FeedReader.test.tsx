@@ -1,6 +1,6 @@
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import FeedReader from '../FeedReader';
+import FeedReader, { getGitHubTrendCondition } from '../FeedReader';
 
 // Mock fetch to prevent actual network requests
 const fetchMock = vi.fn(() => Promise.reject(new Error('no fetch in test')));
@@ -255,6 +255,48 @@ describe('FeedReader', () => {
       expect.stringContaining('https://api.allorigins.win/raw'),
       expect.objectContaining({ signal: expect.any(AbortSignal) })
     );
+  });
+
+  // GitHub検索条件が同日は同一、日が変わるとローテーションすることを検証する
+  it('rotates GitHub trend condition deterministically per day', () => {
+    const morning = getGitHubTrendCondition(new Date('2026-08-14T09:00:00'));
+    const night = getGitHubTrendCondition(new Date('2026-08-14T23:00:00'));
+    expect(morning).toEqual(night);
+    expect([7, 14, 30, 90]).toContain(morning.days);
+    expect([100, 300, 1000]).toContain(morning.minStars);
+
+    const nextDay = getGitHubTrendCondition(new Date('2026-08-15T09:00:00'));
+    expect(nextDay.days).not.toBe(morning.days);
+  });
+
+  // GitHubタブがあり、Search APIの結果がリポジトリ名+スター数で表示されることを検証する
+  it('shows GitHub trending repositories from the search API', async () => {
+    fetchMock.mockImplementation((input: string | URL | Request) => {
+      if (String(input).startsWith('https://api.github.com/search/repositories')) {
+        return Promise.resolve(new Response(JSON.stringify({
+          items: [
+            {
+              full_name: 'foo/bar',
+              html_url: 'https://github.com/foo/bar',
+              description: 'a trending repo',
+              created_at: '2026-08-10T00:00:00Z',
+              stargazers_count: 1234,
+            },
+          ],
+        }), { status: 200 }));
+      }
+      return Promise.reject(new Error('live fetch unavailable'));
+    });
+
+    render(<FeedReader />);
+
+    expect(screen.getByText('GitHub')).toBeInTheDocument();
+
+    await waitFor(() => {
+      expect(screen.getByText(/foo\/bar/)).toBeInTheDocument();
+      expect(screen.getByText(/★1234/)).toBeInTheDocument();
+      expect(screen.getByText('a trending repo')).toBeInTheDocument();
+    });
   });
 
   // cache resetボタンでfeeds-cacheのみ削除され、ブックマークとtransient noteは保持されることを検証する
