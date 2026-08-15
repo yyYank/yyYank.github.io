@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { CSS } from "./styles";
 import { useDrag } from "./useDrag";
+import { buildIdf, cosine, vectorize } from "./similarity";
 
 /* ------------------------------------------------------------------ */
 /* types                                                               */
@@ -88,63 +89,6 @@ function absDate(ts: number, withTime: boolean) {
   return withTime ? `${day} ${pad2(d.getHours())}:${pad2(d.getMinutes())}` : day;
 }
 const shortDate = (ts: number) => absDate(ts, false);
-
-/* 文字 n-gram (n=1,2,3) を出現回数つきで数える。日本語は漢字1文字が意味を持つので
-   ユニグラムを落とさない。記号と空白だけ除く。 */
-function grams(text: string) {
-  const s = (text || "").replace(/[\s\u3000、。,.!?！？「」『』()（）ー\-~〜:：;；…・"'`]/g, "");
-  const m = new Map<string, number>();
-  const bump = (g: string) => m.set(g, (m.get(g) || 0) + 1);
-  for (let i = 0; i < s.length; i++) {
-    bump(s[i]);
-    if (i + 2 <= s.length) bump(s.slice(i, i + 2));
-    if (i + 3 <= s.length) bump(s.slice(i, i + 3));
-  }
-  return m;
-}
-
-/* ありふれた並びを軽くするための IDF。全断片から作り直す。 */
-function buildIdf(texts: string[]) {
-  const df = new Map<string, number>();
-  texts.forEach((t) => {
-    new Set(grams(t).keys()).forEach((g) => df.set(g, (df.get(g) || 0) + 1));
-  });
-  const n = Math.max(1, texts.length);
-  const idf = new Map<string, number>();
-  df.forEach((c, g) => idf.set(g, Math.log((n + 1) / (c + 0.5))));
-  return idf;
-}
-
-/* tf-idf ベクトルにして正規化。長さの違う断片を素直に比べられるようにする。 */
-function vectorize(text: string, idf: Map<string, number> | null) {
-  const g = grams(text);
-  const v = new Map<string, number>();
-  let norm = 0;
-  g.forEach((tf, key) => {
-    const w = (1 + Math.log(tf)) * (idf ? idf.get(key) || Math.log(2) : 1);
-    if (w <= 0) return;
-    v.set(key, w);
-    norm += w * w;
-  });
-  norm = Math.sqrt(norm) || 1;
-  v.forEach((w, key) => v.set(key, w / norm));
-  return v;
-}
-
-function cosine(a: Map<string, number>, b: Map<string, number>) {
-  const [small, large] = a.size < b.size ? [a, b] : [b, a];
-  let dot = 0;
-  small.forEach((w, key) => {
-    const o = large.get(key);
-    if (o) dot += w * o;
-  });
-  return dot;
-}
-
-/* 単発で比べたいとき用。idf なしのコサイン。 */
-function similarity(a: string, b: string) {
-  return cosine(vectorize(a, null), vectorize(b, null));
-}
 
 const flattenTexts = (i: Item) => (i.kind === "bundle" ? i.children.map((c) => c.text) : [i.text]);
 const itemStamp = (i: Item) => (i.kind === "bundle" ? i.children[0].createdAt : i.createdAt);
