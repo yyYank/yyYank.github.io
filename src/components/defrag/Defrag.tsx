@@ -2,30 +2,14 @@ import React, { useState, useEffect, useRef, useCallback, useMemo } from "react"
 import { CSS } from "./styles";
 import { useDrag } from "./useDrag";
 import { buildIdf, cosine, vectorize } from "./similarity";
-
-/* ------------------------------------------------------------------ */
-/* types                                                               */
-/* ------------------------------------------------------------------ */
-
-interface Pos { x: number; y: number; r: number }
-interface Child { id: string; text: string; createdAt: number }
-interface CardItem {
-  id: string; kind: "card"; text: string; createdAt: number;
-  topicId: string | null; color?: string; pos?: Pos;
-}
-interface BundleItem {
-  id: string; kind: "bundle"; title: string; createdAt: number;
-  topicId: string | null; children: Child[]; color?: string; pos?: Pos;
-}
-type Item = CardItem | BundleItem;
-type ItemPatch = Partial<Omit<CardItem, "id" | "kind">> & Partial<Omit<BundleItem, "id" | "kind">>;
-interface Topic { id: string; title: string; parentId: string | null; createdAt: number }
-type FolderRow = { type: "folder"; id: string; topic: Topic; title: string; depth: number; parent: string | null };
-type ItemRow = { type: "item"; id: string; item: Item; depth: number; parent: string | null };
-type Row = FolderRow | ItemRow;
-interface Persisted {
-  items: Item[]; topics: Topic[]; expanded: Record<string, boolean>; here: string;
-}
+import { absDate, ageColor, colorOf, DAY, NOTE_COLORS, shortDate } from "./format";
+import {
+  ROOT, buildRows, childrenOf, descendantIds, eachFragment, flatTopics, flattenTexts,
+  itemLabel, itemStamp, pathLabel, subtreeItems,
+} from "./tree";
+import type {
+  BundleItem, CardItem, Child, Frag, Item, ItemPatch, Persisted, Pos, Row, Topic,
+} from "./types";
 
 /* ------------------------------------------------------------------ */
 /* storage                                                             */
@@ -52,100 +36,6 @@ async function saveAll(data: Persisted) {
 /* ------------------------------------------------------------------ */
 
 const uid = () => Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
-const ROOT = "__root__";
-const DAY = 86400000;
-const daysAgo = (ts: number) => (Date.now() - ts) / DAY;
-
-const AGE_STOPS: [number, number[]][] = [
-  [0, [232, 161, 58]],
-  [3, [201, 138, 70]],
-  [14, [122, 124, 130]],
-  [45, [78, 100, 122]],
-  [120, [56, 74, 94]],
-];
-
-function ageColor(ts: number) {
-  const d = daysAgo(ts);
-  const last = AGE_STOPS[AGE_STOPS.length - 1];
-  if (d >= last[0]) return `rgb(${last[1].join(",")})`;
-  let a = AGE_STOPS[0];
-  let b = last;
-  for (let i = 0; i < AGE_STOPS.length - 1; i++) {
-    if (d >= AGE_STOPS[i][0] && d <= AGE_STOPS[i + 1][0]) { a = AGE_STOPS[i]; b = AGE_STOPS[i + 1]; break; }
-  }
-  const span = b[0] - a[0];
-  const t = span === 0 ? 0 : (d - a[0]) / span;
-  const c = a[1].map((v, i) => Math.round(v + (b[1][i] - v) * Math.min(Math.max(t, 0), 1)));
-  return `rgb(${c[0]},${c[1]},${c[2]})`;
-}
-
-const pad2 = (n: number) => String(n).padStart(2, "0");
-
-/* 見るたびに変わらない表示にする */
-function absDate(ts: number, withTime: boolean) {
-  const d = new Date(ts);
-  const y = d.getFullYear() === new Date().getFullYear() ? "" : `${d.getFullYear()}/`;
-  const day = `${y}${pad2(d.getMonth() + 1)}/${pad2(d.getDate())}`;
-  return withTime ? `${day} ${pad2(d.getHours())}:${pad2(d.getMinutes())}` : day;
-}
-const shortDate = (ts: number) => absDate(ts, false);
-
-const flattenTexts = (i: Item) => (i.kind === "bundle" ? i.children.map((c) => c.text) : [i.text]);
-const itemStamp = (i: Item) => (i.kind === "bundle" ? i.children[0].createdAt : i.createdAt);
-const itemLabel = (i: Item) => (i.kind === "bundle" ? i.title || "名前のない束" : i.text);
-const childrenOf = (topics: Topic[], parentId: string | null) =>
-  topics.filter((t) => (t.parentId || null) === parentId);
-
-function descendantIds(topics: Topic[], id: string, acc: string[] = []) {
-  childrenOf(topics, id).forEach((t) => { acc.push(t.id); descendantIds(topics, t.id, acc); });
-  return acc;
-}
-function pathOf(topics: Topic[], id: string) {
-  const out: Topic[] = [];
-  let cur: Topic | null | undefined = topics.find((t) => t.id === id);
-  while (cur) {
-    out.unshift(cur);
-    const parentId: string | null = cur.parentId;
-    cur = parentId ? topics.find((t) => t.id === parentId) : null;
-  }
-  return out;
-}
-const pathLabel = (topics: Topic[], id: string | null) =>
-  id && id !== ROOT ? "/ " + pathOf(topics, id).map((t) => t.title).join(" / ") : "/";
-
-function flatTopics(
-  topics: Topic[],
-  parentId: string | null = null,
-  depth = 0,
-  out: { topic: Topic; depth: number }[] = []
-) {
-  childrenOf(topics, parentId).forEach((t) => {
-    out.push({ topic: t, depth });
-    flatTopics(topics, t.id, depth + 1, out);
-  });
-  return out;
-}
-
-/* explorer と同じ並び。フォルダが先、そのあと直下の断片。 */
-function buildRows(topics: Topic[], items: Item[], isOpen: (id: string) => boolean) {
-  const out: Row[] = [];
-  const walk = (parentId: string | null, depth: number) => {
-    childrenOf(topics, parentId).forEach((t) => {
-      out.push({ type: "folder", id: t.id, topic: t, title: t.title, depth, parent: t.parentId || null });
-      if (isOpen(t.id)) {
-        walk(t.id, depth + 1);
-        items.filter((i) => i.topicId === t.id).forEach((it) =>
-          out.push({ type: "item", id: it.id, item: it, depth: depth + 1, parent: t.id })
-        );
-      }
-    });
-  };
-  walk(null, 0);
-  items.filter((i) => !i.topicId).forEach((it) =>
-    out.push({ type: "item", id: it.id, item: it, depth: 0, parent: null })
-  );
-  return out;
-}
 
 function FolderIcon({ open }: { open?: boolean }) {
   return (
@@ -886,21 +776,6 @@ function NewRow({ depth, onCommit, onCancel }: { depth: number; onCommit: (v: st
 /* 付箋の面 — フォルダ配下を一覧で見比べ、重ねて束ねる                  */
 /* ------------------------------------------------------------------ */
 
-function subtreeItems(topics: Topic[], items: Item[], rootId: string) {
-  const ids: (string | null)[] = rootId === ROOT ? [null] : [rootId, ...descendantIds(topics, rootId)];
-  return items.filter((i) => ids.includes(i.topicId || null) || ids.includes(i.topicId));
-}
-
-const NOTE_COLORS = [
-  { id: "plain",  bg: "#EDE9DE", edge: "#BCB49F" },
-  { id: "amber",  bg: "#F5D68B", edge: "#C99A2E" },
-  { id: "rose",   bg: "#F2B9BC", edge: "#C46E76" },
-  { id: "teal",   bg: "#A9DBD2", edge: "#489C93" },
-  { id: "indigo", bg: "#BCC6F0", edge: "#6E7BC9" },
-  { id: "olive",  bg: "#D2DFA4", edge: "#8DA34F" },
-];
-const colorOf = (id?: string) => NOTE_COLORS.find((c) => c.id === id) || NOTE_COLORS[0];
-
 /* 置いた場所を覚える。まだ置かれていないものは、雑に散らしてから渡す。 */
 function scatter(i: number, w: number): Pos {
   const cols = 2;
@@ -1052,20 +927,6 @@ function Wall({ topics, items, rootId, onOpenDrawer, onOpen, onBundle, onPos, on
 /* ------------------------------------------------------------------ */
 
 const WEEK = ["日", "月", "火", "水", "木", "金", "土"];
-
-interface Frag { id: string; ownerId: string; text: string; createdAt: number; topicId: string | null }
-
-function eachFragment(items: Item[]) {
-  const out: Frag[] = [];
-  items.forEach((it) => {
-    if (it.kind === "bundle") {
-      it.children.forEach((c) => out.push({ id: c.id, ownerId: it.id, text: c.text, createdAt: c.createdAt, topicId: it.topicId || null }));
-    } else {
-      out.push({ id: it.id, ownerId: it.id, text: it.text, createdAt: it.createdAt, topicId: it.topicId || null });
-    }
-  });
-  return out;
-}
 
 interface VizProps {
   topics: Topic[]; items: Item[]; rootId: string;
