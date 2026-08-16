@@ -3,9 +3,11 @@ import { CSS } from "./styles";
 import { buildIdf, cosine, vectorize } from "./similarity";
 import { ROOT, descendantIds, flattenTexts, pathLabel } from "./tree";
 import { loadAll, saveAll, storeReducer, uid } from "./store";
-import { syncBookmarks, type Favorite } from "./bookmarkSync";
+import { syncBookmarks, BOOKMARKS_FOLDER_ID, type Favorite } from "./bookmarkSync";
+import { buildTweetBookmark, type TweetData } from "./tweetBookmark";
 import type { Item, ItemPatch, Topic } from "./types";
 import { Sheet } from "./components/Sheet";
+import { TweetBookmarkSheet } from "./components/TweetBookmarkSheet";
 import { Tree } from "./components/Tree";
 import { Timeline } from "./components/Timeline";
 import { Wall } from "./components/Wall";
@@ -46,6 +48,7 @@ export default function Defrag() {
   const [trash, setTrash] = useState<{ item: Item; index: number } | null>(null);
   const [tab, setTab] = useState<"compose" | "wall" | "viz">("compose");
   const [editor, setEditor] = useState<string | null>(null);
+  const [tweetSheet, setTweetSheet] = useState(false);
 
   const taRef = useRef<HTMLTextAreaElement>(null);
 
@@ -181,6 +184,18 @@ export default function Defrag() {
   };
   const patchFolder = (id: string, patch: Partial<Topic>) => dispatch({ type: "patchTopic", id, patch });
 
+  /* bookmarks親フォルダはbookmarkSync.tsの同期と共有するため、無ければここでも同じidで作る */
+  const addTweetBookmark = (tweet: TweetData, url: string) => {
+    const now = Date.now();
+    if (!topics.some((t) => t.id === BOOKMARKS_FOLDER_ID)) {
+      dispatch({ type: "addTopic", topic: { id: BOOKMARKS_FOLDER_ID, title: "bookmarks", parentId: null, createdAt: now } });
+    }
+    const { topic, card } = buildTweetBookmark(tweet, url, now);
+    if (!topics.some((t) => t.id === topic.id)) dispatch({ type: "addTopic", topic });
+    if (!items.some((i) => i.id === card.id)) dispatch({ type: "addItem", item: card });
+    setTweetSheet(false);
+  };
+
   const removeFolder = (id: string) => {
     const t = topics.find((x) => x.id === id);
     const up = t ? t.parentId || null : null;
@@ -273,6 +288,7 @@ export default function Defrag() {
                 <path d="M10 8.6v4.6M7.7 10.9h4.6" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
               </svg>
             </button>
+            <button className="dfg-tool" onClick={() => setTweetSheet(true)} aria-label="ツイートを保存">𝕏</button>
             <button className="dfg-tool" onClick={() => setExpanded({})} aria-label="すべてたたむ">
               <svg viewBox="0 0 20 20" width="19" height="19">
                 <path d="M4 7.4 10 12l6-4.6M4 12.6 10 17l6-4.4" fill="none" stroke="currentColor"
@@ -323,6 +339,10 @@ export default function Defrag() {
           <span>捨てた</span>
           <button onClick={undoTrash}>戻す</button>
         </div>
+      )}
+
+      {tweetSheet && (
+        <TweetBookmarkSheet onClose={() => setTweetSheet(false)} onAdd={addTweetBookmark} />
       )}
 
       {newFolder && (

@@ -241,4 +241,9 @@ export const CSS = `
 .dfg-toast button{appearance:none;border:0;background:transparent;color:var(--lamp);font-family:inherit;
   font-size:13px;font-weight:700;padding:4px 6px;cursor:pointer}
 @media (prefers-reduced-motion:reduce){.dfg *{animation:none!important;transition:none!important}}
+
+.dfg-tweetpreview{margin-top:12px;padding:12px;background:var(--panel);border:1px solid var(--line);border-radius:9px}
+.dfg-tweettext{font-size:14px;line-height:1.7;white-space:pre-wrap}
+.dfg-tweetauthor{margin-top:8px;font-size:12px;color:var(--muted)}
+.dfg-tweeterr{margin-top:10px;font-size:12.5px;color:#C2757A}
 `;
