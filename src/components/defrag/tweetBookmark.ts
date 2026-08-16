@@ -1,6 +1,6 @@
 /* ツイートURLからブックマーク(フォルダ+断片)を作る。bookmarkSync.tsのフィード同期と同じ
    id採番規則(bm:/bmcard:)・親フォルダ(bookmarksフォルダ)を再利用し、表示上の一貫性を保つ */
-import { BOOKMARKS_FOLDER_ID } from "./bookmarkSync";
+import { BOOKMARKS_FOLDER_ID, monthFolderId, monthKey } from "./bookmarkSync";
 import type { CardItem, Topic } from "./types";
 
 export interface TweetData {
@@ -74,17 +74,26 @@ export async function fetchTweet(url: string): Promise<TweetData> {
   return { text, author, createdAt };
 }
 
+// bookmarkSync.tsの月別配置(bm-month:YYYY-MM)と揃えるため、記事フォルダはツイート日時の月フォルダ配下に置く。
+// 月フォルダのTopicも返し、既存かどうかの判定(重複生成防止)は呼び出し側(Defrag.tsx)に委ねる。
 export function buildTweetBookmark(
   tweet: TweetData,
   url: string,
   now: number,
-): { topic: Topic; card: CardItem } {
+): { topic: Topic; card: CardItem; monthTopic: Topic } {
   const title = tweet.text.trim().slice(0, 40) || tweet.author || url;
   const createdAt = tweet.createdAt ?? now;
+  const monthId = monthFolderId(createdAt);
+  const monthTopic: Topic = {
+    id: monthId,
+    title: monthKey(createdAt),
+    parentId: BOOKMARKS_FOLDER_ID,
+    createdAt: now,
+  };
   const topic: Topic = {
     id: `bm:${url}`,
     title,
-    parentId: BOOKMARKS_FOLDER_ID,
+    parentId: monthId,
     createdAt,
   };
   const card: CardItem = {
@@ -94,5 +103,5 @@ export function buildTweetBookmark(
     createdAt,
     topicId: topic.id,
   };
-  return { topic, card };
+  return { topic, card, monthTopic };
 }

@@ -1,6 +1,15 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { buildTweetBookmark, fetchTweet, isTweetUrl } from "../tweetBookmark";
 
+// bookmarkSync.tsのmonthKeyと同じロジックでローカルタイムの月キーを求める(TZ差による環境依存を避けるため)
+function monthKeyOf(ts: number): string {
+  const d = new Date(ts);
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+}
+function monthFolderIdOf(ts: number): string {
+  return `bm-month:${monthKeyOf(ts)}`;
+}
+
 describe("isTweetUrl", () => {
   it("x.com/twitter.comの/status/URLを真と判定する", () => {
     expect(isTweetUrl("https://x.com/foo/status/12345")).toBe(true);
@@ -79,16 +88,23 @@ describe("fetchTweet", () => {
 });
 
 describe("buildTweetBookmark", () => {
-  it("フォルダと断片をbookmarkSyncと同じid規則・親フォルダで組み立てる", () => {
+  it("フォルダと断片をbookmarkSyncと同じid規則・月フォルダ配下で組み立てる", () => {
     const tweet = { text: "本文です", author: "handle", createdAt: 1000 };
     const url = "https://x.com/foo/status/12345";
 
-    const { topic, card } = buildTweetBookmark(tweet, url, 9999);
+    const { topic, card, monthTopic } = buildTweetBookmark(tweet, url, 9999);
+    const monthId = monthFolderIdOf(1000);
 
+    expect(monthTopic).toEqual({
+      id: monthId,
+      title: monthKeyOf(1000),
+      parentId: "bookmarks",
+      createdAt: 9999,
+    });
     expect(topic).toEqual({
       id: `bm:${url}`,
       title: "本文です",
-      parentId: "bookmarks",
+      parentId: monthId,
       createdAt: 1000,
     });
     expect(card).toEqual({
@@ -104,12 +120,13 @@ describe("buildTweetBookmark", () => {
     const tweet = { text: "", author: "handle", createdAt: null };
     const url = "https://x.com/foo/status/1";
 
-    const { topic, card } = buildTweetBookmark(tweet, url, 5000);
+    const { topic, card, monthTopic } = buildTweetBookmark(tweet, url, 5000);
 
     expect(topic.title).toBe("handle");
-    // ツイート日時が不明な場合はnowにフォールバックする
+    // ツイート日時が不明な場合はnowにフォールバックする(月フォルダもnow基準になる)
     expect(topic.createdAt).toBe(5000);
     expect(card.createdAt).toBe(5000);
+    expect(monthTopic.id).toBe(monthFolderIdOf(5000));
   });
 
   it("本文が40文字を超える場合は先頭40文字程度に切り詰める", () => {

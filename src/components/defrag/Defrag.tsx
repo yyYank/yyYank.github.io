@@ -190,7 +190,9 @@ export default function Defrag() {
     if (!topics.some((t) => t.id === BOOKMARKS_FOLDER_ID)) {
       dispatch({ type: "addTopic", topic: { id: BOOKMARKS_FOLDER_ID, title: "bookmarks", parentId: null, createdAt: now } });
     }
-    const { topic, card } = buildTweetBookmark(tweet, url, now);
+    const { topic, card, monthTopic } = buildTweetBookmark(tweet, url, now);
+    // 月フォルダはbookmarkSync.tsの同期と共有するため、無ければここでも同じidで作る(重複生成防止)
+    if (!topics.some((t) => t.id === monthTopic.id)) dispatch({ type: "addTopic", topic: monthTopic });
     if (!topics.some((t) => t.id === topic.id)) dispatch({ type: "addTopic", topic });
     if (!items.some((i) => i.id === card.id)) dispatch({ type: "addItem", item: card });
     setTweetSheet(false);
