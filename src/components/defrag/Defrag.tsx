@@ -3,6 +3,7 @@ import { CSS } from "./styles";
 import { buildIdf, cosine, vectorize } from "./similarity";
 import { ROOT, descendantIds, flattenTexts, itemLabel, pathLabel } from "./tree";
 import { loadAll, saveAll, storeReducer, uid } from "./store";
+import { syncBookmarks, type Favorite } from "./bookmarkSync";
 import type { Item, ItemPatch, Topic } from "./types";
 import { Sheet } from "./components/Sheet";
 import { Tree } from "./components/Tree";
@@ -52,11 +53,21 @@ export default function Defrag() {
     loadAll().then((d) => {
       if (!alive) return;
       if (d) {
-        dispatch({
-          type: "load",
-          items: Array.isArray(d.items) ? d.items : [],
-          topics: Array.isArray(d.topics) ? d.topics : [],
-        });
+        let items: Item[] = Array.isArray(d.items) ? d.items : [];
+        let topics: Topic[] = Array.isArray(d.topics) ? d.topics : [];
+        // feedsのお気に入りをbookmarksフォルダへ追加専用で同期する(削除・改変は行わない)
+        try {
+          const raw = localStorage.getItem("feeds-favorites");
+          const favorites: Favorite[] = raw ? JSON.parse(raw) : [];
+          if (Array.isArray(favorites) && favorites.length > 0) {
+            const synced = syncBookmarks(topics, items, favorites);
+            items = synced.items;
+            topics = synced.topics;
+          }
+        } catch (e) {
+          // parse失敗時は同期をスキップし、既存データのみ読み込む
+        }
+        dispatch({ type: "load", items, topics });
         if (d.expanded) setExpanded(d.expanded);
         if (d.here) setHere(d.here);
       }
