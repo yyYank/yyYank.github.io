@@ -4,7 +4,7 @@ export const CSS = `
 .dfg{
   --ground:#0F1117; --panel:#191C25; --raised:#232733; --line:#2C313D;
   --ink:#E4E2DC; --muted:#767C8C; --lamp:#E8A13A; --rail:#2A2F3B;
-  position:fixed;inset:0;display:flex;flex-direction:column;
+  position:fixed;inset:0;z-index:60;display:flex;flex-direction:column;
   background:var(--ground);color:var(--ink);
   font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP",system-ui,sans-serif;
   -webkit-font-smoothing:antialiased;overflow:hidden;
