@@ -1,12 +1,13 @@
 import { useState, useEffect, useReducer, useRef, useCallback, useMemo } from "react";
 import { CSS } from "./styles";
 import { buildIdf, cosine, vectorize } from "./similarity";
-import { ROOT, descendantIds, flattenTexts, itemLabel, pathLabel } from "./tree";
+import { ROOT, descendantIds, flattenTexts, pathLabel } from "./tree";
 import { loadAll, saveAll, storeReducer, uid } from "./store";
 import { syncBookmarks, type Favorite } from "./bookmarkSync";
 import type { Item, ItemPatch, Topic } from "./types";
 import { Sheet } from "./components/Sheet";
 import { Tree } from "./components/Tree";
+import { Timeline } from "./components/Timeline";
 import { Wall } from "./components/Wall";
 import { Viz } from "./components/Viz";
 import { Draft } from "./components/Draft";
@@ -137,7 +138,6 @@ export default function Defrag() {
 
   const cardCount = useMemo(
     () => items.reduce((n, it) => n + (it.kind === "bundle" ? it.children.length : 1), 0), [items]);
-  const recent = useMemo(() => items.filter((i) => i.kind === "card").slice(0, 2), [items]);
 
   const countIn = useCallback((tid: string) => {
     if (tid === ROOT) return items.filter((i) => !i.topicId).length;
@@ -228,21 +228,26 @@ export default function Defrag() {
       {tab === "compose" ? (
       <div className="dfg-compose">
         <button className="dfg-into" onClick={() => setDrawer(true)}>→ {herePath}</button>
-        <textarea ref={taRef} className="dfg-ta" value={draft} onChange={(e) => setDraft(e.target.value)}
-          placeholder="いま浮かんだこと" autoComplete="off" autoCorrect="off" />
-        {echo.length > 0 && (
-          <div className="dfg-echo">
-            <span className="dfg-echohead">前にも近いことを書いている</span>
-            {echo.map((e, i) => (
-              <button key={i} onClick={() => { setEcho([]); setOpenId(e.id); }}>{e.t}</button>
-            ))}
+        <div className="dfg-composetop">
+          <textarea ref={taRef} className="dfg-ta" value={draft} onChange={(e) => setDraft(e.target.value)}
+            placeholder="いま浮かんだこと" autoComplete="off" autoCorrect="off" />
+          {echo.length > 0 && (
+            <div className="dfg-echo">
+              <span className="dfg-echohead">前にも近いことを書いている</span>
+              {echo.map((e, i) => (
+                <button key={i} onClick={() => { setEcho([]); setOpenId(e.id); }}>{e.t}</button>
+              ))}
+            </div>
+          )}
+          <div className="dfg-composebar">
+            <div className="dfg-grow" />
+            <button className="dfg-send" onClick={throwIt} disabled={!draft.trim()}>投げる</button>
           </div>
-        )}
-        <div className="dfg-composebar">
-          <div className="dfg-recent">{echo.length ? null : recent.map((r) => <span key={r.id}>{itemLabel(r)}</span>)}</div>
-          <button className="dfg-send" onClick={throwIt} disabled={!draft.trim()}>投げる</button>
+          {flash ? <div className="dfg-flash dfg-mono" key={flash}>投稿しました</div> : null}
         </div>
-        {flash ? <div className="dfg-flash dfg-mono" key={flash}>投稿しました</div> : null}
+        <div className="dfg-composebottom">
+          <Timeline items={items} hereId={hereId} onOpen={setOpenId} />
+        </div>
       </div>
       ) : tab === "viz" ? (
         <Viz topics={topics} items={items} rootId={here} onOpen={setOpenId} onOpenDrawer={() => setDrawer(true)} />

@@ -45,6 +45,19 @@ export const CSS = `
   letter-spacing:.2em;pointer-events:none;animation:dfgflash .7s ease-out forwards}
 @keyframes dfgflash{0%{opacity:0}25%{opacity:1}100%{opacity:0}}
 
+/* ---- compose下半分のタイムライン ---- */
+.dfg-composetop{flex:1 1 50%;min-height:160px;display:flex;flex-direction:column}
+.dfg-composebottom{flex:1 1 50%;min-height:100px;overflow-y:auto;border-top:1px solid var(--line);margin-top:2px}
+.dfg-tl{display:flex;flex-direction:column;padding:8px 0 max(20px,env(safe-area-inset-bottom))}
+.dfg-tlrow{appearance:none;border:0;background:transparent;text-align:left;font-family:inherit;color:inherit;
+  cursor:pointer;padding:10px 0;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:4px;width:100%}
+.dfg-tlrow:last-child{border-bottom:0}
+.dfg-tlrow:active{background:var(--panel)}
+.dfg-tlrow p{margin:0;font-size:13.5px;line-height:1.55;color:var(--ink);white-space:pre-wrap;word-break:break-word;
+  overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical}
+.dfg-tlrow em{font-style:normal;font-size:10.5px;color:#5D6474}
+.dfg-tlempty{padding:28px 0;text-align:center;color:#4E5464;font-size:12.5px}
+
 /* ---- tree ---- */
 .dfg-tree{flex:1;overflow-y:auto;padding:2px 12px 16px}
 .dfg-tree[data-drag="1"]{overflow:hidden;touch-action:none}
