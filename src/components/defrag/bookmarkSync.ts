@@ -46,6 +46,13 @@ export interface SyncResult {
   added: boolean;
 }
 
+// 記事日時(favorite.date)を年代順の並びに使いたいのでDate.parseする。不正な値はnullにしてnowへフォールバックさせる。
+function parseFavoriteDate(fav: Favorite): number | null {
+  if (!fav.date) return null;
+  const t = Date.parse(fav.date);
+  return Number.isNaN(t) ? null : t;
+}
+
 export function syncBookmarks(
   topics: Topic[],
   items: Item[],
@@ -70,9 +77,11 @@ export function syncBookmarks(
   }
 
   for (const fav of favorites) {
+    const parsedDate = parseFavoriteDate(fav);
+    const createdAt = parsedDate ?? now;
     const topicId = `bm:${fav.link}`;
     if (!topicIds.has(topicId)) {
-      nextTopics.push({ id: topicId, title: fav.title, parentId: BOOKMARKS_FOLDER_ID, createdAt: now });
+      nextTopics.push({ id: topicId, title: fav.title, parentId: BOOKMARKS_FOLDER_ID, createdAt });
       topicIds.add(topicId);
       added = true;
     }
@@ -84,12 +93,19 @@ export function syncBookmarks(
         id: cardId,
         kind: "card",
         text: `${fav.title}\n${fav.link}\n${label}`,
-        createdAt: now,
+        createdAt,
         topicId,
       };
       nextItems.push(card);
       itemIds.add(cardId);
       added = true;
+    } else if (parsedDate !== null) {
+      // 既存断片: 記事日時が判明していてcreatedAtとずれている場合のみ、日時だけを補正する(他フィールドは不変)
+      const idx = nextItems.findIndex((i) => i.id === cardId);
+      if (idx >= 0 && nextItems[idx].createdAt !== parsedDate) {
+        nextItems[idx] = { ...nextItems[idx], createdAt: parsedDate };
+        added = true;
+      }
     }
   }
 

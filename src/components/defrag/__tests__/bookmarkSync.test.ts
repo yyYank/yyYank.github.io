@@ -99,4 +99,70 @@ describe("syncBookmarks", () => {
     expect(res.topics).toBe(topics);
     expect(res.items).toBe(items);
   });
+
+  it("新規生成時、favorite.dateが有効ならDate.parseした値をcreatedAtに使う(サブフォルダ・断片とも)", () => {
+    const favorites = [
+      { title: "記事A", link: "https://example.com/a", source: "hatena" as const, date: "2024-01-15T09:30:00Z" },
+    ];
+    const res = syncBookmarks([], [], favorites, 9999999);
+
+    const expected = Date.parse("2024-01-15T09:30:00Z");
+    expect(res.topics.find((t) => t.id === "bm:https://example.com/a")?.createdAt).toBe(expected);
+    expect(res.items.find((i) => i.id === "bmcard:https://example.com/a")?.createdAt).toBe(expected);
+  });
+
+  it("新規生成時、favorite.dateが不正な文字列ならnowにフォールバックする", () => {
+    const favorites = [
+      { title: "記事A", link: "https://example.com/a", source: "hatena" as const, date: "not-a-date" },
+    ];
+    const res = syncBookmarks([], [], favorites, 1234);
+
+    expect(res.items.find((i) => i.id === "bmcard:https://example.com/a")?.createdAt).toBe(1234);
+  });
+
+  it("既存bmcard断片は、favorite.dateが有効でcreatedAtとずれている場合createdAtのみ補正しaddedはtrueになる", () => {
+    const favorites = [
+      { title: "記事A", link: "https://example.com/a", source: "hatena" as const },
+    ];
+    const base = syncBookmarks([], [], favorites, 1000);
+
+    const withDate = [{ ...favorites[0], date: "2024-01-15T09:30:00Z" }];
+    const res = syncBookmarks(base.topics, base.items, withDate, 5000);
+
+    const expected = Date.parse("2024-01-15T09:30:00Z");
+    const before = base.items.find((i) => i.id === "bmcard:https://example.com/a")!;
+    const after = res.items.find((i) => i.id === "bmcard:https://example.com/a")!;
+    expect(res.added).toBe(true);
+    expect(after.createdAt).toBe(expected);
+    // createdAt以外のフィールドは不変であること
+    expect(after).toEqual({ ...before, createdAt: expected });
+    // 既存のitems配列オブジェクト自体は書き換えない(補正は新しい配列上で行う)
+    expect(before.createdAt).toBe(1000);
+  });
+
+  it("既存bmcard断片は、favorite.dateが未指定/不正なら補正せずaddedはfalseのまま", () => {
+    const favorites = [
+      { title: "記事A", link: "https://example.com/a", source: "hatena" as const },
+    ];
+    const base = syncBookmarks([], [], favorites, 1000);
+
+    const invalidDate = [{ ...favorites[0], date: "not-a-date" }];
+    const res = syncBookmarks(base.topics, base.items, invalidDate, 5000);
+
+    expect(res.added).toBe(false);
+    expect(res.items).toBe(base.items);
+  });
+
+  it("既存bmcard断片は、favorite.dateがcreatedAtと一致していれば補正せずaddedはfalseのまま", () => {
+    const date = "2024-01-15T09:30:00Z";
+    const favorites = [
+      { title: "記事A", link: "https://example.com/a", source: "hatena" as const, date },
+    ];
+    const base = syncBookmarks([], [], favorites, 1000);
+
+    const res = syncBookmarks(base.topics, base.items, favorites, 5000);
+
+    expect(res.added).toBe(false);
+    expect(res.items).toBe(base.items);
+  });
 });
