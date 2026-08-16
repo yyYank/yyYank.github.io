@@ -1,13 +1,17 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import StorageBackup from '../components/config/StorageBackup.tsx';
+import NavVisibility from '../components/config/NavVisibility.tsx';
 ---
 
-<BaseLayout title="Config" description="localStorageのバックアップ(import/export)">
+<BaseLayout title="Config" description="サイト設定とlocalStorageのバックアップ">
   <div class="container mx-auto px-4 py-8 max-w-2xl">
     <h1 class="text-3xl font-bold text-white mb-2">Config</h1>
-    <p class="text-gray-400 mb-8">localStorageのバックアップ(import/export)</p>
+    <p class="text-gray-400 mb-8">サイト設定とlocalStorageのバックアップ</p>
 
-    <StorageBackup client:load />
+    <div class="space-y-8">
+      <NavVisibility client:load />
+      <StorageBackup client:load />
+    </div>
   </div>
 </BaseLayout>

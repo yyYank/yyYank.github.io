@@ -1,14 +1,9 @@
 ---
 import MobileMenu from './MobileMenu.tsx';
+import { NAV_PAGES } from '../lib/navVisibility';
 
 const navItems = [
-  { href: '/kotlin-rev/', label: '逆引きKotlin' },
-  { href: '/docs/', label: 'MEMO' },
-  { href: '/feeds/', label: 'Feeds' },
-  { href: '/toolkit/', label: 'Toolkit' },
-  { href: '/transient/', label: 'Transient' },
-  { href: '/defrag/', label: 'Defrag' },
-  { href: '/diary/', label: 'Diary' },
+  ...NAV_PAGES.map(({ href, label }) => ({ href, label })),
   { href: '/config/', label: 'Config' }
 ];
 const pathname = Astro.url.pathname;
@@ -30,6 +25,7 @@ const brandLabel = isKotlinRev ? '逆引きKotlin' : isMemo ? 'yank MEMO' : 'yy_
         {navItems.map(item => (
           <a
             href={item.href}
+            data-nav-href={item.href}
             class="text-gray-300 hover:text-accent-cyan font-medium transition-colors relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-accent-cyan after:transition-all hover:after:w-full"
           >
             {item.label}

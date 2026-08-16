@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { loadHiddenNav } from '../lib/navVisibility';
 
 interface NavItem {
   href: string;
@@ -11,6 +12,14 @@ interface Props {
 
 export default function MobileMenu({ navItems }: Props) {
   const [isOpen, setIsOpen] = useState(false);
+  const [hidden, setHidden] = useState<string[]>([]);
+
+  // メニューは開いた時に動的に描画されるため、DOM側の一括非表示スクリプトでは拾えない
+  useEffect(() => {
+    setHidden(loadHiddenNav(localStorage));
+  }, []);
+
+  const visibleItems = navItems.filter((item) => !hidden.includes(item.href));
 
   return (
     <div className="md:hidden">
@@ -31,7 +40,7 @@ export default function MobileMenu({ navItems }: Props) {
       {isOpen && (
         <div className="absolute top-16 left-0 right-0 bg-dark-800 border-b border-dark-600 shadow-lg">
           <nav className="container mx-auto px-4 py-4">
-            {navItems.map(item => (
+            {visibleItems.map(item => (
               <a
                 key={item.href}
                 href={item.href}

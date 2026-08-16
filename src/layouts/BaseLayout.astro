@@ -43,5 +43,16 @@ const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
       <slot />
     </main>
     <Footer />
+    <script is:inline>
+      // configのメニュー表示設定(localStorage)を静的リンクに反映する
+      try {
+        var hiddenNav = JSON.parse(localStorage.getItem('site-nav-visibility') || '[]');
+        if (Array.isArray(hiddenNav) && hiddenNav.length) {
+          document.querySelectorAll('[data-nav-href]').forEach(function (el) {
+            if (hiddenNav.indexOf(el.getAttribute('data-nav-href')) >= 0) el.style.display = 'none';
+          });
+        }
+      } catch (e) {}
+    </script>
   </body>
 </html>
