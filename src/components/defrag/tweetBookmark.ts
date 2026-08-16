@@ -1,6 +1,7 @@
 /* ツイートURLからブックマーク(フォルダ+断片)を作る。bookmarkSync.tsのフィード同期と同じ
    id採番規則(bm:/bmcard:)・親フォルダ(bookmarksフォルダ)を再利用し、表示上の一貫性を保つ */
 import { BOOKMARKS_FOLDER_ID, monthFolderId, monthKey } from "./bookmarkSync";
+import { fetchViaProxy } from "./proxyFetch";
 import type { CardItem, Topic } from "./types";
 
 export interface TweetData {
@@ -18,14 +19,6 @@ export function isTweetUrl(url: string): boolean {
   } catch {
     return false;
   }
-}
-
-function allOriginsProxyUrl(url: string): string {
-  return `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
-}
-
-function corsProxyUrl(url: string): string {
-  return `https://corsproxy.io/?url=${encodeURIComponent(url)}`;
 }
 
 /* oEmbedのhtmlは <blockquote>本文...<a>日付リンク</a></blockquote><script>... という構造。
@@ -46,22 +39,6 @@ function parseOembedHtml(html: string): { text: string; createdAt: number | null
   const text = (blockquote.textContent ?? "").trim();
 
   return { text, createdAt };
-}
-
-/* corsproxy.io -> api.allorigins.win/raw の順でフォールバックする(feedsのFeedReader.tsxと同じ方針) */
-async function fetchViaProxy(url: string): Promise<Response> {
-  const endpoints = [corsProxyUrl(url), allOriginsProxyUrl(url)];
-  let lastError: Error | null = null;
-  for (const endpoint of endpoints) {
-    try {
-      const res = await fetch(endpoint);
-      if (!res.ok) throw new Error(`Fetch failed: ${res.status}`);
-      return res;
-    } catch (e) {
-      lastError = e instanceof Error ? e : new Error(String(e));
-    }
-  }
-  throw lastError ?? new Error("oEmbed fetch failed");
 }
 
 export async function fetchTweet(url: string): Promise<TweetData> {

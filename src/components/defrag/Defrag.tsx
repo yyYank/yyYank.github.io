@@ -4,10 +4,11 @@ import { buildIdf, cosine, vectorize } from "./similarity";
 import { ROOT, descendantIds, flattenTexts, pathLabel } from "./tree";
 import { loadAll, saveAll, storeReducer, uid } from "./store";
 import { syncBookmarks, BOOKMARKS_FOLDER_ID, type Favorite } from "./bookmarkSync";
-import { buildTweetBookmark, type TweetData } from "./tweetBookmark";
+import { buildTweetBookmark } from "./tweetBookmark";
+import { buildUrlBookmark } from "./urlBookmark";
 import type { Item, ItemPatch, Topic } from "./types";
 import { Sheet } from "./components/Sheet";
-import { TweetBookmarkSheet } from "./components/TweetBookmarkSheet";
+import { UrlBookmarkSheet, type BookmarkResult } from "./components/UrlBookmarkSheet";
 import { Tree } from "./components/Tree";
 import { Timeline } from "./components/Timeline";
 import { Wall } from "./components/Wall";
@@ -48,7 +49,7 @@ export default function Defrag() {
   const [trash, setTrash] = useState<{ item: Item; index: number } | null>(null);
   const [tab, setTab] = useState<"compose" | "wall" | "viz">("compose");
   const [editor, setEditor] = useState<string | null>(null);
-  const [tweetSheet, setTweetSheet] = useState(false);
+  const [urlSheet, setUrlSheet] = useState(false);
 
   const taRef = useRef<HTMLTextAreaElement>(null);
 
@@ -185,17 +186,24 @@ export default function Defrag() {
   const patchFolder = (id: string, patch: Partial<Topic>) => dispatch({ type: "patchTopic", id, patch });
 
   /* bookmarks親フォルダはbookmarkSync.tsの同期と共有するため、無ければここでも同じidで作る */
-  const addTweetBookmark = (tweet: TweetData, url: string) => {
-    const now = Date.now();
+  const addBuiltBookmark = (built: { topic: Topic; card: Item; monthTopic: Topic }, now: number) => {
+    const { topic, card, monthTopic } = built;
     if (!topics.some((t) => t.id === BOOKMARKS_FOLDER_ID)) {
       dispatch({ type: "addTopic", topic: { id: BOOKMARKS_FOLDER_ID, title: "bookmarks", parentId: null, createdAt: now } });
     }
-    const { topic, card, monthTopic } = buildTweetBookmark(tweet, url, now);
     // 月フォルダはbookmarkSync.tsの同期と共有するため、無ければここでも同じidで作る(重複生成防止)
     if (!topics.some((t) => t.id === monthTopic.id)) dispatch({ type: "addTopic", topic: monthTopic });
     if (!topics.some((t) => t.id === topic.id)) dispatch({ type: "addTopic", topic });
     if (!items.some((i) => i.id === card.id)) dispatch({ type: "addItem", item: card });
-    setTweetSheet(false);
+  };
+
+  const addUrlBookmark = (result: BookmarkResult, url: string) => {
+    const now = Date.now();
+    const built = result.kind === "tweet"
+      ? buildTweetBookmark(result.data, url, now)
+      : buildUrlBookmark(result.data, url, now);
+    addBuiltBookmark(built, now);
+    setUrlSheet(false);
   };
 
   const removeFolder = (id: string) => {
@@ -290,7 +298,7 @@ export default function Defrag() {
                 <path d="M10 8.6v4.6M7.7 10.9h4.6" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
               </svg>
             </button>
-            <button className="dfg-tool" onClick={() => setTweetSheet(true)} aria-label="ツイートを保存">𝕏</button>
+            <button className="dfg-tool" onClick={() => setUrlSheet(true)} aria-label="URLを保存">🔖</button>
             <button className="dfg-tool" onClick={() => setExpanded({})} aria-label="すべてたたむ">
               <svg viewBox="0 0 20 20" width="19" height="19">
                 <path d="M4 7.4 10 12l6-4.6M4 12.6 10 17l6-4.4" fill="none" stroke="currentColor"
@@ -343,8 +351,8 @@ export default function Defrag() {
         </div>
       )}
 
-      {tweetSheet && (
-        <TweetBookmarkSheet onClose={() => setTweetSheet(false)} onAdd={addTweetBookmark} />
+      {urlSheet && (
+        <UrlBookmarkSheet onClose={() => setUrlSheet(false)} onAdd={addUrlBookmark} />
       )}
 
       {newFolder && (
