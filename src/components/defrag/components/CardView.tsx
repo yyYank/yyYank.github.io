@@ -1,16 +1,22 @@
 import { useMemo, useState } from "react";
 import { buildIdf, cosine, vectorize } from "../similarity";
 import { absDate } from "../format";
+import { linkifyParts } from "../linkify";
 import { flattenTexts, pathLabel } from "../tree";
-import type { CardItem, Item, Topic } from "../types";
+import type { CardItem, Comment, Item, Topic } from "../types";
 import { Palette } from "./Palette";
 import { TopicRows } from "./TopicRows";
 
-export function CardView({ card, items, topics, onMove, onColor, onDelete }: {
+// storeのuidと同じ生成方式。componentsはstore.tsに依存しない方針のためここに閉じて複製する
+const commentId = () => Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
+
+export function CardView({ card, items, topics, onMove, onColor, onDelete, onComments }: {
   card: CardItem; items: Item[]; topics: Topic[];
   onMove: (tid: string | null) => void; onColor: (c: string) => void; onDelete: () => void;
+  onComments: (comments: Comment[]) => void;
 }) {
   const [picking, setPicking] = useState(false);
+  const [draft, setDraft] = useState("");
   const near = useMemo(() => {
     const pool: string[] = [];
     items.forEach((it) => {
@@ -34,10 +40,25 @@ export function CardView({ card, items, topics, onMove, onColor, onDelete }: {
     );
   }
 
+  const comments = card.comments ?? [];
+  const addComment = () => {
+    const t = draft.trim();
+    if (!t) return;
+    onComments([...comments, { id: commentId(), text: t, createdAt: Date.now() }]);
+    setDraft("");
+  };
+  const removeComment = (id: string) => onComments(comments.filter((c) => c.id !== id));
+
   return (
     <>
       <div className="dfg-sbody">
-        <div className="dfg-full">{card.text}</div>
+        <div className="dfg-full">
+          {linkifyParts(card.text).map((p, i) => (
+            typeof p === "string"
+              ? <span key={i}>{p}</span>
+              : <a key={i} className="dfg-link" href={p.url} target="_blank" rel="noopener noreferrer">{p.url}</a>
+          ))}
+        </div>
         <div className="dfg-hint dfg-mono" style={{ marginTop: 14 }}>{absDate(card.createdAt, true)}</div>
         <div className="dfg-label">色</div>
         <Palette value={card.color} onPick={onColor} />
@@ -49,6 +70,21 @@ export function CardView({ card, items, topics, onMove, onColor, onDelete }: {
             {near.map((n, i) => <div className="dfg-sim" key={i}>{n.text}</div>)}
           </>
         )}
+        <div className="dfg-label">コメント</div>
+        {comments.map((c) => (
+          <div className="dfg-comment" key={c.id}>
+            <div className="dfg-commentbody">
+              <p>{c.text}</p>
+              <span className="dfg-commentmeta dfg-mono">{absDate(c.createdAt, true)}</span>
+            </div>
+            <button className="dfg-mini" onClick={() => removeComment(c.id)} aria-label="コメントを削除">×</button>
+          </div>
+        ))}
+        <div className="dfg-commentadd">
+          <textarea className="dfg-commentinput" value={draft} placeholder="コメントを書く"
+            onChange={(e) => setDraft(e.target.value)} />
+          <button className="dfg-btn" data-key="1" disabled={!draft.trim()} onClick={addComment}>追加</button>
+        </div>
       </div>
       <div className="dfg-sfoot">
         <span className="dfg-grow" />

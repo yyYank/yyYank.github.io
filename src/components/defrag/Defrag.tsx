@@ -413,6 +413,7 @@ export default function Defrag() {
               onMove={(tid) => patchItem(openItem.id, { topicId: tid })}
               onColor={(c) => patchItem(openItem.id, { color: c })}
               onDelete={() => { trashItem(openItem.id); setOpenId(null); }}
+              onComments={(comments) => patchItem(openItem.id, { comments })}
             />
           )}
         </Sheet>

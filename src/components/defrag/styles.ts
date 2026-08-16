@@ -246,4 +246,16 @@ export const CSS = `
 .dfg-tweettext{font-size:14px;line-height:1.7;white-space:pre-wrap}
 .dfg-tweetauthor{margin-top:8px;font-size:12px;color:var(--muted)}
 .dfg-tweeterr{margin-top:10px;font-size:12.5px;color:#C2757A}
+
+/* ---- 本文中URLリンク / コメント ---- */
+.dfg-link{color:var(--lamp);text-decoration:underline;text-underline-offset:2px;word-break:break-all}
+.dfg-comment{background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:11px 12px;margin-bottom:8px;
+  display:flex;gap:10px;align-items:flex-start}
+.dfg-commentbody{flex:1;min-width:0}
+.dfg-commentbody p{margin:0;font-size:14px;line-height:1.65;white-space:pre-wrap;word-break:break-word}
+.dfg-commentmeta{display:block;font-size:10.5px;color:#5D6474;margin-top:5px}
+.dfg-commentadd{display:flex;gap:8px;align-items:flex-end;margin-top:4px}
+.dfg-commentinput{flex:1;min-width:0;background:var(--panel);border:1px solid var(--line);border-radius:9px;
+  color:var(--ink);font-family:inherit;font-size:14px;line-height:1.6;padding:10px 12px;outline:none;resize:none;
+  height:44px;max-height:120px;caret-color:var(--lamp)}
 `;

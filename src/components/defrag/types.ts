@@ -2,9 +2,11 @@
 
 export interface Pos { x: number; y: number; r: number }
 export interface Child { id: string; text: string; createdAt: number }
+export interface Comment { id: string; text: string; createdAt: number }
 export interface CardItem {
   id: string; kind: "card"; text: string; createdAt: number;
   topicId: string | null; color?: string; pos?: Pos;
+  comments?: Comment[];
 }
 export interface BundleItem {
   id: string; kind: "bundle"; title: string; createdAt: number;
