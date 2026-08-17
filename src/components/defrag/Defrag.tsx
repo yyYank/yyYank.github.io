@@ -238,6 +238,14 @@ export default function Defrag() {
     setHere(t.id);
   };
 
+  /* 断片シートの「いる場所」からその場所へ移動する(シート・ドロワーを閉じて投げるタブへ) */
+  const goTopic = (topicId: string | null) => {
+    setOpenId(null);
+    setHere(topicId ?? ROOT);
+    setDrawer(false);
+    setTab("compose");
+  };
+
   const openItem = items.find((i) => i.id === openId) || null;
   const exportItem = items.find((i) => i.id === exportId) || null;
   const menuFolder = topics.find((t) => t.id === folderMenu) || null;
@@ -425,6 +433,7 @@ export default function Defrag() {
               bundle={openItem}
               topics={topics}
               onChange={(patch) => patchItem(openItem.id, patch)}
+              onGoTopic={() => goTopic(openItem.topicId)}
               onExport={() => { setExportId(openItem.id); setOpenId(null); }}
               onUnbundle={() => { unbundle(openItem.id); setOpenId(null); }}
               onPromote={() => { promote(openItem.id); setOpenId(null); }}
@@ -434,7 +443,7 @@ export default function Defrag() {
               card={openItem}
               items={items}
               topics={topics}
-              onMove={(tid) => patchItem(openItem.id, { topicId: tid })}
+              onGoTopic={() => goTopic(openItem.topicId)}
               onColor={(c) => patchItem(openItem.id, { color: c })}
               onDelete={() => { trashItem(openItem.id); setOpenId(null); }}
               onComments={(comments) => patchItem(openItem.id, { comments })}

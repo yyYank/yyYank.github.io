@@ -1,15 +1,13 @@
-import { useState } from "react";
 import { pathLabel } from "../tree";
 import type { BundleItem, ItemPatch, Topic } from "../types";
 import { Palette } from "./Palette";
-import { TopicRows } from "./TopicRows";
 
-export function BundleView({ bundle, topics, onChange, onExport, onUnbundle, onPromote }: {
+export function BundleView({ bundle, topics, onChange, onGoTopic, onExport, onUnbundle, onPromote }: {
   bundle: BundleItem; topics: Topic[];
   onChange: (patch: ItemPatch) => void;
+  onGoTopic: () => void;
   onExport: () => void; onUnbundle: () => void; onPromote: () => void;
 }) {
-  const [picking, setPicking] = useState(false);
   const move = (i: number, dir: number) => {
     const next = bundle.children.slice();
     const j = i + dir;
@@ -22,14 +20,6 @@ export function BundleView({ bundle, topics, onChange, onExport, onUnbundle, onP
     next.splice(i, 1);
     onChange({ children: next });
   };
-
-  if (picking) {
-    return (
-      <div className="dfg-sbody">
-        <TopicRows topics={topics} current={bundle.topicId} onPick={(tid) => { onChange({ topicId: tid }); setPicking(false); }} />
-      </div>
-    );
-  }
 
   return (
     <>
@@ -48,7 +38,7 @@ export function BundleView({ bundle, topics, onChange, onExport, onUnbundle, onP
         <div className="dfg-label">色</div>
         <Palette value={bundle.color} onPick={(c) => onChange({ color: c })} />
         <div className="dfg-label">いる場所</div>
-        <button className="dfg-btn" data-block="1" onClick={() => setPicking(true)}>{pathLabel(topics, bundle.topicId)}</button>
+        <button className="dfg-btn" data-block="1" onClick={onGoTopic}>{pathLabel(topics, bundle.topicId)}</button>
         <div className="dfg-label">育ってきたら</div>
         <button className="dfg-btn" data-block="1" onClick={onPromote}>この束をフォルダにする</button>
       </div>

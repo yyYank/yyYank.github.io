@@ -5,17 +5,15 @@ import { linkifyParts } from "../linkify";
 import { flattenTexts, pathLabel } from "../tree";
 import type { CardItem, Comment, Item, Topic } from "../types";
 import { Palette } from "./Palette";
-import { TopicRows } from "./TopicRows";
 
 // storeのuidと同じ生成方式。componentsはstore.tsに依存しない方針のためここに閉じて複製する
 const commentId = () => Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
 
-export function CardView({ card, items, topics, onMove, onColor, onDelete, onComments }: {
+export function CardView({ card, items, topics, onGoTopic, onColor, onDelete, onComments }: {
   card: CardItem; items: Item[]; topics: Topic[];
-  onMove: (tid: string | null) => void; onColor: (c: string) => void; onDelete: () => void;
+  onGoTopic: () => void; onColor: (c: string) => void; onDelete: () => void;
   onComments: (comments: Comment[]) => void;
 }) {
-  const [picking, setPicking] = useState(false);
   const [draft, setDraft] = useState("");
   const near = useMemo(() => {
     const pool: string[] = [];
@@ -31,14 +29,6 @@ export function CardView({ card, items, topics, onMove, onColor, onDelete, onCom
       .sort((a, b) => b.s - a.s)
       .slice(0, 3);
   }, [card, items]);
-
-  if (picking) {
-    return (
-      <div className="dfg-sbody">
-        <TopicRows topics={topics} current={card.topicId} onPick={(tid) => { onMove(tid); setPicking(false); }} />
-      </div>
-    );
-  }
 
   const comments = card.comments ?? [];
   const addComment = () => {
@@ -63,7 +53,7 @@ export function CardView({ card, items, topics, onMove, onColor, onDelete, onCom
         <div className="dfg-label">色</div>
         <Palette value={card.color} onPick={onColor} />
         <div className="dfg-label">いる場所</div>
-        <button className="dfg-btn" data-block="1" onClick={() => setPicking(true)}>{pathLabel(topics, card.topicId)}</button>
+        <button className="dfg-btn" data-block="1" onClick={onGoTopic}>{pathLabel(topics, card.topicId)}</button>
         {near.length > 0 && (
           <>
             <div className="dfg-label">似ているかもしれないもの</div>
