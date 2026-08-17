@@ -49,8 +49,10 @@ export const CSS = `
 .dfg-composetop{flex:1 1 50%;min-height:160px;display:flex;flex-direction:column}
 .dfg-composebottom{flex:1 1 50%;min-height:100px;overflow-y:auto;border-top:1px solid var(--line);margin-top:2px}
 .dfg-tl{display:flex;flex-direction:column;padding:8px 0 max(20px,env(safe-area-inset-bottom))}
+.dfg-tlwrap{position:relative}
 .dfg-tlrow{appearance:none;border:0;background:transparent;text-align:left;font-family:inherit;color:inherit;
-  cursor:pointer;padding:10px 0;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:4px;width:100%}
+  cursor:pointer;padding:10px 0;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:4px;width:100%;
+  touch-action:pan-y}
 .dfg-tlrow:last-child{border-bottom:0}
 .dfg-tlrow:active{background:var(--panel)}
 .dfg-tlrow p{margin:0;font-size:13.5px;line-height:1.55;color:var(--ink);white-space:pre-wrap;word-break:break-word;

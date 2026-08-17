@@ -283,7 +283,7 @@ export default function Defrag() {
           {flash ? <div className="dfg-flash dfg-mono" key={flash}>投稿しました</div> : null}
         </div>
         <div className="dfg-composebottom">
-          <Timeline items={items} hereId={hereId} onOpen={setOpenId} />
+          <Timeline items={items} hereId={hereId} onOpen={setOpenId} onTrash={trashItem} />
         </div>
       </div>
       ) : tab === "viz" ? (
