@@ -9,22 +9,24 @@ import { Palette } from "./Palette";
 // storeのuidと同じ生成方式。componentsはstore.tsに依存しない方針のためここに閉じて複製する
 const commentId = () => Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
 
-export function CardView({ card, items, topics, onGoTopic, onColor, onDelete, onComments }: {
+export function CardView({ card, items, topics, onGoTopic, onGoNear, onColor, onDelete, onComments }: {
   card: CardItem; items: Item[]; topics: Topic[];
-  onGoTopic: () => void; onColor: (c: string) => void; onDelete: () => void;
+  onGoTopic: () => void; onGoNear: (topicId: string | null) => void;
+  onColor: (c: string) => void; onDelete: () => void;
   onComments: (comments: Comment[]) => void;
 }) {
   const [draft, setDraft] = useState("");
   const near = useMemo(() => {
-    const pool: string[] = [];
+    // 束の断片は束自体のtopicIdをタップ先として使う
+    const pool: { text: string; topicId: string | null }[] = [];
     items.forEach((it) => {
       if (it.id === card.id) return;
-      flattenTexts(it).forEach((t) => pool.push(t));
+      flattenTexts(it).forEach((t) => pool.push({ text: t, topicId: it.topicId }));
     });
-    const idf = buildIdf([card.text, ...pool]);
+    const idf = buildIdf([card.text, ...pool.map((p) => p.text)]);
     const cv = vectorize(card.text, idf);
     return pool
-      .map((t) => ({ text: t, s: cosine(cv, vectorize(t, idf)) }))
+      .map((p) => ({ ...p, s: cosine(cv, vectorize(p.text, idf)) }))
       .filter((e) => e.s > 0.05)
       .sort((a, b) => b.s - a.s)
       .slice(0, 3);
@@ -57,7 +59,9 @@ export function CardView({ card, items, topics, onGoTopic, onColor, onDelete, on
         {near.length > 0 && (
           <>
             <div className="dfg-label">似ているかもしれないもの</div>
-            {near.map((n, i) => <div className="dfg-sim" key={i}>{n.text}</div>)}
+            {near.map((n, i) => (
+              <button className="dfg-sim" key={i} onClick={() => onGoNear(n.topicId)}>{n.text}</button>
+            ))}
           </>
         )}
         <div className="dfg-label">コメント</div>

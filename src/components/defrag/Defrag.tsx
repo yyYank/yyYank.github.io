@@ -256,7 +256,7 @@ export default function Defrag() {
 
       <div className="dfg-top">
         <button className="dfg-burger" onClick={() => setDrawer(true)} aria-label="フォルダ">☰</button>
-        <button className="dfg-tab" data-on={tab === "compose" ? "1" : "0"} onClick={() => setTab("compose")}>投げる</button>
+        <button className="dfg-tab" data-on={tab === "compose" ? "1" : "0"} onClick={() => setTab("compose")}>タイムライン</button>
         <button className="dfg-tab" data-on={tab === "wall" ? "1" : "0"} onClick={() => setTab("wall")}>付箋</button>
         <button className="dfg-tab" data-on={tab === "viz" ? "1" : "0"} onClick={() => setTab("viz")}>可視化</button>
         <span className="dfg-count dfg-mono">{cardCount}</span>
@@ -444,6 +444,7 @@ export default function Defrag() {
               items={items}
               topics={topics}
               onGoTopic={() => goTopic(openItem.topicId)}
+              onGoNear={goTopic}
               onColor={(c) => patchItem(openItem.id, { color: c })}
               onDelete={() => { trashItem(openItem.id); setOpenId(null); }}
               onComments={(comments) => patchItem(openItem.id, { comments })}

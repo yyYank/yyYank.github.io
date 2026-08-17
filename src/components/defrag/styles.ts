@@ -213,9 +213,11 @@ export const CSS = `
 .dfg-out{width:100%;min-height:260px;background:var(--panel);border:1px solid var(--line);border-radius:11px;
   color:var(--ink);font-family:inherit;font-size:14.5px;line-height:1.85;padding:14px;outline:none;resize:vertical}
 .dfg-hint{font-size:11.5px;color:#565C6C;line-height:1.7;margin-top:10px}
-.dfg-sim{background:var(--panel);border:1px solid var(--line);border-left:2px solid #4E647A;border-radius:8px;
+.dfg-sim{appearance:none;font-family:inherit;text-align:left;cursor:pointer;width:100%;
+  background:var(--panel);border:1px solid var(--line);border-left:2px solid #4E647A;border-radius:8px;
   padding:11px 12px;margin-bottom:8px;font-size:13px;line-height:1.6;color:#A8AEBC;display:-webkit-box;
   -webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.dfg-sim:active{background:var(--raised)}
 .dfg-full{font-size:16px;line-height:1.8;white-space:pre-wrap;word-break:break-word}
 .dfg-child{background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:12px;margin-bottom:8px;
   display:flex;gap:10px;align-items:flex-start}
