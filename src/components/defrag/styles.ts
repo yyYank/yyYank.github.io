@@ -240,6 +240,22 @@ export const CSS = `
 .dfg-toast span{flex:1;color:var(--muted)}
 .dfg-toast button{appearance:none;border:0;background:transparent;color:var(--lamp);font-family:inherit;
   font-size:13px;font-weight:700;padding:4px 6px;cursor:pointer}
+/* ---- drawer search ---- */
+.dfg-searchbar{flex:0 0 auto;padding:10px 12px 4px}
+.dfg-searchbar input{width:100%;background:var(--panel);border:1px solid var(--line);border-radius:11px;
+  color:var(--ink);font-family:inherit;font-size:14px;padding:10px 12px;outline:none;caret-color:var(--lamp)}
+.dfg-searchbar input:focus{border-color:var(--lamp)}
+.dfg-srscroll{flex:1;overflow-y:auto;padding:4px 12px 16px}
+.dfg-srlist{display:flex;flex-direction:column;gap:5px}
+.dfg-srrow{appearance:none;border:1px solid var(--line);background:var(--panel);border-radius:9px;
+  display:flex;align-items:center;gap:9px;padding:11px 12px;text-align:left;font-family:inherit;
+  color:inherit;cursor:pointer;width:100%}
+.dfg-srrow:active{background:var(--raised)}
+.dfg-srmain{min-width:0;flex:1;display:flex;flex-direction:column;gap:3px}
+.dfg-srmain b{font-size:14px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dfg-srmain p{margin:0;font-size:13px;line-height:1.5;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dfg-srmain em{font-style:normal;font-size:10.5px;color:#5D6474;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
 @media (prefers-reduced-motion:reduce){.dfg *{animation:none!important;transition:none!important}}
 
 .dfg-tweetpreview{margin-top:12px;padding:12px;background:var(--panel);border:1px solid var(--line);border-radius:9px}

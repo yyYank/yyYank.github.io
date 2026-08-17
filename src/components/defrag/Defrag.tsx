@@ -9,6 +9,8 @@ import { buildUrlBookmark } from "./urlBookmark";
 import type { Item, ItemPatch, Topic } from "./types";
 import { Sheet } from "./components/Sheet";
 import { UrlBookmarkSheet, type BookmarkResult } from "./components/UrlBookmarkSheet";
+import { SearchResults } from "./components/SearchResults";
+import { searchAll } from "./search";
 import { Tree } from "./components/Tree";
 import { Timeline } from "./components/Timeline";
 import { Wall } from "./components/Wall";
@@ -50,6 +52,7 @@ export default function Defrag() {
   const [tab, setTab] = useState<"compose" | "wall" | "viz">("compose");
   const [editor, setEditor] = useState<string | null>(null);
   const [urlSheet, setUrlSheet] = useState(false);
+  const [searchQ, setSearchQ] = useState("");
 
   const taRef = useRef<HTMLTextAreaElement>(null);
 
@@ -116,6 +119,7 @@ export default function Defrag() {
 
   const hereId = here === ROOT ? null : here;
   const herePath = pathLabel(topics, here);
+  const searchHits = useMemo(() => searchAll(topics, items, searchQ), [topics, items, searchQ]);
 
   const add = (text: string) => {
     const v = text.trim();
@@ -308,6 +312,25 @@ export default function Defrag() {
             </button>
             <button className="dfg-close" onClick={() => setDrawer(false)} aria-label="閉じる">✕</button>
           </div>
+          <div className="dfg-searchbar">
+            <input
+              type="search"
+              value={searchQ}
+              onChange={(e) => setSearchQ(e.target.value)}
+              placeholder="断片とフォルダを検索"
+              autoComplete="off"
+            />
+          </div>
+          {searchQ.trim() ? (
+            <div className="dfg-srscroll">
+              <SearchResults
+                hits={searchHits}
+                topics={topics}
+                onPickTopic={(id) => { setSearchQ(""); setHere(id); setDrawer(false); setTab("compose"); }}
+                onPickItem={(id) => { setOpenId(id); }}
+              />
+            </div>
+          ) : (
           <Tree
             topics={topics}
             items={items}
@@ -330,6 +353,7 @@ export default function Defrag() {
             onBundle={bundle}
             onTrash={trashItem}
           />
+          )}
           <div className="dfg-bar">
             <div className="dfg-barinto">→ {herePath}</div>
             <div className="dfg-quick">
