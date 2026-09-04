@@ -266,7 +266,7 @@ function allOriginsProxyUrl(url: string): string {
 }
 
 function corsProxyUrl(url: string): string {
-  return `https://corsproxy.io/?url=${encodeURIComponent(url)}`;
+  return `https://corsproxy.org/?${encodeURIComponent(url)}`;
 }
 
 function getJSTEndOfDay(): number {
@@ -426,6 +426,12 @@ async function fetchFeedSnapshot(): Promise<FeedSnapshotData | null> {
   } catch {
     return null;
   }
+}
+
+let _snapshotPromise: Promise<FeedSnapshotData | null> | null = null;
+function fetchFeedSnapshotOnce(): Promise<FeedSnapshotData | null> {
+  if (!_snapshotPromise) _snapshotPromise = fetchFeedSnapshot();
+  return _snapshotPromise;
 }
 
 function stripHtml(html: string): string {
@@ -792,6 +798,20 @@ export default function FeedReader() {
       setShowingStaleCache(false);
       setErrorKey(key, null);
     } catch {
+      if (FEED_KEYS.includes(key as FeedKey)) {
+        try {
+          const snapshot = await fetchFeedSnapshotOnce();
+          const entry = snapshot?.feeds?.[key as FeedKey];
+          if (entry?.items?.length) {
+            onSuccess(normalizeSnapshotItems(entry.items) as T);
+            setLoadedKey(key, true);
+            markLoadedAt(key, Date.now());
+            setShowingStaleCache(false);
+            setErrorKey(key, null);
+            return;
+          }
+        } catch { /* snapshot fetch also failed */ }
+      }
       setErrorKey(key, '取得に失敗しました');
     } finally {
       setLoadingKey(key, false);
