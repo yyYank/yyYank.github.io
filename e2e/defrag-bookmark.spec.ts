@@ -3,8 +3,9 @@ import { test, expect } from '@playwright/test';
 test('記事URLのブックマーク取得でプレビューが表示される', async ({ page }) => {
   await page.goto('/defrag/');
 
-  // ブックマークシートを開く
-  await page.getByRole('button', { name: '🔖' }).click();
+  // ドロワーを開いてからブックマークシートを開く
+  await page.getByRole('button', { name: 'フォルダ' }).click();
+  await page.getByRole('button', { name: 'URLを保存' }).click();
 
   // URLを入力して取得
   const input = page.locator('.dfg-titleinput');
