@@ -1,12 +1,12 @@
 /* CORSプロキシ経由のfetchをtweetBookmark.ts/urlBookmark.tsで共有するための共通実装。
-   corsproxy.org -> api.allorigins.win/raw の順でフォールバックする(feedsのFeedReader.tsxと同じ方針) */
+   proxy.cors.sh -> api.allorigins.win/raw の順でフォールバックする */
 
 export function allOriginsProxyUrl(url: string): string {
   return `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
 }
 
 export function corsProxyUrl(url: string): string {
-  return `https://corsproxy.org/?${encodeURIComponent(url)}`;
+  return `https://proxy.cors.sh/${url}`;
 }
 
 export async function fetchViaProxy(url: string): Promise<Response> {

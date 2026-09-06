@@ -34,9 +34,9 @@ describe("fetchArticle", () => {
     expect(article.title).toBe("OGタイトル");
     expect(article.site).toBe("サイト名");
     expect(article.createdAt).toBe(Date.parse("2026-08-16T00:00:00Z"));
-    // 最初のプロキシ(corsproxy.org)が呼ばれること
+    // 最初のプロキシ(proxy.cors.sh)が呼ばれること
     expect(fetchMock).toHaveBeenCalledTimes(1);
-    expect(String(fetchMock.mock.calls[0][0])).toContain("corsproxy.org");
+    expect(String(fetchMock.mock.calls[0][0])).toContain("proxy.cors.sh");
   });
 
   it("og:titleが無い場合は<title>要素へフォールバックする", async () => {

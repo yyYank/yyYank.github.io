@@ -45,9 +45,9 @@ describe("fetchTweet", () => {
     expect(tweet.text).toContain("本文です");
     expect(tweet.author).toBe("名前");
     expect(tweet.createdAt).toBe(Date.parse("August 16, 2026"));
-    // 最初のプロキシ(corsproxy.org)が呼ばれること
+    // 最初のプロキシ(proxy.cors.sh)が呼ばれること
     expect(fetchMock).toHaveBeenCalledTimes(1);
-    expect(String(fetchMock.mock.calls[0][0])).toContain("corsproxy.org");
+    expect(String(fetchMock.mock.calls[0][0])).toContain("proxy.cors.sh");
   });
 
   it("日時パースに失敗した場合はnullにする", async () => {
