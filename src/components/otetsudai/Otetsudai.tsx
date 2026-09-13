@@ -3,6 +3,15 @@ import { useState, useEffect, useCallback } from 'react';
 const STORAGE_KEY = 'otetsudai-data';
 const WEEKDAYS = ['にち', 'げつ', 'か', 'すい', 'もく', 'きん', 'ど'] as const;
 
+const STAMPS = [
+  '💮', '🌸', '🌈', '❤️', '⭐', '🌻', '🎀', '🦋', '🍀', '🌷',
+  '🌟', '🎵', '🐱', '🐶', '🍓', '🍎', '🌙', '☀️', '🐣', '🐰',
+] as const;
+
+function randomStamp(): string {
+  return STAMPS[Math.floor(Math.random() * STAMPS.length)];
+}
+
 interface Person {
   id: string;
   name: string;
@@ -15,6 +24,7 @@ interface OtetsudaiRecord {
   personId: string;
   date: string;
   content: string;
+  stamp: string;
   createdAt: string;
 }
 
@@ -34,7 +44,9 @@ function loadData(): OtetsudaiData {
     const parsed = JSON.parse(raw);
     return {
       people: Array.isArray(parsed.people) ? parsed.people : [],
-      records: Array.isArray(parsed.records) ? parsed.records : [],
+      records: Array.isArray(parsed.records)
+        ? parsed.records.map((r: OtetsudaiRecord) => ({ ...r, stamp: r.stamp || '💮' }))
+        : [],
     };
   } catch {
     return { people: [], records: [] };
@@ -55,24 +67,68 @@ function formatDate(dateStr: string): string {
   return `${d.getMonth() + 1}がつ ${d.getDate()}にち（${weekday}）`;
 }
 
+interface StampPickerProps {
+  selected: string;
+  onSelect: (stamp: string) => void;
+}
+
+function StampPicker({ selected, onSelect }: StampPickerProps) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <div className="flex flex-col items-center gap-2">
+      <button
+        type="button"
+        onClick={() => setOpen(!open)}
+        className="text-6xl hover:scale-110 transition-transform"
+        title="しーるをえらぶ"
+      >
+        {selected}
+      </button>
+      <p className="text-gray-400 text-xs">タップして えらべるよ</p>
+      {open && (
+        <div className="grid grid-cols-5 gap-2 bg-dark-700 rounded-xl p-3 border border-dark-600">
+          {STAMPS.map((s) => (
+            <button
+              key={s}
+              type="button"
+              onClick={() => {
+                onSelect(s);
+                setOpen(false);
+              }}
+              className={`text-3xl p-1 rounded-lg hover:bg-dark-500 transition-colors ${
+                selected === s ? 'bg-dark-500 ring-2 ring-accent-cyan' : ''
+              }`}
+            >
+              {s}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 interface ModalProps {
   date: string;
   records: OtetsudaiRecord[];
-  onAdd: (content: string) => void;
+  onAdd: (content: string, stamp: string) => void;
   onDelete: (id: string) => void;
   onClose: () => void;
 }
 
 function Modal({ date, records, onAdd, onDelete, onClose }: ModalProps) {
   const [content, setContent] = useState('');
+  const [stamp, setStamp] = useState(() => randomStamp());
   const [showForm, setShowForm] = useState(records.length === 0);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const trimmed = content.trim();
     if (!trimmed) return;
-    onAdd(trimmed);
+    onAdd(trimmed, stamp);
     setContent('');
+    setStamp(randomStamp());
     setShowForm(false);
   };
 
@@ -99,14 +155,14 @@ function Modal({ date, records, onAdd, onDelete, onClose }: ModalProps) {
 
           {records.length > 0 && (
             <div className="mb-5 space-y-3">
-              <div className="text-center text-6xl py-2">💮</div>
               <p className="text-center text-lg font-bold text-yellow-300">よくできました！</p>
               {records.map((r) => (
                 <div
                   key={r.id}
-                  className="bg-dark-700 rounded-xl p-4 border border-dark-600 flex items-start justify-between gap-2"
+                  className="bg-dark-700 rounded-xl p-4 border border-dark-600 flex items-start gap-3"
                 >
-                  <span className="text-gray-200 text-base">{r.content}</span>
+                  <span className="text-3xl shrink-0">{r.stamp}</span>
+                  <span className="text-gray-200 text-base flex-1">{r.content}</span>
                   <button
                     onClick={() => onDelete(r.id)}
                     className="text-gray-500 hover:text-red-400 transition-colors text-sm shrink-0"
@@ -121,6 +177,7 @@ function Modal({ date, records, onAdd, onDelete, onClose }: ModalProps) {
 
           {showForm ? (
             <form onSubmit={handleSubmit} className="space-y-3">
+              <StampPicker selected={stamp} onSelect={setStamp} />
               <textarea
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
@@ -376,13 +433,14 @@ export default function Otetsudai() {
     setShowGoalModal(false);
   };
 
-  const handleAddRecord = (content: string) => {
+  const handleAddRecord = (content: string, stamp: string) => {
     if (!selectedDate || !selectedPersonId) return;
     const newRecord: OtetsudaiRecord = {
       id: generateId(),
       personId: selectedPersonId,
       date: selectedDate,
       content,
+      stamp,
       createdAt: new Date().toISOString(),
     };
     updateData({ ...data, records: [...data.records, newRecord] });
@@ -614,6 +672,7 @@ export default function Otetsudai() {
                 const hasRecords = dayRecords.length > 0;
                 const isToday = dateStr === todayStr;
                 const dow = (startDow + day - 1) % 7;
+                const firstStamp = hasRecords ? dayRecords[0].stamp : null;
 
                 return (
                   <button
@@ -636,7 +695,10 @@ export default function Otetsudai() {
                     >
                       {day}
                     </span>
-                    {hasRecords && <span className="text-2xl leading-none">💮</span>}
+                    {firstStamp && <span className="text-2xl leading-none">{firstStamp}</span>}
+                    {dayRecords.length > 1 && (
+                      <span className="text-xs text-gray-400">+{dayRecords.length - 1}</span>
+                    )}
                   </button>
                 );
               })}
