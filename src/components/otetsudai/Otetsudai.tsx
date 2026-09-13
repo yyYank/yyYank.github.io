@@ -617,23 +617,6 @@ export default function Otetsudai() {
               {selectedPerson.goal != null ? 'もくひょうをへんこう' : 'もくひょうをきめる'}
             </button>
 
-            <button
-              onClick={() => {
-                let msg = `${selectedPerson.name}は おてつだいを ${currentPersonRecordCount}かい しました！`;
-                if (selectedPerson.goal != null) {
-                  if (goalAchieved) {
-                    msg += ` 🎉 もくひょう ${selectedPerson.goal}かい たっせい！`;
-                  } else {
-                    msg += ` もくひょうまで あと ${selectedPerson.goal - currentPersonRecordCount}かい！`;
-                  }
-                }
-                const url = `https://social-plugins.line.me/lineit/share?text=${encodeURIComponent(msg)}`;
-                window.open(url, '_blank', 'noopener');
-              }}
-              className="mt-2 w-full bg-[#06C755] hover:bg-[#05b34c] text-white rounded-xl px-4 py-3 text-base font-bold transition-colors flex items-center justify-center gap-2"
-            >
-              <span>LINE で シェア</span>
-            </button>
           </div>
 
           <div className="bg-dark-800 border border-dark-600 rounded-2xl overflow-hidden">
@@ -740,6 +723,27 @@ export default function Otetsudai() {
           onAdd={handleAddPerson}
           onClose={() => setShowAddPerson(false)}
         />
+      )}
+
+      {selectedPerson && (
+        <div className="mt-6 text-center">
+          <button
+            onClick={() => {
+              let msg = `${selectedPerson.name}は おてつだいを ${currentPersonRecordCount}かい しました！`;
+              if (selectedPerson.goal != null) {
+                if (goalAchieved) {
+                  msg += ` 🎉 もくひょう ${selectedPerson.goal}かい たっせい！`;
+                } else {
+                  msg += ` もくひょうまで あと ${selectedPerson.goal - currentPersonRecordCount}かい！`;
+                }
+              }
+              window.open(`line://msg/text/${encodeURIComponent(msg)}`, '_self');
+            }}
+            className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-[#06C755] transition-colors"
+          >
+            LINE で シェア
+          </button>
+        </div>
       )}
 
       {showGoalModal && selectedPerson && (
