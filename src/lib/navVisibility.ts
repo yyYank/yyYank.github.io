@@ -17,6 +17,7 @@ export const NAV_PAGES: NavPage[] = [
   { href: '/transient/', label: 'Transient', icon: '🗒️' },
   { href: '/defrag/', label: 'Defrag', icon: '🧩' },
   { href: '/diary/', label: 'Diary', icon: '📔' },
+  { href: '/otetsudai/', label: 'おてつだい', icon: '⭐' },
 ];
 
 export function loadHiddenNav(storage: Storage): string[] {
