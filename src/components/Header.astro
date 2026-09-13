@@ -9,7 +9,7 @@ const navItems = [
 const pathname = Astro.url.pathname;
 const isKotlinRev = pathname.startsWith('/kotlin-rev/');
 const isMemo = pathname.startsWith('/docs/');
-const brandLabel = isKotlinRev ? '逆引きKotlin' : isMemo ? 'yank MEMO' : 'yy_yank';
+const brandLabel = isKotlinRev ? '逆引きKotlin' : isMemo ? 'yank MEMO' : 'yankなページ';
 ---
 
 <header class="bg-dark-800/80 backdrop-blur-md border-b border-dark-600 sticky top-0 z-50">
