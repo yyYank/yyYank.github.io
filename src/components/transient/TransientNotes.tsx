@@ -38,6 +38,39 @@ const TEMPLATE_STORAGE_KEY = 'transient-note-templates';
 const NOTE_STORAGE_KEY = 'transient-notes';
 const TOMORROW_TODO_STORAGE_KEY = 'transient-tomorrow-todos';
 const CYCLE_SEED_KEY = 'transient-cycle-templates-seeded';
+const SECTION_COLLAPSE_KEY = 'transient-section-collapse';
+
+type SectionId = 'today' | 'tomorrow' | 'regenerate' | 'triage' | 'templates';
+
+interface SectionCollapseState {
+  date: string;
+  sections: Record<SectionId, boolean>;
+}
+
+const ALL_SECTIONS_OPEN: Record<SectionId, boolean> = {
+  today: true,
+  tomorrow: true,
+  regenerate: true,
+  triage: true,
+  templates: false,
+};
+
+function loadSectionCollapse(): Record<SectionId, boolean> {
+  try {
+    const raw = localStorage.getItem(SECTION_COLLAPSE_KEY);
+    if (!raw) return { ...ALL_SECTIONS_OPEN };
+    const parsed: SectionCollapseState = JSON.parse(raw);
+    if (parsed.date !== getTodayKey()) return { ...ALL_SECTIONS_OPEN };
+    return { ...ALL_SECTIONS_OPEN, ...parsed.sections };
+  } catch {
+    return { ...ALL_SECTIONS_OPEN };
+  }
+}
+
+function saveSectionCollapse(sections: Record<SectionId, boolean>): void {
+  const payload: SectionCollapseState = { date: getTodayKey(), sections };
+  localStorage.setItem(SECTION_COLLAPSE_KEY, JSON.stringify(payload));
+}
 
 const DEFAULT_TEMPLATES: Template[] = [
   {
@@ -171,7 +204,7 @@ export default function TransientNotes() {
   const [editingTemplateId, setEditingTemplateId] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const [todayKey, setTodayKey] = useState('');
-  const [templatesOpen, setTemplatesOpen] = useState(false);
+  const [sectionOpen, setSectionOpen] = useState<Record<SectionId, boolean>>({ ...ALL_SECTIONS_OPEN });
   const [isHydrated, setIsHydrated] = useState(false);
   const [showDoneSummary, setShowDoneSummary] = useState(false);
   const [tomorrowTodos, setTomorrowTodos] = useState<PersistentTodo[]>([]);
@@ -197,6 +230,7 @@ export default function TransientNotes() {
     setDeletedTemplateIds(storedDeletedTemplateIds);
     setTomorrowTodos(storedTomorrowTodos);
     setSelectedTemplateId(storedTemplates[0]?.id ?? '');
+    setSectionOpen(loadSectionCollapse());
     setTodayKey(loadedNotes.date);
     setIsHydrated(true);
   }, []);
@@ -253,6 +287,8 @@ export default function TransientNotes() {
       if (currentDay !== todayKey) {
         setTodayKey(currentDay);
         setDeletedTemplateIds([]);
+        setSectionOpen({ ...ALL_SECTIONS_OPEN });
+        saveSectionCollapse({ ...ALL_SECTIONS_OPEN });
         // 週次・月次は周期内ならチェック状態を保持したまま日次のみ再生成される
         setNotes((currentNotes) => synchronizeNotesWithTemplates(currentNotes, templates, []));
       }
@@ -303,6 +339,14 @@ export default function TransientNotes() {
     [completedGroups]
   );
 
+  const toggleSection = (id: SectionId) => {
+    setSectionOpen((current) => {
+      const next = { ...current, [id]: !current[id] };
+      saveSectionCollapse(next);
+      return next;
+    });
+  };
+
   const resetTemplateForm = () => {
     setEditingTemplateId(null);
     setTemplateName('');
@@ -347,7 +391,11 @@ export default function TransientNotes() {
   };
 
   const handleEditTemplate = (template: Template) => {
-    setTemplatesOpen(true);
+    setSectionOpen((current) => {
+      const next = { ...current, templates: true };
+      saveSectionCollapse(next);
+      return next;
+    });
     setSelectedTemplateId(template.id);
     setEditingTemplateId(template.id);
     setTemplateName(template.name);
@@ -458,10 +506,12 @@ export default function TransientNotes() {
       >
         <motion.div layout className="rounded-3xl border border-dark-600 bg-dark-800/70 p-6">
           <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
-            <div>
-              <p className="text-xs uppercase tracking-[0.28em] text-emerald-300/70">Today</p>
+            <button onClick={() => toggleSection('today')} type="button" className="text-left">
+              <p className="text-xs uppercase tracking-[0.28em] text-emerald-300/70">
+                {sectionOpen.today ? '▼' : '▶'} Today
+              </p>
               <p className="mt-2 text-sm text-gray-400">{noteCountLabel}</p>
-            </div>
+            </button>
             <button
               onClick={handleCopyToday}
               disabled={notes.length === 0}
@@ -472,7 +522,7 @@ export default function TransientNotes() {
             </button>
           </div>
 
-          <AnimatePresence mode="wait">
+          {sectionOpen.today && (<AnimatePresence mode="wait">
             {notes.length === 0 ? (
               <motion.div
                 key="notes-empty"
@@ -617,145 +667,158 @@ export default function TransientNotes() {
                 </AnimatePresence>
               </motion.div>
             )}
-          </AnimatePresence>
+          </AnimatePresence>)}
 
           <motion.div layout className="mt-6 rounded-2xl border border-dark-600 bg-dark-900/50 p-5">
             <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
-              <div>
+              <button onClick={() => toggleSection('tomorrow')} type="button" className="text-left">
                 <h3 className="text-xs font-semibold uppercase tracking-[0.28em] text-sky-300/70">
-                  Next / 明日用TODO
+                  {sectionOpen.tomorrow ? '▼' : '▶'} Next / 明日用TODO
                 </h3>
                 <p className="mt-2 text-sm text-gray-400">
                   日付が変わっても残る、持ち越し用のメモです。
                 </p>
-              </div>
+              </button>
               <p className="text-xs uppercase tracking-[0.2em] text-gray-500">
                 {tomorrowTodos.length} persistent
               </p>
             </div>
 
-            <div className="flex flex-wrap items-end gap-3">
-              <label className="grid min-w-[220px] flex-1 gap-2 text-sm text-gray-300">
-                <span>追加するTODO</span>
-                <input
-                  type="text"
-                  value={tomorrowTodoDraft}
-                  onChange={(event) => setTomorrowTodoDraft(event.target.value)}
-                  onKeyDown={(event) => {
-                    if (event.key === 'Enter') {
-                      event.preventDefault();
-                      handleAddTomorrowTodo();
-                    }
-                  }}
-                  placeholder="明日へ残しておきたいこと"
-                  className="rounded-xl border border-dark-500 bg-dark-800 px-4 py-3 text-white outline-none transition-colors focus:border-sky-400/50"
-                />
-              </label>
-              <button
-                onClick={handleAddTomorrowTodo}
-                type="button"
-                className="rounded-full bg-sky-400/15 px-4 py-2 text-sm font-medium text-sky-200 transition-colors hover:bg-sky-400/25"
-              >
-                追加
-              </button>
-            </div>
+            {sectionOpen.tomorrow && (
+              <>
+                <div className="flex flex-wrap items-end gap-3">
+                  <label className="grid min-w-[220px] flex-1 gap-2 text-sm text-gray-300">
+                    <span>追加するTODO</span>
+                    <input
+                      type="text"
+                      value={tomorrowTodoDraft}
+                      onChange={(event) => setTomorrowTodoDraft(event.target.value)}
+                      onKeyDown={(event) => {
+                        if (event.key === 'Enter') {
+                          event.preventDefault();
+                          handleAddTomorrowTodo();
+                        }
+                      }}
+                      placeholder="明日へ残しておきたいこと"
+                      className="rounded-xl border border-dark-500 bg-dark-800 px-4 py-3 text-white outline-none transition-colors focus:border-sky-400/50"
+                    />
+                  </label>
+                  <button
+                    onClick={handleAddTomorrowTodo}
+                    type="button"
+                    className="rounded-full bg-sky-400/15 px-4 py-2 text-sm font-medium text-sky-200 transition-colors hover:bg-sky-400/25"
+                  >
+                    追加
+                  </button>
+                </div>
 
-            <AnimatePresence mode="wait" initial={false}>
-              {tomorrowTodos.length === 0 ? (
-                <motion.div
-                  key="tomorrow-empty"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={fadeTransition}
-                  className="mt-4 rounded-2xl border border-dashed border-dark-500 bg-dark-900/30 px-6 py-10 text-center"
-                >
-                  <p className="text-lg font-medium text-white">明日へ残すTODOはありません</p>
-                  <p className="mt-2 text-sm leading-6 text-gray-400">
-                    持ち越したいことだけをここに置いておけます。
-                  </p>
-                </motion.div>
-              ) : (
-                <motion.ul
-                  key="tomorrow-list"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={fadeTransition}
-                  className="mt-4 space-y-3"
-                >
-                  <AnimatePresence initial={false}>
-                    {tomorrowTodos.map((todo) => (
-                      <motion.li
-                        key={todo.id}
-                        layout
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={fadeTransition}
-                        className="flex items-center justify-between gap-3 rounded-xl border border-dark-700 bg-dark-800/70 px-4 py-3"
-                      >
-                        <label className="flex min-w-0 flex-1 cursor-pointer items-center gap-3">
-                          <input
-                            type="checkbox"
-                            checked={todo.checked}
-                            onChange={() => handleToggleTomorrowTodo(todo.id)}
-                            className="h-4 w-4 accent-sky-400"
-                          />
-                          <span
-                            className={`truncate text-sm ${
-                              todo.checked ? 'text-gray-500 line-through' : 'text-gray-200'
-                            }`}
+                <AnimatePresence mode="wait" initial={false}>
+                  {tomorrowTodos.length === 0 ? (
+                    <motion.div
+                      key="tomorrow-empty"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={fadeTransition}
+                      className="mt-4 rounded-2xl border border-dashed border-dark-500 bg-dark-900/30 px-6 py-10 text-center"
+                    >
+                      <p className="text-lg font-medium text-white">明日へ残すTODOはありません</p>
+                      <p className="mt-2 text-sm leading-6 text-gray-400">
+                        持ち越したいことだけをここに置いておけます。
+                      </p>
+                    </motion.div>
+                  ) : (
+                    <motion.ul
+                      key="tomorrow-list"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={fadeTransition}
+                      className="mt-4 space-y-3"
+                    >
+                      <AnimatePresence initial={false}>
+                        {tomorrowTodos.map((todo) => (
+                          <motion.li
+                            key={todo.id}
+                            layout
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={fadeTransition}
+                            className="flex items-center justify-between gap-3 rounded-xl border border-dark-700 bg-dark-800/70 px-4 py-3"
                           >
-                            {todo.text}
-                          </span>
-                        </label>
-                        <button
-                          onClick={() => handleDeleteTomorrowTodo(todo.id)}
-                          type="button"
-                          className="rounded-full border border-red-500/25 bg-red-500/10 px-3 py-1 text-xs text-red-200 transition-colors hover:bg-red-500/20"
-                        >
-                          削除
-                        </button>
-                      </motion.li>
-                    ))}
-                  </AnimatePresence>
-                </motion.ul>
-              )}
-            </AnimatePresence>
+                            <label className="flex min-w-0 flex-1 cursor-pointer items-center gap-3">
+                              <input
+                                type="checkbox"
+                                checked={todo.checked}
+                                onChange={() => handleToggleTomorrowTodo(todo.id)}
+                                className="h-4 w-4 accent-sky-400"
+                              />
+                              <span
+                                className={`truncate text-sm ${
+                                  todo.checked ? 'text-gray-500 line-through' : 'text-gray-200'
+                                }`}
+                              >
+                                {todo.text}
+                              </span>
+                            </label>
+                            <button
+                              onClick={() => handleDeleteTomorrowTodo(todo.id)}
+                              type="button"
+                              className="rounded-full border border-red-500/25 bg-red-500/10 px-3 py-1 text-xs text-red-200 transition-colors hover:bg-red-500/20"
+                            >
+                              削除
+                            </button>
+                          </motion.li>
+                        ))}
+                      </AnimatePresence>
+                    </motion.ul>
+                  )}
+                </AnimatePresence>
+              </>
+            )}
           </motion.div>
 
           <motion.div layout className="mt-6 rounded-2xl border border-dark-600 bg-dark-900/50 p-5">
-            <div className="flex flex-wrap items-end gap-3">
-              <label className="grid flex-1 gap-2 text-sm text-gray-300 min-w-[220px]">
-                <span>再生成するテンプレート</span>
-                <select
-                  value={selectedTemplateId}
-                  onChange={(event) => setSelectedTemplateId(event.target.value)}
-                  className="rounded-xl border border-dark-500 bg-dark-800 px-4 py-3 text-white outline-none transition-colors focus:border-emerald-400/50"
-                >
-                  {templates.map((template) => (
-                    <option key={template.id} value={template.id}>
-                      {template.name}
-                    </option>
-                  ))}
-                </select>
-              </label>
-              <button
-                onClick={handleCreateNote}
-                disabled={!activeTemplate}
-                type="button"
-                className="rounded-full bg-emerald-400/15 px-4 py-2 text-sm font-medium text-emerald-200 transition-colors hover:bg-emerald-400/25 disabled:cursor-not-allowed disabled:opacity-40"
-              >
-                再生成
-              </button>
-            </div>
+            <button onClick={() => toggleSection('regenerate')} type="button" className="mb-3 text-left">
+              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-emerald-300/70">
+                {sectionOpen.regenerate ? '▼' : '▶'} 再生成するテンプレート
+              </p>
+            </button>
+            {sectionOpen.regenerate && (
+              <>
+                <div className="flex flex-wrap items-end gap-3">
+                  <label className="grid flex-1 gap-2 text-sm text-gray-300 min-w-[220px]">
+                    <span>テンプレートを選択</span>
+                    <select
+                      value={selectedTemplateId}
+                      onChange={(event) => setSelectedTemplateId(event.target.value)}
+                      className="rounded-xl border border-dark-500 bg-dark-800 px-4 py-3 text-white outline-none transition-colors focus:border-emerald-400/50"
+                    >
+                      {templates.map((template) => (
+                        <option key={template.id} value={template.id}>
+                          {template.name}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  <button
+                    onClick={handleCreateNote}
+                    disabled={!activeTemplate}
+                    type="button"
+                    className="rounded-full bg-emerald-400/15 px-4 py-2 text-sm font-medium text-emerald-200 transition-colors hover:bg-emerald-400/25 disabled:cursor-not-allowed disabled:opacity-40"
+                  >
+                    再生成
+                  </button>
+                </div>
 
-            {activeTemplate && (
-              <div className="mt-4 rounded-2xl border border-emerald-400/15 bg-emerald-400/5 p-4">
-                <p className="text-sm font-medium text-white">{activeTemplate.name}</p>
-                <p className="mt-1 text-sm text-gray-400">{activeTemplate.summary}</p>
-              </div>
+                {activeTemplate && (
+                  <div className="mt-4 rounded-2xl border border-emerald-400/15 bg-emerald-400/5 p-4">
+                    <p className="text-sm font-medium text-white">{activeTemplate.name}</p>
+                    <p className="mt-1 text-sm text-gray-400">{activeTemplate.summary}</p>
+                  </div>
+                )}
+              </>
             )}
           </motion.div>
 
@@ -766,14 +829,14 @@ export default function TransientNotes() {
             transition={{ duration: 0.85, delay: 0.18, ease: [0.22, 1, 0.36, 1] }}
             className="mt-6 rounded-3xl border border-dark-600 bg-dark-800/60 p-6"
           >
-            <div className="mb-5">
+            <button onClick={() => toggleSection('triage')} type="button" className="mb-5 text-left">
               <h3 className="text-xs font-semibold uppercase tracking-[0.28em] text-amber-300/70">
-                Triage / 未完了TODO一覧
+                {sectionOpen.triage ? '▼' : '▶'} Triage / 未完了TODO一覧
               </h3>
               <p className="mt-2 text-sm text-gray-400">やり忘れをルーティンごとにまとめて確認できます。</p>
-            </div>
+            </button>
 
-            <AnimatePresence mode="wait">
+            {sectionOpen.triage && (<AnimatePresence mode="wait">
               {incompleteGroups.length === 0 ? (
                 <motion.div
                   key="triage-empty"
@@ -835,7 +898,7 @@ export default function TransientNotes() {
                   </AnimatePresence>
                 </motion.div>
               )}
-            </AnimatePresence>
+            </AnimatePresence>)}
           </motion.div>
         </motion.div>
 
@@ -850,15 +913,19 @@ export default function TransientNotes() {
           </div>
           <div className="flex flex-wrap gap-2">
             <button
-              onClick={() => setTemplatesOpen((current) => !current)}
+              onClick={() => toggleSection('templates')}
               type="button"
               className="rounded-full border border-dark-500 px-4 py-2 text-sm text-gray-300 transition-colors hover:border-cyan-400/40 hover:text-white"
             >
-              {templatesOpen ? '閉じる' : '開く'}
+              {sectionOpen.templates ? '閉じる' : '開く'}
             </button>
             <button
               onClick={() => {
-                setTemplatesOpen(true);
+                setSectionOpen((current) => {
+                  const next = { ...current, templates: true };
+                  saveSectionCollapse(next);
+                  return next;
+                });
                 resetTemplateForm();
               }}
               type="button"
@@ -870,7 +937,7 @@ export default function TransientNotes() {
         </div>
 
         <AnimatePresence mode="wait" initial={false}>
-          {templatesOpen ? (
+          {sectionOpen.templates ? (
             <motion.div
               key="templates-open"
               initial={{ opacity: 0 }}
