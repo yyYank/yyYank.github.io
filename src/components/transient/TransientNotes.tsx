@@ -493,17 +493,17 @@ export default function TransientNotes() {
         transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
         className="space-y-6"
       >
-        <motion.div layout className="rounded-3xl border border-emerald-400/20 bg-dark-800/80 p-6 shadow-lg shadow-emerald-950/10">
+        <motion.div layout className="rounded-panel border border-accent/20 bg-surface p-6 shadow-lg shadow-accent/5">
           <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
             <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-emerald-300">Today</p>
-              <p className="mt-1 text-xs text-gray-500">{noteCountLabel}</p>
+              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-accent">Today</p>
+              <p className="mt-1 text-xs text-muted">{noteCountLabel}</p>
             </div>
             <button
               onClick={handleCopyToday}
               disabled={notes.length === 0}
               type="button"
-              className="rounded-full border border-dark-500 px-4 py-2 text-sm text-gray-300 transition-colors hover:border-emerald-400/30 hover:text-white disabled:cursor-not-allowed disabled:opacity-40"
+              className="rounded-full border border-border px-4 py-2 text-sm text-text transition-colors hover:border-accent/30 hover:text-text disabled:cursor-not-allowed disabled:opacity-40"
             >
               {copied ? 'コピー済み' : '当日内容をコピー'}
             </button>
@@ -517,9 +517,9 @@ export default function TransientNotes() {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={fadeTransition}
-                className="rounded-2xl border border-dashed border-dark-500 bg-dark-900/30 px-6 py-12 text-center"
+                className="rounded-ui border border-dashed border-border bg-bg/30 px-6 py-12 text-center"
               >
-                <p className="text-sm text-gray-400">当日ノートなし</p>
+                <p className="text-sm text-muted">当日ノートなし</p>
               </motion.div>
             ) : (
               <motion.div
@@ -540,16 +540,16 @@ export default function TransientNotes() {
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
                       transition={fadeTransition}
-                      className="rounded-2xl border border-dark-600 bg-dark-900/45 p-5"
+                      className="rounded-ui border border-border bg-surface p-5"
                     >
-                  <div className="sticky top-[65px] z-10 -mx-5 -mt-5 mb-4 flex flex-wrap items-start justify-between gap-3 overflow-hidden border-b border-dark-700 bg-dark-900/72 px-5 py-4 backdrop-blur-xl">
-                    <div className="pointer-events-none absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-dark-900 via-dark-900/85 to-transparent blur-xl opacity-95" />
-                    <div className="pointer-events-none absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-dark-900 via-dark-900/85 to-transparent blur-xl opacity-95" />
-                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/4 via-transparent to-transparent opacity-70" />
+                  <div className="sticky top-[65px] z-10 -mx-5 -mt-5 mb-4 flex flex-wrap items-start justify-between gap-3 overflow-hidden border-b border-border bg-bg/90 px-5 py-4 backdrop-blur-xl">
+                    <div className="pointer-events-none absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-bg via-bg/85 to-transparent blur-xl opacity-95" />
+                    <div className="pointer-events-none absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-bg via-bg/85 to-transparent blur-xl opacity-95" />
+                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-surface/4 via-transparent to-transparent opacity-70" />
                     <button onClick={() => toggleNoteCollapse(note.id)} type="button" className="relative z-10 text-left">
                       <div className="flex flex-wrap items-center gap-2">
-                        <span className="text-xs text-gray-500">{noteCollapsed[note.id] ? '▶' : '▼'}</span>
-                        <p className="text-lg font-semibold text-white">{note.title}</p>
+                        <span className="text-xs text-muted">{noteCollapsed[note.id] ? '▶' : '▼'}</span>
+                        <p className="text-lg font-semibold text-text">{note.title}</p>
                         {templateCycleById.get(note.templateId) === 'weekly' && (
                           <CycleBadge cycle="weekly" remaining={weeklyRoutine.remaining} />
                         )}
@@ -557,14 +557,14 @@ export default function TransientNotes() {
                           <CycleBadge cycle="monthly" remaining={monthlyRoutine.remaining} />
                         )}
                       </div>
-                      <p className="mt-1 text-xs uppercase tracking-[0.2em] text-gray-500">
+                      <p className="mt-1 text-xs uppercase tracking-[0.2em] text-muted">
                         created {formatDateTime(note.createdAt)}
                       </p>
                     </button>
                     <button
                       onClick={() => handleDeleteNote(note.id)}
                       type="button"
-                      className="relative z-10 rounded-full border border-red-500/25 bg-dark-900/45 px-3 py-1 text-xs text-red-300 transition-colors hover:bg-red-500/10"
+                      className="relative z-10 rounded-full border border-red-500/25 bg-surface px-3 py-1 text-xs text-red-300 transition-colors hover:bg-red-500/10"
                     >
                       破棄
                     </button>
@@ -575,23 +575,23 @@ export default function TransientNotes() {
                       <ul className="mt-4 space-y-3">
                         {note.items.map((item) => (
                           <li key={item.id}>
-                            <div className="flex items-center gap-3 rounded-xl border border-dark-700 bg-dark-800/70 px-4 py-3 transition-colors hover:border-emerald-400/20">
+                            <div className="flex items-center gap-3 rounded-ui border border-border bg-surface-2 px-4 py-3 transition-colors hover:border-accent/20">
                               <label className="flex min-w-0 flex-1 cursor-pointer items-center gap-3">
                                 <input
                                   type="checkbox"
                                   checked={item.checked}
                                   onChange={() => handleToggleItem(note.id, item.id)}
-                                  className="h-4 w-4 accent-emerald-400"
+                                  className="h-4 w-4 accent-accent"
                                 />
                                 <span
                                   className={`text-sm ${
-                                    item.checked ? 'text-gray-500 line-through' : 'text-gray-200'
+                                    item.checked ? 'text-muted line-through' : 'text-text'
                                   }`}
                                 >
                                   {item.text}
                                 </span>
                                 {item.source === 'extra' && (
-                                  <span className="rounded-full border border-emerald-400/20 bg-emerald-400/10 px-2 py-0.5 text-[10px] uppercase tracking-[0.16em] text-emerald-200/80">
+                                  <span className="rounded-full border border-accent/20 bg-accent-soft px-2 py-0.5 text-[10px] uppercase tracking-[0.16em] text-accent/80">
                                     today only
                                   </span>
                                 )}
@@ -609,7 +609,7 @@ export default function TransientNotes() {
                       </ul>
 
                       <div className="mt-4 flex flex-wrap items-end gap-3">
-                        <label className="grid min-w-[220px] flex-1 gap-2 text-sm text-gray-300">
+                        <label className="grid min-w-[220px] flex-1 gap-2 text-sm text-text">
                           <span>今日だけ追加するTODO</span>
                           <input
                             type="text"
@@ -627,26 +627,26 @@ export default function TransientNotes() {
                               }
                             }}
                             placeholder="今日だけ必要なことを追加"
-                            className="rounded-xl border border-dark-500 bg-dark-800 px-4 py-3 text-white outline-none transition-colors focus:border-emerald-400/50"
+                            className="rounded-ui border border-border bg-surface-2 px-4 py-3 text-text outline-none transition-colors focus:border-accent/50"
                           />
                         </label>
                         <button
                           onClick={() => handleAddNoteItem(note.id)}
                           type="button"
-                          className="rounded-full bg-emerald-400/15 px-4 py-2 text-sm font-medium text-emerald-200 transition-colors hover:bg-emerald-400/25"
+                          className="rounded-full bg-accent/15 px-4 py-2 text-sm font-medium text-accent transition-colors hover:bg-accent/25"
                         >
                           追加
                         </button>
                       </div>
 
-                      <label className="mt-4 grid gap-2 text-sm text-gray-300">
+                      <label className="mt-4 grid gap-2 text-sm text-text">
                         <span>一時メモ</span>
                         <textarea
                           value={note.memo}
                           onChange={(event) => handleChangeMemo(note.id, event.target.value)}
                           rows={4}
                           placeholder="当日だけ残せばいい補助メモ"
-                          className="rounded-xl border border-dark-500 bg-dark-800 px-4 py-3 text-white outline-none transition-colors focus:border-emerald-400/50"
+                          className="rounded-ui border border-border bg-surface-2 px-4 py-3 text-text outline-none transition-colors focus:border-accent/50"
                         />
                       </label>
                     </>
@@ -658,12 +658,12 @@ export default function TransientNotes() {
             )}
           </AnimatePresence>
 
-          <motion.div layout className="mt-6 rounded-2xl border border-dark-600 bg-dark-900/50 p-5">
+          <motion.div layout className="mt-6 rounded-ui border border-border bg-surface p-5">
             <button onClick={() => setNextOpen((c) => !c)} type="button" className="flex w-full items-center justify-between gap-3">
-              <h3 className="text-xs font-semibold uppercase tracking-[0.28em] text-sky-300/70">
-                <span className="text-gray-500">{nextOpen ? '▼' : '▶'}</span> Next / 明日用TODO
+              <h3 className="text-xs font-semibold uppercase tracking-[0.28em] text-accent/70">
+                <span className="text-muted">{nextOpen ? '▼' : '▶'}</span> Next / 明日用TODO
               </h3>
-              <p className="text-xs uppercase tracking-[0.2em] text-gray-500">
+              <p className="text-xs uppercase tracking-[0.2em] text-muted">
                 {tomorrowTodos.length} persistent
               </p>
             </button>
@@ -671,7 +671,7 @@ export default function TransientNotes() {
             {nextOpen && (
               <>
                 <div className="mt-4 flex flex-wrap items-end gap-3">
-                  <label className="grid min-w-[220px] flex-1 gap-2 text-sm text-gray-300">
+                  <label className="grid min-w-[220px] flex-1 gap-2 text-sm text-text">
                     <span>追加するTODO</span>
                     <input
                       type="text"
@@ -684,39 +684,39 @@ export default function TransientNotes() {
                         }
                       }}
                       placeholder="明日へ残しておきたいこと"
-                      className="rounded-xl border border-dark-500 bg-dark-800 px-4 py-3 text-white outline-none transition-colors focus:border-sky-400/50"
+                      className="rounded-ui border border-border bg-surface-2 px-4 py-3 text-text outline-none transition-colors focus:border-accent/50"
                     />
                   </label>
                   <button
                     onClick={handleAddTomorrowTodo}
                     type="button"
-                    className="rounded-full bg-sky-400/15 px-4 py-2 text-sm font-medium text-sky-200 transition-colors hover:bg-sky-400/25"
+                    className="rounded-full bg-accent/15 px-4 py-2 text-sm font-medium text-accent transition-colors hover:bg-accent/25"
                   >
                     追加
                   </button>
                 </div>
 
                 {tomorrowTodos.length === 0 ? (
-                  <div className="mt-4 rounded-2xl border border-dashed border-dark-500 bg-dark-900/30 px-6 py-6 text-center">
-                    <p className="text-sm text-gray-400">持ち越しTODOなし</p>
+                  <div className="mt-4 rounded-ui border border-dashed border-border bg-bg/30 px-6 py-6 text-center">
+                    <p className="text-sm text-muted">持ち越しTODOなし</p>
                   </div>
                 ) : (
                   <ul className="mt-4 space-y-3">
                     {tomorrowTodos.map((todo) => (
                       <li
                         key={todo.id}
-                        className="flex items-center justify-between gap-3 rounded-xl border border-dark-700 bg-dark-800/70 px-4 py-3"
+                        className="flex items-center justify-between gap-3 rounded-ui border border-border bg-surface-2 px-4 py-3"
                       >
                         <label className="flex min-w-0 flex-1 cursor-pointer items-center gap-3">
                           <input
                             type="checkbox"
                             checked={todo.checked}
                             onChange={() => handleToggleTomorrowTodo(todo.id)}
-                            className="h-4 w-4 accent-sky-400"
+                            className="h-4 w-4 accent-accent"
                           />
                           <span
                             className={`truncate text-sm ${
-                              todo.checked ? 'text-gray-500 line-through' : 'text-gray-200'
+                              todo.checked ? 'text-muted line-through' : 'text-text'
                             }`}
                           >
                             {todo.text}
@@ -737,14 +737,14 @@ export default function TransientNotes() {
             )}
           </motion.div>
 
-          <motion.div layout className="mt-6 rounded-2xl border border-dark-600 bg-dark-900/50 p-5">
+          <motion.div layout className="mt-6 rounded-ui border border-border bg-surface p-5">
             <div className="flex flex-wrap items-end gap-3">
-              <label className="grid flex-1 gap-2 text-sm text-gray-300 min-w-[220px]">
+              <label className="grid flex-1 gap-2 text-sm text-text min-w-[220px]">
                 <span>再生成するテンプレート</span>
                 <select
                   value={selectedTemplateId}
                   onChange={(event) => setSelectedTemplateId(event.target.value)}
-                  className="rounded-xl border border-dark-500 bg-dark-800 px-4 py-3 text-white outline-none transition-colors focus:border-emerald-400/50"
+                  className="rounded-ui border border-border bg-surface-2 px-4 py-3 text-text outline-none transition-colors focus:border-accent/50"
                 >
                   {templates.map((template) => (
                     <option key={template.id} value={template.id}>
@@ -757,42 +757,42 @@ export default function TransientNotes() {
                 onClick={handleCreateNote}
                 disabled={!activeTemplate}
                 type="button"
-                className="rounded-full bg-emerald-400/15 px-4 py-2 text-sm font-medium text-emerald-200 transition-colors hover:bg-emerald-400/25 disabled:cursor-not-allowed disabled:opacity-40"
+                className="rounded-full bg-accent/15 px-4 py-2 text-sm font-medium text-accent transition-colors hover:bg-accent/25 disabled:cursor-not-allowed disabled:opacity-40"
               >
                 再生成
               </button>
             </div>
 
             {activeTemplate && (
-              <div className="mt-4 rounded-2xl border border-emerald-400/15 bg-emerald-400/5 p-4">
-                <p className="text-sm font-medium text-white">{activeTemplate.name}</p>
-                <p className="mt-1 text-sm text-gray-400">{activeTemplate.summary}</p>
+              <div className="mt-4 rounded-ui border border-accent/15 bg-accent-soft/50 p-4">
+                <p className="text-sm font-medium text-text">{activeTemplate.name}</p>
+                <p className="mt-1 text-sm text-muted">{activeTemplate.summary}</p>
               </div>
             )}
           </motion.div>
 
-          <div className="mt-6 rounded-2xl border border-dark-600 bg-dark-800/60 p-5">
+          <div className="mt-6 rounded-ui border border-border bg-surface-2 p-5">
             <button onClick={() => setTriageOpen((c) => !c)} type="button" className="flex w-full items-center justify-between gap-3">
-              <h3 className="text-xs font-semibold uppercase tracking-[0.28em] text-amber-300/70">
-                <span className="text-gray-500">{triageOpen ? '▼' : '▶'}</span> Triage / 未完了
+              <h3 className="text-xs font-semibold uppercase tracking-[0.28em] text-muted">
+                <span className="text-muted">{triageOpen ? '▼' : '▶'}</span> Triage / 未完了
               </h3>
-              <p className="text-xs uppercase tracking-[0.2em] text-gray-500">
+              <p className="text-xs uppercase tracking-[0.2em] text-muted">
                 {incompleteGroups.reduce((sum, g) => sum + g.items.length, 0)} incomplete
               </p>
             </button>
 
             {triageOpen && (
               incompleteGroups.length === 0 ? (
-                <div className="mt-4 rounded-2xl border border-dashed border-dark-500 bg-dark-900/30 px-6 py-6 text-center">
-                  <p className="text-sm text-gray-400">未完了なし</p>
+                <div className="mt-4 rounded-ui border border-dashed border-border bg-bg/30 px-6 py-6 text-center">
+                  <p className="text-sm text-muted">未完了なし</p>
                 </div>
               ) : (
                 <div className="mt-4 space-y-4">
                   {incompleteGroups.map((group) => (
-                    <div key={group.noteId} className="rounded-2xl border border-dark-600 bg-dark-900/45 p-5">
+                    <div key={group.noteId} className="rounded-ui border border-border bg-surface p-5">
                       <div className="mb-4 flex items-center justify-between gap-3">
-                        <p className="text-sm font-semibold text-white">{group.title}</p>
-                        <p className="text-xs uppercase tracking-[0.2em] text-gray-500">
+                        <p className="text-sm font-semibold text-text">{group.title}</p>
+                        <p className="text-xs uppercase tracking-[0.2em] text-muted">
                           {group.items.length} incomplete
                         </p>
                       </div>
@@ -800,13 +800,13 @@ export default function TransientNotes() {
                         {group.items.map((item) => (
                           <li
                             key={item.id}
-                            className="flex items-center justify-between gap-3 rounded-xl border border-dark-700 bg-dark-800/70 px-4 py-3"
+                            className="flex items-center justify-between gap-3 rounded-ui border border-border bg-surface-2 px-4 py-3"
                           >
-                            <span className="text-sm text-gray-200">{item.text}</span>
+                            <span className="text-sm text-text">{item.text}</span>
                             <button
                               onClick={() => handleDeleteNoteItem(group.noteId, item.id)}
                               type="button"
-                              className="rounded-full border border-amber-500/25 bg-amber-500/10 px-3 py-1 text-xs text-amber-200 transition-colors hover:bg-amber-500/20"
+                              className="rounded-full border border-border bg-surface-2 px-3 py-1 text-xs text-muted transition-colors hover:bg-surface-2"
                             >
                               削除
                             </button>
@@ -823,17 +823,17 @@ export default function TransientNotes() {
 
       </motion.section>
 
-      <motion.div layout className="rounded-2xl border border-dark-600 bg-dark-900/50 p-5">
+      <motion.div layout className="rounded-ui border border-border bg-surface p-5">
         <div className="mb-4 flex flex-wrap items-end justify-between gap-4">
           <div>
-            <p className="text-xs uppercase tracking-[0.28em] text-cyan-300/70">Templates</p>
-            <p className="mt-1 text-xs text-gray-500">{templateCountLabel}</p>
+            <p className="text-xs uppercase tracking-[0.28em] text-accent/70">Templates</p>
+            <p className="mt-1 text-xs text-muted">{templateCountLabel}</p>
           </div>
           <div className="flex flex-wrap gap-2">
             <button
               onClick={() => setTemplatesOpen((current) => !current)}
               type="button"
-              className="rounded-full border border-dark-500 px-4 py-2 text-sm text-gray-300 transition-colors hover:border-cyan-400/40 hover:text-white"
+              className="rounded-full border border-border px-4 py-2 text-sm text-text transition-colors hover:border-accent/40 hover:text-text"
             >
               {templatesOpen ? '閉じる' : '開く'}
             </button>
@@ -843,7 +843,7 @@ export default function TransientNotes() {
                 resetTemplateForm();
               }}
               type="button"
-              className="rounded-full border border-dark-500 px-4 py-2 text-sm text-gray-300 transition-colors hover:border-cyan-400/40 hover:text-white"
+              className="rounded-full border border-border px-4 py-2 text-sm text-text transition-colors hover:border-accent/40 hover:text-text"
             >
               新規作成
             </button>
@@ -869,10 +869,10 @@ export default function TransientNotes() {
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
                       transition={fadeTransition}
-                      className={`rounded-2xl border p-4 transition-colors ${
+                      className={`rounded-ui border p-4 transition-colors ${
                         selectedTemplateId === template.id
-                          ? 'border-cyan-400/50 bg-cyan-400/10'
-                          : 'border-dark-600 bg-dark-900/40'
+                          ? 'border-accent/50 bg-accent-soft'
+                          : 'border-border bg-surface'
                       }`}
                     >
                       <div className="flex flex-wrap items-start justify-between gap-3">
@@ -882,13 +882,13 @@ export default function TransientNotes() {
                             type="button"
                             className="text-left"
                           >
-                            <p className="text-lg font-semibold text-white">
+                            <p className="text-lg font-semibold text-text">
                               {template.name}
-                              <span className="ml-2 align-middle rounded-full border border-dark-500 px-2 py-0.5 text-xs text-gray-400">
+                              <span className="ml-2 align-middle rounded-full border border-border px-2 py-0.5 text-xs text-muted">
                                 {CYCLE_LABELS[template.cycle ?? 'daily']}
                               </span>
                             </p>
-                            <p className="mt-1 text-sm text-gray-400">{template.summary}</p>
+                            <p className="mt-1 text-sm text-muted">{template.summary}</p>
                           </button>
                         </div>
                         <div className="flex gap-2">
@@ -897,7 +897,7 @@ export default function TransientNotes() {
                             disabled={template.order === 1}
                             type="button"
                             aria-label="上に移動"
-                            className="flex h-8 w-8 items-center justify-center rounded-full border border-dark-500 text-gray-300 transition-colors hover:border-cyan-400/40 hover:text-white disabled:cursor-not-allowed disabled:opacity-35"
+                            className="flex h-8 w-8 items-center justify-center rounded-full border border-border text-text transition-colors hover:border-accent/40 hover:text-text disabled:cursor-not-allowed disabled:opacity-35"
                           >
                             <svg
                               aria-hidden="true"
@@ -917,7 +917,7 @@ export default function TransientNotes() {
                             disabled={template.order === templates.length}
                             type="button"
                             aria-label="下に移動"
-                            className="flex h-8 w-8 items-center justify-center rounded-full border border-dark-500 text-gray-300 transition-colors hover:border-cyan-400/40 hover:text-white disabled:cursor-not-allowed disabled:opacity-35"
+                            className="flex h-8 w-8 items-center justify-center rounded-full border border-border text-text transition-colors hover:border-accent/40 hover:text-text disabled:cursor-not-allowed disabled:opacity-35"
                           >
                             <svg
                               aria-hidden="true"
@@ -935,7 +935,7 @@ export default function TransientNotes() {
                           <button
                             onClick={() => handleEditTemplate(template)}
                             type="button"
-                            className="rounded-full border border-dark-500 px-3 py-1 text-xs text-gray-300 transition-colors hover:border-cyan-400/40 hover:text-white"
+                            className="rounded-full border border-border px-3 py-1 text-xs text-text transition-colors hover:border-accent/40 hover:text-text"
                           >
                             編集
                           </button>
@@ -950,8 +950,8 @@ export default function TransientNotes() {
                       </div>
                       <ul className="mt-4 space-y-2">
                         {template.items.map((item) => (
-                          <li key={item} className="flex items-center gap-3 text-sm text-gray-300">
-                            <span className="h-2 w-2 rounded-full bg-cyan-300/70" />
+                          <li key={item} className="flex items-center gap-3 text-sm text-text">
+                            <span className="h-2 w-2 rounded-full bg-accent/70" />
                             {item}
                           </li>
                         ))}
@@ -961,12 +961,12 @@ export default function TransientNotes() {
                 </AnimatePresence>
               </div>
 
-              <motion.div layout className="rounded-2xl border border-dark-600 bg-dark-900/50 p-5">
-                <h4 className="text-lg font-semibold text-white">
+              <motion.div layout className="rounded-ui border border-border bg-surface p-5">
+                <h4 className="text-lg font-semibold text-text">
                   {editingTemplateId ? 'テンプレートを編集' : 'テンプレートを追加'}
                 </h4>
                 <div className="mt-4 grid gap-4">
-                  <label className="grid gap-2 text-sm text-gray-300">
+                  <label className="grid gap-2 text-sm text-text">
                     <span>テンプレート名</span>
                     <input
                       ref={templateNameInputRef}
@@ -974,25 +974,25 @@ export default function TransientNotes() {
                       value={templateName}
                       onChange={(event) => setTemplateName(event.target.value)}
                       placeholder="例: 外出前チェック"
-                      className="rounded-xl border border-dark-500 bg-dark-800 px-4 py-3 text-white outline-none transition-colors focus:border-cyan-400/50"
+                      className="rounded-ui border border-border bg-surface-2 px-4 py-3 text-text outline-none transition-colors focus:border-accent/50"
                     />
                   </label>
-                  <label className="grid gap-2 text-sm text-gray-300">
+                  <label className="grid gap-2 text-sm text-text">
                     <span>概要</span>
                     <input
                       type="text"
                       value={templateSummary}
                       onChange={(event) => setTemplateSummary(event.target.value)}
                       placeholder="例: その瞬間だけ確認したい内容"
-                      className="rounded-xl border border-dark-500 bg-dark-800 px-4 py-3 text-white outline-none transition-colors focus:border-cyan-400/50"
+                      className="rounded-ui border border-border bg-surface-2 px-4 py-3 text-text outline-none transition-colors focus:border-accent/50"
                     />
                   </label>
-                  <label className="grid gap-2 text-sm text-gray-300">
+                  <label className="grid gap-2 text-sm text-text">
                     <span>周期</span>
                     <select
                       value={templateCycle}
                       onChange={(event) => setTemplateCycle(event.target.value as Cycle)}
-                      className="rounded-xl border border-dark-500 bg-dark-800 px-4 py-3 text-white outline-none transition-colors focus:border-cyan-400/50"
+                      className="rounded-ui border border-border bg-surface-2 px-4 py-3 text-text outline-none transition-colors focus:border-accent/50"
                     >
                       {(['daily', 'weekly', 'monthly'] as Cycle[]).map((cycle) => (
                         <option key={cycle} value={cycle}>
@@ -1001,21 +1001,21 @@ export default function TransientNotes() {
                       ))}
                     </select>
                   </label>
-                  <label className="grid gap-2 text-sm text-gray-300">
+                  <label className="grid gap-2 text-sm text-text">
                     <span>チェック項目</span>
                     <textarea
                       value={templateItemsText}
                       onChange={(event) => setTemplateItemsText(event.target.value)}
                       rows={6}
                       placeholder={'1行に1項目\n鍵を持った\n財布を持った\nスマホを持った'}
-                      className="rounded-xl border border-dark-500 bg-dark-800 px-4 py-3 text-white outline-none transition-colors focus:border-cyan-400/50"
+                      className="rounded-ui border border-border bg-surface-2 px-4 py-3 text-text outline-none transition-colors focus:border-accent/50"
                     />
                   </label>
                   <div className="flex flex-wrap gap-3">
                     <button
                       onClick={handleSaveTemplate}
                       type="button"
-                      className="rounded-full bg-cyan-400/15 px-5 py-2.5 text-sm font-medium text-cyan-200 transition-colors hover:bg-cyan-400/25"
+                      className="rounded-full bg-accent/15 px-5 py-2.5 text-sm font-medium text-accent transition-colors hover:bg-accent/25"
                     >
                       {editingTemplateId ? '更新する' : '追加する'}
                     </button>
@@ -1023,7 +1023,7 @@ export default function TransientNotes() {
                       <button
                         onClick={resetTemplateForm}
                         type="button"
-                        className="rounded-full border border-dark-500 px-5 py-2.5 text-sm text-gray-300 transition-colors hover:border-dark-400 hover:text-white"
+                        className="rounded-full border border-border px-5 py-2.5 text-sm text-text transition-colors hover:border-border hover:text-text"
                       >
                         キャンセル
                       </button>
@@ -1039,7 +1039,7 @@ export default function TransientNotes() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={fadeTransition}
-              className="text-sm text-gray-500"
+              className="text-sm text-muted"
             >
               テンプレートは閉じています。
             </motion.p>
@@ -1056,7 +1056,7 @@ export default function TransientNotes() {
         <button
           onClick={() => setShowDoneSummary(true)}
           type="button"
-          className="rounded-full border border-emerald-400/25 bg-emerald-400/10 px-6 py-3 text-sm font-medium text-emerald-100 transition-colors hover:bg-emerald-400/18"
+          className="rounded-full border border-accent/25 bg-accent-soft px-6 py-3 text-sm font-medium text-accent transition-colors hover:bg-accent/20"
         >
           今日やったこと
         </button>
@@ -1085,7 +1085,7 @@ export default function TransientNotes() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={fadeTransition}
-            className="fixed inset-0 z-[60] flex items-center justify-center bg-dark-900/70 px-4 backdrop-blur-sm"
+            className="fixed inset-0 z-[60] flex items-center justify-center bg-bg/70 px-4 backdrop-blur-sm"
             onClick={() => setShowDoneSummary(false)}
           >
             <motion.div
@@ -1093,36 +1093,36 @@ export default function TransientNotes() {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.98 }}
               transition={fadeTransition}
-              className="relative w-full max-w-lg overflow-hidden rounded-3xl border border-emerald-400/20 bg-dark-800/95 p-5 shadow-2xl shadow-emerald-950/20"
+              className="relative w-full max-w-lg overflow-hidden rounded-panel border border-accent/20 bg-surface p-5 shadow-2xl shadow-accent/10"
               onClick={(event) => event.stopPropagation()}
             >
               <CelebrationConfetti />
 
               <div className="mb-5 flex items-start justify-between gap-4">
                 <div className="min-w-0">
-                  <p className="text-xs uppercase tracking-[0.28em] text-emerald-300/70">Today</p>
-                  <h3 className="mt-2 text-lg font-semibold leading-snug text-white">
+                  <p className="text-xs uppercase tracking-[0.28em] text-accent/70">Today</p>
+                  <h3 className="mt-2 text-lg font-semibold leading-snug text-text">
                     今日達成したTODOは… {completedCount}件でした！おつかれさまでした 🎉
                   </h3>
                 </div>
                 <button
                   onClick={() => setShowDoneSummary(false)}
                   type="button"
-                  className="shrink-0 whitespace-nowrap rounded-full border border-dark-500 px-3 py-1 text-sm text-gray-300 transition-colors hover:border-dark-400 hover:text-white"
+                  className="shrink-0 whitespace-nowrap rounded-full border border-border px-3 py-1 text-sm text-text transition-colors hover:border-border hover:text-text"
                 >
                   閉じる
                 </button>
               </div>
 
               {completedGroups.length === 0 ? (
-                <div className="rounded-2xl border border-dashed border-dark-500 bg-dark-900/35 px-5 py-8 text-center">
-                  <p className="text-sm text-gray-400">完了したTODOはまだありません</p>
+                <div className="rounded-ui border border-dashed border-border bg-bg/35 px-5 py-8 text-center">
+                  <p className="text-sm text-muted">完了したTODOはまだありません</p>
                 </div>
               ) : (
-                <div className="space-y-4 text-sm text-gray-200">
+                <div className="space-y-4 text-sm text-text">
                   {completedGroups.map((group) => (
                     <div key={group.noteId}>
-                      <p className="font-medium text-white">{group.title}</p>
+                      <p className="font-medium text-text">{group.title}</p>
                       <ul className="mt-2 list-disc space-y-1 pl-5">
                         {group.items.map((item) => (
                           <li key={item.id}>{item.text}</li>

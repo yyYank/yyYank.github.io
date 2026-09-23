@@ -2,43 +2,35 @@ import typography from '@tailwindcss/typography';
 
 /** @type {import('tailwindcss').Config} */
 export default {
+  darkMode: 'class',
   content: ['./src/**/*.{astro,html,js,jsx,md,mdx,ts,tsx}'],
   theme: {
     extend: {
       colors: {
-        dark: {
-          900: '#0a0a0f',
-          800: '#12121a',
-          700: '#1a1a24',
-          600: '#24242f',
-          500: '#2e2e3a',
-        },
-        accent: {
-          cyan: '#00d4ff',
-          purple: '#a855f7',
-          green: '#10b981',
-          pink: '#f472b6',
-        },
-        primary: {
-          50: '#f0fdfa',
-          100: '#ccfbf1',
-          400: '#2dd4bf',
-          500: '#14b8a6',
-          600: '#0d9488',
-          700: '#0f766e',
-        }
+        bg: 'rgb(var(--bg) / <alpha-value>)',
+        surface: 'rgb(var(--surface) / <alpha-value>)',
+        'surface-2': 'rgb(var(--surface-2) / <alpha-value>)',
+        text: 'rgb(var(--text) / <alpha-value>)',
+        muted: 'rgb(var(--muted) / <alpha-value>)',
+        faint: 'rgb(var(--faint) / <alpha-value>)',
+        border: 'rgb(var(--border) / <alpha-value>)',
+        'border-strong': 'rgb(var(--border-strong) / <alpha-value>)',
+        accent: 'rgb(var(--accent) / <alpha-value>)',
+        'accent-strong': 'rgb(var(--accent-strong) / <alpha-value>)',
+        'accent-soft': 'rgb(var(--accent-soft) / <alpha-value>)',
+        'accent-foreground': 'rgb(var(--accent-foreground) / <alpha-value>)',
       },
       fontFamily: {
         sans: ['Inter', 'Noto Sans JP', 'system-ui', 'sans-serif'],
         mono: ['JetBrains Mono', 'Fira Code', 'monospace']
       },
-      typography: (theme) => ({
+      typography: () => ({
         DEFAULT: {
           css: {
             maxWidth: 'none',
             code: {
-              backgroundColor: theme('colors.dark.600'),
-              color: theme('colors.accent.cyan'),
+              backgroundColor: 'rgb(var(--surface-2))',
+              color: 'rgb(var(--accent))',
               padding: '0.2em 0.4em',
               borderRadius: '0.25rem',
               fontWeight: '400'
@@ -49,31 +41,37 @@ export default {
         },
         invert: {
           css: {
-            '--tw-prose-body': theme('colors.gray.300'),
-            '--tw-prose-headings': theme('colors.white'),
-            '--tw-prose-links': theme('colors.accent.cyan'),
-            '--tw-prose-bold': theme('colors.white'),
-            '--tw-prose-counters': theme('colors.gray.400'),
-            '--tw-prose-bullets': theme('colors.gray.400'),
-            '--tw-prose-hr': theme('colors.dark.500'),
-            '--tw-prose-quotes': theme('colors.gray.300'),
-            '--tw-prose-quote-borders': theme('colors.accent.purple'),
-            '--tw-prose-captions': theme('colors.gray.400'),
-            '--tw-prose-code': theme('colors.accent.cyan'),
-            '--tw-prose-pre-code': theme('colors.gray.200'),
-            '--tw-prose-pre-bg': theme('colors.dark.700'),
-            '--tw-prose-th-borders': theme('colors.dark.500'),
-            '--tw-prose-td-borders': theme('colors.dark.600'),
+            '--tw-prose-body': 'rgb(var(--muted))',
+            '--tw-prose-headings': 'rgb(var(--text))',
+            '--tw-prose-links': 'rgb(var(--accent))',
+            '--tw-prose-bold': 'rgb(var(--text))',
+            '--tw-prose-counters': 'rgb(var(--muted))',
+            '--tw-prose-bullets': 'rgb(var(--muted))',
+            '--tw-prose-hr': 'rgb(var(--border))',
+            '--tw-prose-quotes': 'rgb(var(--muted))',
+            '--tw-prose-quote-borders': 'rgb(var(--accent))',
+            '--tw-prose-captions': 'rgb(var(--muted))',
+            '--tw-prose-code': 'rgb(var(--accent))',
+            '--tw-prose-pre-code': 'rgb(var(--text))',
+            '--tw-prose-pre-bg': 'rgb(var(--surface-2))',
+            '--tw-prose-th-borders': 'rgb(var(--border))',
+            '--tw-prose-td-borders': 'rgb(var(--border))',
           }
         }
       }),
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'hero-gradient': 'linear-gradient(135deg, #0a0a0f 0%, #1a1a24 50%, #12121a 100%)',
+      borderRadius: {
+        ui: '10px',
+        panel: '12px',
+      },
+      transitionDuration: {
+        fast: '120ms',
+        normal: '180ms',
+      },
+      transitionTimingFunction: {
+        ui: 'cubic-bezier(.2,.8,.2,1)',
       },
       boxShadow: {
-        'glow-cyan': '0 0 20px rgba(0, 212, 255, 0.3)',
-        'glow-purple': '0 0 20px rgba(168, 85, 247, 0.3)',
+        'glow-accent': '0 0 20px rgb(var(--accent) / 0.3)',
       }
     }
   },

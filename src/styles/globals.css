@@ -2,17 +2,51 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --bg: 246 244 238;
+  --surface: 255 254 250;
+  --surface-2: 240 238 231;
+  --text: 37 39 32;
+  --muted: 125 129 119;
+  --faint: 164 167 159;
+  --border: 227 224 214;
+  --border-strong: 184 189 175;
+  --accent: 89 107 85;
+  --accent-strong: 72 91 69;
+  --accent-soft: 230 236 226;
+  --accent-foreground: 255 255 255;
+}
+
+.dark {
+  --bg: 27 28 25;
+  --surface: 35 36 31;
+  --surface-2: 42 44 38;
+  --text: 236 236 229;
+  --muted: 154 157 146;
+  --faint: 116 119 110;
+  --border: 53 55 47;
+  --border-strong: 74 77 67;
+  --accent: 156 173 143;
+  --accent-strong: 175 192 161;
+  --accent-soft: 45 52 42;
+  --accent-foreground: 23 26 21;
+}
+
 @layer base {
   html {
     scroll-behavior: smooth;
+    background: rgb(var(--bg));
   }
 
   body {
+    background: rgb(var(--bg));
+    color: rgb(var(--text));
     @apply antialiased;
   }
 
   ::selection {
-    @apply bg-accent-cyan/30 text-white;
+    background: rgb(var(--accent) / 0.3);
+    color: rgb(var(--text));
   }
 
   ::-webkit-scrollbar {
@@ -20,28 +54,39 @@
   }
 
   ::-webkit-scrollbar-track {
-    @apply bg-dark-800;
+    background: rgb(var(--surface));
   }
 
   ::-webkit-scrollbar-thumb {
-    @apply bg-dark-500 rounded-full hover:bg-dark-600;
+    background: rgb(var(--border));
+    border-radius: 9999px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgb(var(--border-strong));
   }
 }
 
 @layer components {
   .prose pre {
-    @apply bg-dark-700 text-gray-100 rounded-lg border border-dark-500;
+    background: rgb(var(--surface-2));
+    color: rgb(var(--text));
+    @apply rounded-lg;
+    border: 1px solid rgb(var(--border));
   }
 
   .prose code {
-    @apply font-mono text-accent-cyan;
+    color: rgb(var(--accent));
+    @apply font-mono;
   }
 
   .prose a {
-    @apply text-accent-cyan hover:text-accent-purple transition-colors no-underline;
+    color: rgb(var(--accent));
+    @apply transition-colors no-underline;
   }
 
   .prose a:hover {
+    color: rgb(var(--accent-strong));
     @apply underline;
   }
 
@@ -49,42 +94,39 @@
   .prose h2,
   .prose h3,
   .prose h4 {
-    @apply text-white;
+    color: rgb(var(--text));
   }
 
   .prose p,
   .prose li {
-    @apply text-gray-300;
+    color: rgb(var(--muted));
   }
 
   .prose strong {
-    @apply text-white;
+    color: rgb(var(--text));
   }
 
   .prose blockquote {
-    @apply border-l-accent-purple text-gray-400;
+    border-left-color: rgb(var(--accent));
+    color: rgb(var(--muted));
   }
 
   .prose hr {
-    @apply border-dark-500;
+    border-color: rgb(var(--border));
   }
 
   .prose ul > li::marker {
-    @apply text-accent-cyan;
+    color: rgb(var(--accent));
   }
 
   .prose ol > li::marker {
-    @apply text-accent-cyan;
+    color: rgb(var(--accent));
   }
 }
 
 @layer utilities {
-  .text-glow-cyan {
-    text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
-  }
-
-  .text-glow-purple {
-    text-shadow: 0 0 10px rgba(168, 85, 247, 0.5);
+  .text-glow-accent {
+    text-shadow: 0 0 10px rgb(var(--accent) / 0.4);
   }
 }
 
