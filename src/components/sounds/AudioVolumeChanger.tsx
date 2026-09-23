@@ -73,15 +73,15 @@ export default function AudioVolumeChanger() {
   };
 
   return (
-    <div className="bg-dark-800 border border-dark-600 rounded-xl p-6 space-y-4">
-      <h2 className="text-xl font-bold text-white flex items-center gap-2">
+    <div className="bg-surface border border-border rounded-xl p-6 space-y-4">
+      <h2 className="text-xl font-bold text-text flex items-center gap-2">
         <span className="w-6 h-0.5 bg-accent-cyan" />
         Volume
       </h2>
-      <p className="text-gray-400 text-sm">mp3 の音量調整</p>
+      <p className="text-muted text-sm">mp3 の音量調整</p>
 
       <div>
-        <label className="block text-sm text-gray-400 mb-2">File Upload</label>
+        <label className="block text-sm text-muted mb-2">File Upload</label>
         <input
           ref={inputRef}
           type="file"
@@ -95,13 +95,13 @@ export default function AudioVolumeChanger() {
             setPlaying(false);
             if (f) await decodeFile(f);
           }}
-          className="block w-full text-sm text-gray-400 file:mr-3 file:py-1.5 file:px-4 file:rounded-lg file:border-0 file:text-sm file:bg-dark-700 file:text-gray-200 hover:file:bg-dark-600 cursor-pointer"
+          className="block w-full text-sm text-muted file:mr-3 file:py-1.5 file:px-4 file:rounded-lg file:border-0 file:text-sm file:bg-surface-2 file:text-text hover:file:bg-surface-2 cursor-pointer"
         />
-        {file && <p className="mt-1 text-xs text-gray-500">{file.name}</p>}
+        {file && <p className="mt-1 text-xs text-faint">{file.name}</p>}
       </div>
 
       <div>
-        <label className="block text-sm text-gray-400 mb-2">
+        <label className="block text-sm text-muted mb-2">
           音量: {volume.toFixed(1)}x
         </label>
         <input
@@ -113,7 +113,7 @@ export default function AudioVolumeChanger() {
           onChange={(e) => setVolume(parseFloat(e.target.value))}
           className="w-full accent-accent-purple"
         />
-        <div className="flex justify-between text-xs text-gray-500 mt-1">
+        <div className="flex justify-between text-xs text-faint mt-1">
           <span>0.1x</span>
           <span>1.0x</span>
           <span>3.0x</span>
@@ -123,7 +123,7 @@ export default function AudioVolumeChanger() {
       <button
         onClick={handlePreview}
         disabled={!file}
-        className="w-full py-2 px-4 bg-dark-700 text-gray-200 font-semibold rounded-lg hover:bg-dark-600 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+        className="w-full py-2 px-4 bg-surface-2 text-text font-semibold rounded-lg hover:bg-surface-2 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
       >
         {playing ? 'Stop Preview' : 'Preview'}
       </button>
@@ -131,13 +131,13 @@ export default function AudioVolumeChanger() {
       <button
         onClick={handleChange}
         disabled={!file || loading}
-        className="w-full py-2 px-4 bg-accent-purple text-white font-semibold rounded-lg hover:bg-accent-purple/80 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+        className="w-full py-2 px-4 bg-accent-purple text-text font-semibold rounded-lg hover:bg-accent-purple/80 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
       >
         {loading ? '処理中...' : 'Change Volume'}
       </button>
 
       {status && (
-        <p className="text-sm text-gray-400">{status}</p>
+        <p className="text-sm text-muted">{status}</p>
       )}
 
       {outputBlob && (

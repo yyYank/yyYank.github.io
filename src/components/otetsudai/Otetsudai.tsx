@@ -85,9 +85,9 @@ function StampPicker({ selected, onSelect }: StampPickerProps) {
       >
         {selected}
       </button>
-      <p className="text-gray-400 text-xs">タップして えらべるよ</p>
+      <p className="text-muted text-xs">タップして えらべるよ</p>
       {open && (
-        <div className="grid grid-cols-5 gap-2 bg-dark-700 rounded-xl p-3 border border-dark-600">
+        <div className="grid grid-cols-5 gap-2 bg-surface-2 rounded-xl p-3 border border-border">
           {STAMPS.map((s) => (
             <button
               key={s}
@@ -96,8 +96,8 @@ function StampPicker({ selected, onSelect }: StampPickerProps) {
                 onSelect(s);
                 setOpen(false);
               }}
-              className={`text-3xl p-1 rounded-lg hover:bg-dark-500 transition-colors ${
-                selected === s ? 'bg-dark-500 ring-2 ring-accent-cyan' : ''
+              className={`text-3xl p-1 rounded-lg hover:bg-surface-2 transition-colors ${
+                selected === s ? 'bg-surface-2 ring-2 ring-accent' : ''
               }`}
             >
               {s}
@@ -139,15 +139,15 @@ function Modal({ date, records, onAdd, onDelete, onClose }: ModalProps) {
     >
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
       <div
-        className="relative bg-dark-800 border border-dark-500 rounded-2xl w-full max-w-md max-h-[80vh] overflow-y-auto shadow-xl"
+        className="relative bg-surface border border-border-strong rounded-2xl w-full max-w-md max-h-[80vh] overflow-y-auto shadow-xl"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="p-6">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-bold text-white">{formatDate(date)}</h2>
+            <h2 className="text-xl font-bold text-text">{formatDate(date)}</h2>
             <button
               onClick={onClose}
-              className="text-gray-400 hover:text-white transition-colors text-2xl leading-none"
+              className="text-muted hover:text-text transition-colors text-2xl leading-none"
             >
               ✕
             </button>
@@ -159,13 +159,13 @@ function Modal({ date, records, onAdd, onDelete, onClose }: ModalProps) {
               {records.map((r) => (
                 <div
                   key={r.id}
-                  className="bg-dark-700 rounded-xl p-4 border border-dark-600 flex items-start gap-3"
+                  className="bg-surface-2 rounded-xl p-4 border border-border flex items-start gap-3"
                 >
                   <span className="text-3xl shrink-0">{r.stamp}</span>
-                  <span className="text-gray-200 text-base flex-1">{r.content}</span>
+                  <span className="text-text text-base flex-1">{r.content}</span>
                   <button
                     onClick={() => onDelete(r.id)}
-                    className="text-gray-500 hover:text-red-400 transition-colors text-sm shrink-0"
+                    className="text-faint hover:text-red-400 transition-colors text-sm shrink-0"
                     title="けす"
                   >
                     ✕
@@ -182,7 +182,7 @@ function Modal({ date, records, onAdd, onDelete, onClose }: ModalProps) {
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
                 placeholder="なにをおてつだいしたかな？"
-                className="w-full bg-dark-700 border border-dark-500 rounded-xl p-4 text-gray-100 placeholder-gray-500 text-base resize-none focus:outline-none focus:border-accent-cyan transition-colors"
+                className="w-full bg-surface-2 border border-border-strong rounded-xl p-4 text-text placeholder-faint text-base resize-none focus:outline-none focus:border-accent transition-colors"
                 rows={3}
                 autoFocus
               />
@@ -190,7 +190,7 @@ function Modal({ date, records, onAdd, onDelete, onClose }: ModalProps) {
                 <button
                   type="submit"
                   disabled={!content.trim()}
-                  className="flex-1 bg-accent-cyan/20 text-accent-cyan border border-accent-cyan/30 rounded-xl px-4 py-3 text-base font-bold hover:bg-accent-cyan/30 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                  className="flex-1 bg-accent-cyan/20 text-accent border border-accent/30 rounded-xl px-4 py-3 text-base font-bold hover:bg-accent-cyan/30 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
                 >
                   きろくする
                 </button>
@@ -198,7 +198,7 @@ function Modal({ date, records, onAdd, onDelete, onClose }: ModalProps) {
                   <button
                     type="button"
                     onClick={() => setShowForm(false)}
-                    className="px-4 py-3 text-base text-gray-400 hover:text-white transition-colors"
+                    className="px-4 py-3 text-base text-muted hover:text-text transition-colors"
                   >
                     やめる
                   </button>
@@ -208,7 +208,7 @@ function Modal({ date, records, onAdd, onDelete, onClose }: ModalProps) {
           ) : (
             <button
               onClick={() => setShowForm(true)}
-              className="w-full bg-dark-700 border border-dark-600 rounded-xl px-4 py-3 text-base text-gray-300 hover:text-accent-cyan hover:border-accent-cyan/30 transition-colors"
+              className="w-full bg-surface-2 border border-border rounded-xl px-4 py-3 text-base text-muted hover:text-accent hover:border-accent/30 transition-colors"
             >
               ＋ おてつだいをついか
             </button>
@@ -241,31 +241,31 @@ function AddPersonModal({ onAdd, onClose }: AddPersonModalProps) {
     >
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
       <div
-        className="relative bg-dark-800 border border-dark-500 rounded-2xl w-full max-w-sm shadow-xl"
+        className="relative bg-surface border border-border-strong rounded-2xl w-full max-w-sm shadow-xl"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="p-6">
-          <h2 className="text-xl font-bold text-white mb-4">なまえをとうろく</h2>
+          <h2 className="text-xl font-bold text-text mb-4">なまえをとうろく</h2>
           <form onSubmit={handleSubmit} className="space-y-3">
             <input
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="なまえ"
-              className="w-full bg-dark-700 border border-dark-500 rounded-xl p-4 text-gray-100 placeholder-gray-500 text-lg focus:outline-none focus:border-accent-cyan transition-colors"
+              className="w-full bg-surface-2 border border-border-strong rounded-xl p-4 text-text placeholder-faint text-lg focus:outline-none focus:border-accent transition-colors"
               autoFocus
             />
             <div className="flex gap-2">
               <button
                 type="submit"
                 disabled={!name.trim()}
-                className="flex-1 bg-accent-cyan/20 text-accent-cyan border border-accent-cyan/30 rounded-xl px-4 py-3 text-base font-bold hover:bg-accent-cyan/30 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                className="flex-1 bg-accent-cyan/20 text-accent border border-accent/30 rounded-xl px-4 py-3 text-base font-bold hover:bg-accent-cyan/30 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 とうろく
               </button>
               <button
                 type="button"
                 onClick={onClose}
-                className="px-4 py-3 text-base text-gray-400 hover:text-white transition-colors"
+                className="px-4 py-3 text-base text-muted hover:text-text transition-colors"
               >
                 やめる
               </button>
@@ -305,16 +305,16 @@ function GoalModal({ person, onSave, onClose }: GoalModalProps) {
     >
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
       <div
-        className="relative bg-dark-800 border border-dark-500 rounded-2xl w-full max-w-sm shadow-xl"
+        className="relative bg-surface border border-border-strong rounded-2xl w-full max-w-sm shadow-xl"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="p-6">
-          <h2 className="text-xl font-bold text-white mb-4">
+          <h2 className="text-xl font-bold text-text mb-4">
             {person.name}の もくひょう
           </h2>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-gray-400 text-sm mb-1">なんかい？</label>
+              <label className="block text-muted text-sm mb-1">なんかい？</label>
               <div className="flex items-center gap-2">
                 <input
                   type="number"
@@ -322,35 +322,35 @@ function GoalModal({ person, onSave, onClose }: GoalModalProps) {
                   value={goalStr}
                   onChange={(e) => setGoalStr(e.target.value)}
                   placeholder="10"
-                  className="w-24 bg-dark-700 border border-dark-500 rounded-xl p-4 text-gray-100 placeholder-gray-500 text-2xl text-center focus:outline-none focus:border-accent-cyan transition-colors"
+                  className="w-24 bg-surface-2 border border-border-strong rounded-xl p-4 text-text placeholder-faint text-2xl text-center focus:outline-none focus:border-accent transition-colors"
                   autoFocus
                 />
-                <span className="text-xl text-gray-300 font-bold">かい</span>
+                <span className="text-xl text-muted font-bold">かい</span>
               </div>
             </div>
             <div>
-              <label className="block text-gray-400 text-sm mb-1">
+              <label className="block text-muted text-sm mb-1">
                 もくひょうの りゆう（めも）
               </label>
               <textarea
                 value={reason}
                 onChange={(e) => setReason(e.target.value)}
                 placeholder="たとえば：10かい がんばったら おもちゃを かってもらう"
-                className="w-full bg-dark-700 border border-dark-500 rounded-xl p-4 text-gray-100 placeholder-gray-500 text-base resize-none focus:outline-none focus:border-accent-cyan transition-colors"
+                className="w-full bg-surface-2 border border-border-strong rounded-xl p-4 text-text placeholder-faint text-base resize-none focus:outline-none focus:border-accent transition-colors"
                 rows={3}
               />
             </div>
             <div className="flex gap-2">
               <button
                 type="submit"
-                className="flex-1 bg-accent-cyan/20 text-accent-cyan border border-accent-cyan/30 rounded-xl px-4 py-3 text-base font-bold hover:bg-accent-cyan/30 transition-colors"
+                className="flex-1 bg-accent-cyan/20 text-accent border border-accent/30 rounded-xl px-4 py-3 text-base font-bold hover:bg-accent-cyan/30 transition-colors"
               >
                 きめる
               </button>
               <button
                 type="button"
                 onClick={onClose}
-                className="px-4 py-3 text-base text-gray-400 hover:text-white transition-colors"
+                className="px-4 py-3 text-base text-muted hover:text-text transition-colors"
               >
                 やめる
               </button>
@@ -359,7 +359,7 @@ function GoalModal({ person, onSave, onClose }: GoalModalProps) {
               <button
                 type="button"
                 onClick={handleClear}
-                className="w-full text-sm text-gray-500 hover:text-red-400 transition-colors"
+                className="w-full text-sm text-faint hover:text-red-400 transition-colors"
               >
                 もくひょうをけす
               </button>
@@ -489,13 +489,13 @@ export default function Otetsudai() {
   if (data.people.length === 0) {
     return (
       <div className="container mx-auto px-4 py-8 max-w-2xl">
-        <h1 className="text-3xl font-bold text-white mb-6 text-center">おてつだいきろく</h1>
-        <div className="bg-dark-800 border border-dark-600 rounded-2xl p-8 text-center">
+        <h1 className="text-3xl font-bold text-text mb-6 text-center">おてつだいきろく</h1>
+        <div className="bg-surface border border-border rounded-2xl p-8 text-center">
           <p className="text-6xl mb-4">👋</p>
-          <p className="text-xl text-gray-300 mb-6">まずは なまえを とうろくしよう！</p>
+          <p className="text-xl text-muted mb-6">まずは なまえを とうろくしよう！</p>
           <button
             onClick={() => setShowAddPerson(true)}
-            className="bg-accent-cyan/20 text-accent-cyan border border-accent-cyan/30 rounded-xl px-6 py-3 text-lg font-bold hover:bg-accent-cyan/30 transition-colors"
+            className="bg-accent-cyan/20 text-accent border border-accent/30 rounded-xl px-6 py-3 text-lg font-bold hover:bg-accent-cyan/30 transition-colors"
           >
             なまえをとうろく
           </button>
@@ -519,7 +519,7 @@ export default function Otetsudai() {
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-2xl">
-      <h1 className="text-3xl font-bold text-white mb-4 text-center">おてつだいきろく</h1>
+      <h1 className="text-3xl font-bold text-text mb-4 text-center">おてつだいきろく</h1>
 
       <div className="flex items-center gap-2 mb-4 overflow-x-auto pb-1">
         {data.people.map((p) => (
@@ -528,8 +528,8 @@ export default function Otetsudai() {
             onClick={() => setSelectedPersonId(p.id)}
             className={`shrink-0 rounded-xl px-4 py-2 text-lg font-bold transition-colors border ${
               selectedPersonId === p.id
-                ? 'bg-accent-cyan/20 text-accent-cyan border-accent-cyan/30'
-                : 'bg-dark-800 text-gray-400 border-dark-600 hover:text-gray-200'
+                ? 'bg-accent-cyan/20 text-accent border-accent/30'
+                : 'bg-surface text-muted border-border hover:text-text'
             }`}
           >
             {p.name}
@@ -537,7 +537,7 @@ export default function Otetsudai() {
         ))}
         <button
           onClick={() => setShowAddPerson(true)}
-          className="shrink-0 rounded-xl px-3 py-2 text-lg text-gray-500 hover:text-accent-cyan border border-dark-600 hover:border-accent-cyan/30 transition-colors"
+          className="shrink-0 rounded-xl px-3 py-2 text-lg text-faint hover:text-accent border border-border hover:border-accent/30 transition-colors"
         >
           ＋
         </button>
@@ -548,7 +548,7 @@ export default function Otetsudai() {
                 handleDeletePerson(selectedPerson.id);
               }
             }}
-            className="shrink-0 ml-auto text-sm text-gray-600 hover:text-red-400 transition-colors"
+            className="shrink-0 ml-auto text-sm text-faint hover:text-red-400 transition-colors"
           >
             このひとをけす
           </button>
@@ -557,9 +557,9 @@ export default function Otetsudai() {
 
       {selectedPerson && (
         <>
-          <div className="bg-dark-800 border border-dark-600 rounded-2xl p-5 mb-6">
+          <div className="bg-surface border border-border rounded-2xl p-5 mb-6">
             <div className="text-center">
-              <p className="text-gray-400 text-base mb-1">
+              <p className="text-muted text-base mb-1">
                 {selectedPerson.name}の おてつだい ごうけい
               </p>
               <div className="flex items-center justify-center gap-3">
@@ -567,25 +567,25 @@ export default function Otetsudai() {
                 <span className="text-5xl font-bold text-yellow-300">
                   {currentPersonRecordCount}
                 </span>
-                <span className="text-xl text-gray-300 font-bold self-end mb-1">かい</span>
+                <span className="text-xl text-muted font-bold self-end mb-1">かい</span>
               </div>
             </div>
 
             {selectedPerson.goal != null && (
               <div className="mt-4">
                 <div className="flex items-center justify-between text-sm mb-2">
-                  <span className="text-gray-400">
+                  <span className="text-muted">
                     もくひょう {selectedPerson.goal} かい
                   </span>
-                  <span className="text-gray-400">
+                  <span className="text-muted">
                     あと{' '}
-                    <span className="text-white font-bold">
+                    <span className="text-text font-bold">
                       {Math.max(0, selectedPerson.goal - currentPersonRecordCount)}
                     </span>{' '}
                     かい
                   </span>
                 </div>
-                <div className="w-full bg-dark-600 rounded-full h-4 overflow-hidden">
+                <div className="w-full bg-surface-2 rounded-full h-4 overflow-hidden">
                   <div
                     className={`h-full rounded-full transition-all duration-500 ${
                       goalAchieved
@@ -603,7 +603,7 @@ export default function Otetsudai() {
                   </p>
                 )}
                 {selectedPerson.goalReason && (
-                  <p className="text-gray-400 text-sm mt-2 bg-dark-700 rounded-lg p-3 border border-dark-600">
+                  <p className="text-muted text-sm mt-2 bg-surface-2 rounded-lg p-3 border border-border">
                     📝 {selectedPerson.goalReason}
                   </p>
                 )}
@@ -612,35 +612,35 @@ export default function Otetsudai() {
 
             <button
               onClick={() => setShowGoalModal(true)}
-              className="mt-3 w-full text-sm text-gray-500 hover:text-accent-cyan transition-colors"
+              className="mt-3 w-full text-sm text-faint hover:text-accent transition-colors"
             >
               {selectedPerson.goal != null ? 'もくひょうをへんこう' : 'もくひょうをきめる'}
             </button>
 
           </div>
 
-          <div className="bg-dark-800 border border-dark-600 rounded-2xl overflow-hidden">
-            <div className="flex items-center justify-between px-4 py-3 border-b border-dark-600">
+          <div className="bg-surface border border-border rounded-2xl overflow-hidden">
+            <div className="flex items-center justify-between px-4 py-3 border-b border-border">
               <button
                 onClick={prevMonth}
-                className="text-gray-400 hover:text-accent-cyan transition-colors px-3 py-2 text-2xl"
+                className="text-muted hover:text-accent transition-colors px-3 py-2 text-2xl"
               >
                 ◀
               </button>
               <div className="flex items-center gap-3">
-                <span className="text-white font-bold text-xl">
+                <span className="text-text font-bold text-xl">
                   {currentMonth + 1}がつ
                 </span>
                 <button
                   onClick={goToday}
-                  className="text-sm text-gray-400 hover:text-accent-cyan border border-dark-500 hover:border-accent-cyan/30 rounded-lg px-3 py-1 transition-colors"
+                  className="text-sm text-muted hover:text-accent border border-border-strong hover:border-accent/30 rounded-lg px-3 py-1 transition-colors"
                 >
                   きょう
                 </button>
               </div>
               <button
                 onClick={nextMonth}
-                className="text-gray-400 hover:text-accent-cyan transition-colors px-3 py-2 text-2xl"
+                className="text-muted hover:text-accent transition-colors px-3 py-2 text-2xl"
               >
                 ▶
               </button>
@@ -650,8 +650,8 @@ export default function Otetsudai() {
               {WEEKDAYS.map((day, i) => (
                 <div
                   key={day}
-                  className={`text-center text-sm font-bold py-2 border-b border-dark-600 ${
-                    i === 0 ? 'text-red-400' : i === 6 ? 'text-blue-400' : 'text-gray-400'
+                  className={`text-center text-sm font-bold py-2 border-b border-border ${
+                    i === 0 ? 'text-red-400' : i === 6 ? 'text-blue-400' : 'text-muted'
                   }`}
                 >
                   {day}
@@ -663,7 +663,7 @@ export default function Otetsudai() {
                   return (
                     <div
                       key={`empty-${i}`}
-                      className="border-b border-r border-dark-700/50 min-h-[88px]"
+                      className="border-b border-r border-border/50 min-h-[88px]"
                     />
                   );
                 }
@@ -679,8 +679,8 @@ export default function Otetsudai() {
                   <button
                     key={dateStr}
                     onClick={() => setSelectedDate(dateStr)}
-                    className={`border-b border-r border-dark-700/50 min-h-[88px] p-1.5 hover:bg-dark-600/50 transition-colors flex flex-col items-center gap-1 ${
-                      hasRecords ? 'bg-dark-700/30' : ''
+                    className={`border-b border-r border-border/50 min-h-[88px] p-1.5 hover:bg-surface-2/50 transition-colors flex flex-col items-center gap-1 ${
+                      hasRecords ? 'bg-surface-2/30' : ''
                     }`}
                   >
                     <span
@@ -691,14 +691,14 @@ export default function Otetsudai() {
                             ? 'text-red-400'
                             : dow === 6
                               ? 'text-blue-400'
-                              : 'text-gray-300'
+                              : 'text-muted'
                       }`}
                     >
                       {day}
                     </span>
                     {firstStamp && <span className="text-2xl leading-none">{firstStamp}</span>}
                     {dayRecords.length > 1 && (
-                      <span className="text-xs text-gray-400">+{dayRecords.length - 1}</span>
+                      <span className="text-xs text-muted">+{dayRecords.length - 1}</span>
                     )}
                   </button>
                 );
@@ -739,7 +739,7 @@ export default function Otetsudai() {
               }
               window.open(`line://msg/text/${encodeURIComponent(msg)}`, '_self');
             }}
-            className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-[#06C755] transition-colors"
+            className="inline-flex items-center gap-1.5 text-sm text-faint hover:text-[#06C755] transition-colors"
           >
             LINE で シェア
           </button>

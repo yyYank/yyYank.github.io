@@ -564,27 +564,27 @@ function WeatherSection({ weather }: { weather: WeatherData }) {
 
   return (
     <div>
-      <h2 className="text-sm font-medium text-gray-400 mb-3">天気予報</h2>
+      <h2 className="text-sm font-medium text-muted mb-3">天気予報</h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
         {weather.map((city) => (
           <div
             key={city.city}
-            className="bg-dark-700 border border-dark-600 rounded-lg p-4"
+            className="bg-surface-2 border border-border rounded-lg p-4"
           >
-            <h3 className="text-gray-100 font-medium mb-3">{city.city}</h3>
+            <h3 className="text-text font-medium mb-3">{city.city}</h3>
             <div className="space-y-2">
               {city.dates.map((day) => (
                 <div key={day.date} className="flex items-center justify-between text-sm">
-                  <span className="text-gray-400 w-8">{formatWeatherDate(day.date)}</span>
+                  <span className="text-muted w-8">{formatWeatherDate(day.date)}</span>
                   <span className="text-lg" title={weatherCodeToText(day.weatherCode)}>
                     {weatherCodeToEmoji(day.weatherCode)}
                   </span>
-                  <span className="text-gray-300">
+                  <span className="text-muted">
                     <span className="text-red-400">{day.tempMax}°</span>
-                    <span className="text-gray-600 mx-1">/</span>
+                    <span className="text-faint mx-1">/</span>
                     <span className="text-blue-400">{day.tempMin}°</span>
                   </span>
-                  <span className="text-gray-500 text-xs">
+                  <span className="text-faint text-xs">
                     ☔ {day.precipProb}%
                   </span>
                 </div>
@@ -613,15 +613,15 @@ function ExchangeRateSection({ exchangeRates }: { exchangeRates: ExchangeRate[] 
 
   return (
     <div className="mb-8">
-      <h2 className="text-sm font-medium text-gray-400 mb-3">為替レート</h2>
+      <h2 className="text-sm font-medium text-muted mb-3">為替レート</h2>
       <div className="flex gap-3 flex-wrap">
         {exchangeRates.map((er) => (
-          <div key={er.pair} className="bg-dark-700 border border-dark-600 rounded-lg p-4">
-            <div className="text-xs text-gray-500 mb-1">{er.pair}</div>
-            <div className="text-2xl font-mono text-gray-100">
-              {er.rate.toFixed(2)}<span className="text-sm text-gray-400 ml-1">円</span>
+          <div key={er.pair} className="bg-surface-2 border border-border rounded-lg p-4">
+            <div className="text-xs text-faint mb-1">{er.pair}</div>
+            <div className="text-2xl font-mono text-text">
+              {er.rate.toFixed(2)}<span className="text-sm text-muted ml-1">円</span>
             </div>
-            <div className="text-xs text-gray-600 mt-1">{er.date} 更新</div>
+            <div className="text-xs text-faint mt-1">{er.date} 更新</div>
           </div>
         ))}
       </div>
@@ -653,7 +653,7 @@ function DateHeader({ holidays }: { holidays: Record<string, string> }) {
   const holiday = holidays[dateKey];
 
   return (
-    <div className="mb-6 font-mono text-sm text-gray-300">
+    <div className="mb-6 font-mono text-sm text-muted">
       <span>{year}/{month}/{day}（{weekday}）</span>
       {holiday && <span className="ml-2 text-red-400">{holiday}</span>}
     </div>
@@ -1155,7 +1155,7 @@ export default function FeedReader() {
       case 'hackernews':
         return { className: 'bg-accent-green/20 text-accent-green', label: 'HN' };
       case 'nikkei':
-        return { className: 'bg-accent-pink/20 text-accent-pink', label: '日経' };
+        return { className: 'bg-accent-pink/20 text-accent-strong', label: '日経' };
       case 'reuters':
         return { className: 'bg-orange-500/20 text-orange-400', label: 'Reuters' };
       case 'toyokeizai':
@@ -1163,7 +1163,7 @@ export default function FeedReader() {
       case 'reddit':
         return { className: 'bg-red-500/20 text-red-400', label: 'Reddit' };
       case 'bbc':
-        return { className: 'bg-white/20 text-white', label: 'BBC' };
+        return { className: 'bg-white/20 text-text', label: 'BBC' };
       case 'cisa':
         return { className: 'bg-sky-500/20 text-sky-300', label: 'CISA' };
       case 'darkreading':
@@ -1171,7 +1171,7 @@ export default function FeedReader() {
       case 'bleepingcomputer':
         return { className: 'bg-emerald-500/20 text-emerald-300', label: 'BleepingComputer' };
       case 'github':
-        return { className: 'bg-gray-400/20 text-gray-200', label: 'GitHub' };
+        return { className: 'bg-gray-400/20 text-text', label: 'GitHub' };
     }
   };
 
@@ -1210,8 +1210,8 @@ export default function FeedReader() {
             onClick={() => setTab(t.key)}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
               tab === t.key
-                ? 'bg-accent-cyan/20 text-accent-cyan border border-accent-cyan/40'
-                : 'bg-dark-700 text-gray-400 border border-dark-600 hover:text-gray-200 hover:border-dark-500'
+                ? 'bg-accent-cyan/20 text-accent border border-accent/40'
+                : 'bg-surface-2 text-muted border border-border hover:text-text hover:border-border-strong'
             }`}
           >
             {t.label}
@@ -1219,7 +1219,7 @@ export default function FeedReader() {
               {tab === t.key && searchQuery.trim() ? displayItems.length : t.count}
             </span>
             {tab === t.key && isTabLoading(t.key) && !isTabLoaded(t.key) && (
-              <span className="ml-2 font-mono text-accent-cyan">
+              <span className="ml-2 font-mono text-accent">
                 {SPINNER_CHARS[spinnerIdx]}
               </span>
             )}
@@ -1229,8 +1229,8 @@ export default function FeedReader() {
 
       {/* Loading */}
       {activeTabLoading && !activeTabLoaded && displayItems.length === 0 && (
-        <div className="flex items-center gap-3 text-gray-400 py-12 justify-center">
-          <span className="font-mono text-accent-cyan text-lg">
+        <div className="flex items-center gap-3 text-muted py-12 justify-center">
+          <span className="font-mono text-accent text-lg">
             {SPINNER_CHARS[spinnerIdx]}
           </span>
           <span>フィードを取得中...</span>
@@ -1255,14 +1255,14 @@ export default function FeedReader() {
 
       {/* GitHub trend condition */}
       {tab === 'github' && (
-        <p className="mb-3 text-xs text-gray-500">
+        <p className="mb-3 text-xs text-faint">
           本日の条件: 直近{getGitHubTrendCondition().days}日作成・★{getGitHubTrendCondition().minStars}超(日替わり)
         </p>
       )}
 
       {/* Feed items */}
       {!activeTabLoading && displayItems.length === 0 && (
-        <div className="text-gray-500 text-center py-12">
+        <div className="text-faint text-center py-12">
           記事が見つかりませんでした。
         </div>
       )}
@@ -1278,11 +1278,11 @@ export default function FeedReader() {
                 setTimeout(() => setCopyMsg(''), 2000);
               });
             }}
-            className="bg-dark-700 border border-dark-600 rounded px-3 py-1.5 text-xs text-gray-300 hover:text-gray-100 hover:border-dark-500 transition-colors"
+            className="bg-surface-2 border border-border rounded px-3 py-1.5 text-xs text-muted hover:text-text hover:border-border-strong transition-colors"
           >
             Markdown一括コピー
           </button>
-          {copyMsg && <span className="text-xs text-accent-cyan">{copyMsg}</span>}
+          {copyMsg && <span className="text-xs text-accent">{copyMsg}</span>}
         </div>
       )}
 
@@ -1293,14 +1293,14 @@ export default function FeedReader() {
           return (
             <div
               key={`${item.source}-${i}`}
-              className="bg-dark-700 border border-dark-600 rounded-lg p-4 hover:border-accent-cyan/40 hover:bg-dark-600 transition-all group flex items-start gap-3"
+              className="bg-surface-2 border border-border rounded-lg p-4 hover:border-accent/40 hover:bg-surface-2 transition-all group flex items-start gap-3"
             >
               <button
                 onClick={() => toggleFavorite(item)}
                 className="shrink-0 mt-0.5 text-lg leading-none transition-colors hover:scale-110"
                 title={isFav ? 'お気に入り解除' : 'お気に入りに追加'}
               >
-                {isFav ? <span className="text-yellow-400">★</span> : <span className="text-gray-600">☆</span>}
+                {isFav ? <span className="text-yellow-400">★</span> : <span className="text-faint">☆</span>}
               </button>
               <a
                 href={item.link}
@@ -1314,21 +1314,21 @@ export default function FeedReader() {
                   {badge.label}
                 </span>
                 <div className="min-w-0 flex-1">
-                  <h3 className="text-gray-100 font-medium group-hover:text-accent-cyan transition-colors leading-snug">
+                  <h3 className="text-text font-medium group-hover:text-accent transition-colors leading-snug">
                     {item.title}
                   </h3>
                   {(item.source === 'hackernews' || item.source === 'reddit' || item.source === 'bbc' || item.source === 'cisa' || item.source === 'darkreading' || item.source === 'bleepingcomputer') && translations.get(item.title) && (
-                    <p className="text-gray-400 text-sm mt-0.5">
+                    <p className="text-muted text-sm mt-0.5">
                       {translations.get(item.title)}
                     </p>
                   )}
                   {item.description && (
-                    <p className="text-gray-500 text-sm mt-1 line-clamp-2">
+                    <p className="text-faint text-sm mt-1 line-clamp-2">
                       {item.description}
                     </p>
                   )}
                   {item.date && (
-                    <time className="text-gray-600 text-xs mt-2 block">
+                    <time className="text-faint text-xs mt-2 block">
                       {formatDate(item.date)}
                     </time>
                   )}
@@ -1358,11 +1358,11 @@ function CacheReset({ onReset }: { onReset: () => void }) {
     <div className="mt-12 text-center">
       <button
         onClick={handleReset}
-        className="text-gray-700 text-xs hover:text-gray-500 transition-colors"
+        className="text-faint text-xs hover:text-faint transition-colors"
       >
         cache reset
       </button>
-      {msg && <p className="text-xs mt-1 text-gray-400">{msg}</p>}
+      {msg && <p className="text-xs mt-1 text-muted">{msg}</p>}
     </div>
   );
 }

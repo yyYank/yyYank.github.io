@@ -17,7 +17,7 @@ import PagesSection from '../components/PagesSection.tsx';
             <img
               src="https://avatars3.githubusercontent.com/u/3250718?v=3&s=460"
               alt="yy_yank icon"
-              class="relative w-32 h-32 rounded-full border-2 border-accent-cyan/50 shadow-glow-cyan"
+              class="relative w-32 h-32 rounded-full border-2 border-accent/50 shadow-glow-cyan"
             />
           </div>
         </ScaleIn>
@@ -33,8 +33,8 @@ import PagesSection from '../components/PagesSection.tsx';
           />
         </h1>
         <FadeIn delay={0.3} client:visible>
-          <p class="text-xl text-gray-400">Japanese 'Yurufuwa' Programmer</p>
-          <p class="text-gray-500 mt-2">CELLORB Inc.</p>
+          <p class="text-xl text-muted">Japanese 'Yurufuwa' Programmer</p>
+          <p class="text-faint mt-2">CELLORB Inc.</p>
         </FadeIn>
       </div>
 
@@ -53,13 +53,13 @@ import PagesSection from '../components/PagesSection.tsx';
               href="https://twitter.com/yy_yank"
               target="_blank"
               rel="noopener noreferrer"
-              class="block p-6 bg-dark-800 border border-dark-600 rounded-xl hover:border-accent-cyan/50 hover:shadow-glow-cyan transition-all"
+              class="block p-6 bg-surface border border-border rounded-xl hover:border-accent/50 hover:shadow-glow-cyan transition-all"
             >
-              <h3 class="text-lg font-semibold text-white hover:text-accent-cyan transition-colors mb-2 flex items-center gap-2">
+              <h3 class="text-lg font-semibold text-text hover:text-accent transition-colors mb-2 flex items-center gap-2">
                 <TwitterIcon />
                 Twitter
               </h3>
-              <p class="text-gray-400">@yy_yank</p>
+              <p class="text-muted">@yy_yank</p>
             </a>
           </HoverCard>
         </StaggerItem>
@@ -70,13 +70,13 @@ import PagesSection from '../components/PagesSection.tsx';
               href="https://github.com/yyYank"
               target="_blank"
               rel="noopener noreferrer"
-              class="block p-6 bg-dark-800 border border-dark-600 rounded-xl hover:border-accent-purple/50 hover:shadow-glow-purple transition-all"
+              class="block p-6 bg-surface border border-border rounded-xl hover:border-accent-purple/50 hover:shadow-glow-purple transition-all"
             >
-              <h3 class="text-lg font-semibold text-white hover:text-accent-purple transition-colors mb-2 flex items-center gap-2">
+              <h3 class="text-lg font-semibold text-text hover:text-accent-purple transition-colors mb-2 flex items-center gap-2">
                 <GitHubIcon />
                 GitHub
               </h3>
-              <p class="text-gray-400">github.com/yyYank</p>
+              <p class="text-muted">github.com/yyYank</p>
             </a>
           </HoverCard>
         </StaggerItem>
@@ -88,7 +88,7 @@ import PagesSection from '../components/PagesSection.tsx';
       <!-- Blog Section -->
       <FadeIn client:visible>
         <div class="mb-16">
-          <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+          <h2 class="text-2xl font-bold text-text mb-6 flex items-center gap-3">
             <span class="w-8 h-0.5 bg-accent-green"></span>
             Blog
           </h2>
@@ -99,10 +99,10 @@ import PagesSection from '../components/PagesSection.tsx';
                   href="https://yyyank.blogspot.jp/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="flex items-center gap-3 p-4 bg-dark-800/50 border border-dark-600 rounded-lg hover:bg-dark-700 transition-colors group"
+                  class="flex items-center gap-3 p-4 bg-surface/50 border border-border rounded-lg hover:bg-surface-2 transition-colors group"
                 >
                   <span class="text-accent-green"><BloggerIcon /></span>
-                  <span class="text-gray-300 group-hover:text-accent-green transition-colors">プログラマのはしくれダイアリー</span>
+                  <span class="text-muted group-hover:text-accent-green transition-colors">プログラマのはしくれダイアリー</span>
                 </a>
               </HoverCard>
             </StaggerItem>
@@ -112,10 +112,10 @@ import PagesSection from '../components/PagesSection.tsx';
                   href="https://yy-yank.hatenablog.com/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="flex items-center gap-3 p-4 bg-dark-800/50 border border-dark-600 rounded-lg hover:bg-dark-700 transition-colors group"
+                  class="flex items-center gap-3 p-4 bg-surface/50 border border-border rounded-lg hover:bg-surface-2 transition-colors group"
                 >
                   <span class="text-accent-green"><HatenaIcon /></span>
-                  <span class="text-gray-300 group-hover:text-accent-green transition-colors">ヤンクの毛刈り</span>
+                  <span class="text-muted group-hover:text-accent-green transition-colors">ヤンクの毛刈り</span>
                 </a>
               </HoverCard>
             </StaggerItem>
@@ -125,10 +125,10 @@ import PagesSection from '../components/PagesSection.tsx';
                   href="https://sizu.me/yy_yank"
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="flex items-center gap-3 p-4 bg-dark-800/50 border border-dark-600 rounded-lg hover:bg-dark-700 transition-colors group"
+                  class="flex items-center gap-3 p-4 bg-surface/50 border border-border rounded-lg hover:bg-surface-2 transition-colors group"
                 >
                   <span class="text-accent-green"><BlogIcon /></span>
-                  <span class="text-gray-300 group-hover:text-accent-green transition-colors">しずかなインターネット</span>
+                  <span class="text-muted group-hover:text-accent-green transition-colors">しずかなインターネット</span>
                 </a>
               </HoverCard>
             </StaggerItem>
@@ -138,10 +138,10 @@ import PagesSection from '../components/PagesSection.tsx';
                   href="https://qiita.com/yyYank"
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="flex items-center gap-3 p-4 bg-dark-800/50 border border-dark-600 rounded-lg hover:bg-dark-700 transition-colors group"
+                  class="flex items-center gap-3 p-4 bg-surface/50 border border-border rounded-lg hover:bg-surface-2 transition-colors group"
                 >
                   <span class="text-accent-green"><BlogIcon /></span>
-                  <span class="text-gray-300 group-hover:text-accent-green transition-colors">Qiita</span>
+                  <span class="text-muted group-hover:text-accent-green transition-colors">Qiita</span>
                 </a>
               </HoverCard>
             </StaggerItem>
@@ -151,10 +151,10 @@ import PagesSection from '../components/PagesSection.tsx';
                   href="https://zenn.dev/yy_yank"
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="flex items-center gap-3 p-4 bg-dark-800/50 border border-dark-600 rounded-lg hover:bg-dark-700 transition-colors group"
+                  class="flex items-center gap-3 p-4 bg-surface/50 border border-border rounded-lg hover:bg-surface-2 transition-colors group"
                 >
                   <span class="text-accent-green"><BlogIcon /></span>
-                  <span class="text-gray-300 group-hover:text-accent-green transition-colors">Zenn</span>
+                  <span class="text-muted group-hover:text-accent-green transition-colors">Zenn</span>
                 </a>
               </HoverCard>
             </StaggerItem>
@@ -165,9 +165,9 @@ import PagesSection from '../components/PagesSection.tsx';
       <!-- Podcast Section -->
       <FadeIn direction="left" client:visible>
         <div class="mb-16">
-          <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+          <h2 class="text-2xl font-bold text-text mb-6 flex items-center gap-3">
             <span class="w-8 h-0.5 bg-accent-cyan"></span>
-            <span class="text-accent-cyan"><PodcastIcon /></span>
+            <span class="text-accent"><PodcastIcon /></span>
             Podcast
           </h2>
           <StaggerContainer className="space-y-4" staggerDelay={0.08} client:visible>
@@ -177,10 +177,10 @@ import PagesSection from '../components/PagesSection.tsx';
                   href="https://open.spotify.com/show/10oTV1GgG4GRfbLcwunpJU"
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="flex items-center gap-3 p-4 bg-dark-800/50 border border-dark-600 rounded-lg hover:bg-dark-700 transition-colors group"
+                  class="flex items-center gap-3 p-4 bg-surface/50 border border-border rounded-lg hover:bg-surface-2 transition-colors group"
                 >
-                  <span class="text-accent-cyan"><BlogIcon /></span>
-                  <span class="text-gray-300 group-hover:text-accent-cyan transition-colors">わいわいyankfm</span>
+                  <span class="text-accent"><BlogIcon /></span>
+                  <span class="text-muted group-hover:text-accent transition-colors">わいわいyankfm</span>
                 </a>
               </HoverCard>
             </StaggerItem>
@@ -191,7 +191,7 @@ import PagesSection from '../components/PagesSection.tsx';
       <!-- Contributions Section -->
       <FadeIn direction="left" client:visible>
         <div class="mb-16">
-          <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+          <h2 class="text-2xl font-bold text-text mb-6 flex items-center gap-3">
             <span class="w-8 h-0.5 bg-accent-cyan"></span>
             Contributions
           </h2>
@@ -202,9 +202,9 @@ import PagesSection from '../components/PagesSection.tsx';
                   href="https://drive.google.com/file/d/0Bylpznm149-gTGRjOFRkWm9PODg/view"
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="block p-4 bg-dark-800/50 border border-dark-600 rounded-lg hover:bg-dark-700 transition-colors"
+                  class="block p-4 bg-surface/50 border border-border rounded-lg hover:bg-surface-2 transition-colors"
                 >
-                  <span class="text-gray-300 hover:text-accent-cyan transition-colors">Kotlin助走読本</span>
+                  <span class="text-muted hover:text-accent transition-colors">Kotlin助走読本</span>
                 </a>
               </HoverCard>
             </StaggerItem>
@@ -214,9 +214,9 @@ import PagesSection from '../components/PagesSection.tsx';
                   href="https://www.amazon.co.jp/dp/B076Q2L1M6/ref=cm_sw_r_tw_awdo_c_x_LMA.BbPBEM027"
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="block p-4 bg-dark-800/50 border border-dark-600 rounded-lg hover:bg-dark-700 transition-colors"
+                  class="block p-4 bg-surface/50 border border-border rounded-lg hover:bg-surface-2 transition-colors"
                 >
-                  <span class="text-gray-300 hover:text-accent-cyan transition-colors">Kotlinイン・アクション</span>
+                  <span class="text-muted hover:text-accent transition-colors">Kotlinイン・アクション</span>
                 </a>
               </HoverCard>
             </StaggerItem>
@@ -227,7 +227,7 @@ import PagesSection from '../components/PagesSection.tsx';
       <!-- Slides Section -->
       <FadeIn direction="right" client:visible>
         <div class="mb-16">
-          <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+          <h2 class="text-2xl font-bold text-text mb-6 flex items-center gap-3">
             <span class="w-8 h-0.5 bg-accent-purple"></span>
             Slides
           </h2>
@@ -254,7 +254,7 @@ import PagesSection from '../components/PagesSection.tsx';
                   href={slide.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="block p-3 text-sm bg-dark-800/50 border border-dark-600 rounded-lg text-gray-400 hover:text-accent-purple hover:bg-dark-700 transition-all truncate"
+                  class="block p-3 text-sm bg-surface/50 border border-border rounded-lg text-muted hover:text-accent-purple hover:bg-surface-2 transition-all truncate"
                 >
                   {slide.title}
                 </a>
@@ -267,7 +267,7 @@ import PagesSection from '../components/PagesSection.tsx';
       <!-- Libraries Section -->
       <FadeIn client:visible>
         <div class="mb-16">
-          <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+          <h2 class="text-2xl font-bold text-text mb-6 flex items-center gap-3">
             <span class="w-8 h-0.5 bg-accent-green"></span>
             Libraries
           </h2>
@@ -283,7 +283,7 @@ import PagesSection from '../components/PagesSection.tsx';
                     href={lib.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="block px-6 py-3 bg-dark-700 border border-dark-500 rounded-lg text-accent-green hover:bg-dark-600 transition-colors font-mono"
+                    class="block px-6 py-3 bg-surface-2 border border-border-strong rounded-lg text-accent-green hover:bg-surface-2 transition-colors font-mono"
                   >
                     {lib.name}
                   </a>
@@ -297,7 +297,7 @@ import PagesSection from '../components/PagesSection.tsx';
       <!-- Tool Section -->
       <FadeIn direction="left" client:visible>
         <div class="mb-16">
-          <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+          <h2 class="text-2xl font-bold text-text mb-6 flex items-center gap-3">
             <span class="w-8 h-0.5 bg-accent-cyan"></span>
             Tool
           </h2>
@@ -306,7 +306,7 @@ import PagesSection from '../components/PagesSection.tsx';
               href="https://github.com/yyYank/playwright-blockly"
               target="_blank"
               rel="noopener noreferrer"
-              class="inline-block px-6 py-3 bg-dark-700 border border-dark-500 rounded-lg text-accent-cyan hover:bg-dark-600 transition-colors font-mono"
+              class="inline-block px-6 py-3 bg-surface-2 border border-border-strong rounded-lg text-accent hover:bg-surface-2 transition-colors font-mono"
             >
               playwright-blockly
             </a>

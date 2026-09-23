@@ -293,15 +293,15 @@ export default function MovieTrimmer() {
   };
 
   return (
-    <div className="bg-dark-800 border border-dark-600 rounded-xl p-6 space-y-4">
-      <h2 className="text-xl font-bold text-white flex items-center gap-2">
+    <div className="bg-surface border border-border rounded-xl p-6 space-y-4">
+      <h2 className="text-xl font-bold text-text flex items-center gap-2">
         <span className="w-6 h-0.5 bg-accent-cyan" />
         Movie Trim
       </h2>
-      <p className="text-gray-400 text-sm">動画をブラウザ内でトリミングしてそのままダウンロード</p>
+      <p className="text-muted text-sm">動画をブラウザ内でトリミングしてそのままダウンロード</p>
 
       <div>
-        <label htmlFor="movie-upload" className="block text-sm text-gray-400 mb-2">
+        <label htmlFor="movie-upload" className="block text-sm text-muted mb-2">
           File Upload
         </label>
         <input
@@ -309,13 +309,13 @@ export default function MovieTrimmer() {
           type="file"
           accept="video/*"
           onChange={handleFileChange}
-          className="block w-full text-sm text-gray-400 file:mr-3 file:py-1.5 file:px-4 file:rounded-lg file:border-0 file:text-sm file:bg-dark-700 file:text-gray-200 hover:file:bg-dark-600 cursor-pointer"
+          className="block w-full text-sm text-muted file:mr-3 file:py-1.5 file:px-4 file:rounded-lg file:border-0 file:text-sm file:bg-surface-2 file:text-text hover:file:bg-surface-2 cursor-pointer"
         />
       </div>
 
       {videoUrl && (
         <>
-          <div className="rounded-xl border border-dark-600 bg-dark-900/50 p-4 space-y-4">
+          <div className="rounded-xl border border-border bg-bg/50 p-4 space-y-4">
             <div className="aspect-video overflow-hidden rounded-lg bg-black">
               <video
                 key={videoUrl}
@@ -337,7 +337,7 @@ export default function MovieTrimmer() {
               <button
                 onClick={() => void handlePreviewPlayback()}
                 disabled={!isReady}
-                className="px-4 py-2 bg-accent-cyan/20 text-accent-cyan border border-accent-cyan/40 rounded-lg text-sm font-medium hover:bg-accent-cyan/30 transition-colors"
+                className="px-4 py-2 bg-accent-cyan/20 text-accent border border-accent/40 rounded-lg text-sm font-medium hover:bg-accent-cyan/30 transition-colors"
               >
                 {isPlaying ? 'Pause Preview' : 'Play Preview'}
               </button>
@@ -345,7 +345,7 @@ export default function MovieTrimmer() {
               <button
                 onClick={() => void handlePlaySelection()}
                 disabled={!isReady}
-                className="px-4 py-2 bg-dark-700 text-gray-100 border border-dark-500 rounded-lg text-sm font-medium hover:bg-dark-600 transition-colors"
+                className="px-4 py-2 bg-surface-2 text-text border border-border-strong rounded-lg text-sm font-medium hover:bg-surface-2 transition-colors"
               >
                 選択範囲を再生
               </button>
@@ -353,12 +353,12 @@ export default function MovieTrimmer() {
               <button
                 onClick={() => syncCurrentTime(startTime)}
                 disabled={!isReady}
-                className="px-4 py-2 bg-dark-700 text-gray-100 border border-dark-500 rounded-lg text-sm font-medium hover:bg-dark-600 transition-colors"
+                className="px-4 py-2 bg-surface-2 text-text border border-border-strong rounded-lg text-sm font-medium hover:bg-surface-2 transition-colors"
               >
                 開始位置へ
               </button>
 
-              <label className="flex items-center gap-2 text-sm text-gray-300 cursor-pointer">
+              <label className="flex items-center gap-2 text-sm text-muted cursor-pointer">
                 <input
                   type="checkbox"
                   checked={loopSelection}
@@ -370,13 +370,13 @@ export default function MovieTrimmer() {
             </div>
 
             {!isReady ? (
-              <p className="text-sm text-gray-500">動画の長さを読み込み中です。読み込み完了後にスライダーを操作できます。</p>
+              <p className="text-sm text-faint">動画の長さを読み込み中です。読み込み完了後にスライダーを操作できます。</p>
             ) : (
               <div className="grid gap-3">
                 <div>
                   <div className="flex items-center justify-between gap-3 mb-1">
-                    <label className="block text-xs text-gray-400">再生位置</label>
-                    <span className="text-xs text-gray-500">{formatVideoTime(currentTime)}</span>
+                    <label className="block text-xs text-muted">再生位置</label>
+                    <span className="text-xs text-faint">{formatVideoTime(currentTime)}</span>
                   </div>
                   <input
                     type="range"
@@ -391,8 +391,8 @@ export default function MovieTrimmer() {
 
                 <div>
                   <div className="flex items-center justify-between gap-3 mb-1">
-                    <label className="block text-xs text-gray-400">開始位置</label>
-                    <span className="text-xs text-gray-500">{formatVideoTime(startTime)}</span>
+                    <label className="block text-xs text-muted">開始位置</label>
+                    <span className="text-xs text-faint">{formatVideoTime(startTime)}</span>
                   </div>
                   <input
                     type="range"
@@ -410,8 +410,8 @@ export default function MovieTrimmer() {
 
                 <div>
                   <div className="flex items-center justify-between gap-3 mb-1">
-                    <label className="block text-xs text-gray-400">終了位置</label>
-                    <span className="text-xs text-gray-500">{formatVideoTime(endTime)}</span>
+                    <label className="block text-xs text-muted">終了位置</label>
+                    <span className="text-xs text-faint">{formatVideoTime(endTime)}</span>
                   </div>
                   <input
                     type="range"
@@ -432,7 +432,7 @@ export default function MovieTrimmer() {
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label htmlFor="movie-start-seconds" className="block text-xs text-gray-400 mb-1">
+              <label htmlFor="movie-start-seconds" className="block text-xs text-muted mb-1">
                 開始 (秒)
               </label>
               <input
@@ -448,13 +448,13 @@ export default function MovieTrimmer() {
                     commitStartInput();
                   }
                 }}
-                className="w-full bg-dark-700 border border-dark-500 rounded-lg px-3 py-1.5 text-sm text-white"
+                className="w-full bg-surface-2 border border-border-strong rounded-lg px-3 py-1.5 text-sm text-text"
               />
-              <p className="text-xs text-gray-500 mt-0.5">{formatVideoTime(startTime)}</p>
+              <p className="text-xs text-faint mt-0.5">{formatVideoTime(startTime)}</p>
             </div>
 
             <div>
-              <label htmlFor="movie-end-seconds" className="block text-xs text-gray-400 mb-1">
+              <label htmlFor="movie-end-seconds" className="block text-xs text-muted mb-1">
                 終了 (秒)
               </label>
               <input
@@ -470,52 +470,52 @@ export default function MovieTrimmer() {
                     commitEndInput();
                   }
                 }}
-                className="w-full bg-dark-700 border border-dark-500 rounded-lg px-3 py-1.5 text-sm text-white"
+                className="w-full bg-surface-2 border border-border-strong rounded-lg px-3 py-1.5 text-sm text-text"
               />
-              <p className="text-xs text-gray-500 mt-0.5">{formatVideoTime(endTime)}</p>
+              <p className="text-xs text-faint mt-0.5">{formatVideoTime(endTime)}</p>
             </div>
           </div>
 
           <div>
-            <label htmlFor="movie-output-format" className="block text-xs text-gray-400 mb-1">
+            <label htmlFor="movie-output-format" className="block text-xs text-muted mb-1">
               出力形式
             </label>
             <select
               id="movie-output-format"
               value={outputFormat}
               onChange={(event) => setOutputFormat(event.target.value as 'original' | 'mp4')}
-              className="w-full bg-dark-700 border border-dark-500 rounded-lg px-3 py-1.5 text-sm text-white"
+              className="w-full bg-surface-2 border border-border-strong rounded-lg px-3 py-1.5 text-sm text-text"
             >
               <option value="original">元の形式を優先</option>
               <option value="mp4">MP4</option>
             </select>
-            <p className="text-xs text-gray-500 mt-0.5">
+            <p className="text-xs text-faint mt-0.5">
               MP4 を選ぶと、トリミング結果を常に `*.mp4` で出力します。
             </p>
           </div>
 
-          <p className="text-sm text-gray-400">
-            選択範囲: <span className="text-white font-medium">{formatVideoTime(Math.max(0, endTime - startTime))}</span>
-            <span className="text-gray-600 ml-2">/ 全体 {formatVideoTime(duration)}</span>
+          <p className="text-sm text-muted">
+            選択範囲: <span className="text-text font-medium">{formatVideoTime(Math.max(0, endTime - startTime))}</span>
+            <span className="text-faint ml-2">/ 全体 {formatVideoTime(duration)}</span>
           </p>
 
           <button
             onClick={() => void handleTrim()}
             disabled={loading || duration === 0}
-            className="w-full py-2 px-4 bg-accent-purple text-white font-semibold rounded-lg hover:bg-accent-purple/80 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+            className="w-full py-2 px-4 bg-accent-purple text-text font-semibold rounded-lg hover:bg-accent-purple/80 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
           >
             {loading ? '処理中...' : 'Trim'}
           </button>
-          <p className="text-xs text-gray-500">
+          <p className="text-xs text-faint">
             エンコードは数分〜十分程度時間がかかることがあります。
           </p>
         </>
       )}
 
       {status && (
-        <p className="text-sm text-gray-400">
+        <p className="text-sm text-muted">
           {status}
-          {loading && <span className="ml-2 text-gray-500">（経過 {elapsedSeconds}秒）</span>}
+          {loading && <span className="ml-2 text-faint">（経過 {elapsedSeconds}秒）</span>}
         </p>
       )}
       {errorMessage && <p className="text-sm text-red-400">{errorMessage}</p>}

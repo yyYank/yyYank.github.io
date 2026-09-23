@@ -39,13 +39,13 @@ const groups = [
 <BaseLayout title="Toolkit" description="映像・音声・画像・テキストの各種ツール集">
   <script is:inline src="/coi-serviceworker.js"></script>
   <div class="container mx-auto px-4 py-8 max-w-4xl">
-    <h1 class="text-3xl font-bold text-white mb-2">Toolkit</h1>
-    <p class="text-gray-400 mb-8">映像・音声・画像・テキストのツール集</p>
+    <h1 class="text-3xl font-bold text-text mb-2">Toolkit</h1>
+    <p class="text-muted mb-8">映像・音声・画像・テキストのツール集</p>
 
     <div class="flex flex-col sm:flex-row gap-4 mb-8" role="tablist" aria-label="ツール切り替え">
       {groups.map((group) => (
-        <div class="flex-1 bg-dark-800/60 border border-dark-600 rounded-lg p-3">
-          <div class="text-xs text-gray-500 mb-2">{group.label}</div>
+        <div class="flex-1 bg-surface/60 border border-border rounded-lg p-3">
+          <div class="text-xs text-faint mb-2">{group.label}</div>
           <div class="flex gap-2 flex-wrap">
             {group.tabs.map((t) => (
               <button
@@ -55,7 +55,7 @@ const groups = [
                 aria-controls={`panel-${t.id}`}
                 aria-selected="false"
                 data-toolkit-tab={t.id}
-                class="toolkit-tab px-3 py-2 rounded-lg text-sm font-medium transition-all bg-dark-700 text-gray-400 border border-dark-600 hover:text-gray-200 hover:border-dark-500"
+                class="toolkit-tab px-3 py-2 rounded-lg text-sm font-medium transition-all bg-surface-2 text-muted border border-border hover:text-text hover:border-border-strong"
               >
                 <span class="mr-1.5">{t.icon}</span>{t.label}
               </button>
@@ -66,32 +66,32 @@ const groups = [
     </div>
 
     <section id="panel-snippet" role="tabpanel" aria-labelledby="tab-snippet" data-toolkit-panel="snippet" hidden>
-      <h2 class="text-2xl font-bold text-white mb-2">Snippet</h2>
-      <p class="text-gray-400 mb-8">コードスニペットをファジー検索</p>
+      <h2 class="text-2xl font-bold text-text mb-2">Snippet</h2>
+      <p class="text-muted mb-8">コードスニペットをファジー検索</p>
       <SnippetSearch client:load snippets={allSnippets} />
     </section>
 
     <section id="panel-random-pass" role="tabpanel" aria-labelledby="tab-random-pass" data-toolkit-panel="random-pass" hidden>
-      <h2 class="text-2xl font-bold text-white mb-2">Random Pass</h2>
-      <p class="text-gray-400 mb-8">ランダムパスワード生成</p>
+      <h2 class="text-2xl font-bold text-text mb-2">Random Pass</h2>
+      <p class="text-muted mb-8">ランダムパスワード生成</p>
       <PasswordGenerator client:load />
     </section>
 
     <section id="panel-count" role="tabpanel" aria-labelledby="tab-count" data-toolkit-panel="count" hidden>
-      <h2 class="text-2xl font-bold text-white mb-2">Count</h2>
-      <p class="text-gray-400 mb-8">文字数カウント</p>
+      <h2 class="text-2xl font-bold text-text mb-2">Count</h2>
+      <p class="text-muted mb-8">文字数カウント</p>
       <CharCount client:load />
     </section>
 
     <section id="panel-img-paste" role="tabpanel" aria-labelledby="tab-img-paste" data-toolkit-panel="img-paste" hidden>
-      <h2 class="text-2xl font-bold text-white mb-2">Image Paste</h2>
-      <p class="text-gray-400 mb-8">クリップボードから画像をペーストして保存</p>
+      <h2 class="text-2xl font-bold text-text mb-2">Image Paste</h2>
+      <p class="text-muted mb-8">クリップボードから画像をペーストして保存</p>
       <ImagePaste client:load />
     </section>
 
     <section id="panel-audio" role="tabpanel" aria-labelledby="tab-audio" data-toolkit-panel="audio" hidden>
-      <h2 class="text-2xl font-bold text-white mb-2">Audio Tool</h2>
-      <p class="text-gray-400 mb-8">音声変換・連結・トリミング・音量調整ツール — ブラウザ内で処理（サーバー不要）</p>
+      <h2 class="text-2xl font-bold text-text mb-2">Audio Tool</h2>
+      <p class="text-muted mb-8">音声変換・連結・トリミング・音量調整ツール — ブラウザ内で処理（サーバー不要）</p>
       <div class="grid md:grid-cols-2 gap-6">
         <AudioConverter client:load />
         <AudioMerger client:load />
@@ -100,20 +100,20 @@ const groups = [
       <div class="mt-6">
         <AudioTrimmer client:load />
       </div>
-      <p class="mt-6 text-xs text-gray-600">
+      <p class="mt-6 text-xs text-faint">
         処理はすべてブラウザ内で行われます。ファイルはサーバーに送信されません。<br />
         初回ロード時に ffmpeg.wasm（約30MB）をダウンロードします。
       </p>
     </section>
 
     <section id="panel-movie" role="tabpanel" aria-labelledby="tab-movie" data-toolkit-panel="movie" hidden>
-      <h2 class="text-2xl font-bold text-white mb-2">Movie Tool</h2>
-      <p class="text-gray-400 mb-8">動画トリミングツール — ブラウザ内で処理（サーバー不要）</p>
+      <h2 class="text-2xl font-bold text-text mb-2">Movie Tool</h2>
+      <p class="text-muted mb-8">動画トリミングツール — ブラウザ内で処理（サーバー不要）</p>
       <MovieTrimmer client:load />
       <div class="mt-6">
         <MovToMp4Converter client:load />
       </div>
-      <p class="mt-6 text-xs text-gray-600">
+      <p class="mt-6 text-xs text-faint">
         処理はすべてブラウザ内で行われます。ファイルはサーバーに送信されません。<br />
         初回ロード時に ffmpeg.wasm（約30MB）をダウンロードします。
       </p>
@@ -125,8 +125,8 @@ const groups = [
   </section>
 
   <script>
-    const ACTIVE = ['bg-accent-cyan/20', 'text-accent-cyan', 'border-accent-cyan/40'];
-    const INACTIVE = ['bg-dark-700', 'text-gray-400', 'border-dark-600', 'hover:text-gray-200', 'hover:border-dark-500'];
+    const ACTIVE = ['bg-accent-cyan/20', 'text-accent', 'border-accent/40'];
+    const INACTIVE = ['bg-surface-2', 'text-muted', 'border-border', 'hover:text-text', 'hover:border-border-strong'];
     const tabs = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-toolkit-tab]'));
     const panels = Array.from(document.querySelectorAll<HTMLElement>('[data-toolkit-panel]'));
     const tabIds = tabs.map((t) => t.dataset.toolkitTab!);

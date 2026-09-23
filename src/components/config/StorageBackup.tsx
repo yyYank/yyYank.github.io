@@ -80,24 +80,24 @@ export default function StorageBackup() {
   return (
     <div className="space-y-6">
       {/* Export */}
-      <div className="bg-dark-700 border border-dark-600 rounded-lg p-6">
-        <h2 className="text-lg font-semibold text-white mb-2">Export</h2>
-        <p className="text-sm text-gray-400 mb-4">
+      <div className="bg-surface-2 border border-border rounded-lg p-6">
+        <h2 className="text-lg font-semibold text-text mb-2">Export</h2>
+        <p className="text-sm text-muted mb-4">
           現在のlocalStorageの内容をすべてJSONファイルとしてダウンロードします。
         </p>
         <button
           type="button"
           onClick={handleExport}
-          className="px-6 py-2 bg-accent-cyan/20 text-accent-cyan border border-accent-cyan/40 rounded-lg text-sm font-medium hover:bg-accent-cyan/30 transition-colors"
+          className="px-6 py-2 bg-accent-cyan/20 text-accent border border-accent/40 rounded-lg text-sm font-medium hover:bg-accent-cyan/30 transition-colors"
         >
           ダウンロード
         </button>
       </div>
 
       {/* Import */}
-      <div className="bg-dark-700 border border-dark-600 rounded-lg p-6">
-        <h2 className="text-lg font-semibold text-white mb-2">Import</h2>
-        <p className="text-sm text-gray-400 mb-4">
+      <div className="bg-surface-2 border border-border rounded-lg p-6">
+        <h2 className="text-lg font-semibold text-text mb-2">Import</h2>
+        <p className="text-sm text-muted mb-4">
           JSONファイルを選択してlocalStorageに反映します。既存の同名キーは上書きされ、それ以外のキーは残ります。
         </p>
 
@@ -106,7 +106,7 @@ export default function StorageBackup() {
           type="file"
           accept="application/json,.json"
           onChange={handleFileChange}
-          className="block w-full text-sm text-gray-300 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border file:border-dark-500 file:bg-dark-800 file:text-gray-200 file:text-sm file:font-medium hover:file:border-accent-cyan/50 file:cursor-pointer cursor-pointer"
+          className="block w-full text-sm text-muted file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border file:border-border-strong file:bg-surface file:text-text file:text-sm file:font-medium hover:file:border-accent/50 file:cursor-pointer cursor-pointer"
         />
 
         {importState.step === 'error' && (
@@ -116,22 +116,22 @@ export default function StorageBackup() {
         )}
 
         {importState.step === 'confirm' && (
-          <div className="mt-4 bg-dark-800 border border-dark-500 rounded-lg p-4">
-            <p className="text-sm text-gray-300 mb-4">
-              <span className="font-mono text-accent-cyan">{importState.keyCount}</span> 件のキーが見つかりました。インポートを実行しますか？
+          <div className="mt-4 bg-surface border border-border-strong rounded-lg p-4">
+            <p className="text-sm text-muted mb-4">
+              <span className="font-mono text-accent">{importState.keyCount}</span> 件のキーが見つかりました。インポートを実行しますか？
             </p>
             <div className="flex gap-3">
               <button
                 type="button"
                 onClick={handleConfirmImport}
-                className="px-6 py-2 bg-accent-cyan/20 text-accent-cyan border border-accent-cyan/40 rounded-lg text-sm font-medium hover:bg-accent-cyan/30 transition-colors"
+                className="px-6 py-2 bg-accent-cyan/20 text-accent border border-accent/40 rounded-lg text-sm font-medium hover:bg-accent-cyan/30 transition-colors"
               >
                 実行する
               </button>
               <button
                 type="button"
                 onClick={handleReset}
-                className="px-6 py-2 bg-dark-700 text-gray-400 border border-dark-600 rounded-lg text-sm font-medium hover:text-gray-200 hover:border-dark-500 transition-colors"
+                className="px-6 py-2 bg-surface-2 text-muted border border-border rounded-lg text-sm font-medium hover:text-text hover:border-border-strong transition-colors"
               >
                 キャンセル
               </button>

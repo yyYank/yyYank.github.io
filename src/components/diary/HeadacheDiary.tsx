@@ -123,7 +123,7 @@ export default function HeadacheDiary() {
         <button
           onClick={handleRecord}
           disabled={loading}
-          className="px-8 py-4 bg-red-600 hover:bg-red-500 disabled:bg-red-900 disabled:cursor-not-allowed text-white font-bold text-xl rounded-xl transition-colors shadow-lg"
+          className="px-8 py-4 bg-red-600 hover:bg-red-500 disabled:bg-red-900 disabled:cursor-not-allowed text-text font-bold text-xl rounded-xl transition-colors shadow-lg"
         >
           {loading ? '記録中...' : '頭痛い'}
         </button>
@@ -131,29 +131,29 @@ export default function HeadacheDiary() {
         <button
           onClick={handleCopy}
           disabled={entries.length === 0}
-          className="px-6 py-4 bg-dark-700 hover:bg-dark-600 disabled:opacity-40 disabled:cursor-not-allowed text-gray-200 font-medium rounded-xl transition-colors border border-dark-500"
+          className="px-6 py-4 bg-surface-2 hover:bg-surface-2 disabled:opacity-40 disabled:cursor-not-allowed text-text font-medium rounded-xl transition-colors border border-border-strong"
         >
           {copied ? 'コピーしました！' : 'マークダウンにコピー'}
         </button>
       </div>
 
       {entries.length === 0 ? (
-        <p className="text-gray-500 text-sm">記録がありません。「頭痛い」ボタンで記録できます。</p>
+        <p className="text-faint text-sm">記録がありません。「頭痛い」ボタンで記録できます。</p>
       ) : (
         <div className="space-y-2">
-          <p className="text-gray-400 text-sm">{entries.length} 件の記録</p>
+          <p className="text-muted text-sm">{entries.length} 件の記録</p>
           <ul className="space-y-2">
             {entries.map((entry) => (
               <li
                 key={entry.id}
-                className="flex items-center justify-between bg-dark-800 border border-dark-600 rounded-lg px-4 py-3 group"
+                className="flex items-center justify-between bg-surface border border-border rounded-lg px-4 py-3 group"
               >
-                <span className="text-gray-200 text-sm">
+                <span className="text-text text-sm">
                   頭痛あり {entry.datetime}、東京:{entry.tokyo} 大阪:{entry.osaka}
                 </span>
                 <button
                   onClick={() => handleDelete(entry.id)}
-                  className="text-gray-600 hover:text-red-400 transition-colors opacity-0 group-hover:opacity-100 ml-4 text-xs"
+                  className="text-faint hover:text-red-400 transition-colors opacity-0 group-hover:opacity-100 ml-4 text-xs"
                   title="削除"
                 >
                   削除

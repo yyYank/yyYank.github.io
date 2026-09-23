@@ -114,7 +114,7 @@ export default function SnippetSearch({ snippets }: SnippetSearchProps) {
         <select
           value={selectedLang}
           onChange={(e) => setSelectedLang(e.target.value)}
-          className="px-2 py-1 bg-dark-800 border border-dark-600 text-gray-400 focus:outline-none focus:border-accent-cyan"
+          className="px-2 py-1 bg-surface border border-border text-muted focus:outline-none focus:border-accent"
         >
           <option value="">lang:all</option>
           {languages.map((lang) => (
@@ -125,7 +125,7 @@ export default function SnippetSearch({ snippets }: SnippetSearchProps) {
         <select
           value={selectedTag}
           onChange={(e) => setSelectedTag(e.target.value)}
-          className="px-2 py-1 bg-dark-800 border border-dark-600 text-gray-400 focus:outline-none focus:border-accent-cyan"
+          className="px-2 py-1 bg-surface border border-border text-muted focus:outline-none focus:border-accent"
         >
           <option value="">tag:all</option>
           {tags.map((tag) => (
@@ -140,19 +140,19 @@ export default function SnippetSearch({ snippets }: SnippetSearchProps) {
               setSelectedLang('');
               setSelectedTag('');
             }}
-            className="px-2 py-1 text-gray-600 hover:text-gray-300 transition-colors"
+            className="px-2 py-1 text-faint hover:text-muted transition-colors"
           >
             [clear]
           </button>
         )}
 
-        <span className="ml-auto text-gray-700 self-center hidden sm:block">
+        <span className="ml-auto text-faint self-center hidden sm:block">
           ↑↓ navigate · / focus
         </span>
       </div>
 
       {/* Results - list style */}
-      <div className="border border-dark-600">
+      <div className="border border-border">
         {results.length > 0 ? (
           results.map((snippet, i) => (
             <SnippetCard
@@ -165,7 +165,7 @@ export default function SnippetSearch({ snippets }: SnippetSearchProps) {
             />
           ))
         ) : (
-          <div className="px-4 py-10 text-center text-gray-600">
+          <div className="px-4 py-10 text-center text-faint">
             no results for &quot;{query}&quot;
           </div>
         )}

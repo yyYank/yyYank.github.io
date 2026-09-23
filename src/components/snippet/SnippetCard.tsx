@@ -26,7 +26,7 @@ function highlightMatch(text: string, query: string) {
   const parts = text.split(regex);
   return parts.map((part, i) =>
     regex.test(part) ? (
-      <mark key={i} className="bg-accent-cyan/30 text-white px-0.5">
+      <mark key={i} className="bg-accent-cyan/30 text-text px-0.5">
         {part}
       </mark>
     ) : (
@@ -46,8 +46,8 @@ export default function SnippetCard({
 
   return (
     <div
-      className={`fzf-item border-b border-dark-700 last:border-b-0 cursor-pointer select-none transition-colors duration-100 ${
-        isSelected ? 'bg-dark-700' : 'hover:bg-dark-800'
+      className={`fzf-item border-b border-border last:border-b-0 cursor-pointer select-none transition-colors duration-100 ${
+        isSelected ? 'bg-surface-2' : 'hover:bg-surface'
       }`}
       style={{ animationDelay: `${Math.min(index * 20, 250)}ms` }}
       onClick={onClick}
@@ -55,20 +55,20 @@ export default function SnippetCard({
       {/* Title row */}
       <div className="flex items-center gap-2 px-2 py-1.5 font-mono text-sm">
         <span
-          className="w-4 shrink-0 text-accent-cyan transition-opacity duration-100"
+          className="w-4 shrink-0 text-accent transition-opacity duration-100"
           style={{ opacity: isSelected ? 1 : 0 }}
         >
           {'>'}
         </span>
         <span
           className={`flex-1 truncate transition-colors duration-100 ${
-            isSelected ? 'text-white' : 'text-gray-300'
+            isSelected ? 'text-text' : 'text-muted'
           }`}
         >
           {highlightMatch(snippet.title, query)}
         </span>
-        <span className="text-xs text-accent-cyan/50 shrink-0">{snippet.lang}</span>
-        <span className="text-xs text-gray-700 shrink-0 max-w-[8rem] truncate">
+        <span className="text-xs text-accent/50 shrink-0">{snippet.lang}</span>
+        <span className="text-xs text-faint shrink-0 max-w-[8rem] truncate">
           {snippet.source}
         </span>
       </div>
@@ -77,7 +77,7 @@ export default function SnippetCard({
       <div className="relative ml-8 mr-2 mb-2">
         <pre
           className={`text-xs font-mono overflow-hidden transition-all duration-200 ${
-            isSelected ? 'text-gray-300' : 'text-gray-600'
+            isSelected ? 'text-muted' : 'text-faint'
           }`}
           style={{
             maxHeight: isSelected ? '400px' : '3.6em',
@@ -87,7 +87,7 @@ export default function SnippetCard({
           <code>{highlightMatch(snippet.code, query)}</code>
         </pre>
         {!isSelected && codeLines.length > 3 && (
-          <span className="text-gray-700 text-xs">··· {codeLines.length} lines</span>
+          <span className="text-faint text-xs">··· {codeLines.length} lines</span>
         )}
         {isSelected && (
           <div className="absolute top-0 right-0">

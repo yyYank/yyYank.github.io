@@ -27,15 +27,15 @@ export default function PagesSection() {
         className="flex items-center gap-3 group cursor-pointer w-full text-left"
       >
         <span className="w-8 h-0.5 bg-accent-pink" />
-        <h2 className="text-2xl font-bold text-white">Pages</h2>
+        <h2 className="text-2xl font-bold text-text">Pages</h2>
         <motion.span
           animate={{ rotate: open ? 180 : 0 }}
           transition={{ duration: 0.3, ease: 'easeInOut' }}
-          className="text-accent-pink text-lg ml-1"
+          className="text-accent-strong text-lg ml-1"
         >
           ▼
         </motion.span>
-        <span className="text-xs text-gray-600 group-hover:text-gray-400 transition-colors">
+        <span className="text-xs text-faint group-hover:text-muted transition-colors">
           {open ? 'close' : 'open'}
         </span>
       </button>
@@ -65,12 +65,12 @@ export default function PagesSection() {
                     scale: 1.03,
                     borderColor: 'rgba(236, 72, 153, 0.5)',
                   }}
-                  className="block p-4 bg-dark-800/50 border border-dark-600 rounded-lg hover:bg-dark-700 transition-colors group"
+                  className="block p-4 bg-surface/50 border border-border rounded-lg hover:bg-surface-2 transition-colors group"
                 >
-                  <span className="text-gray-200 font-medium group-hover:text-accent-pink transition-colors">
+                  <span className="text-text font-medium group-hover:text-accent-strong transition-colors">
                     {page.label}
                   </span>
-                  <span className="block text-xs text-gray-500 mt-1">{page.desc}</span>
+                  <span className="block text-xs text-faint mt-1">{page.desc}</span>
                 </motion.a>
               ))}
             </div>

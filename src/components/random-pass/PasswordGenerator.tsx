@@ -43,10 +43,10 @@ export default function PasswordGenerator() {
   return (
     <div>
       {/* Settings */}
-      <div className="bg-dark-700 border border-dark-600 rounded-lg p-6 mb-6">
+      <div className="bg-surface-2 border border-border rounded-lg p-6 mb-6">
         <div className="flex flex-wrap items-center gap-6">
           {/* Length */}
-          <label className="flex items-center gap-2 text-sm text-gray-300">
+          <label className="flex items-center gap-2 text-sm text-muted">
             <span>文字数</span>
             <input
               type="number"
@@ -54,12 +54,12 @@ export default function PasswordGenerator() {
               max={128}
               value={length}
               onChange={(e) => setLength(Math.max(4, Math.min(128, Number(e.target.value) || 4)))}
-              className="w-20 bg-dark-800 border border-dark-500 rounded px-2 py-1 text-gray-100 text-center font-mono"
+              className="w-20 bg-surface border border-border-strong rounded px-2 py-1 text-text text-center font-mono"
             />
           </label>
 
           {/* Checkboxes */}
-          <label className="flex items-center gap-2 text-sm text-gray-300 cursor-pointer">
+          <label className="flex items-center gap-2 text-sm text-muted cursor-pointer">
             <input
               type="checkbox"
               checked={alpha}
@@ -69,7 +69,7 @@ export default function PasswordGenerator() {
             半角英字
           </label>
 
-          <label className="flex items-center gap-2 text-sm text-gray-300 cursor-pointer">
+          <label className="flex items-center gap-2 text-sm text-muted cursor-pointer">
             <input
               type="checkbox"
               checked={digits}
@@ -79,7 +79,7 @@ export default function PasswordGenerator() {
             数字
           </label>
 
-          <label className="flex items-center gap-2 text-sm text-gray-300 cursor-pointer">
+          <label className="flex items-center gap-2 text-sm text-muted cursor-pointer">
             <input
               type="checkbox"
               checked={symbols}
@@ -94,7 +94,7 @@ export default function PasswordGenerator() {
         <button
           onClick={handleGenerate}
           disabled={!alpha && !digits && !symbols}
-          className="mt-4 px-6 py-2 bg-accent-cyan/20 text-accent-cyan border border-accent-cyan/40 rounded-lg text-sm font-medium hover:bg-accent-cyan/30 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+          className="mt-4 px-6 py-2 bg-accent-cyan/20 text-accent border border-accent/40 rounded-lg text-sm font-medium hover:bg-accent-cyan/30 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
         >
           生成
         </button>
@@ -106,14 +106,14 @@ export default function PasswordGenerator() {
           {passwords.map((pw, i) => (
             <div
               key={i}
-              className="flex items-center gap-3 bg-dark-700 border border-dark-600 rounded-lg px-4 py-3 group hover:border-accent-cyan/40 transition-colors"
+              className="flex items-center gap-3 bg-surface-2 border border-border rounded-lg px-4 py-3 group hover:border-accent/40 transition-colors"
             >
-              <code className="flex-1 font-mono text-sm text-gray-100 break-all select-all">
+              <code className="flex-1 font-mono text-sm text-text break-all select-all">
                 {pw}
               </code>
               <button
                 onClick={() => handleCopy(pw, i)}
-                className="shrink-0 px-3 py-1 text-xs rounded border transition-colors bg-dark-600 border-dark-500 text-gray-400 hover:text-gray-100 hover:border-dark-400"
+                className="shrink-0 px-3 py-1 text-xs rounded border transition-colors bg-surface-2 border-border-strong text-muted hover:text-text hover:border-border"
               >
                 {copiedIdx === i ? 'Copied!' : 'Copy'}
               </button>

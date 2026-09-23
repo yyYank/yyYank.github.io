@@ -341,50 +341,50 @@ export default function AudioTrimmer() {
   const trimmedFilename = file ? `${file.name.replace(/\.[^.]+$/, '')}_trimmed.mp3` : 'trimmed.mp3';
 
   return (
-    <div className="bg-dark-800 border border-dark-600 rounded-xl p-6 space-y-4">
-      <h2 className="text-xl font-bold text-white flex items-center gap-2">
+    <div className="bg-surface border border-border rounded-xl p-6 space-y-4">
+      <h2 className="text-xl font-bold text-text flex items-center gap-2">
         <span className="w-6 h-0.5 bg-accent-cyan" />
         Trim
       </h2>
-      <p className="text-gray-400 text-sm">音声をプレビュー再生しながらトリム範囲を調整</p>
+      <p className="text-muted text-sm">音声をプレビュー再生しながらトリム範囲を調整</p>
 
       <div>
-        <label className="block text-sm text-gray-400 mb-2">File Upload</label>
+        <label className="block text-sm text-muted mb-2">File Upload</label>
         <input
           type="file"
           accept="audio/*"
           onChange={handleFileChange}
-          className="block w-full text-sm text-gray-400 file:mr-3 file:py-1.5 file:px-4 file:rounded-lg file:border-0 file:text-sm file:bg-dark-700 file:text-gray-200 hover:file:bg-dark-600 cursor-pointer"
+          className="block w-full text-sm text-muted file:mr-3 file:py-1.5 file:px-4 file:rounded-lg file:border-0 file:text-sm file:bg-surface-2 file:text-text hover:file:bg-surface-2 cursor-pointer"
         />
       </div>
 
       {waveData && (
         <>
           {audioUrl && (
-            <div className="rounded-xl border border-dark-600 bg-dark-900/50 p-4 space-y-4">
+            <div className="rounded-xl border border-border bg-bg/50 p-4 space-y-4">
               <div className="flex flex-wrap items-center gap-3">
                 <button
                   onClick={() => void togglePreviewPlayback()}
-                  className="px-4 py-2 bg-accent-cyan/20 text-accent-cyan border border-accent-cyan/40 rounded-lg text-sm font-medium hover:bg-accent-cyan/30 transition-colors"
+                  className="px-4 py-2 bg-accent-cyan/20 text-accent border border-accent/40 rounded-lg text-sm font-medium hover:bg-accent-cyan/30 transition-colors"
                 >
                   {isPlaying ? 'Pause Preview' : 'Play Preview'}
                 </button>
 
                 <button
                   onClick={() => void playSelection()}
-                  className="px-4 py-2 bg-dark-700 text-gray-100 border border-dark-500 rounded-lg text-sm font-medium hover:bg-dark-600 transition-colors"
+                  className="px-4 py-2 bg-surface-2 text-text border border-border-strong rounded-lg text-sm font-medium hover:bg-surface-2 transition-colors"
                 >
                   選択範囲を再生
                 </button>
 
                 <button
                   onClick={() => syncCurrentTime(startTime)}
-                  className="px-4 py-2 bg-dark-700 text-gray-100 border border-dark-500 rounded-lg text-sm font-medium hover:bg-dark-600 transition-colors"
+                  className="px-4 py-2 bg-surface-2 text-text border border-border-strong rounded-lg text-sm font-medium hover:bg-surface-2 transition-colors"
                 >
                   開始位置へ
                 </button>
 
-                <label className="flex items-center gap-2 text-sm text-gray-300 cursor-pointer">
+                <label className="flex items-center gap-2 text-sm text-muted cursor-pointer">
                   <input
                     type="checkbox"
                     checked={loopSelection}
@@ -398,10 +398,10 @@ export default function AudioTrimmer() {
               <audio ref={audioRef} src={audioUrl} preload="metadata" controls className="w-full" />
 
               <div className="flex flex-wrap items-center justify-between gap-3 text-sm">
-                <p className="text-gray-400">
-                  再生位置: <span className="text-white font-medium">{formatTime(currentTime)}</span>
+                <p className="text-muted">
+                  再生位置: <span className="text-text font-medium">{formatTime(currentTime)}</span>
                 </p>
-                <p className="text-gray-500">黄線が再生位置、白線がトリム範囲です</p>
+                <p className="text-faint">黄線が再生位置、白線がトリム範囲です</p>
               </div>
             </div>
           )}
@@ -418,14 +418,14 @@ export default function AudioTrimmer() {
               onMouseUp={handleMouseUp}
               onMouseLeave={handleMouseUp}
             />
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs text-faint mt-1">
               白線をドラッグしてトリム範囲を調整。波形をクリックするとその位置へ移動します。
             </p>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs text-gray-400 mb-1">開始 (秒)</label>
+              <label className="block text-xs text-muted mb-1">開始 (秒)</label>
               <input
                 type="number"
                 min={0}
@@ -433,13 +433,13 @@ export default function AudioTrimmer() {
                 step={0.1}
                 value={startTime.toFixed(1)}
                 onChange={(e) => setStartTime(Math.max(0, Math.min(Number(e.target.value), endTime - 0.1)))}
-                className="w-full bg-dark-700 border border-dark-500 rounded-lg px-3 py-1.5 text-sm text-white"
+                className="w-full bg-surface-2 border border-border-strong rounded-lg px-3 py-1.5 text-sm text-text"
               />
-              <p className="text-xs text-gray-500 mt-0.5">{formatTime(startTime)}</p>
+              <p className="text-xs text-faint mt-0.5">{formatTime(startTime)}</p>
             </div>
 
             <div>
-              <label className="block text-xs text-gray-400 mb-1">終了 (秒)</label>
+              <label className="block text-xs text-muted mb-1">終了 (秒)</label>
               <input
                 type="number"
                 min={startTime + 0.1}
@@ -447,28 +447,28 @@ export default function AudioTrimmer() {
                 step={0.1}
                 value={endTime.toFixed(1)}
                 onChange={(e) => setEndTime(Math.max(startTime + 0.1, Math.min(Number(e.target.value), duration)))}
-                className="w-full bg-dark-700 border border-dark-500 rounded-lg px-3 py-1.5 text-sm text-white"
+                className="w-full bg-surface-2 border border-border-strong rounded-lg px-3 py-1.5 text-sm text-text"
               />
-              <p className="text-xs text-gray-500 mt-0.5">{formatTime(endTime)}</p>
+              <p className="text-xs text-faint mt-0.5">{formatTime(endTime)}</p>
             </div>
           </div>
 
-          <p className="text-sm text-gray-400">
-            選択範囲: <span className="text-white font-medium">{(endTime - startTime).toFixed(1)}秒</span>
-            <span className="text-gray-600 ml-2">/ 全体 {duration.toFixed(1)}秒</span>
+          <p className="text-sm text-muted">
+            選択範囲: <span className="text-text font-medium">{(endTime - startTime).toFixed(1)}秒</span>
+            <span className="text-faint ml-2">/ 全体 {duration.toFixed(1)}秒</span>
           </p>
 
           <button
             onClick={handleTrim}
             disabled={loading}
-            className="w-full py-2 px-4 bg-accent-purple text-white font-semibold rounded-lg hover:bg-accent-purple/80 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+            className="w-full py-2 px-4 bg-accent-purple text-text font-semibold rounded-lg hover:bg-accent-purple/80 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
           >
             {loading ? '処理中...' : 'Trim'}
           </button>
         </>
       )}
 
-      {status && <p className="text-sm text-gray-400">{status}</p>}
+      {status && <p className="text-sm text-muted">{status}</p>}
       {outputBlob && <DownloadButton blob={outputBlob} filename={trimmedFilename} />}
     </div>
   );

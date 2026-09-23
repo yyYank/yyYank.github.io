@@ -66,7 +66,7 @@ export function TechBadge({ tech }: TechBadgeProps) {
         onClick={handleClick}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        className={`px-4 py-2 bg-dark-700 border border-dark-500 rounded-full text-accent-cyan font-mono text-sm inline-block ${mascot ? 'cursor-pointer' : ''}`}
+        className={`px-4 py-2 bg-surface-2 border border-border-strong rounded-full text-accent font-mono text-sm inline-block ${mascot ? 'cursor-pointer' : ''}`}
         style={mascot ? { borderColor: `${mascot.color}40` } : undefined}
       >
         {tech}

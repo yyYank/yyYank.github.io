@@ -13,11 +13,11 @@ const isMemo = pathname.startsWith('/docs/');
 const brandLabel = isKotlinRev ? '逆引きKotlin' : isMemo ? 'yank MEMO' : 'yankなページ';
 ---
 
-<header class="bg-dark-800/80 backdrop-blur-md border-b border-dark-600 sticky top-0 z-50">
+<header class="bg-surface/80 backdrop-blur-md border-b border-border sticky top-0 z-50">
   <div class="container mx-auto px-4">
     <div class="flex items-center justify-between h-16">
       <a href="/" class="flex items-center group">
-        <span class="text-xl font-bold text-white group-hover:text-accent-cyan transition-colors">
+        <span class="text-xl font-bold text-text group-hover:text-accent transition-colors">
           {brandLabel}
         </span>
       </a>
@@ -27,7 +27,7 @@ const brandLabel = isKotlinRev ? '逆引きKotlin' : isMemo ? 'yank MEMO' : 'yan
           <a
             href={item.href}
             data-nav-href={item.href}
-            class="text-gray-300 hover:text-accent-cyan font-medium transition-colors relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-accent-cyan after:transition-all hover:after:w-full"
+            class="text-muted hover:text-accent font-medium transition-colors relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-accent-cyan after:transition-all hover:after:w-full"
           >
             {item.label}
           </a>

@@ -48,9 +48,9 @@ export function RemainingDaysChip({
   monthlyRemaining: number;
 }) {
   return (
-    <div className="fixed bottom-4 right-4 z-40 rounded-full border border-dark-500 bg-dark-800/90 px-4 py-2 text-xs text-gray-300 shadow-lg backdrop-blur">
+    <div className="fixed bottom-4 right-4 z-40 rounded-full border border-border-strong bg-surface/90 px-4 py-2 text-xs text-muted shadow-lg backdrop-blur">
       <span className="text-purple-200">今週あと{weeklyRemaining}日</span>
-      <span className="mx-1.5 text-gray-600">/</span>
+      <span className="mx-1.5 text-faint">/</span>
       <span className="text-amber-200">今月あと{monthlyRemaining}日</span>
     </div>
   );
@@ -85,7 +85,7 @@ export function CycleSnackbar({
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 12 }}
           transition={fadeTransition}
-          className={`flex items-center gap-2 rounded-full border bg-dark-800/95 py-2 pl-5 pr-2 shadow-xl backdrop-blur ${ui.snackbarClassName}`}
+          className={`flex items-center gap-2 rounded-full border bg-surface/95 py-2 pl-5 pr-2 shadow-xl backdrop-blur ${ui.snackbarClassName}`}
         >
           <button
             onClick={() => {
@@ -96,7 +96,7 @@ export function CycleSnackbar({
               }
             }}
             type="button"
-            className={`text-sm transition-colors hover:text-white ${ui.snackbarTextClassName}`}
+            className={`text-sm transition-colors hover:text-text ${ui.snackbarTextClassName}`}
           >
             {message}
           </button>
@@ -104,7 +104,7 @@ export function CycleSnackbar({
             onClick={() => setDismissed(true)}
             type="button"
             aria-label="閉じる"
-            className="flex h-7 w-7 items-center justify-center rounded-full border border-dark-500 text-xs text-gray-400 transition-colors hover:text-white"
+            className="flex h-7 w-7 items-center justify-center rounded-full border border-border-strong text-xs text-muted transition-colors hover:text-text"
           >
             ×
           </button>

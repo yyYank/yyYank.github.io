@@ -67,9 +67,9 @@ export default function ImagePaste() {
     <div onPaste={handlePaste}>
       {/* Paste area */}
       {!image && (
-        <div className="border-2 border-dashed border-dark-500 rounded-lg p-16 text-center hover:border-accent-cyan/40 transition-colors">
-          <p className="text-gray-400 text-lg mb-2">Ctrl+V / Cmd+V で画像をペースト</p>
-          <p className="text-gray-600 text-sm">クリップボードにコピーした画像を貼り付けてください</p>
+        <div className="border-2 border-dashed border-border-strong rounded-lg p-16 text-center hover:border-accent/40 transition-colors">
+          <p className="text-muted text-lg mb-2">Ctrl+V / Cmd+V で画像をペースト</p>
+          <p className="text-faint text-sm">クリップボードにコピーした画像を貼り付けてください</p>
         </div>
       )}
 
@@ -78,36 +78,36 @@ export default function ImagePaste() {
         <div>
           {/* Controls */}
           <div className="flex flex-wrap items-center gap-3 mb-4">
-            <label className="flex items-center gap-2 text-sm text-gray-300">
+            <label className="flex items-center gap-2 text-sm text-muted">
               <span className="shrink-0">ファイル名</span>
               <input
                 type="text"
                 value={filename}
                 onChange={(e) => setFilename(e.target.value)}
-                className="bg-dark-700 border border-dark-600 rounded px-3 py-1.5 text-gray-100 font-mono text-sm w-64 focus:border-accent-cyan/50 focus:outline-none"
+                className="bg-surface-2 border border-border rounded px-3 py-1.5 text-text font-mono text-sm w-64 focus:border-accent/50 focus:outline-none"
               />
             </label>
             <button
               onClick={handleDownload}
-              className="px-4 py-1.5 bg-accent-cyan/20 text-accent-cyan border border-accent-cyan/40 rounded text-sm font-medium hover:bg-accent-cyan/30 transition-colors"
+              className="px-4 py-1.5 bg-accent-cyan/20 text-accent border border-accent/40 rounded text-sm font-medium hover:bg-accent-cyan/30 transition-colors"
             >
               Download
             </button>
             <button
               onClick={handleClear}
-              className="px-4 py-1.5 bg-dark-700 text-gray-400 border border-dark-600 rounded text-sm hover:text-gray-200 hover:border-dark-500 transition-colors"
+              className="px-4 py-1.5 bg-surface-2 text-muted border border-border rounded text-sm hover:text-text hover:border-border-strong transition-colors"
             >
               Clear
             </button>
           </div>
 
           {/* Info */}
-          <div className="text-xs text-gray-500 mb-4 font-mono">
+          <div className="text-xs text-faint mb-4 font-mono">
             {image.type} / {formatBytes(image.size)}
           </div>
 
           {/* Image */}
-          <div className="bg-dark-700 border border-dark-600 rounded-lg p-4 overflow-auto">
+          <div className="bg-surface-2 border border-border rounded-lg p-4 overflow-auto">
             <img
               src={image.dataUrl}
               alt={filename}

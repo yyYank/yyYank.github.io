@@ -57,15 +57,15 @@ export default function MovToMp4Converter() {
   };
 
   return (
-    <div className="bg-dark-800 border border-dark-600 rounded-xl p-6 space-y-4">
-      <h2 className="text-xl font-bold text-white flex items-center gap-2">
+    <div className="bg-surface border border-border rounded-xl p-6 space-y-4">
+      <h2 className="text-xl font-bold text-text flex items-center gap-2">
         <span className="w-6 h-0.5 bg-accent-cyan" />
         MOV to MP4
       </h2>
-      <p className="text-gray-400 text-sm">mov → mp4</p>
+      <p className="text-muted text-sm">mov → mp4</p>
 
       <div>
-        <label htmlFor="mov-upload" className="block text-sm text-gray-400 mb-2">
+        <label htmlFor="mov-upload" className="block text-sm text-muted mb-2">
           File Upload
         </label>
         <input
@@ -78,26 +78,26 @@ export default function MovToMp4Converter() {
             setStatus('');
             setErrorMessage('');
           }}
-          className="block w-full text-sm text-gray-400 file:mr-3 file:py-1.5 file:px-4 file:rounded-lg file:border-0 file:text-sm file:bg-dark-700 file:text-gray-200 hover:file:bg-dark-600 cursor-pointer"
+          className="block w-full text-sm text-muted file:mr-3 file:py-1.5 file:px-4 file:rounded-lg file:border-0 file:text-sm file:bg-surface-2 file:text-text hover:file:bg-surface-2 cursor-pointer"
         />
-        {file && <p className="mt-1 text-xs text-gray-500">{file.name}</p>}
+        {file && <p className="mt-1 text-xs text-faint">{file.name}</p>}
       </div>
 
       <button
         onClick={() => void handleConvert()}
         disabled={!file || loading}
-        className="w-full py-2 px-4 bg-accent-purple text-white font-semibold rounded-lg hover:bg-accent-purple/80 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+        className="w-full py-2 px-4 bg-accent-purple text-text font-semibold rounded-lg hover:bg-accent-purple/80 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
       >
         {loading ? '処理中...' : 'Convert to MP4'}
       </button>
-      <p className="text-xs text-gray-500">
+      <p className="text-xs text-faint">
         エンコードは数分〜十分程度時間がかかることがあります。
       </p>
 
       {status && (
-        <p className="text-sm text-gray-400">
+        <p className="text-sm text-muted">
           {status}
-          {loading && <span className="ml-2 text-gray-500">（経過 {elapsedSeconds}秒）</span>}
+          {loading && <span className="ml-2 text-faint">（経過 {elapsedSeconds}秒）</span>}
         </p>
       )}
       {errorMessage && <p className="text-sm text-red-400">{errorMessage}</p>}
