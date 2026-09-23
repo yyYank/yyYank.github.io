@@ -1,5 +1,6 @@
 ---
 import MobileMenu from './MobileMenu.tsx';
+import ThemeToggle from './ThemeToggle.tsx';
 import { NAV_PAGES } from '../lib/navVisibility';
 
 const navItems = [
@@ -33,7 +34,10 @@ const brandLabel = isKotlinRev ? '逆引きKotlin' : isMemo ? 'yank MEMO' : 'yan
         ))}
       </nav>
 
-      <MobileMenu client:load navItems={navItems} />
+      <div class="flex items-center gap-2">
+        <ThemeToggle client:load />
+        <MobileMenu client:load navItems={navItems} />
+      </div>
     </div>
   </div>
 </header>
