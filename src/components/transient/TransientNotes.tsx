@@ -195,6 +195,8 @@ export default function TransientNotes() {
   const [copied, setCopied] = useState(false);
   const [todayKey, setTodayKey] = useState('');
   const [templatesOpen, setTemplatesOpen] = useState(false);
+  const [nextOpen, setNextOpen] = useState(false);
+  const [triageOpen, setTriageOpen] = useState(false);
   const [isHydrated, setIsHydrated] = useState(false);
   const [showDoneSummary, setShowDoneSummary] = useState(false);
   const [tomorrowTodos, setTomorrowTodos] = useState<PersistentTodo[]>([]);
@@ -491,11 +493,11 @@ export default function TransientNotes() {
         transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
         className="space-y-6"
       >
-        <motion.div layout className="rounded-3xl border border-dark-600 bg-dark-800/70 p-6">
+        <motion.div layout className="rounded-3xl border border-emerald-400/20 bg-dark-800/80 p-6 shadow-lg shadow-emerald-950/10">
           <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
             <div>
-              <p className="text-xs uppercase tracking-[0.28em] text-emerald-300/70">Today</p>
-              <p className="mt-2 text-sm text-gray-400">{noteCountLabel}</p>
+              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-emerald-300">Today</p>
+              <p className="mt-1 text-xs text-gray-500">{noteCountLabel}</p>
             </div>
             <button
               onClick={handleCopyToday}
@@ -517,10 +519,7 @@ export default function TransientNotes() {
                 transition={fadeTransition}
                 className="rounded-2xl border border-dashed border-dark-500 bg-dark-900/30 px-6 py-12 text-center"
               >
-                <p className="text-lg font-medium text-white">まだ当日ノートはありません</p>
-                <p className="mt-2 text-sm leading-6 text-gray-400">
-                  テンプレートから自動で作られる当日ノートがここに並びます。
-                </p>
+                <p className="text-sm text-gray-400">当日ノートなし</p>
               </motion.div>
             ) : (
               <motion.div
@@ -660,79 +659,52 @@ export default function TransientNotes() {
           </AnimatePresence>
 
           <motion.div layout className="mt-6 rounded-2xl border border-dark-600 bg-dark-900/50 p-5">
-            <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
-              <div>
-                <h3 className="text-xs font-semibold uppercase tracking-[0.28em] text-sky-300/70">
-                  Next / 明日用TODO
-                </h3>
-                <p className="mt-2 text-sm text-gray-400">
-                  日付が変わっても残る、持ち越し用のメモです。
-                </p>
-              </div>
+            <button onClick={() => setNextOpen((c) => !c)} type="button" className="flex w-full items-center justify-between gap-3">
+              <h3 className="text-xs font-semibold uppercase tracking-[0.28em] text-sky-300/70">
+                <span className="text-gray-500">{nextOpen ? '▼' : '▶'}</span> Next / 明日用TODO
+              </h3>
               <p className="text-xs uppercase tracking-[0.2em] text-gray-500">
                 {tomorrowTodos.length} persistent
               </p>
-            </div>
+            </button>
 
-            <div className="flex flex-wrap items-end gap-3">
-              <label className="grid min-w-[220px] flex-1 gap-2 text-sm text-gray-300">
-                <span>追加するTODO</span>
-                <input
-                  type="text"
-                  value={tomorrowTodoDraft}
-                  onChange={(event) => setTomorrowTodoDraft(event.target.value)}
-                  onKeyDown={(event) => {
-                    if (event.key === 'Enter') {
-                      event.preventDefault();
-                      handleAddTomorrowTodo();
-                    }
-                  }}
-                  placeholder="明日へ残しておきたいこと"
-                  className="rounded-xl border border-dark-500 bg-dark-800 px-4 py-3 text-white outline-none transition-colors focus:border-sky-400/50"
-                />
-              </label>
-              <button
-                onClick={handleAddTomorrowTodo}
-                type="button"
-                className="rounded-full bg-sky-400/15 px-4 py-2 text-sm font-medium text-sky-200 transition-colors hover:bg-sky-400/25"
-              >
-                追加
-              </button>
-            </div>
+            {nextOpen && (
+              <>
+                <div className="mt-4 flex flex-wrap items-end gap-3">
+                  <label className="grid min-w-[220px] flex-1 gap-2 text-sm text-gray-300">
+                    <span>追加するTODO</span>
+                    <input
+                      type="text"
+                      value={tomorrowTodoDraft}
+                      onChange={(event) => setTomorrowTodoDraft(event.target.value)}
+                      onKeyDown={(event) => {
+                        if (event.key === 'Enter') {
+                          event.preventDefault();
+                          handleAddTomorrowTodo();
+                        }
+                      }}
+                      placeholder="明日へ残しておきたいこと"
+                      className="rounded-xl border border-dark-500 bg-dark-800 px-4 py-3 text-white outline-none transition-colors focus:border-sky-400/50"
+                    />
+                  </label>
+                  <button
+                    onClick={handleAddTomorrowTodo}
+                    type="button"
+                    className="rounded-full bg-sky-400/15 px-4 py-2 text-sm font-medium text-sky-200 transition-colors hover:bg-sky-400/25"
+                  >
+                    追加
+                  </button>
+                </div>
 
-            <AnimatePresence mode="wait" initial={false}>
-              {tomorrowTodos.length === 0 ? (
-                <motion.div
-                  key="tomorrow-empty"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={fadeTransition}
-                  className="mt-4 rounded-2xl border border-dashed border-dark-500 bg-dark-900/30 px-6 py-10 text-center"
-                >
-                  <p className="text-lg font-medium text-white">明日へ残すTODOはありません</p>
-                  <p className="mt-2 text-sm leading-6 text-gray-400">
-                    持ち越したいことだけをここに置いておけます。
-                  </p>
-                </motion.div>
-              ) : (
-                <motion.ul
-                  key="tomorrow-list"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={fadeTransition}
-                  className="mt-4 space-y-3"
-                >
-                  <AnimatePresence initial={false}>
+                {tomorrowTodos.length === 0 ? (
+                  <div className="mt-4 rounded-2xl border border-dashed border-dark-500 bg-dark-900/30 px-6 py-6 text-center">
+                    <p className="text-sm text-gray-400">持ち越しTODOなし</p>
+                  </div>
+                ) : (
+                  <ul className="mt-4 space-y-3">
                     {tomorrowTodos.map((todo) => (
-                      <motion.li
+                      <li
                         key={todo.id}
-                        layout
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={fadeTransition}
                         className="flex items-center justify-between gap-3 rounded-xl border border-dark-700 bg-dark-800/70 px-4 py-3"
                       >
                         <label className="flex min-w-0 flex-1 cursor-pointer items-center gap-3">
@@ -757,12 +729,12 @@ export default function TransientNotes() {
                         >
                           削除
                         </button>
-                      </motion.li>
+                      </li>
                     ))}
-                  </AnimatePresence>
-                </motion.ul>
-              )}
-            </AnimatePresence>
+                  </ul>
+                )}
+              </>
+            )}
           </motion.div>
 
           <motion.div layout className="mt-6 rounded-2xl border border-dark-600 bg-dark-900/50 p-5">
@@ -799,94 +771,63 @@ export default function TransientNotes() {
             )}
           </motion.div>
 
-          <motion.div
-            layout
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.85, delay: 0.18, ease: [0.22, 1, 0.36, 1] }}
-            className="mt-6 rounded-3xl border border-dark-600 bg-dark-800/60 p-6"
-          >
-            <div className="mb-5">
+          <div className="mt-6 rounded-2xl border border-dark-600 bg-dark-800/60 p-5">
+            <button onClick={() => setTriageOpen((c) => !c)} type="button" className="flex w-full items-center justify-between gap-3">
               <h3 className="text-xs font-semibold uppercase tracking-[0.28em] text-amber-300/70">
-                Triage / 未完了TODO一覧
+                <span className="text-gray-500">{triageOpen ? '▼' : '▶'}</span> Triage / 未完了
               </h3>
-              <p className="mt-2 text-sm text-gray-400">やり忘れをルーティンごとにまとめて確認できます。</p>
-            </div>
+              <p className="text-xs uppercase tracking-[0.2em] text-gray-500">
+                {incompleteGroups.reduce((sum, g) => sum + g.items.length, 0)} incomplete
+              </p>
+            </button>
 
-            <AnimatePresence mode="wait">
-              {incompleteGroups.length === 0 ? (
-                <motion.div
-                  key="triage-empty"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={fadeTransition}
-                  className="rounded-2xl border border-dashed border-dark-500 bg-dark-900/30 px-6 py-12 text-center"
-                >
-                  <p className="text-lg font-medium text-white">未完了のTODOはありません</p>
-                  <p className="mt-2 text-sm leading-6 text-gray-400">この日の取りこぼしは解消されています。</p>
-                </motion.div>
+            {triageOpen && (
+              incompleteGroups.length === 0 ? (
+                <div className="mt-4 rounded-2xl border border-dashed border-dark-500 bg-dark-900/30 px-6 py-6 text-center">
+                  <p className="text-sm text-gray-400">未完了なし</p>
+                </div>
               ) : (
-                <motion.div
-                  key="triage-list"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={fadeTransition}
-                  className="space-y-4"
-                >
-                  <AnimatePresence initial={false}>
-                    {incompleteGroups.map((group) => (
-                      <motion.div
-                        key={group.noteId}
-                        layout
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={fadeTransition}
-                        className="rounded-2xl border border-dark-600 bg-dark-900/45 p-5"
-                      >
-                        <div className="mb-4 flex items-center justify-between gap-3">
-                          <p className="text-lg font-semibold text-white">{group.title}</p>
-                          <p className="text-xs uppercase tracking-[0.2em] text-gray-500">
-                            {group.items.length} incomplete
-                          </p>
-                        </div>
-
-                        <ul className="space-y-3">
-                          {group.items.map((item) => (
-                            <li
-                              key={item.id}
-                              className="flex items-center justify-between gap-3 rounded-xl border border-dark-700 bg-dark-800/70 px-4 py-3"
+                <div className="mt-4 space-y-4">
+                  {incompleteGroups.map((group) => (
+                    <div key={group.noteId} className="rounded-2xl border border-dark-600 bg-dark-900/45 p-5">
+                      <div className="mb-4 flex items-center justify-between gap-3">
+                        <p className="text-sm font-semibold text-white">{group.title}</p>
+                        <p className="text-xs uppercase tracking-[0.2em] text-gray-500">
+                          {group.items.length} incomplete
+                        </p>
+                      </div>
+                      <ul className="space-y-3">
+                        {group.items.map((item) => (
+                          <li
+                            key={item.id}
+                            className="flex items-center justify-between gap-3 rounded-xl border border-dark-700 bg-dark-800/70 px-4 py-3"
+                          >
+                            <span className="text-sm text-gray-200">{item.text}</span>
+                            <button
+                              onClick={() => handleDeleteNoteItem(group.noteId, item.id)}
+                              type="button"
+                              className="rounded-full border border-amber-500/25 bg-amber-500/10 px-3 py-1 text-xs text-amber-200 transition-colors hover:bg-amber-500/20"
                             >
-                              <span className="text-sm text-gray-200">{item.text}</span>
-                              <button
-                                onClick={() => handleDeleteNoteItem(group.noteId, item.id)}
-                                type="button"
-                                className="rounded-full border border-amber-500/25 bg-amber-500/10 px-3 py-1 text-xs text-amber-200 transition-colors hover:bg-amber-500/20"
-                              >
-                                削除
-                              </button>
-                            </li>
-                          ))}
-                        </ul>
-                      </motion.div>
-                    ))}
-                  </AnimatePresence>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </motion.div>
+                              削除
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+              )
+            )}
+          </div>
         </motion.div>
 
       </motion.section>
 
-      <motion.div layout className="rounded-3xl border border-dark-600 bg-dark-800/70 p-6">
-        <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
+      <motion.div layout className="rounded-2xl border border-dark-600 bg-dark-900/50 p-5">
+        <div className="mb-4 flex flex-wrap items-end justify-between gap-4">
           <div>
             <p className="text-xs uppercase tracking-[0.28em] text-cyan-300/70">Templates</p>
-            <h3 className="mt-2 text-2xl font-semibold text-white">テンプレート</h3>
-            <p className="mt-1 text-sm text-gray-400">{templateCountLabel}</p>
+            <p className="mt-1 text-xs text-gray-500">{templateCountLabel}</p>
           </div>
           <div className="flex flex-wrap gap-2">
             <button
@@ -1100,7 +1041,7 @@ export default function TransientNotes() {
               transition={fadeTransition}
               className="text-sm text-gray-500"
             >
-              テンプレート一覧と編集フォームは閉じています。必要なときだけ開いてください。
+              テンプレートは閉じています。
             </motion.p>
           )}
         </AnimatePresence>
@@ -1175,10 +1116,7 @@ export default function TransientNotes() {
 
               {completedGroups.length === 0 ? (
                 <div className="rounded-2xl border border-dashed border-dark-500 bg-dark-900/35 px-5 py-8 text-center">
-                  <p className="text-base font-medium text-white">まだ完了したTODOはありません</p>
-                  <p className="mt-2 text-sm leading-6 text-gray-400">
-                    今日の達成は、これからここに積み上がっていきます。
-                  </p>
+                  <p className="text-sm text-gray-400">完了したTODOはまだありません</p>
                 </div>
               ) : (
                 <div className="space-y-4 text-sm text-gray-200">
