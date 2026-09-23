@@ -76,7 +76,7 @@ export default function SnippetCard({
       {/* Code preview */}
       <div className="relative ml-8 mr-2 mb-2">
         <pre
-          className={`text-xs font-mono overflow-hidden transition-all duration-200 ${
+          className={`text-xs font-mono overflow-hidden transition-[max-height,opacity,color] duration-200 ${
             isSelected ? 'text-muted' : 'text-faint'
           }`}
           style={{

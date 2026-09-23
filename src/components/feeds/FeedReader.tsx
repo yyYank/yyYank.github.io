@@ -1208,7 +1208,7 @@ export default function FeedReader() {
           <button
             key={t.key}
             onClick={() => setTab(t.key)}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
               tab === t.key
                 ? 'bg-accent-cyan/20 text-accent border border-accent/40'
                 : 'bg-surface-2 text-muted border border-border hover:text-text hover:border-border-strong'
@@ -1293,11 +1293,11 @@ export default function FeedReader() {
           return (
             <div
               key={`${item.source}-${i}`}
-              className="bg-surface-2 border border-border rounded-lg p-4 hover:border-accent/40 hover:bg-surface-2 transition-all group flex items-start gap-3"
+              className="bg-surface-2 border border-border rounded-lg p-4 hover:border-accent/40 hover:bg-surface-2 transition-colors group flex items-start gap-3"
             >
               <button
                 onClick={() => toggleFavorite(item)}
-                className="shrink-0 mt-0.5 text-lg leading-none transition-colors hover:scale-110"
+                className="shrink-0 mt-0.5 text-lg leading-none transition-colors hover:scale-105"
                 title={isFav ? 'お気に入り解除' : 'お気に入りに追加'}
               >
                 {isFav ? <span className="text-warning">★</span> : <span className="text-faint">☆</span>}

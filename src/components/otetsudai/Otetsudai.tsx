@@ -80,7 +80,7 @@ function StampPicker({ selected, onSelect }: StampPickerProps) {
       <button
         type="button"
         onClick={() => setOpen(!open)}
-        className="text-6xl hover:scale-110 transition-transform"
+        className="text-6xl hover:scale-105 transition-transform"
         title="しーるをえらぶ"
       >
         {selected}
@@ -587,7 +587,7 @@ export default function Otetsudai() {
                 </div>
                 <div className="w-full bg-surface-2 rounded-full h-4 overflow-hidden">
                   <div
-                    className={`h-full rounded-full transition-all duration-500 ${
+                    className={`h-full rounded-full transition-[background-color,width] duration-slow ${
                       goalAchieved
                         ? 'bg-warning'
                         : 'bg-gradient-to-r from-accent-cyan to-accent-green'
