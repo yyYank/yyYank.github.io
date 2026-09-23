@@ -38,38 +38,28 @@ const TEMPLATE_STORAGE_KEY = 'transient-note-templates';
 const NOTE_STORAGE_KEY = 'transient-notes';
 const TOMORROW_TODO_STORAGE_KEY = 'transient-tomorrow-todos';
 const CYCLE_SEED_KEY = 'transient-cycle-templates-seeded';
-const SECTION_COLLAPSE_KEY = 'transient-section-collapse';
+const NOTE_COLLAPSE_KEY = 'transient-note-collapse';
 
-type SectionId = 'today' | 'tomorrow' | 'regenerate' | 'triage' | 'templates';
-
-interface SectionCollapseState {
+interface NoteCollapseState {
   date: string;
-  sections: Record<SectionId, boolean>;
+  notes: Record<string, boolean>;
 }
 
-const ALL_SECTIONS_OPEN: Record<SectionId, boolean> = {
-  today: true,
-  tomorrow: true,
-  regenerate: true,
-  triage: true,
-  templates: false,
-};
-
-function loadSectionCollapse(): Record<SectionId, boolean> {
+function loadNoteCollapse(): Record<string, boolean> {
   try {
-    const raw = localStorage.getItem(SECTION_COLLAPSE_KEY);
-    if (!raw) return { ...ALL_SECTIONS_OPEN };
-    const parsed: SectionCollapseState = JSON.parse(raw);
-    if (parsed.date !== getTodayKey()) return { ...ALL_SECTIONS_OPEN };
-    return { ...ALL_SECTIONS_OPEN, ...parsed.sections };
+    const raw = localStorage.getItem(NOTE_COLLAPSE_KEY);
+    if (!raw) return {};
+    const parsed: NoteCollapseState = JSON.parse(raw);
+    if (parsed.date !== getTodayKey()) return {};
+    return parsed.notes ?? {};
   } catch {
-    return { ...ALL_SECTIONS_OPEN };
+    return {};
   }
 }
 
-function saveSectionCollapse(sections: Record<SectionId, boolean>): void {
-  const payload: SectionCollapseState = { date: getTodayKey(), sections };
-  localStorage.setItem(SECTION_COLLAPSE_KEY, JSON.stringify(payload));
+function saveNoteCollapse(collapsed: Record<string, boolean>): void {
+  const payload: NoteCollapseState = { date: getTodayKey(), notes: collapsed };
+  localStorage.setItem(NOTE_COLLAPSE_KEY, JSON.stringify(payload));
 }
 
 const DEFAULT_TEMPLATES: Template[] = [
@@ -204,13 +194,14 @@ export default function TransientNotes() {
   const [editingTemplateId, setEditingTemplateId] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const [todayKey, setTodayKey] = useState('');
-  const [sectionOpen, setSectionOpen] = useState<Record<SectionId, boolean>>({ ...ALL_SECTIONS_OPEN });
+  const [templatesOpen, setTemplatesOpen] = useState(false);
   const [isHydrated, setIsHydrated] = useState(false);
   const [showDoneSummary, setShowDoneSummary] = useState(false);
   const [tomorrowTodos, setTomorrowTodos] = useState<PersistentTodo[]>([]);
   const [tomorrowTodoDraft, setTomorrowTodoDraft] = useState('');
   const [deletedTemplateIds, setDeletedTemplateIds] = useState<string[]>([]);
   const [noteItemDrafts, setNoteItemDrafts] = useState<Record<string, string>>({});
+  const [noteCollapsed, setNoteCollapsed] = useState<Record<string, boolean>>({});
   const templateNameInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -230,7 +221,7 @@ export default function TransientNotes() {
     setDeletedTemplateIds(storedDeletedTemplateIds);
     setTomorrowTodos(storedTomorrowTodos);
     setSelectedTemplateId(storedTemplates[0]?.id ?? '');
-    setSectionOpen(loadSectionCollapse());
+    setNoteCollapsed(loadNoteCollapse());
     setTodayKey(loadedNotes.date);
     setIsHydrated(true);
   }, []);
@@ -287,8 +278,8 @@ export default function TransientNotes() {
       if (currentDay !== todayKey) {
         setTodayKey(currentDay);
         setDeletedTemplateIds([]);
-        setSectionOpen({ ...ALL_SECTIONS_OPEN });
-        saveSectionCollapse({ ...ALL_SECTIONS_OPEN });
+        setNoteCollapsed({});
+        saveNoteCollapse({});
         // 週次・月次は周期内ならチェック状態を保持したまま日次のみ再生成される
         setNotes((currentNotes) => synchronizeNotesWithTemplates(currentNotes, templates, []));
       }
@@ -339,10 +330,10 @@ export default function TransientNotes() {
     [completedGroups]
   );
 
-  const toggleSection = (id: SectionId) => {
-    setSectionOpen((current) => {
-      const next = { ...current, [id]: !current[id] };
-      saveSectionCollapse(next);
+  const toggleNoteCollapse = (noteId: string) => {
+    setNoteCollapsed((current) => {
+      const next = { ...current, [noteId]: !current[noteId] };
+      saveNoteCollapse(next);
       return next;
     });
   };
@@ -391,11 +382,7 @@ export default function TransientNotes() {
   };
 
   const handleEditTemplate = (template: Template) => {
-    setSectionOpen((current) => {
-      const next = { ...current, templates: true };
-      saveSectionCollapse(next);
-      return next;
-    });
+    setTemplatesOpen(true);
     setSelectedTemplateId(template.id);
     setEditingTemplateId(template.id);
     setTemplateName(template.name);
@@ -506,12 +493,10 @@ export default function TransientNotes() {
       >
         <motion.div layout className="rounded-3xl border border-dark-600 bg-dark-800/70 p-6">
           <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
-            <button onClick={() => toggleSection('today')} type="button" className="text-left">
-              <p className="text-xs uppercase tracking-[0.28em] text-emerald-300/70">
-                {sectionOpen.today ? '▼' : '▶'} Today
-              </p>
+            <div>
+              <p className="text-xs uppercase tracking-[0.28em] text-emerald-300/70">Today</p>
               <p className="mt-2 text-sm text-gray-400">{noteCountLabel}</p>
-            </button>
+            </div>
             <button
               onClick={handleCopyToday}
               disabled={notes.length === 0}
@@ -522,7 +507,7 @@ export default function TransientNotes() {
             </button>
           </div>
 
-          {sectionOpen.today && (<AnimatePresence mode="wait">
+          <AnimatePresence mode="wait">
             {notes.length === 0 ? (
               <motion.div
                 key="notes-empty"
@@ -562,8 +547,9 @@ export default function TransientNotes() {
                     <div className="pointer-events-none absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-dark-900 via-dark-900/85 to-transparent blur-xl opacity-95" />
                     <div className="pointer-events-none absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-dark-900 via-dark-900/85 to-transparent blur-xl opacity-95" />
                     <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/4 via-transparent to-transparent opacity-70" />
-                    <div className="relative z-10">
+                    <button onClick={() => toggleNoteCollapse(note.id)} type="button" className="relative z-10 text-left">
                       <div className="flex flex-wrap items-center gap-2">
+                        <span className="text-xs text-gray-500">{noteCollapsed[note.id] ? '▶' : '▼'}</span>
                         <p className="text-lg font-semibold text-white">{note.title}</p>
                         {templateCycleById.get(note.templateId) === 'weekly' && (
                           <CycleBadge cycle="weekly" remaining={weeklyRoutine.remaining} />
@@ -575,7 +561,7 @@ export default function TransientNotes() {
                       <p className="mt-1 text-xs uppercase tracking-[0.2em] text-gray-500">
                         created {formatDateTime(note.createdAt)}
                       </p>
-                    </div>
+                    </button>
                     <button
                       onClick={() => handleDeleteNote(note.id)}
                       type="button"
@@ -585,240 +571,231 @@ export default function TransientNotes() {
                     </button>
                   </div>
 
-                  <ul className="mt-4 space-y-3">
-                    {note.items.map((item) => (
-                      <li key={item.id}>
-                        <div className="flex items-center gap-3 rounded-xl border border-dark-700 bg-dark-800/70 px-4 py-3 transition-colors hover:border-emerald-400/20">
-                          <label className="flex min-w-0 flex-1 cursor-pointer items-center gap-3">
-                            <input
-                              type="checkbox"
-                              checked={item.checked}
-                              onChange={() => handleToggleItem(note.id, item.id)}
-                              className="h-4 w-4 accent-emerald-400"
-                            />
-                            <span
-                              className={`text-sm ${
-                                item.checked ? 'text-gray-500 line-through' : 'text-gray-200'
-                              }`}
-                            >
-                              {item.text}
-                            </span>
-                            {item.source === 'extra' && (
-                              <span className="rounded-full border border-emerald-400/20 bg-emerald-400/10 px-2 py-0.5 text-[10px] uppercase tracking-[0.16em] text-emerald-200/80">
-                                today only
-                              </span>
-                            )}
-                          </label>
-                          <button
-                            onClick={() => handleDeleteNoteItem(note.id, item.id)}
-                            type="button"
-                            className="rounded-full border border-red-500/25 bg-red-500/10 px-3 py-1 text-xs text-red-200 transition-colors hover:bg-red-500/20"
-                          >
-                            削除
-                          </button>
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
+                  {!noteCollapsed[note.id] && (
+                    <>
+                      <ul className="mt-4 space-y-3">
+                        {note.items.map((item) => (
+                          <li key={item.id}>
+                            <div className="flex items-center gap-3 rounded-xl border border-dark-700 bg-dark-800/70 px-4 py-3 transition-colors hover:border-emerald-400/20">
+                              <label className="flex min-w-0 flex-1 cursor-pointer items-center gap-3">
+                                <input
+                                  type="checkbox"
+                                  checked={item.checked}
+                                  onChange={() => handleToggleItem(note.id, item.id)}
+                                  className="h-4 w-4 accent-emerald-400"
+                                />
+                                <span
+                                  className={`text-sm ${
+                                    item.checked ? 'text-gray-500 line-through' : 'text-gray-200'
+                                  }`}
+                                >
+                                  {item.text}
+                                </span>
+                                {item.source === 'extra' && (
+                                  <span className="rounded-full border border-emerald-400/20 bg-emerald-400/10 px-2 py-0.5 text-[10px] uppercase tracking-[0.16em] text-emerald-200/80">
+                                    today only
+                                  </span>
+                                )}
+                              </label>
+                              <button
+                                onClick={() => handleDeleteNoteItem(note.id, item.id)}
+                                type="button"
+                                className="rounded-full border border-red-500/25 bg-red-500/10 px-3 py-1 text-xs text-red-200 transition-colors hover:bg-red-500/20"
+                              >
+                                削除
+                              </button>
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
 
-                  <div className="mt-4 flex flex-wrap items-end gap-3">
-                    <label className="grid min-w-[220px] flex-1 gap-2 text-sm text-gray-300">
-                      <span>今日だけ追加するTODO</span>
-                      <input
-                        type="text"
-                        value={noteItemDrafts[note.id] ?? ''}
-                        onChange={(event) =>
-                          setNoteItemDrafts((current) => ({
-                            ...current,
-                            [note.id]: event.target.value,
-                          }))
-                        }
-                        onKeyDown={(event) => {
-                          if (event.key === 'Enter') {
-                            event.preventDefault();
-                            handleAddNoteItem(note.id);
-                          }
-                        }}
-                        placeholder="今日だけ必要なことを追加"
-                        className="rounded-xl border border-dark-500 bg-dark-800 px-4 py-3 text-white outline-none transition-colors focus:border-emerald-400/50"
-                      />
-                    </label>
-                    <button
-                      onClick={() => handleAddNoteItem(note.id)}
-                      type="button"
-                      className="rounded-full bg-emerald-400/15 px-4 py-2 text-sm font-medium text-emerald-200 transition-colors hover:bg-emerald-400/25"
-                    >
-                      追加
-                    </button>
-                  </div>
+                      <div className="mt-4 flex flex-wrap items-end gap-3">
+                        <label className="grid min-w-[220px] flex-1 gap-2 text-sm text-gray-300">
+                          <span>今日だけ追加するTODO</span>
+                          <input
+                            type="text"
+                            value={noteItemDrafts[note.id] ?? ''}
+                            onChange={(event) =>
+                              setNoteItemDrafts((current) => ({
+                                ...current,
+                                [note.id]: event.target.value,
+                              }))
+                            }
+                            onKeyDown={(event) => {
+                              if (event.key === 'Enter') {
+                                event.preventDefault();
+                                handleAddNoteItem(note.id);
+                              }
+                            }}
+                            placeholder="今日だけ必要なことを追加"
+                            className="rounded-xl border border-dark-500 bg-dark-800 px-4 py-3 text-white outline-none transition-colors focus:border-emerald-400/50"
+                          />
+                        </label>
+                        <button
+                          onClick={() => handleAddNoteItem(note.id)}
+                          type="button"
+                          className="rounded-full bg-emerald-400/15 px-4 py-2 text-sm font-medium text-emerald-200 transition-colors hover:bg-emerald-400/25"
+                        >
+                          追加
+                        </button>
+                      </div>
 
-                  <label className="mt-4 grid gap-2 text-sm text-gray-300">
-                    <span>一時メモ</span>
-                    <textarea
-                      value={note.memo}
-                      onChange={(event) => handleChangeMemo(note.id, event.target.value)}
-                      rows={4}
-                      placeholder="当日だけ残せばいい補助メモ"
-                      className="rounded-xl border border-dark-500 bg-dark-800 px-4 py-3 text-white outline-none transition-colors focus:border-emerald-400/50"
-                    />
-                  </label>
+                      <label className="mt-4 grid gap-2 text-sm text-gray-300">
+                        <span>一時メモ</span>
+                        <textarea
+                          value={note.memo}
+                          onChange={(event) => handleChangeMemo(note.id, event.target.value)}
+                          rows={4}
+                          placeholder="当日だけ残せばいい補助メモ"
+                          className="rounded-xl border border-dark-500 bg-dark-800 px-4 py-3 text-white outline-none transition-colors focus:border-emerald-400/50"
+                        />
+                      </label>
+                    </>
+                  )}
                     </motion.article>
                   ))}
                 </AnimatePresence>
               </motion.div>
             )}
-          </AnimatePresence>)}
+          </AnimatePresence>
 
           <motion.div layout className="mt-6 rounded-2xl border border-dark-600 bg-dark-900/50 p-5">
             <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
-              <button onClick={() => toggleSection('tomorrow')} type="button" className="text-left">
+              <div>
                 <h3 className="text-xs font-semibold uppercase tracking-[0.28em] text-sky-300/70">
-                  {sectionOpen.tomorrow ? '▼' : '▶'} Next / 明日用TODO
+                  Next / 明日用TODO
                 </h3>
                 <p className="mt-2 text-sm text-gray-400">
                   日付が変わっても残る、持ち越し用のメモです。
                 </p>
-              </button>
+              </div>
               <p className="text-xs uppercase tracking-[0.2em] text-gray-500">
                 {tomorrowTodos.length} persistent
               </p>
             </div>
 
-            {sectionOpen.tomorrow && (
-              <>
-                <div className="flex flex-wrap items-end gap-3">
-                  <label className="grid min-w-[220px] flex-1 gap-2 text-sm text-gray-300">
-                    <span>追加するTODO</span>
-                    <input
-                      type="text"
-                      value={tomorrowTodoDraft}
-                      onChange={(event) => setTomorrowTodoDraft(event.target.value)}
-                      onKeyDown={(event) => {
-                        if (event.key === 'Enter') {
-                          event.preventDefault();
-                          handleAddTomorrowTodo();
-                        }
-                      }}
-                      placeholder="明日へ残しておきたいこと"
-                      className="rounded-xl border border-dark-500 bg-dark-800 px-4 py-3 text-white outline-none transition-colors focus:border-sky-400/50"
-                    />
-                  </label>
-                  <button
-                    onClick={handleAddTomorrowTodo}
-                    type="button"
-                    className="rounded-full bg-sky-400/15 px-4 py-2 text-sm font-medium text-sky-200 transition-colors hover:bg-sky-400/25"
-                  >
-                    追加
-                  </button>
-                </div>
+            <div className="flex flex-wrap items-end gap-3">
+              <label className="grid min-w-[220px] flex-1 gap-2 text-sm text-gray-300">
+                <span>追加するTODO</span>
+                <input
+                  type="text"
+                  value={tomorrowTodoDraft}
+                  onChange={(event) => setTomorrowTodoDraft(event.target.value)}
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter') {
+                      event.preventDefault();
+                      handleAddTomorrowTodo();
+                    }
+                  }}
+                  placeholder="明日へ残しておきたいこと"
+                  className="rounded-xl border border-dark-500 bg-dark-800 px-4 py-3 text-white outline-none transition-colors focus:border-sky-400/50"
+                />
+              </label>
+              <button
+                onClick={handleAddTomorrowTodo}
+                type="button"
+                className="rounded-full bg-sky-400/15 px-4 py-2 text-sm font-medium text-sky-200 transition-colors hover:bg-sky-400/25"
+              >
+                追加
+              </button>
+            </div>
 
-                <AnimatePresence mode="wait" initial={false}>
-                  {tomorrowTodos.length === 0 ? (
-                    <motion.div
-                      key="tomorrow-empty"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      transition={fadeTransition}
-                      className="mt-4 rounded-2xl border border-dashed border-dark-500 bg-dark-900/30 px-6 py-10 text-center"
-                    >
-                      <p className="text-lg font-medium text-white">明日へ残すTODOはありません</p>
-                      <p className="mt-2 text-sm leading-6 text-gray-400">
-                        持ち越したいことだけをここに置いておけます。
-                      </p>
-                    </motion.div>
-                  ) : (
-                    <motion.ul
-                      key="tomorrow-list"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      transition={fadeTransition}
-                      className="mt-4 space-y-3"
-                    >
-                      <AnimatePresence initial={false}>
-                        {tomorrowTodos.map((todo) => (
-                          <motion.li
-                            key={todo.id}
-                            layout
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            transition={fadeTransition}
-                            className="flex items-center justify-between gap-3 rounded-xl border border-dark-700 bg-dark-800/70 px-4 py-3"
+            <AnimatePresence mode="wait" initial={false}>
+              {tomorrowTodos.length === 0 ? (
+                <motion.div
+                  key="tomorrow-empty"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={fadeTransition}
+                  className="mt-4 rounded-2xl border border-dashed border-dark-500 bg-dark-900/30 px-6 py-10 text-center"
+                >
+                  <p className="text-lg font-medium text-white">明日へ残すTODOはありません</p>
+                  <p className="mt-2 text-sm leading-6 text-gray-400">
+                    持ち越したいことだけをここに置いておけます。
+                  </p>
+                </motion.div>
+              ) : (
+                <motion.ul
+                  key="tomorrow-list"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={fadeTransition}
+                  className="mt-4 space-y-3"
+                >
+                  <AnimatePresence initial={false}>
+                    {tomorrowTodos.map((todo) => (
+                      <motion.li
+                        key={todo.id}
+                        layout
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={fadeTransition}
+                        className="flex items-center justify-between gap-3 rounded-xl border border-dark-700 bg-dark-800/70 px-4 py-3"
+                      >
+                        <label className="flex min-w-0 flex-1 cursor-pointer items-center gap-3">
+                          <input
+                            type="checkbox"
+                            checked={todo.checked}
+                            onChange={() => handleToggleTomorrowTodo(todo.id)}
+                            className="h-4 w-4 accent-sky-400"
+                          />
+                          <span
+                            className={`truncate text-sm ${
+                              todo.checked ? 'text-gray-500 line-through' : 'text-gray-200'
+                            }`}
                           >
-                            <label className="flex min-w-0 flex-1 cursor-pointer items-center gap-3">
-                              <input
-                                type="checkbox"
-                                checked={todo.checked}
-                                onChange={() => handleToggleTomorrowTodo(todo.id)}
-                                className="h-4 w-4 accent-sky-400"
-                              />
-                              <span
-                                className={`truncate text-sm ${
-                                  todo.checked ? 'text-gray-500 line-through' : 'text-gray-200'
-                                }`}
-                              >
-                                {todo.text}
-                              </span>
-                            </label>
-                            <button
-                              onClick={() => handleDeleteTomorrowTodo(todo.id)}
-                              type="button"
-                              className="rounded-full border border-red-500/25 bg-red-500/10 px-3 py-1 text-xs text-red-200 transition-colors hover:bg-red-500/20"
-                            >
-                              削除
-                            </button>
-                          </motion.li>
-                        ))}
-                      </AnimatePresence>
-                    </motion.ul>
-                  )}
-                </AnimatePresence>
-              </>
-            )}
+                            {todo.text}
+                          </span>
+                        </label>
+                        <button
+                          onClick={() => handleDeleteTomorrowTodo(todo.id)}
+                          type="button"
+                          className="rounded-full border border-red-500/25 bg-red-500/10 px-3 py-1 text-xs text-red-200 transition-colors hover:bg-red-500/20"
+                        >
+                          削除
+                        </button>
+                      </motion.li>
+                    ))}
+                  </AnimatePresence>
+                </motion.ul>
+              )}
+            </AnimatePresence>
           </motion.div>
 
           <motion.div layout className="mt-6 rounded-2xl border border-dark-600 bg-dark-900/50 p-5">
-            <button onClick={() => toggleSection('regenerate')} type="button" className="mb-3 text-left">
-              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-emerald-300/70">
-                {sectionOpen.regenerate ? '▼' : '▶'} 再生成するテンプレート
-              </p>
-            </button>
-            {sectionOpen.regenerate && (
-              <>
-                <div className="flex flex-wrap items-end gap-3">
-                  <label className="grid flex-1 gap-2 text-sm text-gray-300 min-w-[220px]">
-                    <span>テンプレートを選択</span>
-                    <select
-                      value={selectedTemplateId}
-                      onChange={(event) => setSelectedTemplateId(event.target.value)}
-                      className="rounded-xl border border-dark-500 bg-dark-800 px-4 py-3 text-white outline-none transition-colors focus:border-emerald-400/50"
-                    >
-                      {templates.map((template) => (
-                        <option key={template.id} value={template.id}>
-                          {template.name}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-                  <button
-                    onClick={handleCreateNote}
-                    disabled={!activeTemplate}
-                    type="button"
-                    className="rounded-full bg-emerald-400/15 px-4 py-2 text-sm font-medium text-emerald-200 transition-colors hover:bg-emerald-400/25 disabled:cursor-not-allowed disabled:opacity-40"
-                  >
-                    再生成
-                  </button>
-                </div>
+            <div className="flex flex-wrap items-end gap-3">
+              <label className="grid flex-1 gap-2 text-sm text-gray-300 min-w-[220px]">
+                <span>再生成するテンプレート</span>
+                <select
+                  value={selectedTemplateId}
+                  onChange={(event) => setSelectedTemplateId(event.target.value)}
+                  className="rounded-xl border border-dark-500 bg-dark-800 px-4 py-3 text-white outline-none transition-colors focus:border-emerald-400/50"
+                >
+                  {templates.map((template) => (
+                    <option key={template.id} value={template.id}>
+                      {template.name}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <button
+                onClick={handleCreateNote}
+                disabled={!activeTemplate}
+                type="button"
+                className="rounded-full bg-emerald-400/15 px-4 py-2 text-sm font-medium text-emerald-200 transition-colors hover:bg-emerald-400/25 disabled:cursor-not-allowed disabled:opacity-40"
+              >
+                再生成
+              </button>
+            </div>
 
-                {activeTemplate && (
-                  <div className="mt-4 rounded-2xl border border-emerald-400/15 bg-emerald-400/5 p-4">
-                    <p className="text-sm font-medium text-white">{activeTemplate.name}</p>
-                    <p className="mt-1 text-sm text-gray-400">{activeTemplate.summary}</p>
-                  </div>
-                )}
-              </>
+            {activeTemplate && (
+              <div className="mt-4 rounded-2xl border border-emerald-400/15 bg-emerald-400/5 p-4">
+                <p className="text-sm font-medium text-white">{activeTemplate.name}</p>
+                <p className="mt-1 text-sm text-gray-400">{activeTemplate.summary}</p>
+              </div>
             )}
           </motion.div>
 
@@ -829,14 +806,14 @@ export default function TransientNotes() {
             transition={{ duration: 0.85, delay: 0.18, ease: [0.22, 1, 0.36, 1] }}
             className="mt-6 rounded-3xl border border-dark-600 bg-dark-800/60 p-6"
           >
-            <button onClick={() => toggleSection('triage')} type="button" className="mb-5 text-left">
+            <div className="mb-5">
               <h3 className="text-xs font-semibold uppercase tracking-[0.28em] text-amber-300/70">
-                {sectionOpen.triage ? '▼' : '▶'} Triage / 未完了TODO一覧
+                Triage / 未完了TODO一覧
               </h3>
               <p className="mt-2 text-sm text-gray-400">やり忘れをルーティンごとにまとめて確認できます。</p>
-            </button>
+            </div>
 
-            {sectionOpen.triage && (<AnimatePresence mode="wait">
+            <AnimatePresence mode="wait">
               {incompleteGroups.length === 0 ? (
                 <motion.div
                   key="triage-empty"
@@ -898,7 +875,7 @@ export default function TransientNotes() {
                   </AnimatePresence>
                 </motion.div>
               )}
-            </AnimatePresence>)}
+            </AnimatePresence>
           </motion.div>
         </motion.div>
 
@@ -913,19 +890,15 @@ export default function TransientNotes() {
           </div>
           <div className="flex flex-wrap gap-2">
             <button
-              onClick={() => toggleSection('templates')}
+              onClick={() => setTemplatesOpen((current) => !current)}
               type="button"
               className="rounded-full border border-dark-500 px-4 py-2 text-sm text-gray-300 transition-colors hover:border-cyan-400/40 hover:text-white"
             >
-              {sectionOpen.templates ? '閉じる' : '開く'}
+              {templatesOpen ? '閉じる' : '開く'}
             </button>
             <button
               onClick={() => {
-                setSectionOpen((current) => {
-                  const next = { ...current, templates: true };
-                  saveSectionCollapse(next);
-                  return next;
-                });
+                setTemplatesOpen(true);
                 resetTemplateForm();
               }}
               type="button"
@@ -937,7 +910,7 @@ export default function TransientNotes() {
         </div>
 
         <AnimatePresence mode="wait" initial={false}>
-          {sectionOpen.templates ? (
+          {templatesOpen ? (
             <motion.div
               key="templates-open"
               initial={{ opacity: 0 }}
