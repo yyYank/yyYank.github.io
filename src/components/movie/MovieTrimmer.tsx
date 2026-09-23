@@ -518,7 +518,7 @@ export default function MovieTrimmer() {
           {loading && <span className="ml-2 text-faint">（経過 {elapsedSeconds}秒）</span>}
         </p>
       )}
-      {errorMessage && <p className="text-sm text-red-400">{errorMessage}</p>}
+      {errorMessage && <p className="text-sm text-danger">{errorMessage}</p>}
       {outputBlob && <DownloadButton blob={outputBlob} filename={outputFilename} />}
     </div>
   );

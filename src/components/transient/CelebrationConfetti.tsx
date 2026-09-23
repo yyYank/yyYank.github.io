@@ -10,15 +10,15 @@ const celebratoryLaunchers = [
 ] as const;
 
 const celebratoryVariants = [
-  { suffix: 'a', color: 'bg-amber-300', size: 'h-2 w-2', dx: 0, dy: 0, drift: 0, sway: 0, rotate: 0, delay: 0 },
-  { suffix: 'b', color: 'bg-emerald-300', size: 'h-2.5 w-1.5', dx: 18, dy: -18, drift: 18, sway: 8, rotate: 36, delay: 0.08 },
-  { suffix: 'c', color: 'bg-sky-300', size: 'h-1.5 w-4', dx: -14, dy: -34, drift: 36, sway: -6, rotate: -32, delay: 0.14 },
-  { suffix: 'd', color: 'bg-rose-300', size: 'h-3.5 w-1.5', dx: 10, dy: -8, drift: 28, sway: 12, rotate: 58, delay: 0.05 },
-  { suffix: 'e', color: 'bg-fuchsia-300', size: 'h-1.5 w-6', dx: -22, dy: -24, drift: 44, sway: -10, rotate: -48, delay: 0.12 },
-  { suffix: 'f', color: 'bg-pink-200', size: 'h-1 w-2.5', dx: 24, dy: -40, drift: 52, sway: 6, rotate: 74, delay: 0.18 },
-  { suffix: 'g', color: 'bg-rose-200', size: 'h-2 w-5', dx: -30, dy: -10, drift: 62, sway: -14, rotate: -64, delay: 0.04 },
-  { suffix: 'h', color: 'bg-cyan-200', size: 'h-4 w-1', dx: 28, dy: -28, drift: 70, sway: 10, rotate: 96, delay: 0.1 },
-  { suffix: 'i', color: 'bg-lime-200', size: 'h-1.5 w-3', dx: -8, dy: -46, drift: 58, sway: 4, rotate: 118, delay: 0.16 },
+  { suffix: 'a', color: 'bg-[rgb(var(--confetti-amber))]', size: 'h-2 w-2', dx: 0, dy: 0, drift: 0, sway: 0, rotate: 0, delay: 0 },
+  { suffix: 'b', color: 'bg-[rgb(var(--confetti-emerald))]', size: 'h-2.5 w-1.5', dx: 18, dy: -18, drift: 18, sway: 8, rotate: 36, delay: 0.08 },
+  { suffix: 'c', color: 'bg-[rgb(var(--confetti-sky))]', size: 'h-1.5 w-4', dx: -14, dy: -34, drift: 36, sway: -6, rotate: -32, delay: 0.14 },
+  { suffix: 'd', color: 'bg-[rgb(var(--confetti-rose))]', size: 'h-3.5 w-1.5', dx: 10, dy: -8, drift: 28, sway: 12, rotate: 58, delay: 0.05 },
+  { suffix: 'e', color: 'bg-[rgb(var(--confetti-fuchsia))]', size: 'h-1.5 w-6', dx: -22, dy: -24, drift: 44, sway: -10, rotate: -48, delay: 0.12 },
+  { suffix: 'f', color: 'bg-[rgb(var(--confetti-pink))]', size: 'h-1 w-2.5', dx: 24, dy: -40, drift: 52, sway: 6, rotate: 74, delay: 0.18 },
+  { suffix: 'g', color: 'bg-[rgb(var(--confetti-rose))]', size: 'h-2 w-5', dx: -30, dy: -10, drift: 62, sway: -14, rotate: -64, delay: 0.04 },
+  { suffix: 'h', color: 'bg-[rgb(var(--confetti-cyan))]', size: 'h-4 w-1', dx: 28, dy: -28, drift: 70, sway: 10, rotate: 96, delay: 0.1 },
+  { suffix: 'i', color: 'bg-[rgb(var(--confetti-lime))]', size: 'h-1.5 w-3', dx: -8, dy: -46, drift: 58, sway: 4, rotate: 118, delay: 0.16 },
   { suffix: 'j', color: 'bg-white', size: 'h-1 w-1', dx: 34, dy: -14, drift: 48, sway: 16, rotate: -20, delay: 0.2 },
 ] as const;
 
@@ -66,10 +66,10 @@ function PartyPopperSvg({ side }: { side: (typeof celebratoryLaunchers)[number][
     <svg viewBox="0 0 60 44" className="absolute inset-0 h-full w-full overflow-visible">
       <defs>
         <linearGradient id={bodyGradientId} x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor={side === 'left' ? '#a5f3fc' : '#fde68a'} />
-          <stop offset="30%" stopColor={side === 'left' ? '#22d3ee' : '#f472b6'} />
-          <stop offset="72%" stopColor={side === 'left' ? '#4ade80' : '#fb7185'} />
-          <stop offset="100%" stopColor={side === 'left' ? '#0ea5e9' : '#be185d'} />
+          <stop offset="0%" stopColor={side === 'left' ? 'rgb(var(--confetti-cyan))' : 'rgb(var(--confetti-amber))'} />
+          <stop offset="30%" stopColor={side === 'left' ? 'rgb(var(--confetti-emerald))' : 'rgb(var(--confetti-pink))'} />
+          <stop offset="72%" stopColor={side === 'left' ? 'rgb(var(--confetti-emerald))' : 'rgb(var(--confetti-rose))'} />
+          <stop offset="100%" stopColor={side === 'left' ? 'rgb(var(--confetti-sky))' : 'rgb(var(--confetti-rose))'} />
         </linearGradient>
         <linearGradient id={shineGradientId} x1="0%" y1="0%" x2="100%" y2="0%">
           <stop offset="0%" stopColor="rgba(255,255,255,0.72)" />

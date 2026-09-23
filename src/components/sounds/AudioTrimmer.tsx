@@ -24,12 +24,19 @@ function drawWaveform(
   const step = Math.max(1, Math.floor(data.length / width));
 
   ctx.clearRect(0, 0, width, height);
-  ctx.fillStyle = '#0f172a';
+  const styles = getComputedStyle(canvas);
+  const wfBg = styles.getPropertyValue('--waveform-bg').trim() || '15 23 42';
+  const wfBar = styles.getPropertyValue('--waveform-bar').trim() || '51 65 85';
+  const wfActive = styles.getPropertyValue('--waveform-active').trim() || '0 188 212';
+  const wfPlayhead = styles.getPropertyValue('--waveform-playhead').trim() || '255 255 255';
+  const wfMarker = styles.getPropertyValue('--waveform-marker').trim() || '251 191 36';
+
+  ctx.fillStyle = `rgb(${wfBg.replace(/ /g, ',')})`;
   ctx.fillRect(0, 0, width, height);
 
   const sx = startRatio * width;
   const ex = endRatio * width;
-  ctx.fillStyle = 'rgba(0,188,212,0.08)';
+  ctx.fillStyle = `rgb(${wfActive.replace(/ /g, ',')} / 0.08)`;
   ctx.fillRect(sx, 0, ex - sx, height);
 
   for (let i = 0; i < width; i++) {
@@ -43,13 +50,13 @@ function drawWaveform(
     }
 
     const ratio = i / width;
-    ctx.fillStyle = ratio >= startRatio && ratio <= endRatio ? '#00bcd4' : '#334155';
+    ctx.fillStyle = ratio >= startRatio && ratio <= endRatio ? `rgb(${wfActive.replace(/ /g, ',')})` : `rgb(${wfBar.replace(/ /g, ',')})`;
     const y = (1 + min) * amp;
     const h = Math.max(1, (max - min) * amp);
     ctx.fillRect(i, y, 1, h);
   }
 
-  ctx.strokeStyle = '#ffffff';
+  ctx.strokeStyle = `rgb(${wfPlayhead.replace(/ /g, ',')})`;
   ctx.lineWidth = 2;
   [sx, ex].forEach((x) => {
     ctx.beginPath();
@@ -60,7 +67,7 @@ function drawWaveform(
 
   if (playheadRatio !== null) {
     const px = playheadRatio * width;
-    ctx.strokeStyle = '#fbbf24';
+    ctx.strokeStyle = `rgb(${wfMarker.replace(/ /g, ',')})`;
     ctx.lineWidth = 2;
     ctx.beginPath();
     ctx.moveTo(px, 0);
@@ -69,7 +76,7 @@ function drawWaveform(
   }
 
   const handleSize = 12;
-  ctx.fillStyle = '#ffffff';
+  ctx.fillStyle = `rgb(${wfPlayhead.replace(/ /g, ',')})`;
 
   ctx.beginPath();
   ctx.moveTo(sx, 0);

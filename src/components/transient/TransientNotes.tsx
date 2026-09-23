@@ -564,7 +564,7 @@ export default function TransientNotes() {
                     <button
                       onClick={() => handleDeleteNote(note.id)}
                       type="button"
-                      className="relative z-10 rounded-full border border-red-500/25 bg-surface px-3 py-1 text-xs text-red-300 transition-colors hover:bg-red-500/10"
+                      className="relative z-10 rounded-full border border-danger/25 bg-surface px-3 py-1 text-xs text-danger transition-colors hover:bg-danger/10"
                     >
                       破棄
                     </button>
@@ -599,7 +599,7 @@ export default function TransientNotes() {
                               <button
                                 onClick={() => handleDeleteNoteItem(note.id, item.id)}
                                 type="button"
-                                className="rounded-full border border-red-500/25 bg-red-500/10 px-3 py-1 text-xs text-red-200 transition-colors hover:bg-red-500/20"
+                                className="rounded-full border border-danger/25 bg-danger/10 px-3 py-1 text-xs text-danger transition-colors hover:bg-danger/20"
                               >
                                 削除
                               </button>
@@ -725,7 +725,7 @@ export default function TransientNotes() {
                         <button
                           onClick={() => handleDeleteTomorrowTodo(todo.id)}
                           type="button"
-                          className="rounded-full border border-red-500/25 bg-red-500/10 px-3 py-1 text-xs text-red-200 transition-colors hover:bg-red-500/20"
+                          className="rounded-full border border-danger/25 bg-danger/10 px-3 py-1 text-xs text-danger transition-colors hover:bg-danger/20"
                         >
                           削除
                         </button>
@@ -942,7 +942,7 @@ export default function TransientNotes() {
                           <button
                             onClick={() => handleDeleteTemplate(template.id)}
                             type="button"
-                            className="rounded-full border border-red-500/30 px-3 py-1 text-xs text-red-300 transition-colors hover:bg-red-500/10"
+                            className="rounded-full border border-danger/30 px-3 py-1 text-xs text-danger transition-colors hover:bg-danger/10"
                           >
                             削除
                           </button>

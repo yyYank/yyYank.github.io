@@ -155,7 +155,7 @@ function Modal({ date, records, onAdd, onDelete, onClose }: ModalProps) {
 
           {records.length > 0 && (
             <div className="mb-5 space-y-3">
-              <p className="text-center text-lg font-bold text-yellow-300">よくできました！</p>
+              <p className="text-center text-lg font-bold text-warning">よくできました！</p>
               {records.map((r) => (
                 <div
                   key={r.id}
@@ -165,7 +165,7 @@ function Modal({ date, records, onAdd, onDelete, onClose }: ModalProps) {
                   <span className="text-text text-base flex-1">{r.content}</span>
                   <button
                     onClick={() => onDelete(r.id)}
-                    className="text-faint hover:text-red-400 transition-colors text-sm shrink-0"
+                    className="text-faint hover:text-danger transition-colors text-sm shrink-0"
                     title="けす"
                   >
                     ✕
@@ -359,7 +359,7 @@ function GoalModal({ person, onSave, onClose }: GoalModalProps) {
               <button
                 type="button"
                 onClick={handleClear}
-                className="w-full text-sm text-faint hover:text-red-400 transition-colors"
+                className="w-full text-sm text-faint hover:text-danger transition-colors"
               >
                 もくひょうをけす
               </button>
@@ -548,7 +548,7 @@ export default function Otetsudai() {
                 handleDeletePerson(selectedPerson.id);
               }
             }}
-            className="shrink-0 ml-auto text-sm text-faint hover:text-red-400 transition-colors"
+            className="shrink-0 ml-auto text-sm text-faint hover:text-danger transition-colors"
           >
             このひとをけす
           </button>
@@ -564,7 +564,7 @@ export default function Otetsudai() {
               </p>
               <div className="flex items-center justify-center gap-3">
                 <span className="text-5xl">⭐</span>
-                <span className="text-5xl font-bold text-yellow-300">
+                <span className="text-5xl font-bold text-warning">
                   {currentPersonRecordCount}
                 </span>
                 <span className="text-xl text-muted font-bold self-end mb-1">かい</span>
@@ -589,7 +589,7 @@ export default function Otetsudai() {
                   <div
                     className={`h-full rounded-full transition-all duration-500 ${
                       goalAchieved
-                        ? 'bg-gradient-to-r from-yellow-400 to-yellow-300'
+                        ? 'bg-warning'
                         : 'bg-gradient-to-r from-accent-cyan to-accent-green'
                     }`}
                     style={{
@@ -598,7 +598,7 @@ export default function Otetsudai() {
                   />
                 </div>
                 {goalAchieved && (
-                  <p className="text-center text-yellow-300 font-bold text-lg mt-2">
+                  <p className="text-center text-warning font-bold text-lg mt-2">
                     🎉 もくひょう たっせい！ 🎉
                   </p>
                 )}
@@ -651,7 +651,7 @@ export default function Otetsudai() {
                 <div
                   key={day}
                   className={`text-center text-sm font-bold py-2 border-b border-border ${
-                    i === 0 ? 'text-red-400' : i === 6 ? 'text-blue-400' : 'text-muted'
+                    i === 0 ? 'text-danger' : i === 6 ? 'text-accent' : 'text-muted'
                   }`}
                 >
                   {day}
@@ -688,9 +688,9 @@ export default function Otetsudai() {
                         isToday
                           ? 'bg-accent-cyan text-dark-900 rounded-full w-7 h-7 flex items-center justify-center'
                           : dow === 0
-                            ? 'text-red-400'
+                            ? 'text-danger'
                             : dow === 6
-                              ? 'text-blue-400'
+                              ? 'text-accent'
                               : 'text-muted'
                       }`}
                     >
@@ -739,7 +739,7 @@ export default function Otetsudai() {
               }
               window.open(`line://msg/text/${encodeURIComponent(msg)}`, '_self');
             }}
-            className="inline-flex items-center gap-1.5 text-sm text-faint hover:text-[#06C755] transition-colors"
+            className="inline-flex items-center gap-1.5 text-sm text-faint hover:text-success transition-colors"
           >
             LINE で シェア
           </button>

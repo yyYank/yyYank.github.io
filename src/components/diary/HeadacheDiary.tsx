@@ -123,7 +123,7 @@ export default function HeadacheDiary() {
         <button
           onClick={handleRecord}
           disabled={loading}
-          className="px-8 py-4 bg-red-600 hover:bg-red-500 disabled:bg-red-900 disabled:cursor-not-allowed text-text font-bold text-xl rounded-xl transition-colors shadow-lg"
+          className="px-8 py-4 bg-danger hover:bg-danger/80 disabled:bg-danger/30 disabled:cursor-not-allowed text-text font-bold text-xl rounded-xl transition-colors shadow-lg"
         >
           {loading ? '記録中...' : '頭痛い'}
         </button>
@@ -153,7 +153,7 @@ export default function HeadacheDiary() {
                 </span>
                 <button
                   onClick={() => handleDelete(entry.id)}
-                  className="text-faint hover:text-red-400 transition-colors opacity-0 group-hover:opacity-100 ml-4 text-xs"
+                  className="text-faint hover:text-danger transition-colors opacity-0 group-hover:opacity-100 ml-4 text-xs"
                   title="削除"
                 >
                   削除

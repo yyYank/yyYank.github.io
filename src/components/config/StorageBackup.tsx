@@ -110,7 +110,7 @@ export default function StorageBackup() {
         />
 
         {importState.step === 'error' && (
-          <div className="mt-4 bg-red-950/40 border border-red-800/60 rounded-lg p-4 text-sm text-red-300">
+          <div className="mt-4 bg-danger/10 border border-danger/40 rounded-lg p-4 text-sm text-danger">
             {importState.message}
           </div>
         )}
@@ -140,7 +140,7 @@ export default function StorageBackup() {
         )}
 
         {importState.step === 'done' && (
-          <div className="mt-4 bg-green-950/30 border border-green-800/50 rounded-lg p-4 text-sm text-green-300">
+          <div className="mt-4 bg-success/10 border border-success/40 rounded-lg p-4 text-sm text-success">
             <span className="font-mono">{importState.keyCount}</span> 件のキーをインポートしました。
           </div>
         )}

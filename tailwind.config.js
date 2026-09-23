@@ -19,6 +19,9 @@ export default {
         'accent-strong': 'rgb(var(--accent-strong) / <alpha-value>)',
         'accent-soft': 'rgb(var(--accent-soft) / <alpha-value>)',
         'accent-foreground': 'rgb(var(--accent-foreground) / <alpha-value>)',
+        success: 'rgb(var(--success) / <alpha-value>)',
+        danger: 'rgb(var(--danger) / <alpha-value>)',
+        warning: 'rgb(var(--warning) / <alpha-value>)',
       },
       fontFamily: {
         sans: ['Inter', 'Noto Sans JP', 'system-ui', 'sans-serif'],

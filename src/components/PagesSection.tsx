@@ -63,7 +63,7 @@ export default function PagesSection() {
                   }}
                   whileHover={{
                     scale: 1.03,
-                    borderColor: 'rgba(236, 72, 153, 0.5)',
+                    borderColor: 'rgb(var(--accent) / 0.5)',
                   }}
                   className="block p-4 bg-surface/50 border border-border rounded-lg hover:bg-surface-2 transition-colors group"
                 >

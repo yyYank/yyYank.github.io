@@ -7,7 +7,7 @@ interface MascotConfig {
   name: string;
   image: string;
   alt: string;
-  color: string;
+  colorVar: string;
 }
 
 const mascotMap: Record<string, MascotConfig> = {
@@ -15,25 +15,25 @@ const mascotMap: Record<string, MascotConfig> = {
     name: 'Duke',
     image: '/images/mascots/duke.svg',
     alt: 'Duke - Java mascot',
-    color: '#f89820',
+    colorVar: '--brand-java',
   },
   Kotlin: {
     name: 'Kodee',
     image: '/images/mascots/kodee.svg',
     alt: 'Kodee - Kotlin mascot',
-    color: '#7F52FF',
+    colorVar: '--brand-kotlin',
   },
   Go: {
     name: 'Gopher',
     image: '/images/mascots/gopher.svg',
     alt: 'Gopher - Go mascot',
-    color: '#00ADD8',
+    colorVar: '--brand-go',
   },
   Rust: {
     name: 'Ferris',
     image: '/images/mascots/ferris.svg',
     alt: 'Ferris - Rust mascot',
-    color: '#DEA584',
+    colorVar: '--brand-rust',
   },
 };
 
@@ -67,7 +67,7 @@ export function TechBadge({ tech }: TechBadgeProps) {
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         className={`px-4 py-2 bg-surface-2 border border-border-strong rounded-full text-accent font-mono text-sm inline-block ${mascot ? 'cursor-pointer' : ''}`}
-        style={mascot ? { borderColor: `${mascot.color}40` } : undefined}
+        style={mascot ? { borderColor: `rgb(var(${mascot.colorVar}) / 0.25)` } : undefined}
       >
         {tech}
       </motion.span>
@@ -110,7 +110,7 @@ export function TechBadge({ tech }: TechBadgeProps) {
             >
               <div
                 className="absolute inset-0 blur-xl rounded-full opacity-50"
-                style={{ backgroundColor: mascot.color }}
+                style={{ backgroundColor: `rgb(var(${mascot.colorVar}))` }}
               />
               <img
                 src={mascot.image}
@@ -126,9 +126,9 @@ export function TechBadge({ tech }: TechBadgeProps) {
                 <span
                   className="text-xs font-mono px-2 py-1 rounded-full"
                   style={{
-                    backgroundColor: `${mascot.color}20`,
-                    color: mascot.color,
-                    border: `1px solid ${mascot.color}40`
+                    backgroundColor: `rgb(var(${mascot.colorVar}) / 0.13)`,
+                    color: `rgb(var(${mascot.colorVar}))`,
+                    border: `1px solid rgb(var(${mascot.colorVar}) / 0.25)`
                   }}
                 >
                   {mascot.name}

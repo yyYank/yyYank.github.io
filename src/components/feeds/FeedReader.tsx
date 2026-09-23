@@ -580,9 +580,9 @@ function WeatherSection({ weather }: { weather: WeatherData }) {
                     {weatherCodeToEmoji(day.weatherCode)}
                   </span>
                   <span className="text-muted">
-                    <span className="text-red-400">{day.tempMax}°</span>
+                    <span className="text-danger">{day.tempMax}°</span>
                     <span className="text-faint mx-1">/</span>
-                    <span className="text-blue-400">{day.tempMin}°</span>
+                    <span className="text-accent">{day.tempMin}°</span>
                   </span>
                   <span className="text-faint text-xs">
                     ☔ {day.precipProb}%
@@ -655,7 +655,7 @@ function DateHeader({ holidays }: { holidays: Record<string, string> }) {
   return (
     <div className="mb-6 font-mono text-sm text-muted">
       <span>{year}/{month}/{day}（{weekday}）</span>
-      {holiday && <span className="ml-2 text-red-400">{holiday}</span>}
+      {holiday && <span className="ml-2 text-danger">{holiday}</span>}
     </div>
   );
 }
@@ -1157,21 +1157,21 @@ export default function FeedReader() {
       case 'nikkei':
         return { className: 'bg-accent-pink/20 text-accent-strong', label: '日経' };
       case 'reuters':
-        return { className: 'bg-orange-500/20 text-orange-400', label: 'Reuters' };
+        return { className: 'bg-warning/20 text-warning', label: 'Reuters' };
       case 'toyokeizai':
-        return { className: 'bg-blue-500/20 text-blue-400', label: '東洋経済' };
+        return { className: 'bg-accent/20 text-accent', label: '東洋経済' };
       case 'reddit':
-        return { className: 'bg-red-500/20 text-red-400', label: 'Reddit' };
+        return { className: 'bg-danger/20 text-danger', label: 'Reddit' };
       case 'bbc':
-        return { className: 'bg-white/20 text-text', label: 'BBC' };
+        return { className: 'bg-surface-2 text-text', label: 'BBC' };
       case 'cisa':
-        return { className: 'bg-sky-500/20 text-sky-300', label: 'CISA' };
+        return { className: 'bg-accent/20 text-accent', label: 'CISA' };
       case 'darkreading':
-        return { className: 'bg-amber-500/20 text-amber-300', label: 'Dark Reading' };
+        return { className: 'bg-warning/20 text-warning', label: 'Dark Reading' };
       case 'bleepingcomputer':
-        return { className: 'bg-emerald-500/20 text-emerald-300', label: 'BleepingComputer' };
+        return { className: 'bg-success/20 text-success', label: 'BleepingComputer' };
       case 'github':
-        return { className: 'bg-gray-400/20 text-text', label: 'GitHub' };
+        return { className: 'bg-surface-2 text-text', label: 'GitHub' };
     }
   };
 
@@ -1239,7 +1239,7 @@ export default function FeedReader() {
 
       {/* Error */}
       {activeErrors.length > 0 && (
-        <div className="bg-red-900/20 border border-red-500/30 rounded-lg p-4 mb-6 text-red-300">
+        <div className="bg-danger/10 border border-danger/30 rounded-lg p-4 mb-6 text-danger">
           {tab === 'all'
             ? `取得に失敗したフィード: ${activeErrors.map((key) => FEED_LABELS[key]).join(', ')}`
             : `${FEED_LABELS[activeErrors[0]]} の取得に失敗しました。`}
@@ -1248,7 +1248,7 @@ export default function FeedReader() {
 
       {/* Stale cache notice */}
       {showingStaleCache && (
-        <div className="bg-yellow-900/20 border border-yellow-500/30 rounded-lg p-4 mb-6 text-yellow-200">
+        <div className="bg-warning/10 border border-warning/30 rounded-lg p-4 mb-6 text-warning">
           直近のキャッシュを表示しています。バックグラウンドで再取得中です。
         </div>
       )}
@@ -1300,7 +1300,7 @@ export default function FeedReader() {
                 className="shrink-0 mt-0.5 text-lg leading-none transition-colors hover:scale-110"
                 title={isFav ? 'お気に入り解除' : 'お気に入りに追加'}
               >
-                {isFav ? <span className="text-yellow-400">★</span> : <span className="text-faint">☆</span>}
+                {isFav ? <span className="text-warning">★</span> : <span className="text-faint">☆</span>}
               </button>
               <a
                 href={item.link}

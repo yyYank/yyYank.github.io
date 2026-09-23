@@ -12,16 +12,16 @@ const CYCLE_UI = {
   weekly: {
     periodLabel: '今週',
     routineLabel: '毎週のルーティン',
-    badgeClassName: 'border-purple-400/30 bg-purple-400/10 text-purple-200',
-    snackbarClassName: 'border-purple-400/30',
-    snackbarTextClassName: 'text-purple-100',
+    badgeClassName: 'border-accent/30 bg-accent-soft text-accent',
+    snackbarClassName: 'border-accent/30',
+    snackbarTextClassName: 'text-accent',
   },
   monthly: {
     periodLabel: '今月',
     routineLabel: '毎月のルーティン',
-    badgeClassName: 'border-amber-400/30 bg-amber-400/10 text-amber-200',
-    snackbarClassName: 'border-amber-400/30',
-    snackbarTextClassName: 'text-amber-100',
+    badgeClassName: 'border-warning/30 bg-warning/10 text-warning',
+    snackbarClassName: 'border-warning/30',
+    snackbarTextClassName: 'text-warning',
   },
 } as const;
 
@@ -49,9 +49,9 @@ export function RemainingDaysChip({
 }) {
   return (
     <div className="fixed bottom-4 right-4 z-40 rounded-full border border-border-strong bg-surface/90 px-4 py-2 text-xs text-muted shadow-lg backdrop-blur">
-      <span className="text-purple-200">今週あと{weeklyRemaining}日</span>
+      <span className="text-accent">今週あと{weeklyRemaining}日</span>
       <span className="mx-1.5 text-faint">/</span>
-      <span className="text-amber-200">今月あと{monthlyRemaining}日</span>
+      <span className="text-warning">今月あと{monthlyRemaining}日</span>
     </div>
   );
 }
