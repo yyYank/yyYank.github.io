@@ -92,11 +92,11 @@ function Activity({ frags }: { frags: Frag[] }) {
           return (
             <g key={d.t}>
               <rect x={x} y={h - bh} width={bw} height={bh} rx={2}
-                fill={d.n === 0 ? "#232733" : ageColor(d.t)} opacity={d.n === 0 ? 0.5 : 1} />
+                fill={d.n === 0 ? "var(--raised)" : ageColor(d.t)} opacity={d.n === 0 ? 0.5 : 1} />
               {first && (
                 <>
-                  <line x1={x - 1.5} y1={0} x2={x - 1.5} y2={h} stroke="#2C313D" strokeWidth="1" />
-                  <text x={x} y={h + 20} fill="#6B7284" fontSize="10" fontFamily="ui-monospace, monospace">
+                  <line x1={x - 1.5} y1={0} x2={x - 1.5} y2={h} stroke="var(--line)" strokeWidth="1" />
+                  <text x={x} y={h + 20} fill="var(--icon)" fontSize="10" fontFamily="ui-monospace, monospace">
                     {dt.getMonth() + 1}月
                   </text>
                 </>
@@ -134,16 +134,16 @@ function Clock({ frags }: { frags: Frag[] }) {
     <div className="dfg-scrollx">
       <svg width={left + 24 * (cell + gap)} height={top + 7 * (cell + gap) + 8}>
         {[0, 6, 12, 18, 23].map((hh) => (
-          <text key={hh} x={left + hh * (cell + gap)} y={10} fill="#6B7284" fontSize="9"
+          <text key={hh} x={left + hh * (cell + gap)} y={10} fill="var(--icon)" fontSize="9"
             fontFamily="ui-monospace, monospace">{hh}</text>
         ))}
         {grid.map((row, wd) => (
           <g key={wd}>
-            <text x={0} y={top + wd * (cell + gap) + cell - 2} fill="#6B7284" fontSize="10">{WEEK[wd]}</text>
+            <text x={0} y={top + wd * (cell + gap) + cell - 2} fill="var(--icon)" fontSize="10">{WEEK[wd]}</text>
             {row.map((n, hh) => (
               <rect key={hh} x={left + hh * (cell + gap)} y={top + wd * (cell + gap)}
                 width={cell} height={cell} rx={2.5}
-                fill={n === 0 ? "#1A1D26" : "#E8A13A"} opacity={n === 0 ? 1 : 0.25 + (n / max) * 0.75} />
+                fill={n === 0 ? "var(--ground)" : "var(--lamp)"} opacity={n === 0 ? 1 : 0.25 + (n / max) * 0.75} />
             ))}
           </g>
         ))}
@@ -238,7 +238,7 @@ function Graph({ frags, onOpen }: { frags: Frag[]; onOpen: (id: string) => void 
       <svg viewBox={`0 0 ${W} ${H}`} width="100%" style={{ maxHeight: "62vh" }}>
         {edges.map((e, i) => (
           <line key={i} x1={nodes[e.a].x} y1={nodes[e.a].y} x2={nodes[e.b].x} y2={nodes[e.b].y}
-            stroke="#4E647A" strokeWidth={0.6 + e.v * 3} opacity={0.3 + e.v} />
+            stroke="var(--quote)" strokeWidth={0.6 + e.v * 3} opacity={0.3 + e.v} />
         ))}
         {nodes.map((p, i) => (
           <circle key={i} cx={p.x} cy={p.y} r={linked.has(i) ? 5.5 : 3.4}

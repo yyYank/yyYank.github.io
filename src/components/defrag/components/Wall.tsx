@@ -126,7 +126,7 @@ export function Wall({ topics, items, rootId, onOpenDrawer, onOpen, onBundle, on
                   left: pos.x, top: pos.y,
                   background: col.bg,
                   borderTopColor: it.color && it.color !== "plain" ? col.edge : ageColor(stamp),
-                  color: "#23262E",
+                  color: "var(--note-text)",
                   transform: dragging ? `rotate(${rot < 0 ? -3.5 : 3.5}deg) scale(1.06)` : undefined,
                 }}
                 onPointerDown={(e) => down(e, it)}

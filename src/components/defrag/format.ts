@@ -38,11 +38,11 @@ export const shortDate = (ts: number) => absDate(ts, false);
 
 /* 明るい紙色に墨字。暗い盤面に貼る前提 */
 export const NOTE_COLORS = [
-  { id: "plain",  bg: "#EDE9DE", edge: "#BCB49F" },
-  { id: "amber",  bg: "#F5D68B", edge: "#C99A2E" },
-  { id: "rose",   bg: "#F2B9BC", edge: "#C46E76" },
-  { id: "teal",   bg: "#A9DBD2", edge: "#489C93" },
-  { id: "indigo", bg: "#BCC6F0", edge: "#6E7BC9" },
-  { id: "olive",  bg: "#D2DFA4", edge: "#8DA34F" },
+  { id: "plain",  bg: "var(--note-plain)",  edge: "var(--note-plain-edge)" },
+  { id: "amber",  bg: "var(--note-amber)",  edge: "var(--note-amber-edge)" },
+  { id: "rose",   bg: "var(--note-rose)",   edge: "var(--note-rose-edge)" },
+  { id: "teal",   bg: "var(--note-teal)",   edge: "var(--note-teal-edge)" },
+  { id: "indigo", bg: "var(--note-indigo)", edge: "var(--note-indigo-edge)" },
+  { id: "olive",  bg: "var(--note-olive)",  edge: "var(--note-olive-edge)" },
 ];
 export const colorOf = (id?: string) => NOTE_COLORS.find((c) => c.id === id) || NOTE_COLORS[0];
