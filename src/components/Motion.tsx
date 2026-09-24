@@ -1,6 +1,6 @@
 'use client';
 
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, MotionConfig } from 'framer-motion';
 import { useState, useEffect, useMemo } from 'react';
 
 interface TextSwitchAnimationProps {
@@ -83,33 +83,35 @@ export function TextSwitchAnimation({
   ]);
 
   return (
-    <span style={{ position: 'relative', display: 'inline-block' }}>
-      <AnimatePresence mode="wait" initial={false}>
-        {showFirst ? (
-          <motion.span
-            key="first"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: duration }}
-            className={className}
-            style={{ display: 'inline-block' }}
-          >
-            {currentFirstText}
-          </motion.span>
-        ) : (
-          <motion.span
-            key="second"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: duration }}
-            className={className}
-            style={{ display: 'inline-block' }}
-          >
-            {currentSecondText}
-          </motion.span>
-        )}
-      </AnimatePresence>
-    </span>
+    <MotionConfig reducedMotion="user">
+      <span style={{ position: 'relative', display: 'inline-block' }}>
+        <AnimatePresence mode="wait" initial={false}>
+          {showFirst ? (
+            <motion.span
+              key="first"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: duration }}
+              className={className}
+              style={{ display: 'inline-block' }}
+            >
+              {currentFirstText}
+            </motion.span>
+          ) : (
+            <motion.span
+              key="second"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: duration }}
+              className={className}
+              style={{ display: 'inline-block' }}
+            >
+              {currentSecondText}
+            </motion.span>
+          )}
+        </AnimatePresence>
+      </span>
+    </MotionConfig>
   );
 }

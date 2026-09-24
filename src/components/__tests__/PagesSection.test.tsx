@@ -24,6 +24,7 @@ function stripMotionProps<T extends Record<string, unknown>>(props: T) {
 
 vi.mock('framer-motion', () => ({
   AnimatePresence: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+  MotionConfig: ({ children }: { children: React.ReactNode }) => <>{children}</>,
   motion: {
     span: ({ children, ...props }: React.HTMLAttributes<HTMLSpanElement>) => (
       <span {...stripMotionProps(props)}>{children}</span>

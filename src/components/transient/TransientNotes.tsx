@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, MotionConfig, motion } from 'framer-motion';
 import CelebrationConfetti from './CelebrationConfetti';
 import {
   createId,
@@ -184,6 +184,14 @@ function formatDateTime(value: string): string {
 }
 
 export default function TransientNotes() {
+  return (
+    <MotionConfig reducedMotion="user">
+      <TransientNotesContent />
+    </MotionConfig>
+  );
+}
+
+function TransientNotesContent() {
   const [templates, setTemplates] = useState<Template[]>([]);
   const [notes, setNotes] = useState<TransientNote[]>([]);
   const [selectedTemplateId, setSelectedTemplateId] = useState('');

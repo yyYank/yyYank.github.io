@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, MotionConfig } from 'framer-motion';
 
 const PAGES = [
   { href: '/kotlin-rev/', label: '逆引きKotlin', desc: 'Kotlinリファレンス' },
@@ -18,6 +18,14 @@ const PAGES = [
 ];
 
 export default function PagesSection() {
+  return (
+    <MotionConfig reducedMotion="user">
+      <PagesSectionContent />
+    </MotionConfig>
+  );
+}
+
+function PagesSectionContent() {
   const [open, setOpen] = useState(false);
 
   return (
