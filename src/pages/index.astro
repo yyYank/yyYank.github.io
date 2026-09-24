@@ -27,7 +27,7 @@ const pageLinks = [
 
       <StaggerContainer className="mt-12 grid grid-cols-2 sm:grid-cols-3 gap-3" client:visible>
         {pageLinks.map((item) => (
-          <StaggerItem>
+          <StaggerItem className="nav-cell">
             <HoverCard client:visible>
               <a
                 href={item.href}

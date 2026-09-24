@@ -57,7 +57,10 @@ const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
         var hiddenNav = JSON.parse(localStorage.getItem('site-nav-visibility') || '[]');
         if (Array.isArray(hiddenNav) && hiddenNav.length) {
           document.querySelectorAll('[data-nav-href]').forEach(function (el) {
-            if (hiddenNav.indexOf(el.getAttribute('data-nav-href')) >= 0) el.style.display = 'none';
+            if (hiddenNav.indexOf(el.getAttribute('data-nav-href')) >= 0) {
+              // index のグリッドはラッパーがマスになるので、マスごと隠す
+              (el.closest('.nav-cell') || el).style.display = 'none';
+            }
           });
         }
       } catch (e) {}
