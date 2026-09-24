@@ -58,7 +58,7 @@ const groups = [
                 aria-controls={`panel-${t.id}`}
                 aria-selected="false"
                 data-toolkit-tab={t.id}
-                class="toolkit-tab px-3 py-2 rounded-lg text-sm font-medium transition-colors text-muted hover:text-text hover:bg-surface-2"
+                class="toolkit-tab px-3 py-2 rounded-lg text-sm font-medium transition duration-fast ease-ui active:scale-95 text-muted hover:text-text hover:bg-surface-2"
               >
                 <span class="mr-1.5">{t.icon}</span>{t.label}
               </button>
@@ -68,31 +68,31 @@ const groups = [
       ))}
     </div>
 
-    <section id="panel-snippet" role="tabpanel" aria-labelledby="tab-snippet" data-toolkit-panel="snippet" hidden>
+    <section id="panel-snippet" role="tabpanel" aria-labelledby="tab-snippet" data-toolkit-panel="snippet" class="fx-enter" hidden>
       <h2 class="text-2xl font-bold text-text mb-2">Snippet</h2>
       <p class="text-muted mb-8">コードスニペットをファジー検索</p>
       <SnippetSearch client:load snippets={allSnippets} />
     </section>
 
-    <section id="panel-random-pass" role="tabpanel" aria-labelledby="tab-random-pass" data-toolkit-panel="random-pass" hidden>
+    <section id="panel-random-pass" role="tabpanel" aria-labelledby="tab-random-pass" data-toolkit-panel="random-pass" class="fx-enter" hidden>
       <h2 class="text-2xl font-bold text-text mb-2">Random Pass</h2>
       <p class="text-muted mb-8">ランダムパスワード生成</p>
       <PasswordGenerator client:load />
     </section>
 
-    <section id="panel-count" role="tabpanel" aria-labelledby="tab-count" data-toolkit-panel="count" hidden>
+    <section id="panel-count" role="tabpanel" aria-labelledby="tab-count" data-toolkit-panel="count" class="fx-enter" hidden>
       <h2 class="text-2xl font-bold text-text mb-2">Count</h2>
       <p class="text-muted mb-8">文字数カウント</p>
       <CharCount client:load />
     </section>
 
-    <section id="panel-img-paste" role="tabpanel" aria-labelledby="tab-img-paste" data-toolkit-panel="img-paste" hidden>
+    <section id="panel-img-paste" role="tabpanel" aria-labelledby="tab-img-paste" data-toolkit-panel="img-paste" class="fx-enter" hidden>
       <h2 class="text-2xl font-bold text-text mb-2">Image Paste</h2>
       <p class="text-muted mb-8">クリップボードから画像をペーストして保存</p>
       <ImagePaste client:load />
     </section>
 
-    <section id="panel-audio" role="tabpanel" aria-labelledby="tab-audio" data-toolkit-panel="audio" hidden>
+    <section id="panel-audio" role="tabpanel" aria-labelledby="tab-audio" data-toolkit-panel="audio" class="fx-enter" hidden>
       <h2 class="text-2xl font-bold text-text mb-2">Audio Tool</h2>
       <p class="text-muted mb-8">音声変換・連結・トリミング・音量調整ツール — ブラウザ内で処理（サーバー不要）</p>
       <div class="grid md:grid-cols-2 gap-6">
@@ -109,7 +109,7 @@ const groups = [
       </p>
     </section>
 
-    <section id="panel-movie" role="tabpanel" aria-labelledby="tab-movie" data-toolkit-panel="movie" hidden>
+    <section id="panel-movie" role="tabpanel" aria-labelledby="tab-movie" data-toolkit-panel="movie" class="fx-enter" hidden>
       <h2 class="text-2xl font-bold text-text mb-2">Movie Tool</h2>
       <p class="text-muted mb-8">動画トリミングツール — ブラウザ内で処理（サーバー不要）</p>
       <MovieTrimmer client:load />
@@ -123,7 +123,7 @@ const groups = [
     </section>
   </div>
 
-  <section id="panel-ocr" role="tabpanel" aria-labelledby="tab-ocr" data-toolkit-panel="ocr" hidden>
+  <section id="panel-ocr" role="tabpanel" aria-labelledby="tab-ocr" data-toolkit-panel="ocr" class="fx-enter" hidden>
     <OcrTool />
   </section>
 

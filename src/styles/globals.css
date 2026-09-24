@@ -192,6 +192,65 @@
   opacity: 0;
 }
 
+/* ページ遷移: ヘッダーは固定したまま、中身だけ入れ替える */
+@view-transition {
+  navigation: auto;
+}
+
+body > header {
+  view-transition-name: site-header;
+}
+
+::view-transition-old(root) {
+  animation: page-out 0.12s cubic-bezier(.4, 0, 1, 1) both;
+}
+
+::view-transition-new(root) {
+  animation: page-in 0.3s cubic-bezier(.2, .8, .2, 1) both;
+}
+
+@keyframes page-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+/* 操作時のフィードバック */
+@keyframes fx-enter {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+}
+
+.fx-enter {
+  animation: fx-enter 0.3s cubic-bezier(.2, .8, .2, 1) both;
+}
+
+@keyframes fx-pop {
+  0% {
+    transform: scale(.9);
+  }
+  60% {
+    transform: scale(1.06);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.fx-pop {
+  display: inline-block;
+  animation: fx-pop 0.3s cubic-bezier(.2, .8, .2, 1);
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -200,5 +259,11 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
   }
 }

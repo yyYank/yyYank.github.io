@@ -16,10 +16,12 @@ export default function CopyButton({ text }: CopyButtonProps) {
   return (
     <button
       onClick={handleCopy}
-      className="px-2 py-1 text-xs rounded bg-surface-2 hover:bg-accent-soft text-muted hover:text-accent transition-colors"
+      className={`px-2 py-1 text-xs rounded transition duration-fast ease-ui active:scale-95 ${
+        copied ? 'bg-accent-soft text-accent' : 'bg-surface-2 hover:bg-accent-soft text-muted hover:text-accent'
+      }`}
       title="Copy to clipboard"
     >
-      {copied ? 'Copied!' : 'Copy'}
+      {copied ? <span className="fx-pop">Copied ✓</span> : 'Copy'}
     </button>
   );
 }
