@@ -42,9 +42,9 @@ const groups = [
     <h1 class="text-3xl font-bold text-text mb-2">Toolkit</h1>
     <p class="text-muted mb-8">映像・音声・画像・テキストのツール集</p>
 
-    <div class="flex flex-col sm:flex-row gap-4 mb-8" role="tablist" aria-label="ツール切り替え">
+    <div class="flex flex-col sm:flex-row gap-6 mb-8" role="tablist" aria-label="ツール切り替え">
       {groups.map((group) => (
-        <div class="flex-1 bg-surface/60 border border-border rounded-lg p-3">
+        <div class="flex-1">
           <div class="text-xs text-faint mb-2">{group.label}</div>
           <div class="flex gap-2 flex-wrap">
             {group.tabs.map((t) => (
@@ -55,7 +55,7 @@ const groups = [
                 aria-controls={`panel-${t.id}`}
                 aria-selected="false"
                 data-toolkit-tab={t.id}
-                class="toolkit-tab px-3 py-2 rounded-lg text-sm font-medium transition-all bg-surface-2 text-muted border border-border hover:text-text hover:border-border-strong"
+                class="toolkit-tab px-3 py-2 rounded-lg text-sm font-medium transition-all text-muted hover:text-text hover:bg-surface-2"
               >
                 <span class="mr-1.5">{t.icon}</span>{t.label}
               </button>
@@ -125,8 +125,8 @@ const groups = [
   </section>
 
   <script>
-    const ACTIVE = ['bg-accent-cyan/20', 'text-accent', 'border-accent/40'];
-    const INACTIVE = ['bg-surface-2', 'text-muted', 'border-border', 'hover:text-text', 'hover:border-border-strong'];
+    const ACTIVE = ['bg-accent-soft', 'text-accent'];
+    const INACTIVE = ['text-muted', 'hover:text-text', 'hover:bg-surface-2'];
     const tabs = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-toolkit-tab]'));
     const panels = Array.from(document.querySelectorAll<HTMLElement>('[data-toolkit-panel]'));
     const tabIds = tabs.map((t) => t.dataset.toolkitTab!);
