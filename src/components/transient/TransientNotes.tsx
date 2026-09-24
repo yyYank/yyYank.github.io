@@ -493,7 +493,7 @@ export default function TransientNotes() {
         transition={{ duration: 0.3, ease: [0.2, 0.8, 0.2, 1] }}
         className="space-y-6"
       >
-        <motion.div layout className="rounded-panel border border-accent/20 bg-surface p-6 shadow-lg shadow-accent/5">
+        <motion.div layout="position" className="rounded-panel border border-accent/20 bg-surface p-6 shadow-lg shadow-accent/5">
           <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
             <div>
               <p className="text-sm font-semibold uppercase tracking-[0.28em] text-accent">Today</p>
@@ -535,7 +535,7 @@ export default function TransientNotes() {
                     <motion.article
                       key={note.id}
                       id={`transient-note-${note.id}`}
-                      layout
+                      layout="position"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
@@ -658,7 +658,7 @@ export default function TransientNotes() {
             )}
           </AnimatePresence>
 
-          <motion.div layout className="mt-6 rounded-ui border border-border bg-surface p-5">
+          <motion.div layout="position" className="mt-6 rounded-ui border border-border bg-surface p-5">
             <button onClick={() => setNextOpen((c) => !c)} type="button" className="flex w-full items-center justify-between gap-3">
               <h3 className="text-xs font-semibold uppercase tracking-[0.28em] text-accent/70">
                 <span className="text-muted">{nextOpen ? '▼' : '▶'}</span> Next / 明日用TODO
@@ -737,7 +737,7 @@ export default function TransientNotes() {
             )}
           </motion.div>
 
-          <motion.div layout className="mt-6 rounded-ui border border-border bg-surface p-5">
+          <motion.div layout="position" className="mt-6 rounded-ui border border-border bg-surface p-5">
             <div className="flex flex-wrap items-end gap-3">
               <label className="grid flex-1 gap-2 text-sm text-text min-w-[220px]">
                 <span>再生成するテンプレート</span>
@@ -823,7 +823,7 @@ export default function TransientNotes() {
 
       </motion.section>
 
-      <motion.div layout className="rounded-ui border border-border bg-surface p-5">
+      <motion.div layout="position" className="rounded-ui border border-border bg-surface p-5">
         <div className="mb-4 flex flex-wrap items-end justify-between gap-4">
           <div>
             <p className="text-xs uppercase tracking-[0.28em] text-accent/70">Templates</p>
@@ -864,7 +864,7 @@ export default function TransientNotes() {
                   {templates.map((template) => (
                     <motion.div
                       key={template.id}
-                      layout
+                      layout="position"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
@@ -961,7 +961,7 @@ export default function TransientNotes() {
                 </AnimatePresence>
               </div>
 
-              <motion.div layout className="rounded-ui border border-border bg-surface p-5">
+              <motion.div layout="position" className="rounded-ui border border-border bg-surface p-5">
                 <h4 className="text-lg font-semibold text-text">
                   {editingTemplateId ? 'テンプレートを編集' : 'テンプレートを追加'}
                 </h4>
