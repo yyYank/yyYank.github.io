@@ -1,6 +1,6 @@
 'use client';
 
-import { motion, AnimatePresence, MotionConfig } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect, useCallback } from 'react';
 
 interface MascotConfig {
@@ -148,12 +148,10 @@ interface TechBadgeListProps {
 
 export function TechBadgeList({ techs }: TechBadgeListProps) {
   return (
-    <MotionConfig reducedMotion="user">
-      <div className="flex flex-wrap justify-center gap-3">
-        {techs.map((tech) => (
-          <TechBadge key={tech} tech={tech} />
-        ))}
-      </div>
-    </MotionConfig>
+    <div className="flex flex-wrap justify-center gap-3">
+      {techs.map((tech) => (
+        <TechBadge key={tech} tech={tech} />
+      ))}
+    </div>
   );
 }
