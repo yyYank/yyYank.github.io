@@ -4,8 +4,8 @@ import type { Cycle } from './transientNoteState';
 import type { CycleRoutineInfo } from './useCycleRoutine';
 
 const fadeTransition = {
-  duration: 0.55,
-  ease: [0.22, 1, 0.36, 1] as const,
+  duration: 0.3,
+  ease: [0.2, 0.8, 0.2, 1] as const,
 };
 
 const CYCLE_UI = {

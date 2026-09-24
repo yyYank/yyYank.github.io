@@ -1293,7 +1293,7 @@ export default function FeedReader() {
           return (
             <div
               key={`${item.source}-${i}`}
-              className="bg-surface-2 border border-border rounded-lg p-4 hover:border-accent/40 hover:bg-surface-2 transition-colors group flex items-start gap-3"
+              className="bg-surface-2 border border-border rounded-lg p-4 hover:border-accent/40 hover:bg-accent-soft transition-colors group flex items-start gap-3"
             >
               <button
                 onClick={() => toggleFavorite(item)}

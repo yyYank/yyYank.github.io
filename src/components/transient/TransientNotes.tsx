@@ -93,8 +93,8 @@ const CYCLE_LABELS: Record<Cycle, string> = {
 };
 
 const fadeTransition = {
-  duration: 0.55,
-  ease: [0.22, 1, 0.36, 1] as const,
+  duration: 0.3,
+  ease: [0.2, 0.8, 0.2, 1] as const,
 };
 
 function getTodayKey(): string {
@@ -490,7 +490,7 @@ export default function TransientNotes() {
       <motion.section
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 0.3, ease: [0.2, 0.8, 0.2, 1] }}
         className="space-y-6"
       >
         <motion.div layout className="rounded-panel border border-accent/20 bg-surface p-6 shadow-lg shadow-accent/5">
@@ -542,7 +542,7 @@ export default function TransientNotes() {
                       transition={fadeTransition}
                       className="rounded-ui border border-border bg-surface p-5"
                     >
-                  <div className="sticky top-[65px] z-10 -mx-5 -mt-5 mb-4 flex flex-wrap items-start justify-between gap-3 overflow-hidden border-b border-border bg-bg/90 px-5 py-4 backdrop-blur-xl">
+                  <div className="sticky top-[65px] z-10 -mx-5 -mt-5 mb-4 flex flex-wrap items-start justify-between gap-3 overflow-hidden border-b border-border bg-bg px-5 py-4">
                     <div className="pointer-events-none absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-bg via-bg/85 to-transparent blur-xl opacity-95" />
                     <div className="pointer-events-none absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-bg via-bg/85 to-transparent blur-xl opacity-95" />
                     <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-surface/4 via-transparent to-transparent opacity-70" />
@@ -806,7 +806,7 @@ export default function TransientNotes() {
                             <button
                               onClick={() => handleDeleteNoteItem(group.noteId, item.id)}
                               type="button"
-                              className="rounded-full border border-border bg-surface-2 px-3 py-1 text-xs text-muted transition-colors hover:bg-surface-2"
+                              className="rounded-full border border-border bg-surface-2 px-3 py-1 text-xs text-muted transition-colors hover:bg-accent-soft"
                             >
                               削除
                             </button>
@@ -1050,7 +1050,7 @@ export default function TransientNotes() {
       <motion.section
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 0.9, delay: 0.24, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 0.3, delay: 0.12, ease: [0.2, 0.8, 0.2, 1] }}
         className="flex justify-center pt-2"
       >
         <button

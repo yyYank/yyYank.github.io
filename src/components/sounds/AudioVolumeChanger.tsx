@@ -123,7 +123,7 @@ export default function AudioVolumeChanger() {
       <button
         onClick={handlePreview}
         disabled={!file}
-        className="w-full py-2 px-4 bg-surface-2 text-text font-semibold rounded-lg hover:bg-surface-2 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+        className="w-full py-2 px-4 bg-surface-2 text-text font-semibold rounded-lg hover:bg-accent-soft disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
       >
         {playing ? 'Stop Preview' : 'Preview'}
       </button>

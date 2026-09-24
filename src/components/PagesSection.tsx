@@ -46,7 +46,7 @@ export default function PagesSection() {
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.4, ease: [0.25, 0.8, 0.25, 1] }}
+            transition={{ duration: 0.3, ease: [0.2, 0.8, 0.2, 1] }}
             className="overflow-hidden"
           >
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mt-6">
@@ -57,9 +57,9 @@ export default function PagesSection() {
                   initial={{ opacity: 0, y: 20, scale: 0.95 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   transition={{
-                    duration: 0.4,
-                    delay: i * 0.07,
-                    ease: [0.25, 0.8, 0.25, 1],
+                    duration: 0.3,
+                    delay: i * 0.05,
+                    ease: [0.2, 0.8, 0.2, 1],
                   }}
                   whileHover={{
                     scale: 1.03,

@@ -93,7 +93,7 @@ export function TechBadge({ tech }: TechBadgeProps) {
               type: 'spring',
               stiffness: 260,
               damping: 20,
-              duration: 0.6,
+              duration: 0.3,
             }}
             className="absolute left-1/2 bottom-full mb-3 -translate-x-1/2 z-50"
           >

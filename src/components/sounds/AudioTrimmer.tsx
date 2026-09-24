@@ -379,14 +379,14 @@ export default function AudioTrimmer() {
 
                 <button
                   onClick={() => void playSelection()}
-                  className="px-4 py-2 bg-surface-2 text-text border border-border-strong rounded-lg text-sm font-medium hover:bg-surface-2 transition-colors"
+                  className="px-4 py-2 bg-surface-2 text-text border border-border-strong rounded-lg text-sm font-medium hover:bg-accent-soft transition-colors"
                 >
                   選択範囲を再生
                 </button>
 
                 <button
                   onClick={() => syncCurrentTime(startTime)}
-                  className="px-4 py-2 bg-surface-2 text-text border border-border-strong rounded-lg text-sm font-medium hover:bg-surface-2 transition-colors"
+                  className="px-4 py-2 bg-surface-2 text-text border border-border-strong rounded-lg text-sm font-medium hover:bg-accent-soft transition-colors"
                 >
                   開始位置へ
                 </button>

@@ -131,7 +131,7 @@ export default function HeadacheDiary() {
         <button
           onClick={handleCopy}
           disabled={entries.length === 0}
-          className="px-6 py-4 bg-surface-2 hover:bg-surface-2 disabled:opacity-40 disabled:cursor-not-allowed text-text font-medium rounded-xl transition-colors border border-border-strong"
+          className="px-6 py-4 bg-surface-2 hover:bg-accent-soft disabled:opacity-40 disabled:cursor-not-allowed text-text font-medium rounded-xl transition-colors border border-border-strong"
         >
           {copied ? 'コピーしました！' : 'マークダウンにコピー'}
         </button>
