@@ -23,8 +23,8 @@ export function FadeIn({ children, delay = 0, direction = 'up', className = '' }
     <motion.div
       initial={{ opacity: 0, ...directionOffset[direction] }}
       whileInView={{ opacity: 1, y: 0, x: 0 }}
-      viewport={{ once: true, margin: '-50px' }}
-      transition={{ duration: 0.18, delay, ease: [0.2, 0.8, 0.2, 1] }}
+      viewport={{ once: true, margin: '-100px' }}
+      transition={{ duration: 0.3, delay, ease: [0.2, 0.8, 0.2, 1] }}
       className={className}
     >
       {children}
@@ -43,7 +43,7 @@ export function StaggerContainer({ children, className = '', staggerDelay = 0.1 
     <motion.div
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, margin: '-50px' }}
+      viewport={{ once: true, margin: '-100px' }}
       variants={{
         hidden: {},
         visible: {
@@ -74,7 +74,7 @@ export function StaggerItem({ children, className = '' }: StaggerItemProps) {
           y: 0,
           scale: 1,
           transition: {
-            duration: 0.18,
+            duration: 0.3,
             ease: [0.2, 0.8, 0.2, 1],
           },
         },
@@ -97,8 +97,8 @@ export function ScaleIn({ children, delay = 0, className = '' }: ScaleInProps) {
     <motion.div
       initial={{ opacity: 0, scale: 0.97 }}
       whileInView={{ opacity: 1, scale: 1 }}
-      viewport={{ once: true, margin: '-50px' }}
-      transition={{ duration: 0.18, delay, ease: [0.2, 0.8, 0.2, 1] }}
+      viewport={{ once: true, margin: '-100px' }}
+      transition={{ duration: 0.3, delay, ease: [0.2, 0.8, 0.2, 1] }}
       className={className}
     >
       {children}
