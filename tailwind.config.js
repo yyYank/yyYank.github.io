@@ -15,7 +15,13 @@ export default {
         faint: 'rgb(var(--faint) / <alpha-value>)',
         border: 'rgb(var(--border) / <alpha-value>)',
         'border-strong': 'rgb(var(--border-strong) / <alpha-value>)',
-        accent: 'rgb(var(--accent) / <alpha-value>)',
+        accent: {
+          DEFAULT: 'rgb(var(--accent) / <alpha-value>)',
+          cyan: '#00d4ff',
+          purple: '#a855f7',
+          green: '#10b981',
+          pink: '#f472b6',
+        },
         'accent-strong': 'rgb(var(--accent-strong) / <alpha-value>)',
         'accent-soft': 'rgb(var(--accent-soft) / <alpha-value>)',
         'accent-foreground': 'rgb(var(--accent-foreground) / <alpha-value>)',
@@ -69,6 +75,7 @@ export default {
       transitionDuration: {
         fast: '120ms',
         normal: '180ms',
+        slow: '500ms',
       },
       transitionTimingFunction: {
         ui: 'cubic-bezier(.2,.8,.2,1)',
