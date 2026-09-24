@@ -1,6 +1,5 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { FadeIn } from '../components/Motion';
 import PasswordGenerator from '../components/random-pass/PasswordGenerator.tsx';
 import CharCount from '../components/count/CharCount.tsx';
 import ImagePaste from '../components/img-paste/ImagePaste.tsx';
@@ -40,10 +39,8 @@ const groups = [
 <BaseLayout title="Toolkit" description="映像・音声・画像・テキストの各種ツール集">
   <script is:inline src="/coi-serviceworker.js"></script>
   <div class="container mx-auto px-4 py-8 max-w-4xl">
-    <FadeIn client:visible>
-      <h1 class="text-3xl font-bold text-text mb-2">Toolkit</h1>
-      <p class="text-muted mb-8">映像・音声・画像・テキストのツール集</p>
-    </FadeIn>
+    <h1 class="text-3xl font-bold text-text mb-2">Toolkit</h1>
+    <p class="text-muted mb-8">映像・音声・画像・テキストのツール集</p>
 
     <div class="flex flex-col sm:flex-row gap-6 mb-8" role="tablist" aria-label="ツール切り替え">
       {groups.map((group) => (

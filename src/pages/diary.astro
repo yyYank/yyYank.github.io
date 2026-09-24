@@ -1,15 +1,12 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { FadeIn } from '../components/Motion';
 import HeadacheDiary from '../components/diary/HeadacheDiary.tsx';
 ---
 
 <BaseLayout title="Diary" description="頭痛記録">
   <div class="container mx-auto px-4 py-8 max-w-4xl">
-    <FadeIn client:visible>
-      <h1 class="text-3xl font-bold text-text mb-2">Diary</h1>
-      <p class="text-muted mb-8">頭痛の症状記録</p>
-    </FadeIn>
+    <h1 class="text-3xl font-bold text-text mb-2">Diary</h1>
+    <p class="text-muted mb-8">頭痛の症状記録</p>
     <HeadacheDiary client:load />
   </div>
 </BaseLayout>
