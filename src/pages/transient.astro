@@ -1,14 +1,17 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { FadeIn } from '../components/Motion';
 import TransientNotes from '../components/transient/TransientNotes.tsx';
 ---
 
 <BaseLayout title="Transient" description="Transient Notes: 一時的 / 非蓄積 / 自動消去のノート">
   <div class="mx-auto max-w-2xl px-5 py-16">
-    <div class="mb-10">
-      <h1 class="text-3xl font-semibold tracking-[-0.035em] text-text">Transient</h1>
-      <p class="mt-2 text-sm text-muted">ここに置いたものは今日だけ残ります。</p>
-    </div>
+    <FadeIn client:visible>
+      <div class="mb-10">
+        <h1 class="text-3xl font-semibold tracking-[-0.035em] text-text">Transient</h1>
+        <p class="mt-2 text-sm text-muted">ここに置いたものは今日だけ残ります。</p>
+      </div>
+    </FadeIn>
 
     <TransientNotes client:load />
   </div>

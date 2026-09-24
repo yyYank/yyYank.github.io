@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { FadeIn, StaggerContainer, StaggerItem, HoverCard } from '../components/Motion';
 
 import { NAV_PAGES } from '../lib/navVisibility';
 
@@ -15,24 +16,30 @@ const pageLinks = [
       <h1 class="text-5xl font-bold mb-4 overflow-hidden">
         <span class="marquee-text inline-block bg-gradient-to-r from-accent-cyan via-accent-purple to-accent-pink bg-clip-text text-transparent">yankなページ</span>
       </h1>
-      <a
-        href="/profile/"
-        class="inline-block mt-3 text-sm text-accent hover:text-accent-purple transition-colors underline underline-offset-4"
-      >
-        about me →
-      </a>
+      <FadeIn delay={0.2} client:visible>
+        <a
+          href="/profile/"
+          class="inline-block mt-3 text-sm text-accent hover:text-accent-purple transition-colors underline underline-offset-4"
+        >
+          about me →
+        </a>
+      </FadeIn>
 
-      <div class="mt-12 grid grid-cols-2 sm:grid-cols-3 gap-3">
+      <StaggerContainer className="mt-12 grid grid-cols-2 sm:grid-cols-3 gap-3" client:visible>
         {pageLinks.map((item) => (
-          <a
-            href={item.href}
-            data-nav-href={item.href}
-            class="block p-4 bg-surface border border-border rounded-lg text-muted hover:text-accent hover:border-accent/40 transition duration-fast ease-ui hover:-translate-y-px active:scale-[.98]"
-          >
-            <span class="mr-1.5">{item.icon}</span>{item.label}
-          </a>
+          <StaggerItem>
+            <HoverCard client:visible>
+              <a
+                href={item.href}
+                data-nav-href={item.href}
+                class="block p-4 bg-surface border border-border rounded-lg text-muted hover:text-accent hover:border-accent/40 transition-colors"
+              >
+                <span class="mr-1.5">{item.icon}</span>{item.label}
+              </a>
+            </HoverCard>
+          </StaggerItem>
         ))}
-      </div>
+      </StaggerContainer>
     </div>
   </div>
 </BaseLayout>
