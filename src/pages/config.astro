@@ -1,13 +1,16 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { FadeIn } from '../components/Motion';
 import StorageBackup from '../components/config/StorageBackup.tsx';
 import NavVisibility from '../components/config/NavVisibility.tsx';
 ---
 
 <BaseLayout title="Config" description="サイト設定とlocalStorageのバックアップ">
   <div class="container mx-auto px-4 py-8 max-w-2xl">
-    <h1 class="text-3xl font-bold text-text mb-2">Config</h1>
-    <p class="text-muted mb-8">サイト設定とlocalStorageのバックアップ</p>
+    <FadeIn client:visible>
+      <h1 class="text-3xl font-bold text-text mb-2">Config</h1>
+      <p class="text-muted mb-8">サイト設定とlocalStorageのバックアップ</p>
+    </FadeIn>
 
     <div class="space-y-8">
       <NavVisibility client:load />

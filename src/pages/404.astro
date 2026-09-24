@@ -1,21 +1,30 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { ScaleIn, FadeIn, HoverCard } from '../components/Motion';
 ---
 
 <BaseLayout title="404 - Page Not Found">
   <div class="container mx-auto px-4 py-16 text-center">
-    <h1 class="text-8xl font-bold bg-gradient-to-r from-accent-cyan to-accent-purple bg-clip-text text-transparent mb-4">
-      404
-    </h1>
-    <p class="text-xl text-muted mb-8">ページが見つかりませんでした</p>
-    <a
-      href="/"
-      class="inline-flex items-center gap-2 px-6 py-3 bg-surface-2 border border-border-strong rounded-lg text-accent hover:bg-surface-2 transition-colors"
-    >
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-      </svg>
-      ホームに戻る
-    </a>
+    <ScaleIn client:load>
+      <h1 class="text-8xl font-bold bg-gradient-to-r from-accent-cyan to-accent-purple bg-clip-text text-transparent mb-4">
+        404
+      </h1>
+    </ScaleIn>
+    <FadeIn delay={0.15} client:load>
+      <p class="text-xl text-muted mb-8">ページが見つかりませんでした</p>
+    </FadeIn>
+    <FadeIn delay={0.3} client:load>
+      <HoverCard client:load>
+        <a
+          href="/"
+          class="inline-flex items-center gap-2 px-6 py-3 bg-surface-2 border border-border-strong rounded-lg text-accent hover:bg-accent-soft transition-colors"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          ホームに戻る
+        </a>
+      </HoverCard>
+    </FadeIn>
   </div>
 </BaseLayout>
