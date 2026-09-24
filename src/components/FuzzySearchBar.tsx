@@ -48,7 +48,7 @@ export default function FuzzySearchBar({
 
   return (
     <div className="mb-3">
-      <div className="flex items-center border border-border focus-within:border-accent transition-colors duration-200">
+      <div className="flex items-center border border-border focus-within:border-accent transition-colors duration-normal">
         <span className="px-3 text-accent select-none font-bold">
           {query.trim() ? SPINNER_CHARS[spinnerIndex] : '>'}
         </span>

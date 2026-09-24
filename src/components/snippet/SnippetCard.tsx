@@ -46,7 +46,7 @@ export default function SnippetCard({
 
   return (
     <div
-      className={`fzf-item border-b border-border last:border-b-0 cursor-pointer select-none transition-colors duration-100 ${
+      className={`fzf-item border-b border-border last:border-b-0 cursor-pointer select-none transition-colors duration-fast ${
         isSelected ? 'bg-surface-2' : 'hover:bg-surface'
       }`}
       style={{ animationDelay: `${Math.min(index * 20, 250)}ms` }}
@@ -55,13 +55,13 @@ export default function SnippetCard({
       {/* Title row */}
       <div className="flex items-center gap-2 px-2 py-1.5 font-mono text-sm">
         <span
-          className="w-4 shrink-0 text-accent transition-opacity duration-100"
+          className="w-4 shrink-0 text-accent transition-opacity duration-fast"
           style={{ opacity: isSelected ? 1 : 0 }}
         >
           {'>'}
         </span>
         <span
-          className={`flex-1 truncate transition-colors duration-100 ${
+          className={`flex-1 truncate transition-colors duration-fast ${
             isSelected ? 'text-text' : 'text-muted'
           }`}
         >
@@ -76,7 +76,7 @@ export default function SnippetCard({
       {/* Code preview */}
       <div className="relative ml-8 mr-2 mb-2">
         <pre
-          className={`text-xs font-mono overflow-hidden transition-[max-height,opacity,color] duration-200 ${
+          className={`text-xs font-mono overflow-hidden transition-[max-height,opacity,color] duration-normal ${
             isSelected ? 'text-muted' : 'text-faint'
           }`}
           style={{

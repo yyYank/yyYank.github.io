@@ -13,10 +13,10 @@ interface FadeInProps {
 
 export function FadeIn({ children, delay = 0, direction = 'up', className = '' }: FadeInProps) {
   const directionOffset = {
-    up: { y: 40, x: 0 },
-    down: { y: -40, x: 0 },
-    left: { y: 0, x: 40 },
-    right: { y: 0, x: -40 },
+    up: { y: 6, x: 0 },
+    down: { y: -6, x: 0 },
+    left: { y: 0, x: 6 },
+    right: { y: 0, x: -6 },
   };
 
   return (
@@ -24,7 +24,7 @@ export function FadeIn({ children, delay = 0, direction = 'up', className = '' }
       initial={{ opacity: 0, ...directionOffset[direction] }}
       whileInView={{ opacity: 1, y: 0, x: 0 }}
       viewport={{ once: true, margin: '-50px' }}
-      transition={{ duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: 0.18, delay, ease: [0.2, 0.8, 0.2, 1] }}
       className={className}
     >
       {children}
@@ -68,14 +68,14 @@ export function StaggerItem({ children, className = '' }: StaggerItemProps) {
   return (
     <motion.div
       variants={{
-        hidden: { opacity: 0, y: 30, scale: 0.95 },
+        hidden: { opacity: 0, y: 4, scale: 0.99 },
         visible: {
           opacity: 1,
           y: 0,
           scale: 1,
           transition: {
-            duration: 0.5,
-            ease: [0.22, 1, 0.36, 1],
+            duration: 0.18,
+            ease: [0.2, 0.8, 0.2, 1],
           },
         },
       }}
@@ -95,10 +95,10 @@ interface ScaleInProps {
 export function ScaleIn({ children, delay = 0, className = '' }: ScaleInProps) {
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.8 }}
+      initial={{ opacity: 0, scale: 0.97 }}
       whileInView={{ opacity: 1, scale: 1 }}
       viewport={{ once: true, margin: '-50px' }}
-      transition={{ duration: 0.5, delay, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: 0.18, delay, ease: [0.2, 0.8, 0.2, 1] }}
       className={className}
     >
       {children}

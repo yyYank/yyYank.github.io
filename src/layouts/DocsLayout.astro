@@ -24,7 +24,7 @@ const currentSlug = currentPath.replace(/^\/docs\//, '').replace(/\/$/, '');
       <details class="bg-surface border border-border rounded-lg">
         <summary class="p-4 font-bold text-text cursor-pointer list-none flex items-center justify-between select-none">
           <span>Docs ナビゲーション</span>
-          <span class="text-muted text-xs transition-transform duration-200">▼</span>
+          <span class="text-muted text-xs transition-transform duration-normal">▼</span>
         </summary>
         <div class="px-2 pb-3">
           <DocsSidebar docs={sortedDocs} currentSlug={currentSlug} plain={true} />
