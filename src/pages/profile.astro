@@ -250,14 +250,16 @@ import PagesSection from '../components/PagesSection.tsx';
               { url: 'https://speakerdeck.com/yyyank/debeziumdebian-geng-detakiyaputiyawoxue-bou-number-jjug-ccc', title: 'Debeziumで変更データキャプチャを学ぼう' },
             ].map(slide => (
               <StaggerItem>
-                <a
-                  href={slide.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="block p-3 text-sm bg-surface/50 border border-border rounded-lg text-muted hover:text-accent-purple hover:bg-surface-2 transition-all truncate"
-                >
-                  {slide.title}
-                </a>
+                <HoverCard client:visible>
+                  <a
+                    href={slide.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="block p-3 text-sm bg-surface/50 border border-border rounded-lg text-muted hover:text-accent-purple hover:bg-surface-2 transition-colors truncate"
+                  >
+                    {slide.title}
+                  </a>
+                </HoverCard>
               </StaggerItem>
             ))}
           </StaggerContainer>
@@ -283,7 +285,7 @@ import PagesSection from '../components/PagesSection.tsx';
                     href={lib.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="block px-6 py-3 bg-surface-2 border border-border-strong rounded-lg text-accent-green hover:bg-surface-2 transition-colors font-mono"
+                    class="block px-6 py-3 bg-surface-2 border border-border-strong rounded-lg text-accent-green hover:bg-accent-soft transition-colors font-mono"
                   >
                     {lib.name}
                   </a>
@@ -306,7 +308,7 @@ import PagesSection from '../components/PagesSection.tsx';
               href="https://github.com/yyYank/playwright-blockly"
               target="_blank"
               rel="noopener noreferrer"
-              class="inline-block px-6 py-3 bg-surface-2 border border-border-strong rounded-lg text-accent hover:bg-surface-2 transition-colors font-mono"
+              class="inline-block px-6 py-3 bg-surface-2 border border-border-strong rounded-lg text-accent hover:bg-accent-soft transition-colors font-mono"
             >
               playwright-blockly
             </a>
