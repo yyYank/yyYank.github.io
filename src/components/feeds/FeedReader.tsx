@@ -1293,14 +1293,15 @@ export default function FeedReader() {
           return (
             <div
               key={`${item.source}-${i}`}
-              className="py-4 group flex items-start gap-3"
+              className="fx-enter py-4 group flex items-start gap-3"
+              style={{ animationDelay: `${Math.min(i, 10) * 20}ms` }}
             >
               <button
                 onClick={() => toggleFavorite(item)}
                 className="shrink-0 mt-0.5 text-lg leading-none transition-colors hover:scale-105"
                 title={isFav ? 'お気に入り解除' : 'お気に入りに追加'}
               >
-                {isFav ? <span className="text-warning">★</span> : <span className="text-faint">☆</span>}
+                {isFav ? <span key="fav" className="fx-pop text-warning">★</span> : <span className="text-faint">☆</span>}
               </button>
               <a
                 href={item.link}
