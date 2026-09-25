@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 
 const CHARS_ALPHA = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 const CHARS_DIGITS = '0123456789';
@@ -35,6 +35,11 @@ export default function PasswordGenerator() {
     setCopiedIdx(null);
   }, [length, alpha, digits, symbols]);
 
+  // 設定を変えたらその場で作り直す
+  useEffect(() => {
+    handleGenerate();
+  }, [handleGenerate]);
+
   const handleCopy = useCallback((pw: string, idx: number) => {
     navigator.clipboard.writeText(pw).then(() => {
       setCopiedIdx(idx);
@@ -42,73 +47,70 @@ export default function PasswordGenerator() {
     });
   }, []);
 
+  const hasPool = alpha || digits || symbols;
+
   return (
     <div>
       {/* Settings */}
-      <div className="bg-surface-2 border border-border rounded-lg p-6 mb-6">
-        <div className="flex flex-wrap items-center gap-6">
-          {/* Length */}
-          <label className="flex items-center gap-2 text-sm text-muted">
-            <span>文字数</span>
-            <input
-              type="number"
-              min={4}
-              max={128}
-              value={length}
-              onChange={(e) => setLength(Math.max(4, Math.min(128, Number(e.target.value) || 4)))}
-              className="w-20 bg-surface border border-border-strong rounded px-2 py-1 text-text text-center font-mono"
-            />
-          </label>
+      <div className="flex flex-wrap items-center gap-6 pb-4 border-b border-border">
+        <label className="flex items-center gap-2 text-sm text-muted">
+          <span>文字数</span>
+          <input
+            type="number"
+            min={4}
+            max={128}
+            value={length}
+            onChange={(e) => setLength(Math.max(4, Math.min(128, Number(e.target.value) || 4)))}
+            className="w-16 bg-transparent border-b border-border-strong px-1 py-0.5 text-text text-center font-mono outline-none focus:border-accent transition-colors duration-fast ease-ui"
+          />
+        </label>
 
-          {/* Checkboxes */}
-          <label className="flex items-center gap-2 text-sm text-muted cursor-pointer">
-            <input
-              type="checkbox"
-              checked={alpha}
-              onChange={(e) => setAlpha(e.target.checked)}
-              className="accent-accent-cyan w-4 h-4"
-            />
-            半角英字
-          </label>
+        <label className="flex items-center gap-2 text-sm text-muted cursor-pointer">
+          <input
+            type="checkbox"
+            checked={alpha}
+            onChange={(e) => setAlpha(e.target.checked)}
+            className="accent-accent-cyan w-4 h-4"
+          />
+          半角英字
+        </label>
 
-          <label className="flex items-center gap-2 text-sm text-muted cursor-pointer">
-            <input
-              type="checkbox"
-              checked={digits}
-              onChange={(e) => setDigits(e.target.checked)}
-              className="accent-accent-cyan w-4 h-4"
-            />
-            数字
-          </label>
+        <label className="flex items-center gap-2 text-sm text-muted cursor-pointer">
+          <input
+            type="checkbox"
+            checked={digits}
+            onChange={(e) => setDigits(e.target.checked)}
+            className="accent-accent-cyan w-4 h-4"
+          />
+          数字
+        </label>
 
-          <label className="flex items-center gap-2 text-sm text-muted cursor-pointer">
-            <input
-              type="checkbox"
-              checked={symbols}
-              onChange={(e) => setSymbols(e.target.checked)}
-              className="accent-accent-cyan w-4 h-4"
-            />
-            記号
-          </label>
-        </div>
+        <label className="flex items-center gap-2 text-sm text-muted cursor-pointer">
+          <input
+            type="checkbox"
+            checked={symbols}
+            onChange={(e) => setSymbols(e.target.checked)}
+            className="accent-accent-cyan w-4 h-4"
+          />
+          記号
+        </label>
 
-        {/* Generate button */}
         <button
           onClick={handleGenerate}
-          disabled={!alpha && !digits && !symbols}
-          className="mt-4 px-6 py-2 bg-accent-cyan/20 text-accent border border-accent/40 rounded-lg text-sm font-medium hover:bg-accent-cyan/30 transition duration-fast ease-ui active:scale-95 disabled:active:scale-100 disabled:opacity-30 disabled:cursor-not-allowed"
+          disabled={!hasPool}
+          className="ml-auto text-sm text-muted hover:text-accent transition duration-fast ease-ui active:scale-95 disabled:opacity-30 disabled:cursor-not-allowed"
         >
-          生成
+          作り直す
         </button>
       </div>
 
       {/* Results */}
-      {passwords.length > 0 && (
-        <div className="space-y-2">
+      {hasPool && passwords.length > 0 && (
+        <ul className="divide-y divide-border">
           {passwords.map((pw, i) => (
-            <div
+            <li
               key={`${generation}-${i}`}
-              className="fx-enter flex items-center gap-3 bg-surface-2 border border-border rounded-lg px-4 py-3 group hover:border-accent/40 transition-colors"
+              className="fx-enter flex items-center gap-3 py-3 group"
               style={{ animationDelay: `${i * 30}ms` }}
             >
               <code className="flex-1 font-mono text-sm text-text break-all select-all">
@@ -116,17 +118,17 @@ export default function PasswordGenerator() {
               </code>
               <button
                 onClick={() => handleCopy(pw, i)}
-                className={`shrink-0 px-3 py-1 text-xs rounded border transition duration-fast ease-ui active:scale-95 ${
+                className={`shrink-0 px-2 py-1 text-xs rounded transition duration-fast ease-ui active:scale-95 ${
                   copiedIdx === i
-                    ? 'bg-accent-soft border-accent/40 text-accent'
-                    : 'bg-surface-2 border-border-strong text-muted hover:text-text hover:border-border'
+                    ? 'text-accent'
+                    : 'text-faint group-hover:text-muted hover:text-text'
                 }`}
               >
-                {copiedIdx === i ? <span key="copied" className="fx-pop">Copied ✓</span> : 'Copy'}
+                {copiedIdx === i ? <span key="copied" className="fx-pop">コピーしました</span> : 'Copy'}
               </button>
-            </div>
+            </li>
           ))}
-        </div>
+        </ul>
       )}
     </div>
   );
