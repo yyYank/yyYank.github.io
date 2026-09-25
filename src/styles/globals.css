@@ -209,6 +209,12 @@ body > header {
   animation: page-in 0.3s cubic-bezier(.2, .8, .2, 1) both;
 }
 
+/* トップのマス → 見出しの変形 */
+::view-transition-group(*) {
+  animation-duration: 0.3s;
+  animation-timing-function: cubic-bezier(.2, .8, .2, 1);
+}
+
 @keyframes page-out {
   to {
     opacity: 0;

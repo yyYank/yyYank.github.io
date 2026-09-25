@@ -20,6 +20,11 @@ export const NAV_PAGES: NavPage[] = [
   { href: '/otetsudai/', label: 'おてつだい', icon: '⭐' },
 ];
 
+// トップのマスと遷移先の見出しをつなぐ View Transitions 名
+export function navTransitionName(href: string): string {
+  return `nav-${href.replace(/^\/|\/$/g, '').replace(/\//g, '-') || 'home'}`;
+}
+
 export function loadHiddenNav(storage: Storage): string[] {
   try {
     const raw = storage.getItem(NAV_VISIBILITY_KEY);

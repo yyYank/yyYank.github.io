@@ -2,7 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { FadeIn, StaggerContainer, StaggerItem, HoverCard } from '../components/Motion';
 
-import { NAV_PAGES } from '../lib/navVisibility';
+import { NAV_PAGES, navTransitionName } from '../lib/navVisibility';
 
 const pageLinks = [
   ...NAV_PAGES,
@@ -34,7 +34,7 @@ const pageLinks = [
                 data-nav-href={item.href}
                 class="block p-4 bg-surface border border-border rounded-lg text-muted hover:text-accent hover:border-accent/40 transition-colors"
               >
-                <span class="mr-1.5">{item.icon}</span>{item.label}
+                <span class="mr-1.5">{item.icon}</span><span class="inline-block" style={`view-transition-name: ${navTransitionName(item.href)}`}>{item.label}</span>
               </a>
             </HoverCard>
           </StaggerItem>

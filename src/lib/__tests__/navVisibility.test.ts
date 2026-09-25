@@ -2,6 +2,7 @@ import { describe, expect, it, beforeEach } from 'vitest';
 import {
   NAV_VISIBILITY_KEY,
   loadHiddenNav,
+  navTransitionName,
   saveHiddenNav,
   toggleHiddenNav,
 } from '../navVisibility';
@@ -33,5 +34,14 @@ describe('navVisibility', () => {
     const once = toggleHiddenNav([], '/feeds/');
     expect(once).toEqual(['/feeds/']);
     expect(toggleHiddenNav(once, '/feeds/')).toEqual([]);
+  });
+});
+
+describe('navTransitionName', () => {
+  // トップのマスと遷移先の見出しで同じ名前になること
+  it('パスからView Transitions名を作る', () => {
+    expect(navTransitionName('/diary/')).toBe('nav-diary');
+    expect(navTransitionName('/kotlin-rev/')).toBe('nav-kotlin-rev');
+    expect(navTransitionName('/config/')).toBe('nav-config');
   });
 });
