@@ -1286,14 +1286,14 @@ export default function FeedReader() {
         </div>
       )}
 
-      <div className="space-y-3">
+      <div className="divide-y divide-border">
         {displayItems.map((item, i) => {
           const badge = sourceBadge(item.source);
           const isFav = favoriteLinks.has(item.link);
           return (
             <div
               key={`${item.source}-${i}`}
-              className="bg-surface-2 border border-border rounded-lg p-4 hover:border-accent/40 hover:bg-accent-soft transition-colors group flex items-start gap-3"
+              className="py-4 group flex items-start gap-3"
             >
               <button
                 onClick={() => toggleFavorite(item)}
