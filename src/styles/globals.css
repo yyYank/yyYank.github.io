@@ -257,6 +257,16 @@ body > header {
   animation: fx-pop 0.3s cubic-bezier(.2, .8, .2, 1);
 }
 
+/* タップ: ボタンとブロックリンクは押すと少し沈む(scaleはtransformと合成される) */
+html {
+  -webkit-tap-highlight-color: transparent;
+}
+
+:where(button, [role='button']):not(:disabled):active,
+:where(a):active {
+  scale: 0.97;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
