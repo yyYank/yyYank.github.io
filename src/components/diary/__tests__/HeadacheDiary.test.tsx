@@ -55,7 +55,10 @@ describe('HeadacheDiary', () => {
     render(<HeadacheDiary />);
     const day = (await screen.findByRole('heading', { name: '2026/09/25' })).closest('section')!;
     fireEvent.click(within(day).getByRole('button', { name: '削除' }));
-    expect(screen.queryByRole('heading', { name: '2026/09/25' })).not.toBeInTheDocument();
+    // 縮んで消える演出のあとに取り除かれる
+    await waitFor(() =>
+      expect(screen.queryByRole('heading', { name: '2026/09/25' })).not.toBeInTheDocument(),
+    );
     expect(screen.getAllByRole('listitem')).toHaveLength(2);
   });
 });

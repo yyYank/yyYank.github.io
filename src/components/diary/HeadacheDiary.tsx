@@ -1,4 +1,7 @@
 import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+
+const EASE = [0.2, 0.8, 0.2, 1] as const;
 
 interface DiaryEntry {
   id: string;
@@ -157,14 +160,30 @@ export default function HeadacheDiary() {
       ) : (
         <div className="space-y-8">
           <p className="text-muted text-sm">{entries.length} 件の記録</p>
+          <AnimatePresence initial={false}>
           {groupByDate(entries).map((group) => (
-            <section key={group.date}>
+            <motion.section
+              key={group.date}
+              initial={{ opacity: 0, y: -4 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.18, ease: EASE }}
+              className="overflow-hidden"
+            >
               <h2 className="pb-2 text-sm font-medium text-muted border-b border-border-strong">
                 {group.date}
               </h2>
               <ul className="divide-y divide-border">
+                <AnimatePresence initial={false}>
                 {group.entries.map((entry) => (
-                  <li key={entry.id} className="flex items-center gap-4 py-3 group">
+                  <motion.li
+                    key={entry.id}
+                    initial={{ opacity: 0, height: 0, paddingTop: 0, paddingBottom: 0 }}
+                    animate={{ opacity: 1, height: 'auto', paddingTop: 12, paddingBottom: 12 }}
+                    exit={{ opacity: 0, height: 0, paddingTop: 0, paddingBottom: 0, scale: 0.98 }}
+                    transition={{ duration: 0.18, ease: EASE }}
+                    className="flex items-center gap-4 py-3 group overflow-hidden"
+                  >
                     <time className="shrink-0 font-mono text-sm text-muted">
                       {entry.datetime.split(' ')[1]}
                     </time>
@@ -178,11 +197,13 @@ export default function HeadacheDiary() {
                     >
                       削除
                     </button>
-                  </li>
+                  </motion.li>
                 ))}
+                </AnimatePresence>
               </ul>
-            </section>
+            </motion.section>
           ))}
+          </AnimatePresence>
         </div>
       )}
     </div>
