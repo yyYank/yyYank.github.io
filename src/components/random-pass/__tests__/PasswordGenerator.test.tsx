@@ -56,4 +56,21 @@ describe('PasswordGenerator', () => {
     await waitFor(() => expect(screen.getByText('コピーしました')).toBeInTheDocument());
     expect(writeText).toHaveBeenCalledWith(first);
   });
+
+  // 動きを許可している環境では、ばらけた後に正しいパスワードで止まること
+  it('作り直しの演出が終わるとコピー対象と同じ文字列を表示する', async () => {
+    const original = window.matchMedia;
+    window.matchMedia = ((q: string) => ({ matches: q.includes('no-preference'), media: q })) as unknown as typeof window.matchMedia;
+    try {
+      render(<PasswordGenerator />);
+      // ばらけている途中も文字数は変わらない
+      passwords().forEach((pw) => expect(pw).toHaveLength(16));
+      fireEvent.click(screen.getAllByRole('button', { name: 'Copy' })[0]);
+      await waitFor(() => expect(writeText).toHaveBeenCalled());
+      const copied = (writeText.mock.calls[0] as unknown[])[0];
+      await waitFor(() => expect(passwords()[0]).toBe(copied), { timeout: 1000 });
+    } finally {
+      window.matchMedia = original;
+    }
+  });
 });

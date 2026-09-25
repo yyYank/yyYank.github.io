@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 
 const CHARS_ALPHA = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 const CHARS_DIGITS = '0123456789';
@@ -14,6 +14,45 @@ function generate(length: number, alpha: boolean, digits: boolean, symbols: bool
   const arr = new Uint32Array(length);
   crypto.getRandomValues(arr);
   return Array.from(arr, (v) => pool[v % pool.length]).join('');
+}
+
+const SCRAMBLE_MS = 240;
+
+function prefersMotion(): boolean {
+  return typeof window.matchMedia === 'function' && window.matchMedia('(prefers-reduced-motion: no-preference)').matches;
+}
+
+// 一瞬ばらけてから、左から順に確定する
+function ScrambleText({ value, pool }: { value: string; pool: string }) {
+  const [shown, setShown] = useState(value);
+  const frame = useRef(0);
+
+  useEffect(() => {
+    if (!pool || !prefersMotion()) {
+      setShown(value);
+      return;
+    }
+    const start = performance.now();
+    const tick = () => {
+      // rAF の時刻は start より前になることがあるので performance.now() で測り、0 未満にしない
+      const elapsed = Math.max(0, performance.now() - start);
+      const fixed = Math.floor((elapsed / SCRAMBLE_MS) * value.length);
+      if (fixed >= value.length) {
+        setShown(value);
+        return;
+      }
+      let next = value.slice(0, fixed);
+      for (let i = fixed; i < value.length; i++) {
+        next += pool[Math.floor(Math.random() * pool.length)];
+      }
+      setShown(next);
+      frame.current = requestAnimationFrame(tick);
+    };
+    frame.current = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frame.current);
+  }, [value, pool]);
+
+  return <>{shown}</>;
 }
 
 export default function PasswordGenerator() {
@@ -48,6 +87,7 @@ export default function PasswordGenerator() {
   }, []);
 
   const hasPool = alpha || digits || symbols;
+  const pool = (alpha ? CHARS_ALPHA : '') + (digits ? CHARS_DIGITS : '') + (symbols ? CHARS_SYMBOLS : '');
 
   return (
     <div>
@@ -114,7 +154,7 @@ export default function PasswordGenerator() {
               style={{ animationDelay: `${i * 30}ms` }}
             >
               <code className="flex-1 font-mono text-sm text-text break-all select-all">
-                {pw}
+                <ScrambleText value={pw} pool={pool} />
               </code>
               <button
                 onClick={() => handleCopy(pw, i)}
