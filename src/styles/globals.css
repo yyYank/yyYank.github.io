@@ -267,6 +267,19 @@ html {
   scale: 0.97;
 }
 
+/* 数字がめくれる */
+@keyframes fx-flip {
+  from {
+    opacity: 0;
+    transform: translateY(-40%) rotateX(60deg);
+  }
+}
+
+.fx-flip {
+  display: inline-block;
+  animation: fx-flip 0.18s cubic-bezier(.2, .8, .2, 1);
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

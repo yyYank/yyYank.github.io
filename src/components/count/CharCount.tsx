@@ -6,7 +6,7 @@ export default function CharCount() {
   return (
     <div>
       <div className="mb-2 text-right font-mono text-sm text-muted tabular-nums">
-        {text.length}<span className="text-xs text-faint ml-1">文字</span>
+        <span key={text.length} className="fx-flip">{text.length}</span><span className="text-xs text-faint ml-1">文字</span>
       </div>
       <textarea
         value={text}
