@@ -34,7 +34,7 @@ export function Draft({ topics, items, rootId, onClose }: { topics: Topic[]; ite
     <div className="dfg-draft">
       <div className="dfg-wallbar">
         <h2>下書き — {pathLabel(topics, rootId === ROOT ? null : rootId)}</h2>
-        <button className="dfg-btn" data-key="1" onClick={copy}>{done ? "コピーした" : "コピー"}</button>
+        <button className="dfg-btn" data-key="1" onClick={copy}>{done ? "コピーしました" : "コピー"}</button>
         <button className="dfg-close" onClick={onClose} aria-label="閉じる">✕</button>
       </div>
       <textarea ref={ref} className="dfg-drafttext" value={text} onChange={(e) => setText(e.target.value)} />

@@ -16,7 +16,7 @@ export function BundleExport({ bundle }: { bundle: BundleItem }) {
       </div>
       <div className="dfg-sfoot">
         <span className="dfg-grow" />
-        <button className="dfg-btn" data-key="1" onClick={copy}>{done ? "コピーした" : "コピー"}</button>
+        <button className="dfg-btn" data-key="1" onClick={copy}>{done ? "コピーしました" : "コピー"}</button>
       </div>
     </>
   );

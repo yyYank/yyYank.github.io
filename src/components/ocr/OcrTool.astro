@@ -1008,7 +1008,7 @@
         const text = outputBox.value;
         if (!text) return;
         await navigator.clipboard.writeText(text);
-        copyBtn.textContent = '✓ コピーしました';
+        copyBtn.textContent = 'コピーしました';
         copyBtn.classList.add('copied');
         setTimeout(() => {
           copyBtn.innerHTML = '📋 コピー';

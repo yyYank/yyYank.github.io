@@ -21,7 +21,7 @@ export default function CopyButton({ text }: CopyButtonProps) {
       }`}
       title="Copy to clipboard"
     >
-      {copied ? <span className="fx-pop">Copied ✓</span> : 'Copy'}
+      {copied ? <span className="fx-pop">コピーしました</span> : 'Copy'}
     </button>
   );
 }

@@ -505,7 +505,7 @@ export default function TransientNotes() {
               type="button"
               className="rounded-full border border-border px-4 py-2 text-sm text-text transition-colors hover:border-accent/30 hover:text-text disabled:cursor-not-allowed disabled:opacity-40"
             >
-              {copied ? 'コピー済み' : '当日内容をコピー'}
+              {copied ? 'コピーしました' : '当日内容をコピー'}
             </button>
           </div>
 
