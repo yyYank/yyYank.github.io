@@ -79,6 +79,21 @@ function toMarkdown(entries: DiaryEntry[]): string {
   return lines.join('\n');
 }
 
+// 日付ごとにまとめる（entries は新しい順で保存されている）
+function groupByDate(entries: DiaryEntry[]): { date: string; entries: DiaryEntry[] }[] {
+  const groups: { date: string; entries: DiaryEntry[] }[] = [];
+  for (const entry of entries) {
+    const date = entry.datetime.split(' ')[0];
+    const last = groups[groups.length - 1];
+    if (last && last.date === date) {
+      last.entries.push(entry);
+    } else {
+      groups.push({ date, entries: [entry] });
+    }
+  }
+  return groups;
+}
+
 export default function HeadacheDiary() {
   const [entries, setEntries] = useState<DiaryEntry[]>([]);
   const [loading, setLoading] = useState(false);
@@ -133,34 +148,41 @@ export default function HeadacheDiary() {
           disabled={entries.length === 0}
           className="px-6 py-4 bg-surface-2 hover:bg-accent-soft disabled:opacity-40 disabled:cursor-not-allowed text-text font-medium rounded-xl transition-colors border border-border-strong"
         >
-          {copied ? 'コピーしました！' : 'マークダウンにコピー'}
+          {copied ? 'コピーしました' : 'マークダウンにコピー'}
         </button>
       </div>
 
       {entries.length === 0 ? (
         <p className="text-faint text-sm">記録がありません。「頭痛い」ボタンで記録できます。</p>
       ) : (
-        <div className="space-y-2">
+        <div className="space-y-8">
           <p className="text-muted text-sm">{entries.length} 件の記録</p>
-          <ul className="space-y-2">
-            {entries.map((entry) => (
-              <li
-                key={entry.id}
-                className="flex items-center justify-between bg-surface border border-border rounded-lg px-4 py-3 group"
-              >
-                <span className="text-text text-sm">
-                  頭痛あり {entry.datetime}、東京:{entry.tokyo} 大阪:{entry.osaka}
-                </span>
-                <button
-                  onClick={() => handleDelete(entry.id)}
-                  className="text-faint hover:text-danger transition-colors opacity-0 group-hover:opacity-100 ml-4 text-xs"
-                  title="削除"
-                >
-                  削除
-                </button>
-              </li>
-            ))}
-          </ul>
+          {groupByDate(entries).map((group) => (
+            <section key={group.date}>
+              <h2 className="pb-2 text-sm font-medium text-muted border-b border-border-strong">
+                {group.date}
+              </h2>
+              <ul className="divide-y divide-border">
+                {group.entries.map((entry) => (
+                  <li key={entry.id} className="flex items-center gap-4 py-3 group">
+                    <time className="shrink-0 font-mono text-sm text-muted">
+                      {entry.datetime.split(' ')[1]}
+                    </time>
+                    <span className="flex-1 text-text text-sm">
+                      東京:{entry.tokyo} 大阪:{entry.osaka}
+                    </span>
+                    <button
+                      onClick={() => handleDelete(entry.id)}
+                      className="text-faint hover:text-danger transition-colors opacity-0 group-hover:opacity-100 focus-visible:opacity-100 text-xs"
+                      title="削除"
+                    >
+                      削除
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ))}
         </div>
       )}
     </div>
