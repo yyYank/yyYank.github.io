@@ -8,6 +8,7 @@ import {
   type GanbariRecord,
   type Person,
 } from './ganbariData';
+import { STAMPS, countOwnedStamps } from './stamps';
 
 const WEEKDAYS = ['にち', 'げつ', 'か', 'すい', 'もく', 'きん', 'ど'] as const;
 
@@ -28,11 +29,6 @@ const KIND_DETAILS: Record<
     addLabel: 'ならいごとをついか',
   },
 };
-
-const STAMPS = [
-  '💮', '🌸', '🌈', '❤️', '⭐', '🌻', '🎀', '🦋', '🍀', '🌷',
-  '🌟', '🎵', '🐱', '🐶', '🍓', '🍎', '🌙', '☀️', '🐣', '🐰',
-] as const;
 
 function randomStamp(): string {
   return STAMPS[Math.floor(Math.random() * STAMPS.length)];
@@ -68,7 +64,7 @@ function StampPicker({ selected, onSelect }: StampPickerProps) {
       </button>
       <p className="text-muted text-xs">タップして えらべるよ</p>
       {open && (
-        <div className="grid grid-cols-5 gap-2 bg-surface-2 rounded-xl p-3 border border-border">
+        <div className="grid grid-cols-5 gap-2 bg-surface-2 rounded-xl p-3 border border-border max-h-64 overflow-y-auto">
           {STAMPS.map((s) => (
             <button
               key={s}
@@ -87,6 +83,63 @@ function StampPicker({ selected, onSelect }: StampPickerProps) {
         </div>
       )}
     </div>
+  );
+}
+
+interface StampBookProps {
+  records: GanbariRecord[];
+  personId: string;
+}
+
+function StampBook({ records, personId }: StampBookProps) {
+  const [open, setOpen] = useState(false);
+  const counts = countOwnedStamps(records, personId);
+  const collectedCount = STAMPS.filter((stamp) => (counts[stamp] ?? 0) > 0).length;
+
+  return (
+    <section className="mt-6 bg-surface border border-border rounded-2xl overflow-hidden">
+      <button
+        type="button"
+        aria-expanded={open}
+        aria-controls="stamp-book-grid"
+        onClick={() => setOpen((current) => !current)}
+        className="w-full flex items-center justify-between gap-4 px-5 py-4 text-left hover:bg-surface-2/50 transition-colors"
+      >
+        <span>
+          <span className="block text-lg font-bold text-text">📖 スタンプずかん</span>
+          <span className="block text-sm text-muted mt-0.5">
+            {collectedCount}/{STAMPS.length} しゅるい
+          </span>
+        </span>
+        <span className="text-muted text-xl" aria-hidden="true">{open ? '▲' : '▼'}</span>
+      </button>
+
+      {open && (
+        <div
+          id="stamp-book-grid"
+          className="grid grid-cols-5 sm:grid-cols-10 gap-2 px-4 pb-4 border-t border-border pt-4"
+        >
+          {STAMPS.map((stamp) => {
+            const count = counts[stamp] ?? 0;
+            const owned = count > 0;
+            return (
+              <div
+                key={stamp}
+                aria-label={owned ? `${stamp} ${count}こ` : 'まだもっていないスタンプ'}
+                className={`aspect-square rounded-xl flex flex-col items-center justify-center border ${
+                  owned
+                    ? 'bg-surface-2 border-border-strong'
+                    : 'bg-surface-2/40 border-border/60 text-faint'
+                }`}
+              >
+                <span className={owned ? 'text-2xl' : 'text-lg'}>{owned ? stamp : '？'}</span>
+                {owned && <span className="text-[10px] leading-none text-muted mt-0.5">×{count}</span>}
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </section>
   );
 }
 
@@ -738,6 +791,8 @@ export default function Ganbari() {
               })}
             </div>
           </div>
+
+          <StampBook records={data.records} personId={selectedPerson.id} />
         </>
       )}
 

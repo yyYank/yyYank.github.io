@@ -29,7 +29,7 @@ describe('Ganbari', () => {
       people: [{ id: 'person-1', name: 'ゆう' }],
       records: [
         { id: '1', personId: 'person-1', date: '2026-10-01', content: 'そうじ', stamp: '⭐', createdAt: '', kind: 'otetsudai' },
-        { id: '2', personId: 'person-1', date: '2026-10-02', content: 'ピアノ', stamp: '🎵', createdAt: '', kind: 'naraigoto' },
+        { id: '2', personId: 'person-1', date: '2026-10-02', content: 'ピアノ', stamp: '⭐', createdAt: '', kind: 'naraigoto' },
         { id: '3', personId: 'person-1', date: '2026-10-03', content: 'すいえい', stamp: '🌊', createdAt: '', kind: 'naraigoto' },
       ],
     }));
@@ -70,5 +70,17 @@ describe('Ganbari', () => {
       kind: 'naraigoto',
     }));
     expect(screen.getByRole('tab', { name: /ならいごと.*3 ポイント/ })).toBeInTheDocument();
+  });
+
+  it('スタンプ図鑑に取得種類数と所持数を表示する', async () => {
+    render(<Ganbari />);
+
+    const openButton = await screen.findByRole('button', { name: /スタンプずかん.*2\/100/ });
+    expect(screen.queryByLabelText('⭐ 2こ')).not.toBeInTheDocument();
+
+    await userEvent.click(openButton);
+
+    expect(screen.getByLabelText('⭐ 2こ')).toHaveTextContent('×2');
+    expect(screen.getByLabelText('🌊 1こ')).toHaveTextContent('×1');
   });
 });
