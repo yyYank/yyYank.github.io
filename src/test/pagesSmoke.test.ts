@@ -12,6 +12,7 @@ const topLevelPages = [
   ['src/pages/404.astro', 'BaseLayout title="404 - Page Not Found"'],
   ['src/pages/diary.astro', '<HeadacheDiary client:load />'],
   ['src/pages/feeds.astro', '<FeedReader client:load />'],
+  ['src/pages/ganbari.astro', '<Ganbari client:load />'],
   ['src/pages/index.astro', 'about me'],
   ['src/pages/profile.astro', '<PagesSection client:load />'],
   ['src/pages/toolkit.astro', '<CharCount client:load />'],

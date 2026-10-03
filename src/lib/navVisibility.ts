@@ -17,7 +17,7 @@ export const NAV_PAGES: NavPage[] = [
   { href: '/transient/', label: 'Transient', icon: '🗒️' },
   { href: '/defrag/', label: 'Defrag', icon: '🧩' },
   { href: '/diary/', label: 'Diary', icon: '📔' },
-  { href: '/otetsudai/', label: 'おてつだい', icon: '⭐' },
+  { href: '/ganbari/', label: 'がんばり', icon: '⭐' },
 ];
 
 // トップのマスと遷移先の見出しをつなぐ View Transitions 名

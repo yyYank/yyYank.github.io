@@ -1,7 +1,33 @@
 import { useState, useEffect, useCallback } from 'react';
+import {
+  countPoints,
+  loadGanbariData,
+  saveGanbariData,
+  type GanbariData,
+  type GanbariKind,
+  type GanbariRecord,
+  type Person,
+} from './ganbariData';
 
-const STORAGE_KEY = 'otetsudai-data';
 const WEEKDAYS = ['にち', 'げつ', 'か', 'すい', 'もく', 'きん', 'ど'] as const;
+
+const KIND_DETAILS: Record<
+  GanbariKind,
+  { label: string; icon: string; placeholder: string; addLabel: string }
+> = {
+  otetsudai: {
+    label: 'おてつだい',
+    icon: '🧹',
+    placeholder: 'なにをおてつだいしたかな？',
+    addLabel: 'おてつだいをついか',
+  },
+  naraigoto: {
+    label: 'ならいごと',
+    icon: '🎒',
+    placeholder: 'なにをがんばったかな？',
+    addLabel: 'ならいごとをついか',
+  },
+};
 
 const STAMPS = [
   '💮', '🌸', '🌈', '❤️', '⭐', '🌻', '🎀', '🦋', '🍀', '🌷',
@@ -12,53 +38,8 @@ function randomStamp(): string {
   return STAMPS[Math.floor(Math.random() * STAMPS.length)];
 }
 
-interface Person {
-  id: string;
-  name: string;
-  goal?: number;
-  goalReason?: string;
-}
-
-interface OtetsudaiRecord {
-  id: string;
-  personId: string;
-  date: string;
-  content: string;
-  stamp: string;
-  createdAt: string;
-}
-
-interface OtetsudaiData {
-  people: Person[];
-  records: OtetsudaiRecord[];
-}
-
 function generateId(): string {
   return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
-}
-
-function loadData(): OtetsudaiData {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return { people: [], records: [] };
-    const parsed = JSON.parse(raw);
-    return {
-      people: Array.isArray(parsed.people) ? parsed.people : [],
-      records: Array.isArray(parsed.records)
-        ? parsed.records.map((r: OtetsudaiRecord) => ({ ...r, stamp: r.stamp || '💮' }))
-        : [],
-    };
-  } catch {
-    return { people: [], records: [] };
-  }
-}
-
-function saveData(data: OtetsudaiData): void {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-  } catch {
-    // storage full or unavailable
-  }
 }
 
 function formatDate(dateStr: string): string {
@@ -111,13 +92,14 @@ function StampPicker({ selected, onSelect }: StampPickerProps) {
 
 interface ModalProps {
   date: string;
-  records: OtetsudaiRecord[];
+  kind: GanbariKind;
+  records: GanbariRecord[];
   onAdd: (content: string, stamp: string) => void;
   onDelete: (id: string) => void;
   onClose: () => void;
 }
 
-function Modal({ date, records, onAdd, onDelete, onClose }: ModalProps) {
+function Modal({ date, kind, records, onAdd, onDelete, onClose }: ModalProps) {
   const [content, setContent] = useState('');
   const [stamp, setStamp] = useState(() => randomStamp());
   const [showForm, setShowForm] = useState(records.length === 0);
@@ -181,7 +163,7 @@ function Modal({ date, records, onAdd, onDelete, onClose }: ModalProps) {
               <textarea
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
-                placeholder="なにをおてつだいしたかな？"
+                placeholder={KIND_DETAILS[kind].placeholder}
                 className="w-full bg-surface-2 border border-border-strong rounded-xl p-4 text-text placeholder-faint text-base resize-none focus:outline-none focus:border-accent transition-colors"
                 rows={3}
                 autoFocus
@@ -210,7 +192,7 @@ function Modal({ date, records, onAdd, onDelete, onClose }: ModalProps) {
               onClick={() => setShowForm(true)}
               className="w-full bg-surface-2 border border-border rounded-xl px-4 py-3 text-base text-muted hover:text-accent hover:border-accent/30 transition-colors"
             >
-              ＋ おてつだいをついか
+              ＋ {KIND_DETAILS[kind].addLabel}
             </button>
           )}
         </div>
@@ -279,13 +261,15 @@ function AddPersonModal({ onAdd, onClose }: AddPersonModalProps) {
 
 interface GoalModalProps {
   person: Person;
+  kind: GanbariKind;
   onSave: (goal: number | undefined, goalReason: string) => void;
   onClose: () => void;
 }
 
-function GoalModal({ person, onSave, onClose }: GoalModalProps) {
-  const [goalStr, setGoalStr] = useState(person.goal?.toString() ?? '');
-  const [reason, setReason] = useState(person.goalReason ?? '');
+function GoalModal({ person, kind, onSave, onClose }: GoalModalProps) {
+  const currentGoal = person.goals?.[kind];
+  const [goalStr, setGoalStr] = useState(currentGoal?.target.toString() ?? '');
+  const [reason, setReason] = useState(currentGoal?.reason ?? '');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -310,11 +294,11 @@ function GoalModal({ person, onSave, onClose }: GoalModalProps) {
       >
         <div className="p-6">
           <h2 className="text-xl font-bold text-text mb-4">
-            {person.name}の もくひょう
+            {person.name}の {KIND_DETAILS[kind].label} もくひょう
           </h2>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-muted text-sm mb-1">なんかい？</label>
+              <label className="block text-muted text-sm mb-1">なんポイント？</label>
               <div className="flex items-center gap-2">
                 <input
                   type="number"
@@ -325,7 +309,7 @@ function GoalModal({ person, onSave, onClose }: GoalModalProps) {
                   className="w-24 bg-surface-2 border border-border-strong rounded-xl p-4 text-text placeholder-faint text-2xl text-center focus:outline-none focus:border-accent transition-colors"
                   autoFocus
                 />
-                <span className="text-xl text-muted font-bold">かい</span>
+                <span className="text-xl text-muted font-bold">ポイント</span>
               </div>
             </div>
             <div>
@@ -335,7 +319,7 @@ function GoalModal({ person, onSave, onClose }: GoalModalProps) {
               <textarea
                 value={reason}
                 onChange={(e) => setReason(e.target.value)}
-                placeholder="たとえば：10かい がんばったら おもちゃを かってもらう"
+                placeholder="たとえば：10ポイントで おもちゃを かってもらう"
                 className="w-full bg-surface-2 border border-border-strong rounded-xl p-4 text-text placeholder-faint text-base resize-none focus:outline-none focus:border-accent transition-colors"
                 rows={3}
               />
@@ -355,7 +339,7 @@ function GoalModal({ person, onSave, onClose }: GoalModalProps) {
                 やめる
               </button>
             </div>
-            {person.goal && (
+            {currentGoal && (
               <button
                 type="button"
                 onClick={handleClear}
@@ -371,9 +355,10 @@ function GoalModal({ person, onSave, onClose }: GoalModalProps) {
   );
 }
 
-export default function Otetsudai() {
-  const [data, setData] = useState<OtetsudaiData>({ people: [], records: [] });
+export default function Ganbari() {
+  const [data, setData] = useState<GanbariData>({ people: [], records: [] });
   const [selectedPersonId, setSelectedPersonId] = useState<string | null>(null);
+  const [selectedKind, setSelectedKind] = useState<GanbariKind>('otetsudai');
   const [currentYear, setCurrentYear] = useState(() => new Date().getFullYear());
   const [currentMonth, setCurrentMonth] = useState(() => new Date().getMonth());
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
@@ -381,7 +366,7 @@ export default function Otetsudai() {
   const [showGoalModal, setShowGoalModal] = useState(false);
 
   useEffect(() => {
-    const loaded = loadData();
+    const loaded = loadGanbariData(localStorage);
     setData(loaded);
     if (loaded.people.length > 0) {
       setSelectedPersonId(loaded.people[0].id);
@@ -390,20 +375,17 @@ export default function Otetsudai() {
 
   const selectedPerson = data.people.find((p) => p.id === selectedPersonId) ?? null;
 
-  const personRecords = useCallback(
-    (personId: string) => data.records.filter((r) => r.personId === personId),
-    [data.records],
-  );
-
   const recordsByDate = useCallback(
-    (personId: string, date: string) =>
-      data.records.filter((r) => r.personId === personId && r.date === date),
+    (personId: string, date: string, kind: GanbariKind) =>
+      data.records.filter(
+        (r) => r.personId === personId && r.date === date && r.kind === kind,
+      ),
     [data.records],
   );
 
-  const updateData = (newData: OtetsudaiData) => {
+  const updateData = (newData: GanbariData) => {
     setData(newData);
-    saveData(newData);
+    saveGanbariData(localStorage, newData);
   };
 
   const handleAddPerson = (name: string) => {
@@ -426,18 +408,29 @@ export default function Otetsudai() {
 
   const handleSaveGoal = (goal: number | undefined, goalReason: string) => {
     if (!selectedPersonId) return;
-    const newPeople = data.people.map((p) =>
-      p.id === selectedPersonId ? { ...p, goal, goalReason: goalReason || undefined } : p,
-    );
+    const newPeople = data.people.map((person) => {
+      if (person.id !== selectedPersonId) return person;
+      const goals = { ...person.goals };
+      if (goal === undefined) {
+        delete goals[selectedKind];
+      } else {
+        goals[selectedKind] = { target: goal, ...(goalReason ? { reason: goalReason } : {}) };
+      }
+      return {
+        ...person,
+        ...(Object.keys(goals).length > 0 ? { goals } : { goals: undefined }),
+      };
+    });
     updateData({ ...data, people: newPeople });
     setShowGoalModal(false);
   };
 
   const handleAddRecord = (content: string, stamp: string) => {
     if (!selectedDate || !selectedPersonId) return;
-    const newRecord: OtetsudaiRecord = {
+    const newRecord: GanbariRecord = {
       id: generateId(),
       personId: selectedPersonId,
+      kind: selectedKind,
       date: selectedDate,
       content,
       stamp,
@@ -489,7 +482,7 @@ export default function Otetsudai() {
   if (data.people.length === 0) {
     return (
       <div className="container mx-auto px-4 py-8 max-w-2xl">
-        <h1 className="text-3xl font-bold text-text mb-6 text-center">おてつだいきろく</h1>
+        <h1 className="text-3xl font-bold text-text mb-6 text-center">がんばりポイント</h1>
         <div className="bg-surface border border-border rounded-2xl p-8 text-center">
           <p className="text-6xl mb-4">👋</p>
           <p className="text-xl text-muted mb-6">まずは なまえを とうろくしよう！</p>
@@ -510,16 +503,20 @@ export default function Otetsudai() {
     );
   }
 
-  const currentPersonRecordCount = selectedPersonId
-    ? personRecords(selectedPersonId).length
-    : 0;
+  const pointTotals: Record<GanbariKind, number> = {
+    otetsudai: selectedPersonId ? countPoints(data.records, selectedPersonId, 'otetsudai') : 0,
+    naraigoto: selectedPersonId ? countPoints(data.records, selectedPersonId, 'naraigoto') : 0,
+  };
+  const currentPoints = pointTotals[selectedKind];
+  const currentGoal = selectedPerson?.goals?.[selectedKind];
+  const kindDetails = KIND_DETAILS[selectedKind];
 
   const goalAchieved =
-    selectedPerson?.goal != null && currentPersonRecordCount >= selectedPerson.goal;
+    currentGoal != null && currentPoints >= currentGoal.target;
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-2xl">
-      <h1 className="text-3xl font-bold text-text mb-4 text-center">おてつだいきろく</h1>
+      <h1 className="text-3xl font-bold text-text mb-4 text-center">がんばりポイント</h1>
 
       <div className="flex items-center gap-2 mb-4 overflow-x-auto pb-1">
         {data.people.map((p) => (
@@ -557,32 +554,68 @@ export default function Otetsudai() {
 
       {selectedPerson && (
         <>
+          <div
+            role="tablist"
+            aria-label="ポイントのしゅるい"
+            className="grid grid-cols-2 gap-2 mb-4 rounded-2xl bg-surface-2 p-1.5"
+          >
+            {(['otetsudai', 'naraigoto'] as const).map((kind) => {
+              const details = KIND_DETAILS[kind];
+              const selected = selectedKind === kind;
+              return (
+                <button
+                  key={kind}
+                  type="button"
+                  role="tab"
+                  aria-selected={selected}
+                  onClick={() => {
+                    setSelectedKind(kind);
+                    setSelectedDate(null);
+                    setShowGoalModal(false);
+                  }}
+                  className={`rounded-xl px-3 py-3 text-center transition-colors ${
+                    selected
+                      ? 'bg-surface text-text shadow-sm'
+                      : 'text-muted hover:text-text'
+                  }`}
+                >
+                  <span className="block text-lg font-bold">
+                    {details.icon} {details.label}
+                  </span>
+                  <span className="block text-sm mt-0.5">
+                    {pointTotals[kind]} ポイント
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+
           <div className="bg-surface border border-border rounded-2xl p-5 mb-6">
             <div className="text-center">
               <p className="text-muted text-base mb-1">
-                {selectedPerson.name}の おてつだい ごうけい
+                {selectedPerson.name}の {kindDetails.label} ごうけい
               </p>
               <div className="flex items-center justify-center gap-3">
-                <span className="text-5xl">⭐</span>
+                <span className="text-5xl">{kindDetails.icon}</span>
                 <span className="text-5xl font-bold text-warning">
-                  {currentPersonRecordCount}
+                  {currentPoints}
                 </span>
-                <span className="text-xl text-muted font-bold self-end mb-1">かい</span>
+                <span className="text-xl text-muted font-bold self-end mb-1">ポイント</span>
               </div>
             </div>
 
-            {selectedPerson.goal != null && (
+            {currentGoal != null && (
               <div className="mt-4">
                 <div className="flex items-center justify-between text-sm mb-2">
                   <span className="text-muted">
-                    もくひょう {selectedPerson.goal} かい
+                    もくひょう {currentGoal.target} ポイント
                   </span>
                   <span className="text-muted">
                     あと{' '}
                     <span className="text-text font-bold">
-                      {Math.max(0, selectedPerson.goal - currentPersonRecordCount)}
+                      {Math.max(0, currentGoal.target - currentPoints)}
                     </span>{' '}
-                    かい
+                    ポイント
                   </span>
                 </div>
                 <div className="w-full bg-surface-2 rounded-full h-4 overflow-hidden">
@@ -593,7 +626,7 @@ export default function Otetsudai() {
                         : 'bg-gradient-to-r from-accent-cyan to-accent-green'
                     }`}
                     style={{
-                      width: `${Math.min(100, (currentPersonRecordCount / selectedPerson.goal) * 100)}%`,
+                      width: `${Math.min(100, (currentPoints / currentGoal.target) * 100)}%`,
                     }}
                   />
                 </div>
@@ -602,9 +635,9 @@ export default function Otetsudai() {
                     🎉 もくひょう たっせい！ 🎉
                   </p>
                 )}
-                {selectedPerson.goalReason && (
+                {currentGoal.reason && (
                   <p className="text-muted text-sm mt-2 bg-surface-2 rounded-lg p-3 border border-border">
-                    📝 {selectedPerson.goalReason}
+                    📝 {currentGoal.reason}
                   </p>
                 )}
               </div>
@@ -614,7 +647,7 @@ export default function Otetsudai() {
               onClick={() => setShowGoalModal(true)}
               className="mt-3 w-full text-sm text-faint hover:text-accent transition-colors"
             >
-              {selectedPerson.goal != null ? 'もくひょうをへんこう' : 'もくひょうをきめる'}
+              {currentGoal != null ? 'もくひょうをへんこう' : 'もくひょうをきめる'}
             </button>
 
           </div>
@@ -669,7 +702,7 @@ export default function Otetsudai() {
                 }
 
                 const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-                const dayRecords = recordsByDate(selectedPersonId!, dateStr);
+                const dayRecords = recordsByDate(selectedPersonId!, dateStr, selectedKind);
                 const hasRecords = dayRecords.length > 0;
                 const isToday = dateStr === todayStr;
                 const dow = (startDow + day - 1) % 7;
@@ -711,7 +744,8 @@ export default function Otetsudai() {
       {selectedDate && selectedPersonId && (
         <Modal
           date={selectedDate}
-          records={recordsByDate(selectedPersonId, selectedDate)}
+          kind={selectedKind}
+          records={recordsByDate(selectedPersonId, selectedDate, selectedKind)}
           onAdd={handleAddRecord}
           onDelete={handleDeleteRecord}
           onClose={() => setSelectedDate(null)}
@@ -729,12 +763,12 @@ export default function Otetsudai() {
         <div className="mt-6 text-center">
           <button
             onClick={() => {
-              let msg = `${selectedPerson.name}は おてつだいを ${currentPersonRecordCount}かい しました！`;
-              if (selectedPerson.goal != null) {
+              let msg = `${selectedPerson.name}は ${kindDetails.label}を ${currentPoints}ポイント がんばりました！`;
+              if (currentGoal != null) {
                 if (goalAchieved) {
-                  msg += ` 🎉 もくひょう ${selectedPerson.goal}かい たっせい！`;
+                  msg += ` 🎉 もくひょう ${currentGoal.target}ポイント たっせい！`;
                 } else {
-                  msg += ` もくひょうまで あと ${selectedPerson.goal - currentPersonRecordCount}かい！`;
+                  msg += ` もくひょうまで あと ${currentGoal.target - currentPoints}ポイント！`;
                 }
               }
               window.open(`line://msg/text/${encodeURIComponent(msg)}`, '_self');
@@ -749,6 +783,7 @@ export default function Otetsudai() {
       {showGoalModal && selectedPerson && (
         <GoalModal
           person={selectedPerson}
+          kind={selectedKind}
           onSave={handleSaveGoal}
           onClose={() => setShowGoalModal(false)}
         />

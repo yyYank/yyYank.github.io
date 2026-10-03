@@ -5,6 +5,7 @@ import {
   navTransitionName,
   saveHiddenNav,
   toggleHiddenNav,
+  NAV_PAGES,
 } from '../navVisibility';
 
 describe('navVisibility', () => {
@@ -43,5 +44,12 @@ describe('navTransitionName', () => {
     expect(navTransitionName('/diary/')).toBe('nav-diary');
     expect(navTransitionName('/kotlin-rev/')).toBe('nav-kotlin-rev');
     expect(navTransitionName('/config/')).toBe('nav-config');
+  });
+});
+
+describe('ganbari navigation', () => {
+  it('がんばりページだけをナビゲーションに公開する', () => {
+    expect(NAV_PAGES).toContainEqual({ href: '/ganbari/', label: 'がんばり', icon: '⭐' });
+    expect(NAV_PAGES.some((page) => page.href === '/otetsudai/')).toBe(false);
   });
 });
