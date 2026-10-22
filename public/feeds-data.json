@@ -1,62 +1,34 @@
 {
-  "generatedAt": "2026-10-22T02:14:47.463Z",
+  "generatedAt": "2026-10-22T16:12:10.603Z",
   "feeds": {
     "hatena": {
       "items": [
         {
-          "title": "高市総理「大至急、PHPパッチ適用を」Xで異例の要請 エンジニアは評価「経営層に伝わる」",
-          "link": "https://www.itmedia.co.jp/news/article/2610/22/2000002483/",
-          "date": "2026-10-21T22:16:49Z",
-          "description": "「今夜に対応して頂きたい大至急のお願い」――高市早苗首相は10月21日午後10時前、自身のXアカウントで、PHPの「緊急」の脆弱性について、修正パッチを「可及的速やかに適用できる準備」をするよう求めた。パッチはこの投稿の約1時間後（21日午後11時ごろ）に公開された。 首相が個別のソフトウェア脆弱性について、Xで直...",
+          "title": "PHP 8.5.12の緊急リリースにpixivはどう対応したか - pixiv inside",
+          "link": "https://inside.pixiv.blog/2026/10/22/193321",
+          "date": "2026-10-22T10:38:41Z",
+          "description": "こんにちは、Platform Division Infrastructure Unitのpicopicoです。 2026年10月21日、PHPに深刻な脆弱性（通称PHP2Shell）が見つかり、緊急のセキュリティリリースが予告されました。今回の脆弱性への対応にあたられた皆さま、そして現在も対応を続けている皆さまに、心より敬意を表します。 ピクシブでは影響を受ける...",
           "source": "hatena"
         },
         {
-          "title": "「Apache Tomcat」に最大深刻度“CRITICAL”の脆弱性 ～v9 / v10 / v11系統に修正版／",
-          "link": "https://forest.watch.impress.co.jp/docs/news/2150161.html",
-          "date": "2026-10-21T23:31:06Z",
-          "description": "",
+          "title": "PHP脆弱性“PoCフライング公開”の経緯、支援財団が公表 混乱広げた企業を名指しで批判",
+          "link": "https://www.itmedia.co.jp/news/article/2610/22/2000002525/",
+          "date": "2026-10-22T09:30:52Z",
+          "description": "世界中の企業・組織が対応に追われているプログラミング言語「PHP」の脆弱性。高市早苗首相がSNSで対応を呼びかけたことから、テレビなどでも盛んに報じられ、これまでになく社会を騒がせている。開発プロジェクトは10月21日夜（日本時間、以下同）にセキュリティアップデートを配信したが、一部の企業・組織は22日時点...",
           "source": "hatena"
         },
         {
-          "title": "デジタル庁、「神Excel」対策ツールを公開 AIと組み合わせたデータ整備方法も紹介",
-          "link": "https://www.itmedia.co.jp/aiplus/article/2610/21/2000002475/",
-          "date": "2026-10-21T12:22:50Z",
-          "description": "デジタル庁が、Excelファイルなどが“機械にとって読みやすいか”を判定するツール「Harunobu」を公開している。紙に印刷した際のレイアウトを優先してセル結合などを多用した、いわゆる「神Excel」の対策にも活用できるという。AIと組み合わせたデータの整備方法も取り上げている。 Harunobu（はるのぶ）という名称のこの...",
+          "title": "Claude Opus 5.5でいい感じのアクションゲームを作るための一工夫七つ - ABAの日誌",
+          "link": "https://aba.hatenablog.com/entry/2026/10/22/194027",
+          "date": "2026-10-22T10:43:13Z",
+          "description": "Opus 5.5はゲームのアイデア作り、設計、実装、ビジュアル作成、作曲や効果音作成、などなど、ゲーム制作に必要な様々なタスクを高い水準でこなしてくれる。単に、こんな感じのゲームを作って、この辺が気に入らないから直して、という指示を与えてもゲームは作れるが、それにちょっとした工夫を加えることで、さらに優...",
           "source": "hatena"
         },
         {
-          "title": "3年前に退職したところから「なんでPHPで作ったんだ！今すぐ来い！」って電話あったけど、どこに相談したらいいの？労基？→あるエンジニアに起きた災難に「笑えない」",
-          "link": "https://togetter.com/li/2761260",
-          "date": "2026-10-21T19:27:17Z",
-          "description": "国家サイバー統括室(注意・警戒情報) @cyber_forecast PHPのセキュリティチームが、重大な２件の脆弱性に関する注意喚起を行っています。公開しているウェブサイトでPHPを使用しているか確認し、10月21日午後11時（日本時間）に公開される修正パッチについて、可及的速やかに適用できるよう準備をお願いいたします。 php...",
-          "source": "hatena"
-        },
-        {
-          "title": "メンテナンス中に503を返すだけでは足りない Google公式ドキュメントで読む必須・推奨・禁止事項 - SEMリサーチ",
-          "link": "https://www.sem-r.com/entry/20261022/1792605105",
-          "date": "2026-10-21T18:03:07Z",
-          "description": "サイトメンテナンス時の正しいHTTP応答 緊急メンテ当日に各社の対応を調べてわかったこと なぜメンテナンス時のHTTP応答が重要なのか 必須事項 やらないと検索結果掲載に問題が発生する可能性があるもの 1. すべてのページで、元のURLのまま503を返す 2. robots.txtは503にせず、通常どおり200で返し続ける 3. 503を数...",
-          "source": "hatena"
-        },
-        {
-          "title": "Cloudflare、TypeScriptをRustに移植した「tsrs」を発表。TypeScript 7より最大で70％少ないメモリで8倍速。今後、LSPなどTypeScriptの全機能をサポート予定",
-          "link": "https://www.publickey1.jp/blog/26/cloudflaretypescriptrusttsrstypescript_7708lsptypescript.html",
-          "date": "2026-10-21T14:50:46Z",
-          "description": "Cloudflare、TypeScriptをRustに移植した「tsrs」を発表。TypeScript 7より最大で70％少ないメモリで8倍速。今後、LSPなどTypeScriptの全機能をサポート予定 Cloudflareは、TypeScriptをRustに移植した「tsrs」を発表しました。 下記は、Cloudflareに買収されたVoidZeroによるtsrsに関するポストです。VoidZe",
-          "source": "hatena"
-        },
-        {
-          "title": "修正予告されたPHPの2件の深刻な脆弱性についてまとめてみた - piyolog",
-          "link": "https://piyolog.hatenadiary.jp/entry/2026/10/21/174516",
-          "date": "2026-10-21T08:57:42Z",
-          "description": "2026年10月20日、PHPの開発元であるThe PHP Groupのセキュリティチームは、PHPの深刻な脆弱性2件を修正するセキュリティリリースを予告しました。ここでは関連する情報をまとめます。（開発元等から詳細情報が公開され次第更新します。） 開発元は何を予告したの? PHPのセキュリティチームは10月20日(協定世界時)、2件の...",
-          "source": "hatena"
-        },
-        {
-          "title": "【PHP脆弱性php2shell】パッチは21:59に公開済み。「23:15から乗っ取り」「15分でAIが攻撃コード？」は本当か、自分のVPSのログで検証（CVE-2026-109618／109619）：秋山大志のそれとりあえず作ってみようか。：オルタナティブ・ブログ",
-          "link": "https://blogs.itmedia.co.jp/agile/2026/10/php2shell_cve_2026_109618_panic.html",
-          "date": "2026-10-21T14:07:21Z",
-          "description": "【PHP脆弱性php2shell】パッチは21:59に公開済み。「23:15から乗っ取り」「15分でAIが攻撃コード？」は本当か、自分のVPSのログで検証（CVE-2026-109618／109619） PHPの重大な脆弱性で、タイムラインが大騒ぎです。 震源のひとつが、「23時にパッチが公開されたら、それをAIで解析して攻撃コードを作り、23時15分以降に...",
+          "title": "パスワードを使い回すなとは言うものの、あらゆるサービスに会員登録させられるし普通に手入力が必要な場面も多くてどうしたらいいんだ？",
+          "link": "https://togetter.com/li/2761441",
+          "date": "2026-10-22T07:44:50Z",
+          "description": "ゆるせ @yurusexxx パスワード使い回すな言いますけども今時普通に生きてるだけであらゆるサービスに会員登録させられるし普通に手入力しなければならない場面も出てくるし全部変えてたら分からなくなるし現実的に考えて無理ですよ 2026-10-21 22:43:22 ゆるせ @yurusexxx サービスによって条件が違うのも困る 何文字以...",
           "source": "hatena"
         },
         {
@@ -67,516 +39,544 @@
           "source": "hatena"
         },
         {
-          "title": "「総理大臣がXでお願いを出すレベル」PHPのセキュリティチームが2件の脆弱性に関して注意喚起 23:00からエンジニアとハッカーの戦いが始まる",
-          "link": "https://togetter.com/li/2761269",
-          "date": "2026-10-21T19:46:46Z",
+          "title": "いやマジで総理大臣がPHP脆弱性対応について発信してくれたおかげで社内への説明がクソ楽だった…「総理自ら発信するレベルですよ？」で反論・苦情をほとんど封じ込めた",
+          "link": "https://togetter.com/li/2761457",
+          "date": "2026-10-22T08:30:07Z",
+          "description": "どら @Drumaster いやマジで総理大臣がPHP脆弱性対応について発信してくれたおかげで社内への説明がクソ楽だった…「総理自ら発信するレベルですよ？？？ニュース見てないんですか？？？」で反論苦情殆ど封じることできた… 2026-10-22 12:14:16 高市早苗 @takaichi_sanae 皆様に、今夜に対応して頂きたい大至急のお願いで...",
+          "source": "hatena"
+        },
+        {
+          "title": "厳選・セキュリティが心配ならClaude Codeにこの問いかけをコピペするべし20",
+          "link": "https://zenn.dev/yuiseki/articles/54b01670841898",
+          "date": "2026-10-22T11:28:38Z",
+          "description": "TL;DR この記事のURLをコーディングAIエージェントに伝えてください。 認証 このリポジトリのサインアップ、ログイン、メール確認、パスワードリセットの実装を調べてください。UI の CAPTCHA や入力チェックを通さず API を直接呼べないか、メール確認前に使える機能がないか確認してください。問題があれば実装箇所と...",
+          "source": "hatena"
+        },
+        {
+          "title": "（緊急）BIND 9.xの脆弱性（DNSサービスの停止・リモートコード実行）について（CVE-2026-94300） - バージョンアップを強く推奨 -",
+          "link": "https://jprs.jp/tech/security/2026-10-22-bind9-cve-2026-94300.html",
+          "date": "2026-10-22T08:03:31Z",
+          "description": "--------------------------------------------------------------------- ■（緊急）BIND 9.xの脆弱性（DNSサービスの停止・リモートコード実行）に ついて（CVE-2026-94300） - バージョンアップを強く推奨 - 株式会社日本レジストリサービス（JPRS） 初版作成 2026/10/22（Thu） --------",
+          "source": "hatena"
+        },
+        {
+          "title": "高市総理、サイバーセキュリティの本を出していた しかも“PHP”から",
+          "link": "https://www.itmedia.co.jp/news/article/2610/22/2000002522/",
+          "date": "2026-10-22T08:18:13Z",
+          "description": "「今夜に対応して頂きたい大至急のお願い」――プログラミング言語「PHP」の緊急の脆弱性を巡り、高市早苗総理が10月21日夜、自身のXで修正パッチの適用準備を呼び掛けた。首相が個別のソフトウェアの脆弱性に言及するのは異例で、SNSでも話題になった。そんな高市総理、実はサイバーセキュリティの本を出版している。しか...",
+          "source": "hatena"
+        },
+        {
+          "title": "「Oracle Java SE」にも致命的な脆弱性 ～リモートでデータの窃取・作成・削除・変更が可能／",
+          "link": "https://forest.watch.impress.co.jp/docs/news/2150531.html",
+          "date": "2026-10-22T12:14:04Z",
+          "description": "",
+          "source": "hatena"
+        },
+        {
+          "title": "PHP脆弱性php2shell対応、7.4本番を止めずに守った夜と実際の攻撃 - Qiita",
+          "link": "https://qiita.com/kenimo49/items/30f290bf0f4fff021fb3",
+          "date": "2026-10-22T01:12:57Z",
+          "description": "2026 年 10 月 21 日 21 時 55 分、高市総理が X にこう投稿しました。 修正パッチを速やかに適用することが困難な場合は、例えばウェブサイト等を一時的に停止させることも、リスクを低減させるための有効策の一つと考えられます。 (高市早苗 on X) PHP の任意コード実行の脆弱性 2 件、通称 php2shell（CVE-2026-10961...",
+          "source": "hatena"
+        },
+        {
+          "title": "カプコン、1177万件漏えい 不正アクセスで",
+          "link": "https://www.itmedia.co.jp/news/article/2610/22/2000002523/",
+          "date": "2026-10-22T08:41:57Z",
+          "description": "カプコンは10月22日、不正アクセスにより会員サービス「CAPCOM ID」の情報が全世界合計で1177万4247件漏えいしたと発表した。 漏えいした情報は、メールアドレスやアカウントの作成日時、最終ログイン時刻、ログイン回数など。全体のうち43件では生年月日やニックネームも対象だった他、ログインパスワードの不正変更も1...",
+          "source": "hatena"
+        },
+        {
+          "title": "経産省「ホワイトハッカー」のチーム立ち上げへ | NHKニュース",
+          "link": "https://news.web.nhk/newsweb/na/nd-20261022de63664",
+          "date": "2026-10-22T09:08:18Z",
+          "description": "国内で不正アクセスによる被害が相次いでいることを受けて、経済産業省は、所管する独立行政法人に、サイバー攻撃の手法に詳しい「ホワイトハッカー」と呼ばれるエンジニアのチームを新たに立ち上げる方針を固めまし…",
+          "source": "hatena"
+        },
+        {
+          "title": "中国政府系ハッカー集団、AI「ARTEX」で攻撃 マイクロソフトが確認 - 日本経済新聞",
+          "link": "https://www.nikkei.com/article/DGXZQOUC22AUL0S6A021C2000000/",
+          "date": "2026-10-22T12:41:17Z",
+          "description": "米マイクロソフトは米国時間21日、中国政府に関係するハッカー集団が中国系の人工知能（AI）ツール「ARTEX（アルテックス）」を使ってサイバー攻撃を仕掛けていたと発表した。日本企業を標的とした攻撃に関与したかは明らかになっていない。マイクロソフトが自社のクラウドサービスの記録などを調べた。「Storm（ストー...",
+          "source": "hatena"
+        },
+        {
+          "title": "バルテック、「PHPの脆弱性を標的としたサイバー攻撃」によりサービス停止、情報流出の可能性",
+          "link": "https://internet.watch.impress.co.jp/docs/news/2150396.html",
+          "date": "2026-10-22T06:49:30Z",
+          "description": "",
+          "source": "hatena"
+        },
+        {
+          "title": "「GitLab」に深刻度“最大”の脆弱性 認証なしで任意のコード実行の恐れ、修正版適用を CVSS「10.0」",
+          "link": "https://www.itmedia.co.jp/news/article/2610/22/2000002501/",
+          "date": "2026-10-22T03:55:13Z",
+          "description": "米GitLabは10月21日（現地時間）、開発プラットフォーム「GitLab」に深刻（Critical）な脆弱性（CVE-2026-110264）が見つかったと発表し、修正版を公開した。CVSSスコアは最大の「10.0」。特定の条件下で、認証されていないユーザーがGitLabサーバ上で任意のコードを実行できる可能性がある。 12日に公表したCVSS 10.0の...",
+          "source": "hatena"
+        },
+        {
+          "title": "PHPの影に隠れたもう一つの重大インシデント「eMudhra」の証明書問題、どう対処すれば？／OSやWebブラウザーなどの対応状況を整理、アプリ開発者などにはいくつか注意すべき点【やじうまの杜】",
+          "link": "https://forest.watch.impress.co.jp/docs/serial/yajiuma/2150316.html",
+          "date": "2026-10-22T08:23:27Z",
+          "description": "",
+          "source": "hatena"
+        },
+        {
+          "title": "【緊急】Node.jsの重大脆弱性に対応するセキュリティアップデートを安全に適用する方法 - Qiita",
+          "link": "https://qiita.com/superdora-cloud/items/8cad27487cd0e67d088c",
+          "date": "2026-10-22T13:33:39Z",
+          "description": "Deleted articles cannot be recovered. Draft of this article would be also deleted. Are you sure you want to delete this article?",
+          "source": "hatena"
+        },
+        {
+          "title": "エージェントスキル集 pstack の開発原則と使い方",
+          "link": "https://azukiazusa.dev/blog/pstack-agent-skills/",
+          "date": "2026-10-22T13:20:04Z",
+          "description": "AI が生成したコードを安心して任せるには、実装前の理解と実装後の検証が欠かせません。pstack は調査・設計・実装・レビューを組み合わせるエージェントスキル集です。この記事では pstack の開発原則と使い方を紹介します。 AI が生成したコードを安心して任せるには、実装前の理解と実装後の検証が欠かせません。pst...",
+          "source": "hatena"
+        },
+        {
+          "title": "「長い目で見れば防御側が有利」はなぜ？ 守る側のAI活用法、本命は Webセキュリティ専門家に聞く",
+          "link": "https://www.itmedia.co.jp/aiplus/article/2610/22/2000002521/",
+          "date": "2026-10-22T08:31:53Z",
+          "description": "2026年夏ごろから、サイバー攻撃による情報漏えいを公表する国内企業が相次いでいる。背景の一つとして指摘されるのが、攻撃者によるAIの利用だ。直近でもプログラミング言語「PHP」の脆弱性について、AIを使った攻撃者による悪用に注意するよう、米OpenAIなどが呼び掛けている。 攻撃が数でも速さでも人手の限界を超え...",
+          "source": "hatena"
+        },
+        {
+          "title": "Windows 11には31年前の「Windows 95のメモリ管理機能」が今も隠されている",
+          "link": "https://gigazine.net/news/20261022-windows-11-95-memory-manager/",
+          "date": "2026-10-22T12:02:17Z",
+          "description": "1995年に登場した「Windows 95」のメモリ管理機能が、2026年時点で最新バージョンのWindows 11にも残されていることが分かりました。古いソフトウェアを動作させるための互換機能「EmulateHeap」にWindows 95のプログラムが組み込まれており、必要に応じて実際に動作する仕組みになっています。Windows関連のニュースサ...",
+          "source": "hatena"
+        },
+        {
+          "title": "大阪大、学生など7.8万人の情報漏えい NECが無断で協力会社とデータ共有",
+          "link": "https://www.itmedia.co.jp/news/article/2610/22/2000002491/",
+          "date": "2026-10-22T01:44:37Z",
+          "description": "大阪大学（阪大）は10月21日、全学教育用電子計算機システムの運用を委託しているNECから、卒業生や在学生、教職員の計7万7851人分の個人情報が漏えいしたと発表した。 NECは、大学に報告していない協力会社と情報を共有するため、個人情報を含むファイルをクラウドストレージ上で共有していたという。加えてNECは、作業...",
+          "source": "hatena"
+        },
+        {
+          "title": "Linuxカーネルに6件の脆弱性「Infinity Core」、5件でroot権限昇格・コンテナ脱出のPoC公開(CVE-2026-98260,CVE-2026-98256)他|セキュリティニュースのセキュリティ対策Lab",
+          "link": "https://rocket-boys.co.jp/security-measures-lab/linux%E3%82%AB%E3%83%BC%E3%83%8D%E3%83%AB%E3%81%AB6%E4%BB%B6%E3%81%AE%E8%84%86%E5%BC%B1%E6%80%A7%E3%80%8Cinfinity-core%E3%80%8D%E3%80%815%E4%BB%B6%E3%81%A7root%E6%A8%A9%E9%99%90%E6%98%87%E6%A0%BC/",
+          "date": "2026-10-22T13:11:34Z",
+          "description": "Linuxカーネルに6件の脆弱性「Infinity Core」、5件でroot権限昇格・コンテナ脱出のPoC公開(CVE-2026-98260,CVE-2026-98256)他 セキュリティ研究者のHyunwoo Kim氏は2026年10月17日、Linuxカーネルの中核機能に存在する6件の脆弱性を「Infinity Core」として公開しました。タイマー、シグナル、メモリ管理、Futex、スケ.",
+          "source": "hatena"
+        },
+        {
+          "title": "モバイルSuicaの新決済「teppay」を早速試した 店員への伝え方や決済音は？ スムーズに決済できる？",
+          "link": "https://www.itmedia.co.jp/mobile/articles/2610/20/news079.html",
+          "date": "2026-10-22T08:56:27Z",
+          "description": "モバイルSuicaの新決済「teppay」を早速試した 店員への伝え方や決済音は？ スムーズに決済できる？ 10月20日11時に順次提供が開始されたモバイルSuicaの新コード決済サービス「teppay（テッペイ）」を、同日の報道向け説明会にて、実機で体験してきた。 実際の会計時の流れるような操作感や決済音の仕様、さらに実際...",
+          "source": "hatena"
+        },
+        {
+          "title": "PHPのセキュリティ問題について、その深刻さをわかる人が言及、首相の注意喚起ポストは思った以上にありがたかった模様、一方緊急で運営終了となるサービスも",
+          "link": "https://togetter.com/li/2761388",
+          "date": "2026-10-22T03:49:10Z",
           "description": "国家サイバー統括室(注意・警戒情報) @cyber_forecast PHPのセキュリティチームが、重大な２件の脆弱性に関する注意喚起を行っています。公開しているウェブサイトでPHPを使用しているか確認し、10月21日午後11時（日本時間）に公開される修正パッチについて、可及的速やかに適用できるよう準備をお願いいたします。 php...",
           "source": "hatena"
         },
         {
-          "title": "PHPの「緊急」レベルの脆弱性、開発元が修正バージョン公開 「直ちにアップデートを」",
-          "link": "https://www.itmedia.co.jp/news/article/2610/22/2000002480/",
-          "date": "2026-10-21T16:04:10Z",
-          "description": "プログラミング言語「PHP」開発プロジェクトは10月21日（協定世界時）、「緊急」レベルの脆弱性2件を修正したPHP 8.5.12／8.4.27／8.3.36／8.2.35を公開したと発表した。20日に予告していたセキュリティアップデートに関するもので、攻撃者が遠隔で任意のコードを実行できてしまう脆弱性などを修正する。「全てのPHPユー...",
+          "title": "PHPの脆弱性問題、色んなサイトがメンテに入ったけどXやYouTubeが大丈夫だったのはなぜ？結局一般のネットユーザーは何をすればいいの？",
+          "link": "https://togetter.com/li/2761460",
+          "date": "2026-10-22T08:29:27Z",
+          "description": "壱百満天原サロメ💯🦂 @1000000lome ＿人人人人人人人人人人人人人人人＿ ＞ 今、インターネットがヤバい ＜ ￣Y^Y^Y^Y^Y^Y^Y^Y^Y^Y^Y^Y^Y^Y￣ 2026-10-21 23:28:01 国家サイバー統括室(注意・警戒情報) @cyber_forecast PHPのセキュリティチームが、重大な２件の脆弱性に関する注意喚起を行っています。公開している...",
           "source": "hatena"
         },
         {
-          "title": "php2shellに感じたサイバー空間の『ドント・ルック・アップ』からサーバーの戸締りに至る空気の変遷 - 太陽がまぶしかったから",
-          "link": "https://www.du-soleil.com/entry/php2shell-emergency-maintenance-dont-look-up",
-          "date": "2026-10-22T01:03:19Z",
-          "description": "昼休みに感じた不穏な煙と焦燥 昨日の昼休み、一息つこうと思って何気なくXを開いたとき、タイムラインの片隅に流れるざわざわとした不穏な空気が目にとまった。お昼休みののんきな雑談やランチの投稿の合間に、セキュリティクラスタやインフラエンジニアたちが何やらただならぬ緊張感をつぶやき始めており、セキュリテ...",
+          "title": "NEC委託先への不正アクセスについてまとめてみた - piyolog",
+          "link": "https://piyolog.hatenadiary.jp/entry/2026/10/22/114426",
+          "date": "2026-10-22T03:52:00Z",
+          "description": "2026年10月20日、NECは委託先がサイバー攻撃を受け、顧客のシステム障害と個人情報を含む情報の漏えいが生じたと公表しました。ここでは関連する情報をまとめます。 委託先の正規アカウント悪用 NECは10月20日、システム開発と保守業務を委託している企業(委託先)が9月下旬にサイバー攻撃を受け、窃取された正規アカウン...",
           "source": "hatena"
         },
         {
-          "title": "本来116桁の秘密鍵がたった3桁 インド認証局の一部中間CA証明書にミス",
-          "link": "https://pc.watch.impress.co.jp/docs/news/2150099.html",
-          "date": "2026-10-21T21:42:08Z",
-          "description": "",
+          "title": "【重要】「お名前.com デスクトップクラウド」への不正アクセスに関するお詫びとお知らせ（第2報） | GMOインターネットグループ株式会社",
+          "link": "https://group.gmo/info/alert/20261022/",
+          "date": "2026-10-22T09:27:55Z",
+          "description": "2026年10月22日 お知らせ【重要】「お名前.com デスクトップクラウド」への不正アクセスに関するお詫びとお知らせ（第2報） GMOインターネットグループ株式会社 GMOインターネット株式会社 2026年10月22日 16：59時点 2026年10月21日にお知らせいたしました「お名前.com デスクトップクラウド」への第三者による不正アク...",
           "source": "hatena"
         },
         {
-          "title": "「Node.js」にセキュリティ更新 ～10件の脆弱性を修正、「eMudhra」の侵害にも対応／v22.23.4、v24.22.1、v26.12.1が公開",
-          "link": "https://forest.watch.impress.co.jp/docs/news/2150169.html",
-          "date": "2026-10-22T00:37:42Z",
-          "description": "",
+          "title": "PHP研究所「関係ありません」 プログラミング言語問題で | NEWSjp",
+          "link": "https://news.jp/i/1485826397099295138",
+          "date": "2026-10-22T02:51:06Z",
+          "description": "プログラミング言語「PHP」に重大な欠陥が見つかった問題を巡り、出版社のPHP研究所は22日までに、文芸の編集部のX（旧ツイッター）で「（弊社は）全然関係ありません」と投稿した。同社によると、問い合わせが相次ぐといった混乱は起きていないという。 同社の公式サイトもPHPを使っていたが、現在は緊急メンテナンスを...",
           "source": "hatena"
         },
         {
-          "title": "「客を一切信用してなくてワロける」ドラッグストアコスモスの防犯カメラの多さが話題に→「むしろ信頼できる」「これでも少ない店舗」",
-          "link": "https://togetter.com/li/2761220",
-          "date": "2026-10-21T13:45:32Z",
-          "description": "防犯カメラの数、尋常じゃない...！ セキュリティ意識が強すぎるドラッグストアが話題に(全文表示)｜Jタウンネット 九州を拠点とするドラッグストア「コスモス薬品」（本社・福岡市）。西日本ではお馴染みといえるドラッグストアだが、インターネット上であることが話題になった。赤い丸で囲った部分が防犯カメラだ（提...",
-          "source": "hatena"
-        },
-        {
-          "title": "【速報：2026/10/22 04:00】PHP2Shellの対応状況まとめ：PHP本体、Linux、レンタルサーバ、KUSANAGI",
-          "link": "https://zenn.dev/tyamadadd/articles/c02a27af771dd2",
-          "date": "2026-10-21T20:01:05Z",
-          "description": "PHPerの皆様、お疲れさまでした。 少し体力が残っているので、現在の対応状況をまとめてみました。 生成AIでまとめたものを当方で確認しております。 また気になる追加情報を補足に追加しました。 2026年10月21日、PHP の重大な脆弱性2件（CVE-2026-109618 / CVE-2026-109619、通称「PHP2Shell」）の修正版が公開されま...",
-          "source": "hatena"
-        },
-        {
-          "title": "PHPの重大脆弱性「PHP2Shell」はセキュリティ企業のCalifとWizがAIを用いて発見しOpenAIの枠組みを使って対策したことが判明",
-          "link": "https://gigazine.net/news/20261022-php2shell-wiz-openai-calif/",
-          "date": "2026-10-21T15:19:11Z",
-          "description": "プログラミング言語のPHPに「PHP2Shell」と呼ばれる重大な脆弱性が見つかり、緊急アップデートがリリースされました。「PHP2Shell」の2つの脆弱性は、セキュリティ企業のCalifとWizがそれぞれ独立して2026年8月に発見していたことが報告されています。 PHP2Shell — AI uncovers critical vulnerabilities in the backbon..",
-          "source": "hatena"
-        },
-        {
-          "title": "Introducing Claude Duet",
-          "link": "https://claude.com/resources/articles/claude-duet",
-          "date": "2026-10-21T19:37:25Z",
-          "description": "Today, we’re opening a research preview of Claude Duet, a new app where Claude works as a proactive agent. It comes to you with what needs your attention, completes tasks you ask of it, keeps working ",
-          "source": "hatena"
-        },
-        {
-          "title": "AIで人は創造的になるのか、考えなくなるのか。GMOペパボ栗林健太郎氏に聞く、AIの良い使い方・悪い使い方 - レバテックLAB",
-          "link": "https://levtech.jp/media/detail_951/",
-          "date": "2026-10-22T01:33:50Z",
-          "description": "GMOペパボ株式会社 取締役CTO 栗林 健太郎 1976年生まれ、奄美大島育ち。東京都立大学で政治学を学び、卒業後は奄美市役所に勤務。PHPでブログを自作したのをきっかけに、プログラミングにのめり込む。2008年にはてな、2012年にpaperboy&co.（現GMOペパボ）へ入社。 現在、GMOペパボ取締役CTO・ペパボ研究所長。日本CTO...",
-          "source": "hatena"
-        },
-        {
-          "title": "楽天市場が緊急メンテ、その他の企業サイト・サービスも続々メンテ 21日夜～",
-          "link": "https://k-tai.watch.impress.co.jp/docs/news/2150133.html",
-          "date": "2026-10-21T15:11:37Z",
-          "description": "",
-          "source": "hatena"
-        },
-        {
-          "title": "これが視界に入った瞬間、1秒以内に「AIだ！」と思ったけど我々は一体何に「AIっぽさ」を感じているのか→文字や色味以外にも判別ポイントがある？",
-          "link": "https://togetter.com/li/2761175",
-          "date": "2026-10-21T13:05:29Z",
-          "description": "これが視界に入った瞬間、1秒以内に「AIだ！」と思ったけど我々は一体何に「AIっぽさ」を感じているのか→文字や色味以外にも判別ポイントがある？",
-          "source": "hatena"
-        },
-        {
-          "title": "PHPの脆弱性、OpenAIのAIで発見 「同様の発見、今後数カ月で急増」（ITmedia NEWS） - Yahoo!ニュース",
-          "link": "https://news.yahoo.co.jp/articles/5d375ba62b0fc0c6cf876ea7f5a322d2973da453",
-          "date": "2026-10-21T23:50:42Z",
-          "description": "（写真：ITmedia AI＋）（写真：ITmedia AI＋） 米OpenAIは10月21日（現地時間）、同日に修正版が公開されたオープンソースのプログラミング言語「PHP」の脆弱性について、OpenAIのAIモデルで発見したと発表した。「同様の発見は今後数カ月で急増する」と予測している。 【OpenAI公式Xの発表全文】 OpenAIによるオープ...",
-          "source": "hatena"
-        },
-        {
-          "title": "Kiro Crewで「みのるん式」仕事術やってみた",
-          "link": "https://speakerdeck.com/minorun365/kiro-crew-de-minoru-nshiki-shigotojutsu-ya-te-mita",
-          "date": "2026-10-21T12:54:22Z",
-          "description": "JAWS-UG東京 2026秋 〜AWSライトニングトークNight〜 - connpass https://jawsug.connpass.com/event/407526/",
-          "source": "hatena"
-        },
-        {
-          "title": "eMudhraで侵害された8つの認証局すべての秘密鍵はなんとたった「1バイト」で秘密鍵の1つは「4」、Mozilla・Microsoft・Apple・Chromeのルートプログラムや多くの下流トラストストアによって信頼されているルート証明書に連鎖",
-          "link": "https://gigazine.net/news/20261022-emudhra-problem/",
-          "date": "2026-10-21T21:01:52Z",
-          "description": "2026年10月20日、eMudhraの中間認証局(CA)証明書8件の秘密鍵が侵害されたことが明らかになりました。侵害された証明書はMozilla・Microsoft・Apple・Chromeなどの主要なルートプログラムおよび多くの下流トラストストアによって信頼されているルートに連鎖していたため、攻撃者は侵害された中間CAの秘密鍵を悪用して様々...",
-          "source": "hatena"
-        },
-        {
-          "title": "PHPの「重大」脆弱性はAIが見つけた 「GPT-5.6 Solで発見」とOpenAI 「今後、AIによる脆弱性発見が急増」",
-          "link": "https://www.itmedia.co.jp/news/article/2610/22/2000002486/",
-          "date": "2026-10-21T23:49:31Z",
-          "description": "米OpenAIは10月21日（現地時間）、PHPの重大な脆弱性2件のうち1件について、米セキュリティ企業のCalifが同社の「GPT-5.6 Sol」を使って発見したと発表した。 同社は「今後数カ月で、AIによる同様の脆弱性発見が急増する」と予測。AI時代に対応したセキュリティの枠組みを、5段階で提案している。 「GPT-5.6 Sol」「Gemi...",
-          "source": "hatena"
-        },
-        {
-          "title": "PHPの重大脆弱性、発見したのは「GPT-5.6Sol」 OpenAIが防御連携を呼びかけ",
-          "link": "https://www.watch.impress.co.jp/docs/news/2150172.html",
-          "date": "2026-10-21T21:48:12Z",
-          "description": "",
-          "source": "hatena"
-        },
-        {
-          "title": "Patch the Planet — OpenAI",
-          "link": "https://patchtheplanet.org/",
-          "date": "2026-10-21T17:03:55Z",
-          "description": "Working with frontier AI and security experts to help secure open source and make our digital infrastructure more secure",
-          "source": "hatena"
-        },
-        {
-          "title": "中国語ＡＩの攻撃性能、脆弱性を見つけ情報抜き取りまで１５秒…セキュリティー会社がダミーサイトで実演",
-          "link": "https://www.yomiuri.co.jp/national/20261021-GYT1T00443/",
-          "date": "2026-10-21T20:05:05Z",
-          "description": "【読売新聞】 企業などへのサイバー攻撃での悪用が指摘されている中国語のＡＩ（人工知能）エージェント「ＡＲＴＥＸ（アルテックス）」について、ダミーサイトで攻撃性能をテストしたところ、 脆弱 （ ぜいじゃく ） 性の診断から個人情報の収",
-          "source": "hatena"
-        },
-        {
-          "title": "Today's PHP Security Release, and How We're Strengthening PHP Security",
-          "link": "https://thephp.foundation/blog/2026/10/21/todays-php-security-release-and-how-were-strengthening-php-security/",
-          "date": "2026-10-21T14:53:13Z",
-          "description": "Earlier today, the PHP project released PHP 8.5.12, 8.4.27, 8.3.36, and 8.2.35. These releases fix two critical vulnerabilities that, under the right conditions, allow an unauthenticated attacker to e",
-          "source": "hatena"
-        },
-        {
-          "title": "WebTUI",
-          "link": "https://webtui.ironclad.sh/",
-          "date": "2025-04-13T13:29:08Z",
-          "description": " Afterglow  Ghost Code  Smash Into Pieces 3:39  ~/projects/my-app  .git  .github  ◌ .next  ◌ dist  ◌ node_modules  app  components  ui  Accordion.tsx  Button.tsx  Dialog.tsx  Popover.t",
+          "title": "不正取引も行われた岩井コスモ証券への不正アクセスについてまとめてみた - piyolog",
+          "link": "https://piyolog.hatenadiary.jp/entry/2026/10/22/113434",
+          "date": "2026-10-22T03:51:54Z",
+          "description": "2026年10月16日、岩井コスモ証券は、インターネット取引のシステムの運用と保守を委託しているトレードワークスのシステムへの不正アクセスにより、顧客情報が漏えいを、また10月20日には売買管理システムへ攻撃により不正取引が行われたことも公表しました。ここでは関連する情報をまとめます。 委託先システムから顧客...",
           "source": "hatena"
         }
       ],
-      "fetchedAt": "2026-10-22T02:14:47.600Z",
+      "fetchedAt": "2026-10-22T16:12:10.868Z",
       "error": null
     },
     "hackernews": {
       "items": [
         {
-          "title": "The era of speedball capitalism has dawned",
-          "link": "https://www.economist.com/business/2026/09/30/the-era-of-speedball-capitalism-has-dawned",
-          "date": "Thu, 22 Oct 2026 00:48:10 +0000",
-          "description": "Article URL: https://www.economist.com/business/2026/09/30/the-era-of-speedball-capitalism-has-dawned Comments URL: https://news.ycombinator.com/item?id=50189666 Points: 19 # Comments: 3",
+          "title": "Google cleared 300 hectares of Finnish forest",
+          "link": "https://www.techspot.com/news/114100-google-cleared-300-hectares-finnish-forest-data-center.html",
+          "date": "Thu, 22 Oct 2026 15:32:46 +0000",
+          "description": "Article URL: https://www.techspot.com/news/114100-google-cleared-300-hectares-finnish-forest-data-center.html Comments URL: https://news.ycombinator.com/item?id=50196837 Points: 16 # Comments: 4",
           "source": "hackernews"
         },
         {
-          "title": "When Do We Become the Person We Ought to Be?",
-          "link": "https://www.graphsaboutreligion.com/p/when-do-we-become-the-person-we-ought",
-          "date": "Wed, 21 Oct 2026 23:57:41 +0000",
-          "description": "Article URL: https://www.graphsaboutreligion.com/p/when-do-we-become-the-person-we-ought Comments URL: https://news.ycombinator.com/item?id=50189278 Points: 16 # Comments: 11",
+          "title": "Quad9 (DNS Resolver) to Exit France",
+          "link": "https://quad9.net/news/blog/au-revoir-france/",
+          "date": "Thu, 22 Oct 2026 14:32:38 +0000",
+          "description": "Article URL: https://quad9.net/news/blog/au-revoir-france/ Comments URL: https://news.ycombinator.com/item?id=50195959 Points: 142 # Comments: 37",
           "source": "hackernews"
         },
         {
-          "title": "mitmproxy adds --emudhra option",
-          "link": "https://github.com/mitmproxy/mitmproxy/commit/169234499088fc2c414644a67efaed3d64ae2e3b",
-          "date": "Wed, 21 Oct 2026 23:51:37 +0000",
-          "description": "Article URL: https://github.com/mitmproxy/mitmproxy/commit/169234499088fc2c414644a67efaed3d64ae2e3b Comments URL: https://news.ycombinator.com/item?id=50189232 Points: 194 # Comments: 50",
+          "title": "MPs moving to restrict gambling ads in Canada amid mounting harms",
+          "link": "https://www.cbc.ca/news/investigates/gambling-ads-restrictions-canada-9.7388888",
+          "date": "Thu, 22 Oct 2026 14:26:40 +0000",
+          "description": "Article URL: https://www.cbc.ca/news/investigates/gambling-ads-restrictions-canada-9.7388888 Comments URL: https://news.ycombinator.com/item?id=50195873 Points: 24 # Comments: 4",
           "source": "hackernews"
         },
         {
-          "title": "Airbnb bans making guests do dishes and take out the trash",
-          "link": "https://www.theverge.com/tech/1015844/airbnb-chores-house-rules-update",
-          "date": "Wed, 21 Oct 2026 23:38:32 +0000",
-          "description": "Article URL: https://www.theverge.com/tech/1015844/airbnb-chores-house-rules-update Comments URL: https://news.ycombinator.com/item?id=50189150 Points: 107 # Comments: 83",
+          "title": "What's Getting Pwned",
+          "link": "https://pwn.watch/",
+          "date": "Thu, 22 Oct 2026 14:08:12 +0000",
+          "description": "Article URL: https://pwn.watch/ Comments URL: https://news.ycombinator.com/item?id=50195543 Points: 111 # Comments: 74",
           "source": "hackernews"
         },
         {
-          "title": "Κ = 0.003 for integer multiplication crossed",
-          "link": "https://github.com/CrocSwap/integer-mult-bounds/pull/4441",
-          "date": "Wed, 21 Oct 2026 23:22:21 +0000",
-          "description": "Article URL: https://github.com/CrocSwap/integer-mult-bounds/pull/4441 Comments URL: https://news.ycombinator.com/item?id=50189023 Points: 26 # Comments: 15",
+          "title": "eMudhra to Exit Global SSL/TLS Certificate Business",
+          "link": "https://emudhra.com/en/press-release/emudhra-to-exit-global-ssl-tls-certificate-business",
+          "date": "Thu, 22 Oct 2026 13:33:39 +0000",
+          "description": "Article URL: https://emudhra.com/en/press-release/emudhra-to-exit-global-ssl-tls-certificate-business Comments URL: https://news.ycombinator.com/item?id=50195110 Points: 380 # Comments: 265",
           "source": "hackernews"
         },
         {
-          "title": "There isn't an easy exploit for this PHP vulnerability",
-          "link": "https://eliastaylor.com/noexploit/",
-          "date": "Wed, 21 Oct 2026 23:13:27 +0000",
-          "description": "Article URL: https://eliastaylor.com/noexploit/ Comments URL: https://news.ycombinator.com/item?id=50188948 Points: 160 # Comments: 72",
+          "title": "Crystal 1.22.0",
+          "link": "https://crystal-lang.org/2026/10/12/1.22.0-released/",
+          "date": "Thu, 22 Oct 2026 13:20:13 +0000",
+          "description": "Article URL: https://crystal-lang.org/2026/10/12/1.22.0-released/ Comments URL: https://news.ycombinator.com/item?id=50194938 Points: 88 # Comments: 43",
           "source": "hackernews"
         },
         {
-          "title": "Railway Security Disclosure",
+          "title": "SBD: We Have a Filesystem at Home",
+          "link": "https://fly.io/blog/sprites-block-device/",
+          "date": "Thu, 22 Oct 2026 13:09:33 +0000",
+          "description": "Article URL: https://fly.io/blog/sprites-block-device/ Comments URL: https://news.ycombinator.com/item?id=50194824 Points: 27 # Comments: 20",
+          "source": "hackernews"
+        },
+        {
+          "title": "The Last Museum: Semantic search across 5.8M artworks from major museums",
+          "link": "https://lastmuseum.com/",
+          "date": "Thu, 22 Oct 2026 12:40:04 +0000",
+          "description": "Article URL: https://lastmuseum.com/ Comments URL: https://news.ycombinator.com/item?id=50194522 Points: 40 # Comments: 9",
+          "source": "hackernews"
+        },
+        {
+          "title": "Amazon identifies Oct 17 PHP2Shell exploitation prior to public disclosure",
+          "link": "https://aws.amazon.com/blogs/security/amazon-threat-intelligence-identifies-php2shell-exploitation-prior-to-public-disclosure-in-madpot/",
+          "date": "Thu, 22 Oct 2026 11:50:36 +0000",
+          "description": "Article URL: https://aws.amazon.com/blogs/security/amazon-threat-intelligence-identifies-php2shell-exploitation-prior-to-public-disclosure-in-madpot/ Comments URL: https://news.ycombinator.com/item?id",
+          "source": "hackernews"
+        },
+        {
+          "title": "Several Linux kernel vulnerabilities accidentally posted to public mailing list",
+          "link": "https://www.phoronix.com/news/LKML-New-Trend-Vulnerabilities",
+          "date": "Thu, 22 Oct 2026 11:12:37 +0000",
+          "description": "Article URL: https://www.phoronix.com/news/LKML-New-Trend-Vulnerabilities Comments URL: https://news.ycombinator.com/item?id=50193804 Points: 188 # Comments: 51",
+          "source": "hackernews"
+        },
+        {
+          "title": "Faster than earcut: triangulating 3.7M map polygons in 489 ms",
+          "link": "https://globus.software/blog/2026/10/16/cutting-map-polygons/",
+          "date": "Thu, 22 Oct 2026 09:31:18 +0000",
+          "description": "Article URL: https://globus.software/blog/2026/10/16/cutting-map-polygons/ Comments URL: https://news.ycombinator.com/item?id=50193170 Points: 141 # Comments: 27",
+          "source": "hackernews"
+        },
+        {
+          "title": "Jailbreaking the Switch 2",
+          "link": "https://pepsipu.com/blog/2026-10-switch2-jailbreak-ns2jb/",
+          "date": "Thu, 22 Oct 2026 08:01:52 +0000",
+          "description": "Article URL: https://pepsipu.com/blog/2026-10-switch2-jailbreak-ns2jb/ Comments URL: https://news.ycombinator.com/item?id=50192536 Points: 433 # Comments: 159",
+          "source": "hackernews"
+        },
+        {
+          "title": "The recently proposed o(n log n) integer multiplication algorithm [pdf]",
+          "link": "https://web.maths.unsw.edu.au/~davidharvey/research/subnlogn.pdf",
+          "date": "Thu, 22 Oct 2026 02:30:52 +0000",
+          "description": "Article URL: https://web.maths.unsw.edu.au/~davidharvey/research/subnlogn.pdf Comments URL: https://news.ycombinator.com/item?id=50190455 Points: 275 # Comments: 229",
+          "source": "hackernews"
+        },
+        {
+          "title": "WorldTUI: I trained a 360M model to pretend to be a terminal",
+          "link": "https://simedw.com/2026/10/21/world-model-terminal/",
+          "date": "Thu, 22 Oct 2026 02:18:41 +0000",
+          "description": "Article URL: https://simedw.com/2026/10/21/world-model-terminal/ Comments URL: https://news.ycombinator.com/item?id=50190363 Points: 404 # Comments: 123",
+          "source": "hackernews"
+        },
+        {
+          "title": "Security Disclosure",
           "link": "https://blog.railway.com/p/security-disclosure-wednesday-october-21st",
           "date": "Wed, 21 Oct 2026 21:58:03 +0000",
-          "description": "Article URL: https://blog.railway.com/p/security-disclosure-wednesday-october-21st Comments URL: https://news.ycombinator.com/item?id=50188228 Points: 317 # Comments: 156",
-          "source": "hackernews"
-        },
-        {
-          "title": "PHP web runtimes (CVE-2026-109618 and CVE-2026-109619)",
-          "link": "https://aws.amazon.com/security/security-bulletins/2026-143-aws/",
-          "date": "Wed, 21 Oct 2026 21:12:59 +0000",
-          "description": "Article URL: https://aws.amazon.com/security/security-bulletins/2026-143-aws/ Comments URL: https://news.ycombinator.com/item?id=50187708 Points: 110 # Comments: 26",
+          "description": "Article URL: https://blog.railway.com/p/security-disclosure-wednesday-october-21st Comments URL: https://news.ycombinator.com/item?id=50188228 Points: 547 # Comments: 318",
           "source": "hackernews"
         },
         {
           "title": "Claude Duet",
           "link": "https://claude.com/product/claude-duet",
           "date": "Wed, 21 Oct 2026 19:14:01 +0000",
-          "description": "Article URL: https://claude.com/product/claude-duet Comments URL: https://news.ycombinator.com/item?id=50186037 Points: 318 # Comments: 278",
+          "description": "Article URL: https://claude.com/product/claude-duet Comments URL: https://news.ycombinator.com/item?id=50186037 Points: 502 # Comments: 460",
           "source": "hackernews"
         },
         {
-          "title": "Google's Rust Style Guide",
+          "title": "Rust Style Guide",
           "link": "https://google.github.io/styleguide/rustguide.html",
           "date": "Wed, 21 Oct 2026 19:11:57 +0000",
-          "description": "Article URL: https://google.github.io/styleguide/rustguide.html Comments URL: https://news.ycombinator.com/item?id=50186010 Points: 211 # Comments: 119",
+          "description": "Article URL: https://google.github.io/styleguide/rustguide.html Comments URL: https://news.ycombinator.com/item?id=50186010 Points: 358 # Comments: 218",
           "source": "hackernews"
         },
         {
-          "title": "GitLab Critical Patch Release",
+          "title": "GitLab critical patch release",
           "link": "https://docs.gitlab.com/releases/patches/patch-release-gitlab-19-5-1-released/",
           "date": "Wed, 21 Oct 2026 19:01:12 +0000",
-          "description": "Article URL: https://docs.gitlab.com/releases/patches/patch-release-gitlab-19-5-1-released/ Comments URL: https://news.ycombinator.com/item?id=50185869 Points: 254 # Comments: 63",
-          "source": "hackernews"
-        },
-        {
-          "title": "Meta ordered to pay $25B penalty in New Mexico Cambridge Analytica case",
-          "link": "https://www.cnbc.com/2026/10/21/meta-new-mexico-cambridge-analytica-penalty.html",
-          "date": "Wed, 21 Oct 2026 17:45:13 +0000",
-          "description": "https://nmdoj.gov/press-release/the-new-mexico-department-of... Comments URL: https://news.ycombinator.com/item?id=50184820 Points: 386 # Comments: 237",
-          "source": "hackernews"
-        },
-        {
-          "title": "EA is shutting down BioWare",
-          "link": "https://www.theverge.com/games/1015647/ea-is-shutting-down-bioware",
-          "date": "Wed, 21 Oct 2026 17:29:33 +0000",
-          "description": "Article URL: https://www.theverge.com/games/1015647/ea-is-shutting-down-bioware Comments URL: https://news.ycombinator.com/item?id=50184586 Points: 534 # Comments: 321",
-          "source": "hackernews"
-        },
-        {
-          "title": "New plastic pollution discovered: 'Plasticorals' coral rubble fused with plastic",
-          "link": "https://www.oist.jp/news-center/news/2026/9/18/new-form-plastic-pollution-discovered-shores-vulnerable-coral-reefs",
-          "date": "Wed, 21 Oct 2026 16:20:37 +0000",
-          "description": "Article URL: https://www.oist.jp/news-center/news/2026/9/18/new-form-plastic-pollution-discovered-shores-vulnerable-coral-reefs Comments URL: https://news.ycombinator.com/item?id=50183512 Points: 101 ",
-          "source": "hackernews"
-        },
-        {
-          "title": "Today's PHP security release, and how we're strengthening security",
-          "link": "https://thephp.foundation/blog/2026/10/21/todays-php-security-release-and-how-were-strengthening-php-security/",
-          "date": "Wed, 21 Oct 2026 15:48:56 +0000",
-          "description": "Related ongoing thread: PHP 8.2.35 - https://news.ycombinator.com/item?id=50180873 (links to more at https://news.ycombinator.com/item?id=50184935 ) Comments URL: https://news.ycombinator.com/item?id=",
-          "source": "hackernews"
-        },
-        {
-          "title": "Oregon lawmakers approve money to buy an iconic waterfall listed on Redfin",
-          "link": "https://apnews.com/article/oregon-waterfall-for-sale-lawmakers-996de63462d49ec3ad9bee1629fb9488",
-          "date": "Wed, 21 Oct 2026 15:20:04 +0000",
-          "description": "Article URL: https://apnews.com/article/oregon-waterfall-for-sale-lawmakers-996de63462d49ec3ad9bee1629fb9488 Comments URL: https://news.ycombinator.com/item?id=50182526 Points: 172 # Comments: 83",
-          "source": "hackernews"
-        },
-        {
-          "title": "Patch the Planet: global response coordination as agents uncover vulnerabilities",
-          "link": "https://openai.com/index/coordinated-disclosure-of-critical-vulnerabilities/",
-          "date": "Wed, 21 Oct 2026 14:03:43 +0000",
-          "description": "https://patchtheplanet.org/ Comments URL: https://news.ycombinator.com/item?id=50181175 Points: 236 # Comments: 162",
-          "source": "hackernews"
-        },
-        {
-          "title": "DuckDB 2.0.0 LTS “Cinnamon Teal”",
-          "link": "https://duckdb.org/2026/10/21/announcing-duckdb-200",
-          "date": "Wed, 21 Oct 2026 14:01:22 +0000",
-          "description": "Article URL: https://duckdb.org/2026/10/21/announcing-duckdb-200 Comments URL: https://news.ycombinator.com/item?id=50181136 Points: 366 # Comments: 45",
+          "description": "Article URL: https://docs.gitlab.com/releases/patches/patch-release-gitlab-19-5-1-released/ Comments URL: https://news.ycombinator.com/item?id=50185869 Points: 393 # Comments: 89",
           "source": "hackernews"
         },
         {
           "title": "Compromised LiteLLM 1.107.0 on PyPI Installs a Credential Stealer and Backdoor",
           "link": "https://safedep.io/litellm-pypi-compromise-credential-stealer-backdoor/",
           "date": "Wed, 21 Oct 2026 14:00:26 +0000",
-          "description": "Article URL: https://safedep.io/litellm-pypi-compromise-credential-stealer-backdoor/ Comments URL: https://news.ycombinator.com/item?id=50181114 Points: 440 # Comments: 146",
+          "description": "Article URL: https://safedep.io/litellm-pypi-compromise-credential-stealer-backdoor/ Comments URL: https://news.ycombinator.com/item?id=50181114 Points: 573 # Comments: 185",
           "source": "hackernews"
         },
         {
-          "title": "PHP 8.2.35",
-          "link": "https://github.com/php/php-src/releases/tag/php-8.2.35",
-          "date": "Wed, 21 Oct 2026 13:45:33 +0000",
-          "description": "Related ongoing thread: Today's PHP security release, and how we're strengthening security - https://news.ycombinator.com/item?id=50182987 Comments URL: https://news.ycombinator.com/item?id=50180873 P",
+          "title": "Show HN: Uberblok – an interactive museum of ZFS internals",
+          "link": "https://uberblok.storagebits.workers.dev/",
+          "date": "Wed, 21 Oct 2026 13:04:25 +0000",
+          "description": "I've worked for a long time in the storage field during my career and ZFS is the piece of engineering I admire most in that space. I wanted a way to pay homage to it and to explore and better understa",
           "source": "hackernews"
         }
       ],
-      "fetchedAt": "2026-10-22T02:14:49.153Z",
+      "fetchedAt": "2026-10-22T16:12:11.490Z",
       "error": null
     },
     "nikkei": {
       "items": [
         {
-          "title": "交通違反「青切符」反則金、キャッシュレス納付導入 27年7月から",
-          "link": "https://www.nikkei.com/article/DGXZQOUD197QP0Z11C26A0000000/",
-          "date": "2026-10-22T10:04:05+09:00",
+          "title": "三菱UFJ銀行の北村慎専務、半導体人材育成「九州財界の支援不可欠」",
+          "link": "https://www.nikkei.com/article/DGXZQOJC08AKQ0Y6A001C2000000/",
+          "date": "2026-10-23T00:00:00+09:00",
           "description": "",
           "source": "nikkei"
         },
         {
-          "title": "神奈川県警、古い免許証を不正流用 警備部門が30年以上顔写真収集か",
-          "link": "https://www.nikkei.com/article/DGXZQOUD216KS0R21C26A0000000/",
-          "date": "2026-10-22T10:03:37+09:00",
+          "title": "ラグビー日本代表、主将にディアンズと斎藤直人 24日フィジー戦",
+          "link": "https://www.nikkei.com/article/DGXZQOKC22BXV0S6A021C2000000/",
+          "date": "2026-10-22T23:58:01+09:00",
           "description": "",
           "source": "nikkei"
         },
         {
-          "title": "体操女子、日本60年ぶり団体銅メダル 世界選手権でロス五輪切符獲得",
-          "link": "https://www.nikkei.com/article/DGXZQODH220BG0S6A021C2000000/",
-          "date": "2026-10-22T10:02:25+09:00",
+          "title": "NYダウは反落して始まる AI関連銘柄に売り、メタ一時7%安",
+          "link": "https://www.nikkei.com/article/DGXZQOFL22BX20S6A021C2000000/",
+          "date": "2026-10-22T23:57:21+09:00",
           "description": "",
           "source": "nikkei"
         },
         {
-          "title": "商品9時30分 原油が反落 ロシア産輸出拡大の思惑で 金は反発",
-          "link": "https://www.nikkei.com/article/DGXZQOFL220K50S6A021C2000000/",
-          "date": "2026-10-22T09:51:54+09:00",
+          "title": "AIエージェントに｢社員証｣ MicrosoftやWorkday、権限絞り暴走防ぐ",
+          "link": "https://www.nikkei.com/article/DGXZQOFD19ADB0Z11C26A0000000/",
+          "date": "2026-10-22T23:57:01+09:00",
           "description": "",
           "source": "nikkei"
         },
         {
-          "title": "東証寄り付き 日経平均は一進一退 一時200円高も上値重く",
-          "link": "https://www.nikkei.com/article/DGXZQOFL220DR0S6A021C2000000/",
-          "date": "2026-10-22T09:35:33+09:00",
+          "title": "バスケBプレミア、茨城がA東京破り3勝目",
+          "link": "https://www.nikkei.com/article/DGXZQOKCBSKR10S6A021C2000000/",
+          "date": "2026-10-22T23:53:11+09:00",
           "description": "",
           "source": "nikkei"
         },
         {
-          "title": "債券寄り付き 長期金利、2.870%に低下 米債高が波及",
-          "link": "https://www.nikkei.com/article/DGXZQOFL220KT0S6A021C2000000/",
-          "date": "2026-10-22T09:28:06+09:00",
+          "title": "サウジアラビア首都に渡航中止勧告 外務省、フーシ派の攻撃継続受け",
+          "link": "https://www.nikkei.com/article/DGXZQOUA22BY90S6A021C2000000/",
+          "date": "2026-10-22T23:45:00+09:00",
           "description": "",
           "source": "nikkei"
         },
         {
-          "title": "GK鈴木彩艶フル出場、渡辺剛は途中出場 サッカー欧州CL",
-          "link": "https://www.nikkei.com/article/DGXZQOKC220MS0S6A021C2000000/",
-          "date": "2026-10-22T09:22:40+09:00",
+          "title": "2026育成ドラフト指名選手一覧 巨人が5巡目で中学生捕手を指名",
+          "link": "https://www.nikkei.com/article/DGXZQODH226XB0S6A021C2000000/",
+          "date": "2026-10-22T23:36:49+09:00",
           "description": "",
           "source": "nikkei"
         },
         {
-          "title": "三菱UFJ、ネットサービス一時停止 投信口座開設や住宅ローン事前審査",
-          "link": "https://www.nikkei.com/article/DGXZQOUB220IM0S6A021C2000000/",
-          "date": "2026-10-22T09:13:24+09:00",
+          "title": "米国の失業保険申請、週19.4万件 3カ月ぶりの低水準",
+          "link": "https://www.nikkei.com/article/DGXZQOGN179I50X10C26A8000000/",
+          "date": "2026-10-22T23:35:43+09:00",
           "description": "",
           "source": "nikkei"
         },
         {
-          "title": "日経平均、もみ合いで始まる 中東緊迫を警戒、米半導体株高は支え",
-          "link": "https://www.nikkei.com/article/DGXZQOFL220DS0S6A021C2000000/",
-          "date": "2026-10-22T09:12:34+09:00",
+          "title": "家畜に広がる「シャモンダウイルス」 仏で初のヒト感染、患者は死亡",
+          "link": "https://www.nikkei.com/article/DGXZQOGR22AKF0S6A021C2000000/",
+          "date": "2026-10-22T23:18:20+09:00",
           "description": "",
           "source": "nikkei"
         },
         {
-          "title": "外為8時30分 円相場、横ばいで158円台前半 対ユーロでは下落",
-          "link": "https://www.nikkei.com/article/DGXZQOFL220DV0S6A021C2000000/",
-          "date": "2026-10-22T09:02:16+09:00",
+          "title": "日本製鉄、USスチール拠点に4700億円投資 90年稼働の熱延設備刷新",
+          "link": "https://www.nikkei.com/article/DGXZQOUC227GC0S6A021C2000000/",
+          "date": "2026-10-22T22:50:00+09:00",
           "description": "",
           "source": "nikkei"
         },
         {
-          "title": "日経平均先物、大取で反落 200円安の6万4580円で始まる",
-          "link": "https://www.nikkei.com/article/DGXZQOFL220IT0S6A021C2000000/",
-          "date": "2026-10-22T08:52:35+09:00",
+          "title": "巨人、14歳中学3年の関蓮太郎を異例の育成指名 U15代表で4番捕手",
+          "link": "https://www.nikkei.com/article/DGXZQODH22B4P0S6A021C2000000/",
+          "date": "2026-10-22T22:26:53+09:00",
           "description": "",
           "source": "nikkei"
         },
         {
-          "title": "高市政権、戦略17分野を順序づけ 半導体・水素など事業段階で3分類",
-          "link": "https://www.nikkei.com/article/DGXZQOUA193BF0Z11C26A0000000/",
-          "date": "2026-10-22T08:27:55+09:00",
+          "title": "パラ競泳・荻原虎太郎、成長示した「金」 パリ銀の窪田に完勝",
+          "link": "https://www.nikkei.com/article/DGXZQODH227U10S6A021C2000000/",
+          "date": "2026-10-22T22:24:52+09:00",
           "description": "",
           "source": "nikkei"
         },
         {
-          "title": "マクロン仏大統領、暴動巡りトランプ氏批判 移民発言「容認できず」",
-          "link": "https://www.nikkei.com/article/DGXZQOGR2201M0S6A021C2000000/",
-          "date": "2026-10-22T08:09:37+09:00",
+          "title": "ラクス、子会社システムに不正アクセス 契約者情報が流出",
+          "link": "https://www.nikkei.com/article/DGXZQOUC22BFG0S6A021C2000000/",
+          "date": "2026-10-22T22:16:15+09:00",
           "description": "",
           "source": "nikkei"
         },
         {
-          "title": "テスラ、AI投資増で7〜9月営業益6割減 EV販売も減少",
-          "link": "https://www.nikkei.com/article/DGXZQOGN210KW0R21C26A0000000/",
-          "date": "2026-10-22T08:08:51+09:00",
+          "title": "パ6球団ドラフト分析 鈴木泰成を1位指名のソフトバンク「最大の補強」",
+          "link": "https://www.nikkei.com/article/DGXZQODH216SH0R21C26A0000000/",
+          "date": "2026-10-22T22:15:18+09:00",
           "description": "",
           "source": "nikkei"
         },
         {
-          "title": "ヘンリー英王子、国王や皇太子と和解希望 米誌で言及",
-          "link": "https://www.nikkei.com/article/DGXZQOCB220F50S6A021C2000000/",
-          "date": "2026-10-22T08:00:35+09:00",
+          "title": "新潟日報社、最大25万人の個人情報漏洩 システム会社に不正アクセス",
+          "link": "https://www.nikkei.com/article/DGXZQOCC22BE80S6A021C2000000/",
+          "date": "2026-10-22T22:10:22+09:00",
           "description": "",
           "source": "nikkei"
         },
         {
-          "title": "PHP欠陥、九州企業で一部サービス停止 西日本シティ銀行やJR九州",
-          "link": "https://www.nikkei.com/article/DGXZQOJC21CFR0R21C26A0000000/",
-          "date": "2026-10-22T08:00:11+09:00",
+          "title": "政府、NSCでサイバー対策協議 相次ぐ攻撃踏まえ対応",
+          "link": "https://www.nikkei.com/article/DGXZQOUA229OS0S6A021C2000000/",
+          "date": "2026-10-22T22:10:00+09:00",
           "description": "",
           "source": "nikkei"
         },
         {
-          "title": "日経平均株価、米株高が主力株に追い風（先読み株式相場）",
-          "link": "https://www.nikkei.com/article/DGXZQOFL2203A0S6A021C2000000/",
-          "date": "2026-10-22T07:40:14+09:00",
+          "title": "ボクシング井岡一翔が現役続行を表明 37歳、大みそかに再起戦予定",
+          "link": "https://www.nikkei.com/article/DGXZQOKC22BCY0S6A021C2000000/",
+          "date": "2026-10-22T22:03:38+09:00",
           "description": "",
           "source": "nikkei"
         },
         {
-          "title": "プログラム言語「PHP」欠陥、世界でサイト停止 AIが脆弱性発見",
-          "link": "https://www.nikkei.com/article/DGXZQOGN21C340R21C26A0000000/",
-          "date": "2026-10-22T07:34:52+09:00",
+          "title": "セ6球団ドラフト分析 DeNA1位はタフな大学生左腕・星野世那",
+          "link": "https://www.nikkei.com/article/DGXZQODH216KR0R21C26A0000000/",
+          "date": "2026-10-22T22:02:55+09:00",
           "description": "",
           "source": "nikkei"
         },
         {
-          "title": "今日の株価材料（新聞など、22日）JX金属と日製鋼、AIサーバー向けに銅合金5割増産",
-          "link": "https://www.nikkei.com/article/DGXZQOFL21BU40R21C26A0000000/",
-          "date": "2026-10-22T07:31:42+09:00",
+          "title": "22日の高市首相の動静",
+          "link": "https://www.nikkei.com/article/DGXZQOUA223KI0S6A021C2000000/",
+          "date": "2026-10-22T22:00:00+09:00",
           "description": "",
           "source": "nikkei"
         },
         {
-          "title": "ヒマラヤ高峰で邦人2人不明 ネパール、15日以降連絡とれず",
-          "link": "https://www.nikkei.com/article/DGXZQOCB220AF0S6A021C2000000/",
-          "date": "2026-10-22T07:25:54+09:00",
+          "title": "トルコ中銀、9カ月ぶり利下げ インフレ圧力弱まる",
+          "link": "https://www.nikkei.com/article/DGXZQOGR22AOD0S6A021C2000000/",
+          "date": "2026-10-22T21:55:58+09:00",
           "description": "",
           "source": "nikkei"
         },
         {
-          "title": "シカゴ日本株先物概況・21日 日経平均先物は75円高の6万5015円",
-          "link": "https://www.nikkei.com/article/DGXZQOFL2202U0S6A021C2000000/",
-          "date": "2026-10-22T07:07:44+09:00",
+          "title": "内島萌夏は2回戦敗退 女子テニス・ジャパンオープン",
+          "link": "https://www.nikkei.com/article/DGXZQOKC22BBB0S6A021C2000000/",
+          "date": "2026-10-22T21:53:58+09:00",
           "description": "",
           "source": "nikkei"
         },
         {
-          "title": "米20年債、くすぶる「廃止」観測 高利回りでも需要鈍く",
-          "link": "https://www.nikkei.com/article/DGXZQOGN21CK80R21C26A0000000/",
-          "date": "2026-10-22T07:04:46+09:00",
+          "title": "井上尚弥、次戦は2027年3月か 防衛戦か転級で5階級制覇へ",
+          "link": "https://www.nikkei.com/article/DGXZQODH229UJ0S6A021C2000000/",
+          "date": "2026-10-22T21:48:31+09:00",
           "description": "",
           "source": "nikkei"
         },
         {
-          "title": "NY株ハイライト つかの間のハイテク買い AIインフラに「現実の壁」",
-          "link": "https://www.nikkei.com/article/DGXZQOFL21C0R0R21C26A0000000/",
-          "date": "2026-10-22T07:01:03+09:00",
+          "title": "フィンランドの核ごみ処分場、世界初稼働へ 政府が認可",
+          "link": "https://www.nikkei.com/article/DGXZQOGR127XH0S6A810C2000000/",
+          "date": "2026-10-22T21:44:49+09:00",
           "description": "",
           "source": "nikkei"
         },
         {
-          "title": "宮城の多賀城政庁、49年度までに復元へ 日本三大史跡で観光促進",
-          "link": "https://www.nikkei.com/article/DGXZQOCC205ZU0Q6A021C2000000/",
-          "date": "2026-10-22T07:00:00+09:00",
+          "title": "ANAHD、ソラシドエアとAIRDOに追加出資検討 赤字国内線立て直し",
+          "link": "https://www.nikkei.com/article/DGXZQOUC22ATM0S6A021C2000000/",
+          "date": "2026-10-22T21:43:43+09:00",
           "description": "",
           "source": "nikkei"
         },
         {
-          "title": "台湾IT19社、9月45.9%増収 AIサーバー後発ペガトロンが急伸",
-          "link": "https://www.nikkei.com/article/DGXZQOGM201WU0Q6A021C2000000/",
-          "date": "2026-10-22T07:00:00+09:00",
+          "title": "中国政府系ハッカー集団、AI「ARTEX」で攻撃 マイクロソフトが確認",
+          "link": "https://www.nikkei.com/article/DGXZQOUC22AUL0S6A021C2000000/",
+          "date": "2026-10-22T21:33:13+09:00",
           "description": "",
           "source": "nikkei"
         },
         {
-          "title": "NY円相場、横ばい 1ドル=158円10〜20銭 米金利上昇は重荷も方向感欠く",
-          "link": "https://www.nikkei.com/article/DGXZQOFL21BW10R21C26A0000000/",
-          "date": "2026-10-22T06:57:55+09:00",
+          "title": "チームみらい安野氏、自民党本部に 国会DX推進の必要性訴え",
+          "link": "https://www.nikkei.com/article/DGXZQOUA22B760S6A021C2000000/",
+          "date": "2026-10-22T21:30:00+09:00",
           "description": "",
           "source": "nikkei"
         },
         {
-          "title": "ロシア、米ウクライナと3カ国協議「11月再開の用意」 米特使に表明",
-          "link": "https://www.nikkei.com/article/DGXZQOGR21CHD0R21C26A0000000/",
-          "date": "2026-10-22T06:53:25+09:00",
+          "title": "公明党・岡本三成代表、ベーシックサービス「財源と一緒に議論」",
+          "link": "https://www.nikkei.com/article/DGXZQOUA229Y40S6A021C2000000/",
+          "date": "2026-10-22T21:30:00+09:00",
           "description": "",
           "source": "nikkei"
         },
         {
-          "title": "秋田県の子吉川、レベル2氾濫注意報に切り替え 気象庁",
-          "link": "https://www.nikkei.com/article/DGXZQOUD2206S0S6A021C2000000/",
-          "date": "2026-10-22T06:50:32+09:00",
+          "title": "2026ドラフト指名選手一覧 織田翔希を巨人が1位指名",
+          "link": "https://www.nikkei.com/article/DGXZQODH215040R21C26A0000000/",
+          "date": "2026-10-22T21:23:33+09:00",
           "description": "",
           "source": "nikkei"
         },
         {
-          "title": "米国、サウジの一部大使館員や家族に退避命令 フーシの攻撃で",
-          "link": "https://www.nikkei.com/article/DGXZQOGN220560S6A021C2000000/",
-          "date": "2026-10-22T06:31:20+09:00",
+          "title": "中国、企業の対外投資の管理強化 他国で「重大な不利益」に報告義務",
+          "link": "https://www.nikkei.com/article/DGXZQOGM22AGN0S6A021C2000000/",
+          "date": "2026-10-22T21:07:42+09:00",
           "description": "",
           "source": "nikkei"
         },
         {
-          "title": "欧州でも政府系サイトなど遮断 欧州連合｢既に脆弱性を悪用の可能性｣",
-          "link": "https://www.nikkei.com/article/DGXZQOGR21CJA0R21C26A0000000/",
-          "date": "2026-10-22T06:23:22+09:00",
+          "title": "英バークレイズ、年内に5000人削減へ AI活用の進展で",
+          "link": "https://www.nikkei.com/article/DGXZQOUB228YL0S6A021C2000000/",
+          "date": "2026-10-22T21:06:57+09:00",
           "description": "",
           "source": "nikkei"
         }
       ],
-      "fetchedAt": "2026-10-22T02:14:49.329Z",
+      "fetchedAt": "2026-10-22T16:12:11.668Z",
       "error": null
     },
     "reuters": {
@@ -728,6 +728,55 @@
     "toyokeizai": {
       "items": [
         {
+          "title": "【PHPに重大欠陥】世界中のWEBサイトの約7割に影響！？／WEBサイト停止相次ぐ／高市首相も異例の注意喚起／一体何が起きた？騒動の経緯を専門家が解説 | ビジネス | 東洋経済オンライン",
+          "link": "https://toyokeizai.net/articles/-/962239?utm_source=rss&utm_medium=http&utm_campaign=link_back",
+          "date": "Thu, 22 Oct 2026 21:02:00 +0900",
+          "description": "世界中のWEBサイトの約7割で使われているプログラミング言語「PHP」に重大な欠陥が見つかった。高市首相も自身のXで、修正プログラムを適用するよう異例の呼びかけ。一体何があったのか。【タイムテーブル…",
+          "source": "toyokeizai"
+        },
+        {
+          "title": "【日本は自動運転で世界に勝てる？】事故は誰の責任？／27年度から日産が一般道で手放し運転を実現！？／日本でもロボタクシー？／テスラ自動運転「サイバーキャブ」500万円以内で開発できた理由は？ | ビジネス | 東洋経済オンライン",
+          "link": "https://toyokeizai.net/articles/-/962231?utm_source=rss&utm_medium=http&utm_campaign=link_back",
+          "date": "Thu, 22 Oct 2026 19:00:00 +0900",
+          "description": "フィジカルAIの登場で、自動運転に「ゲームチェンジ」が起きている。テスラはカメラだけで走るロボタクシー「サイバーキャブ」を500万円以内に抑えて開発し、日産も27年度に一般道での手放し運転実現を目指…",
+          "source": "toyokeizai"
+        },
+        {
+          "title": "優秀なのに40代でも助監督のまま… ｢役所広司×クドカン｣ネトフリ最新ドラマに垣間見る映像業界｢万年人手不足｣の真実 | ライフ | 東洋経済オンライン",
+          "link": "https://toyokeizai.net/articles/-/962047?utm_source=rss&utm_medium=http&utm_campaign=link_back",
+          "date": "Thu, 22 Oct 2026 16:30:00 +0900",
+          "description": "脚本家･宮藤官九郎の最新作はNetflix配信のヒューマンコメディー。企画･プロデュースを担当したのは､元TBSの磯山晶氏。全8話のドラマが突きつけた､日本の映像業界が抱える根本的な問題とは？",
+          "source": "toyokeizai"
+        },
+        {
+          "title": "イデオロギーによって｢脳そのもの｣が作り変えられるという衝撃 ｢政治神経科学｣のパイオニアによる研究 | ライフ | 東洋経済オンライン",
+          "link": "https://toyokeizai.net/articles/-/954625?utm_source=rss&utm_medium=http&utm_campaign=link_back",
+          "date": "Thu, 22 Oct 2026 12:00:00 +0900",
+          "description": "なぜ私たちは対立し､極端な思想にとらわれてしまうのでしょうか。脳科学の視点から､信念やイデオロギーが私たちの思考や行動､さらには脳の構造そのものに与える影響を､最先端の研究に基づき解き明かします。信…",
+          "source": "toyokeizai"
+        },
+        {
+          "title": "｢AI都市｣構想で移転論が再燃する台北･松山空港､開港90年の歴史に刻まれた戦争とインド独立の英雄の悲劇 | 政治・経済・投資 | 東洋経済オンライン",
+          "link": "https://toyokeizai.net/articles/-/961827?utm_source=rss&utm_medium=http&utm_campaign=link_back",
+          "date": "Thu, 22 Oct 2026 11:30:00 +0900",
+          "description": "日本人観光客もよく利用する､台北市の松山空港をめぐる移転構想が､都市再開発とAI産業の集積地化という未来志向のビジョンと､交通･医療･国防を含む現実的な課題の狭間で大きな注目を集めています。90年を…",
+          "source": "toyokeizai"
+        },
+        {
+          "title": "AIに月数万円も払う時代が来た､ChatGPTだけでは済まない追加課金の連鎖とサービス淘汰の行方 | ビジネス | 東洋経済オンライン",
+          "link": "https://toyokeizai.net/articles/-/961669?utm_source=rss&utm_medium=http&utm_campaign=link_back",
+          "date": "Thu, 22 Oct 2026 11:30:00 +0900",
+          "description": "生成AIの普及により､多くのウェブサービスがAI機能のサブスク課金を導入し､支出が積み重なる現実に直面している。高度化した便利な機能の裏で､AIの真の価値と価格のバランスはどう判断すべきなのか？",
+          "source": "toyokeizai"
+        },
+        {
+          "title": "ベクトル子会社のビタブリッドジャパンが上期黒字化､\"効率化達成\"の背景 新商品を積極投入 | 政治・経済・投資 | 東洋経済オンライン",
+          "link": "https://toyokeizai.net/articles/-/961627?utm_source=rss&utm_medium=http&utm_campaign=link_back",
+          "date": "Thu, 22 Oct 2026 11:30:00 +0900",
+          "description": "サプリメントを企画販売するビタブリッドジャパンの上期決算は黒字化しました。その背景とは？",
+          "source": "toyokeizai"
+        },
+        {
           "title": "11月に高速｢2つの新規開通｣あり！圏央道｢多古｣と東関道｢行方｣開通は交通の流れを変えるのか？ | ライフ | 東洋経済オンライン",
           "link": "https://toyokeizai.net/articles/-/961571?utm_source=rss&utm_medium=http&utm_campaign=link_back",
           "date": "Thu, 22 Oct 2026 11:00:00 +0900",
@@ -817,62 +866,20 @@
           "date": "Thu, 22 Oct 2026 06:15:00 +0900",
           "description": "洛星高校は地元･京都大学や東京大学に多くの卒業生を送り出してきた､京都を代表する中高一貫校。卒業生の中には個性が光る学者･研究者が数多くいます。卒業生の活躍から､同校の強みを分析します。",
           "source": "toyokeizai"
-        },
-        {
-          "title": "新橋のビジネスパーソンもハマる｢1L400円から｣のデカい1杯…韓国発\"大容量･低価格\"カフェが続々と日本に上陸する背景 | ビジネス | 東洋経済オンライン",
-          "link": "https://toyokeizai.net/articles/-/959485?utm_source=rss&utm_medium=http&utm_campaign=link_back",
-          "date": "Thu, 22 Oct 2026 06:05:00 +0900",
-          "description": "韓国発の\"1リットル級\"大容量コーヒーが､新橋のビジネス街で急速に広がっています。低価格と満足感だけでなく､忙しい日常にフィットする新たなコーヒースタイルが注目の的。その背景にある狙いと､日本文化へ…",
-          "source": "toyokeizai"
-        },
-        {
-          "title": "台湾統一地方選挙で予想外の展開に…台北市長選で優勢だった国民党現職が失速し､民進党の挑戦者が急上昇のサプライズ | 政治・経済・投資 | 東洋経済オンライン",
-          "link": "https://toyokeizai.net/articles/-/962004?utm_source=rss&utm_medium=http&utm_campaign=link_back",
-          "date": "Thu, 22 Oct 2026 06:00:00 +0900",
-          "description": "台湾で1カ月後に迫る統一地方選を前に､与野党の攻防はこれまでにない緊迫感を見せています。国民党が本来強い台北市長選では､民進党候補が躍進し､国民党で現職の蒋万安氏を猛追する想定外の事態が起きています。",
-          "source": "toyokeizai"
-        },
-        {
-          "title": "中部電力の原発データ不正を生んだ｢独自の正当化理論｣という病､高木仁三郎氏が遺した｢対抗的専門家｣の挑戦 | 政治・経済・投資 | 東洋経済オンライン",
-          "link": "https://toyokeizai.net/articles/-/961907?utm_source=rss&utm_medium=http&utm_campaign=link_back",
-          "date": "Thu, 22 Oct 2026 06:00:00 +0900",
-          "description": "中部電力の原発再稼働をめぐるデータ不正問題は､組織の自己正当化や異論排除が根底にあったことが明らかになりました。市民の立場から異論を検証した高木仁三郎氏のような｢対抗的専門家｣は､なぜいま必要とされ…",
-          "source": "toyokeizai"
-        },
-        {
-          "title": "〈薄氷のAI相場〉1点集中するレバレッジが一気に巻き戻すとき､ショックは日本を直撃する…ドル円を見舞う\"想定外\"も | 政治・経済・投資 | 東洋経済オンライン",
-          "link": "https://toyokeizai.net/articles/-/961870?utm_source=rss&utm_medium=http&utm_campaign=link_back",
-          "date": "Thu, 22 Oct 2026 06:00:00 +0900",
-          "description": "AI関連投資が世界経済の成長を牽引する一方で､不安定なレバレッジ構造や循環取引が金融市場のリスクを急速に高めています。アメリカ発のショックがアジア･日本経済へ波及する可能性や､円高リスクの浮上も想定…",
-          "source": "toyokeizai"
-        },
-        {
-          "title": "滞空時間6秒､公道不可の｢ロケット｣モデル——テスラの《空飛ぶクルマ》は商機を生むか | ビジネス | 東洋経済オンライン",
-          "link": "https://toyokeizai.net/articles/-/961861?utm_source=rss&utm_medium=http&utm_campaign=link_back",
-          "date": "Thu, 22 Oct 2026 06:00:00 +0900",
-          "description": "テスラが､翼もローターも持たずロケットの噴射装置で空を飛ぶ｢ロードスター｣をお披露目した。スペースXの技術により実現したクルマだが､果たしてイーロン･マスクの狙いはなんだろうか？",
-          "source": "toyokeizai"
-        },
-        {
-          "title": "第一三共｢女性＆開発出身で初｣の新代取の素顔 結婚後に現場を離れるが復帰を志願…｢患者の近くで働いた経験生かす｣ | ビジネス | 東洋経済オンライン",
-          "link": "https://toyokeizai.net/articles/-/961831?utm_source=rss&utm_medium=http&utm_campaign=link_back",
-          "date": "Thu, 22 Oct 2026 06:00:00 +0900",
-          "description": "――今年6月、代表取締役に就任しました。10人の取締役のうち3人が代表権を持つ形となりますが、自身にはどのような役割が期待されていると思いますか。1つは、経営に臨床開発の経験者としての視点を入れるこ…",
-          "source": "toyokeizai"
-        },
-        {
-          "title": "不振のネットフリックスがコンテンツ責任者を｢即時交代｣ 株価は1年で4割下落､1000人規模の解雇計画も | 政治・経済・投資 | 東洋経済オンライン",
-          "link": "https://toyokeizai.net/articles/-/961657?utm_source=rss&utm_medium=http&utm_campaign=link_back",
-          "date": "Thu, 22 Oct 2026 06:00:00 +0900",
-          "description": "動画配信業界を牽引してきたネットフリックスが､成長鈍化や株価の大幅下落に直面する中､最高コンテンツ責任者の交代を発表しました。",
-          "source": "toyokeizai"
         }
       ],
-      "fetchedAt": "2026-10-22T02:14:50.282Z",
+      "fetchedAt": "2026-10-22T16:12:12.676Z",
       "error": null
     },
     "reddit": {
       "items": [
+        {
+          "title": "Debunking \"Faster than Rust\": Malicious Benchmarks in Tov",
+          "link": "https://www.reddit.com/r/programming/comments/1xcaveo/debunking_faster_than_rust_malicious_benchmarks/",
+          "date": "2026-10-22T06:17:28+00:00",
+          "description": "I have debunked (some of the) benchmarks of this new and suspicious &quot;Tov&quot; programming language. Slight background: My friend (who is pretty interested in new stuff generally) found this thin",
+          "source": "reddit"
+        },
         {
           "title": "Eight Bits of Trust; eMudhra's CA keys cracked in milliseconds",
           "link": "https://www.reddit.com/r/programming/comments/1xbl8y1/eight_bits_of_trust_emudhras_ca_keys_cracked_in/",
@@ -895,6 +902,20 @@
           "source": "reddit"
         },
         {
+          "title": "I Tried to Find Out How ClickHouse Keeper Takes Non-Blocking Snapshots",
+          "link": "https://www.reddit.com/r/programming/comments/1xchal4/i_tried_to_find_out_how_clickhouse_keeper_takes/",
+          "date": "2026-10-22T12:32:26+00:00",
+          "description": "This is a continuation from my previous post here: https://www.reddit.com/r/programming/comments/1x8gk1v/i_traced_a_postgres_insert_to_raw_bytes_on_disk/ I&#39;ve been putting together some notes/vide",
+          "source": "reddit"
+        },
+        {
+          "title": "TornadoVM 7 Enables GPU-Native Workloads From Java Applications",
+          "link": "https://www.reddit.com/r/programming/comments/1xcc8i8/tornadovm_7_enables_gpunative_workloads_from_java/",
+          "date": "2026-10-22T07:42:26+00:00",
+          "description": "&#32; submitted by &#32; /u/benevanstech [link] &#32; [comments]",
+          "source": "reddit"
+        },
+        {
           "title": "Critical Vulnerabilities in PHP",
           "link": "https://www.reddit.com/r/programming/comments/1xbcv7y/critical_vulnerabilities_in_php/",
           "date": "2026-10-21T03:48:54+00:00",
@@ -902,10 +923,24 @@
           "source": "reddit"
         },
         {
+          "title": "Arcana: One Pure-Java Library for (Almost) Every Archive Format",
+          "link": "https://www.reddit.com/r/programming/comments/1xcgl1u/arcana_one_purejava_library_for_almost_every/",
+          "date": "2026-10-22T11:59:17+00:00",
+          "description": "&#32; submitted by &#32; /u/SteF44444 [link] &#32; [comments]",
+          "source": "reddit"
+        },
+        {
           "title": "Make yourself replaceable",
           "link": "https://www.reddit.com/r/programming/comments/1xb7t0x/make_yourself_replaceable/",
           "date": "2026-10-20T23:42:16+00:00",
           "description": "&#32; submitted by &#32; /u/maroun-baydoun [link] &#32; [comments]",
+          "source": "reddit"
+        },
+        {
+          "title": "go/ links that live in a file in your repo (open source)",
+          "link": "https://www.reddit.com/r/programming/comments/1xbxzz2/go_links_that_live_in_a_file_in_your_repo_open/",
+          "date": "2026-10-21T20:10:21+00:00",
+          "description": "Chrome and Firefox extension that does this for your twigg repository. The links are defined in a GOLINKS file at the root of the repo, one alias per line. Add a line, push, submit and done. No admin ",
           "source": "reddit"
         },
         {
@@ -923,17 +958,17 @@
           "source": "reddit"
         },
         {
+          "title": "Who is Issac Newton or Davinci of programming/CS?",
+          "link": "https://www.reddit.com/r/programming/comments/1xcjx7l/who_is_issac_newton_or_davinci_of_programmingcs/",
+          "date": "2026-10-22T14:20:56+00:00",
+          "description": "Popular names appear to be Linus or Dennis but who do you think is Newton/Davinci of CS/computer programming as in the best mankind has produced up to this point in that field? Especially at a critica",
+          "source": "reddit"
+        },
+        {
           "title": "SSH keys on macOS with Touch ID",
           "link": "https://www.reddit.com/r/programming/comments/1xaqyzu/ssh_keys_on_macos_with_touch_id/",
           "date": "2026-10-20T12:35:52+00:00",
           "description": "I&#39;ve recently discovered that you can use Touch ID (rather, the Mac&#39;s Secure Enclave) for SSH authentication. I&#39;m the author of the post, feel free to ask any questions and if there are an",
-          "source": "reddit"
-        },
-        {
-          "title": "go/ links that live in a file in your repo (open source)",
-          "link": "https://www.reddit.com/r/programming/comments/1xbxzz2/go_links_that_live_in_a_file_in_your_repo_open/",
-          "date": "2026-10-21T20:10:21+00:00",
-          "description": "Chrome and Firefox extension that does this for your twigg repository. The links are defined in a GOLINKS file at the root of the repo, one alias per line. Add a line, push, submit and done. No admin ",
           "source": "reddit"
         },
         {
@@ -965,13 +1000,6 @@
           "source": "reddit"
         },
         {
-          "title": "JPA vs Hibernate vs JDBC: What Each One Actually Does | Visually Explained",
-          "link": "https://www.reddit.com/r/programming/comments/1xbrs3g/jpa_vs_hibernate_vs_jdbc_what_each_one_actually/",
-          "date": "2026-10-21T16:23:58+00:00",
-          "description": "&#32; submitted by &#32; /u/correctMeIfImcorrect [link] &#32; [comments]",
-          "source": "reddit"
-        },
-        {
           "title": "Why memory-hard proof-of-work hashes are not a popular choice for CAPTCHA",
           "link": "https://www.reddit.com/r/programming/comments/1xauiqk/why_memoryhard_proofofwork_hashes_are_not_a/",
           "date": "2026-10-20T15:03:30+00:00",
@@ -979,17 +1007,17 @@
           "source": "reddit"
         },
         {
+          "title": "JPA vs Hibernate vs JDBC: What Each One Actually Does | Visually Explained",
+          "link": "https://www.reddit.com/r/programming/comments/1xbrs3g/jpa_vs_hibernate_vs_jdbc_what_each_one_actually/",
+          "date": "2026-10-21T16:23:58+00:00",
+          "description": "&#32; submitted by &#32; /u/correctMeIfImcorrect [link] &#32; [comments]",
+          "source": "reddit"
+        },
+        {
           "title": "Think Php2Shell Was Bad? PHP Is About to Face an Absolute Bloodbath",
           "link": "https://www.reddit.com/r/programming/comments/1xc2q5n/think_php2shell_was_bad_php_is_about_to_face_an/",
           "date": "2026-10-21T23:23:56+00:00",
           "description": "&#32; submitted by &#32; /u/derjanni [link] &#32; [comments]",
-          "source": "reddit"
-        },
-        {
-          "title": "Under the Hood of Redis: How It Delivers Sub-Millisecond Latency?",
-          "link": "https://www.reddit.com/r/programming/comments/1xavhns/under_the_hood_of_redis_how_it_delivers/",
-          "date": "2026-10-20T15:40:09+00:00",
-          "description": "&#32; submitted by &#32; /u/javinpaul [link] &#32; [comments]",
           "source": "reddit"
         },
         {
@@ -1007,20 +1035,6 @@
           "source": "reddit"
         },
         {
-          "title": "The compiler was supposed to end programming too",
-          "link": "https://www.reddit.com/r/programming/comments/1xbt2sr/the_compiler_was_supposed_to_end_programming_too/",
-          "date": "2026-10-21T17:11:18+00:00",
-          "description": "&#32; submitted by &#32; /u/Don_Crespo [link] &#32; [comments]",
-          "source": "reddit"
-        },
-        {
-          "title": "New Season Upgrades Vol 3: Split Keyboard Adventures! · cekrem.github.io",
-          "link": "https://www.reddit.com/r/programming/comments/1xb34av/new_season_upgrades_vol_3_split_keyboard/",
-          "date": "2026-10-20T20:23:00+00:00",
-          "description": "&#32; submitted by &#32; /u/cekrem [link] &#32; [comments]",
-          "source": "reddit"
-        },
-        {
           "title": "GitHub Actions is down once again",
           "link": "https://www.reddit.com/r/programming/comments/1xa0z6c/github_actions_is_down_once_again/",
           "date": "2026-10-19T16:06:31+00:00",
@@ -1033,179 +1047,137 @@
           "date": "2026-10-19T18:09:38+00:00",
           "description": "A brief argument framing software creation, and specifically the details of the code, as an act of art &#32; submitted by &#32; /u/foobear777 [link] &#32; [comments]",
           "source": "reddit"
-        },
-        {
-          "title": "Google Threat Intelligence Group: Investigating Ephemeral Supply Chain Tampering",
-          "link": "https://www.reddit.com/r/programming/comments/1xarzjw/google_threat_intelligence_group_investigating/",
-          "date": "2026-10-20T13:21:05+00:00",
-          "description": "&#32; submitted by &#32; /u/CircumspectCapybara [link] &#32; [comments]",
-          "source": "reddit"
-        },
-        {
-          "title": "The Labor Market for Recent College Graduates",
-          "link": "https://www.reddit.com/r/programming/comments/1xa16ri/the_labor_market_for_recent_college_graduates/",
-          "date": "2026-10-19T16:14:20+00:00",
-          "description": "&#x200B; Why is unemployment rate of recent CS and CE grads at 7 and 7.8% compared to the natural rate of unemployment of 4.2%. The whole economy is still going fine but recent graduates of cs and ce ",
-          "source": "reddit"
         }
       ],
-      "fetchedAt": "2026-10-22T02:14:51.907Z",
+      "fetchedAt": "2026-10-22T16:12:13.316Z",
       "error": null
     },
     "bbc": {
       "items": [
         {
-          "title": "Burnham defends Jackdaw decision as Badenoch urges PM to overturn ban on new oil and gas licences",
-          "link": "https://www.bbc.co.uk/news/articles/cy4zdgk081eo?at_medium=RSS&at_campaign=rss",
-          "date": "Wed, 21 Oct 2026 15:36:31 GMT",
-          "description": "The UK government says the field, which is opposed by environmental campaigners, could be producing gas by the end of this month.",
+          "title": "AI discovered a massive cyber-security flaw - here's what happened",
+          "link": "https://www.bbc.co.uk/news/videos/cq0ld7e0jg2eo?at_medium=RSS&at_campaign=rss",
+          "date": "Thu, 22 Oct 2026 12:17:44 GMT",
+          "description": "The BBC's technology correspondent Joe Tidy explains how it happened, and what it means for you.",
           "source": "bbc"
         },
         {
-          "title": "Websites taken down worldwide as critical cyber-security update issued",
-          "link": "https://www.bbc.co.uk/news/articles/cmly0lg3w5x2o?at_medium=RSS&at_campaign=rss",
-          "date": "Wed, 21 Oct 2026 19:54:57 GMT",
-          "description": "The vulnerabilities with PHP, a programming language widely used across the internet, have been described as the most significant ever found by AI.",
+          "title": "Barclays cutting 5,000 jobs as it increases reliance on AI",
+          "link": "https://www.bbc.co.uk/news/articles/cm4g1p347qgxo?at_medium=RSS&at_campaign=rss",
+          "date": "Thu, 22 Oct 2026 14:28:59 GMT",
+          "description": "The bank says it is using more AI leading to a 5% reduction in its workforce.",
           "source": "bbc"
         },
         {
-          "title": "Missiles hit Kyiv after Russia agrees to US call to resume Ukraine peace talks",
-          "link": "https://www.bbc.co.uk/news/articles/cq3djn5nxx12o?at_medium=RSS&at_campaign=rss",
-          "date": "Wed, 21 Oct 2026 21:27:41 GMT",
-          "description": "Moscow says it is \"ready in principle\" to resume peace talks and US President Donald Trump says the world is \"the closest we've been\" to ending the war.",
+          "title": "Russell Brand accuser said alleged rape 'really hurt', court hears",
+          "link": "https://www.bbc.co.uk/news/articles/c9e8lz4mrg88o?at_medium=RSS&at_campaign=rss",
+          "date": "Thu, 22 Oct 2026 12:34:36 GMT",
+          "description": "The friend of a woman claiming to have been raped by Russell Brand says she said he was \"quite aggressive\".",
           "source": "bbc"
         },
         {
-          "title": "Rosenberg: US diplomatic push offers little hope for imminent Ukraine peace",
-          "link": "https://www.bbc.co.uk/news/articles/cm98zn5j89kdo?at_medium=RSS&at_campaign=rss",
-          "date": "Wed, 21 Oct 2026 19:58:06 GMT",
-          "description": "President Vladimir Putin does not feel under pressure right now to end the war, the BBC's Russia Editor writes.",
+          "title": "Moment man rescued from sinking car by Australian TV reporter",
+          "link": "https://www.bbc.co.uk/news/videos/cwdr8zm3r5gko?at_medium=RSS&at_campaign=rss",
+          "date": "Thu, 22 Oct 2026 11:08:33 GMT",
+          "description": "Journalist Will Murray describes how he and a bystander saved an SUV driver from his vehicle.",
           "source": "bbc"
         },
         {
-          "title": "Criminals who skip sentencing will face solitary confinement or lose social visits",
-          "link": "https://www.bbc.co.uk/news/articles/cr74p0zkd4jjo?at_medium=RSS&at_campaign=rss",
-          "date": "Thu, 22 Oct 2026 01:17:25 GMT",
-          "description": "Judges will be given new powers to impose tougher prison punishments on offenders who refuse to face their victims' families during sentencing.",
+          "title": "Two storms in two days as Austen and Boelo head for UK",
+          "link": "https://www.bbc.co.uk/weather/articles/ckx2qpy2d13ro?at_medium=RSS&at_campaign=rss",
+          "date": "Thu, 22 Oct 2026 10:34:17 GMT",
+          "description": "The Met Office has named a new storm, Boelo, which is set to bring another round of stormy weather to the UK over the weekend.",
           "source": "bbc"
         },
         {
-          "title": "Diabetes and ADHD drugs to be tested on Alzheimer's patients in new study",
-          "link": "https://www.bbc.co.uk/news/articles/cqlye4v721nwo?at_medium=RSS&at_campaign=rss",
-          "date": "Wed, 21 Oct 2026 23:02:30 GMT",
-          "description": "Drugs will be tested simultaneously, which it's hoped will speed up the process of finding new treatments for this common type of dementia.",
+          "title": "Retired decorator's Pokémon cards sell for £1.5m after years in attic",
+          "link": "https://www.bbc.co.uk/news/articles/cvp8gy1zwxxwo?at_medium=RSS&at_campaign=rss",
+          "date": "Thu, 22 Oct 2026 13:31:04 GMT",
+          "description": "He says he found treasure in his attic where the collection had been stored for 15 years.",
           "source": "bbc"
         },
         {
-          "title": "UK's gaps in Arctic defence leave it open to Russian attacks, committee warns",
-          "link": "https://www.bbc.co.uk/news/articles/cmj471wgpky7o?at_medium=RSS&at_campaign=rss",
-          "date": "Thu, 22 Oct 2026 02:09:21 GMT",
-          "description": "A report by MPs urges the UK to address capability gaps including a lack of Royal Navy warships and submarines, as Russia seeks to dominate the region.",
+          "title": "French weekend protests to be limited to union demos only, says Macron",
+          "link": "https://www.bbc.co.uk/news/articles/cvde8g40xx42o?at_medium=RSS&at_campaign=rss",
+          "date": "Thu, 22 Oct 2026 15:22:48 GMT",
+          "description": "Some cities including Lyon and Nice have banned all protests, and the French president said only authorised demos would be allowed.",
           "source": "bbc"
         },
         {
-          "title": "The real reasons US politicians are getting older",
+          "title": "Dame Judi Dench: 'I can't do a play, a film or read anymore'",
+          "link": "https://www.bbc.co.uk/news/articles/c6ly09v09lnjo?at_medium=RSS&at_campaign=rss",
+          "date": "Thu, 22 Oct 2026 06:41:29 GMT",
+          "description": "The actress tells BBC Radio 4's Today programme about how her eye condition has affected her life.",
+          "source": "bbc"
+        },
+        {
+          "title": "Tommy Robinson hired detectives to find journalists, court told",
+          "link": "https://www.bbc.co.uk/news/articles/c8x23dlqkl01o?at_medium=RSS&at_campaign=rss",
+          "date": "Thu, 22 Oct 2026 14:53:14 GMT",
+          "description": "The political activist cries in court while on trial accused of harassing Daily Mail journalists.",
+          "source": "bbc"
+        },
+        {
+          "title": "Ilhan Omar says 'bizarre' pre-dawn raid on her home is forcing her to move out",
+          "link": "https://www.bbc.co.uk/news/articles/cm75p1kxryl5o?at_medium=RSS&at_campaign=rss",
+          "date": "Thu, 22 Oct 2026 13:36:21 GMT",
+          "description": "The congresswoman said federal agents seized over a dozen items, including cell phones and notebooks, as part of a federal investigation.",
+          "source": "bbc"
+        },
+        {
+          "title": "Caroline Flack's brother 'never recovered' from her death, inquest hears",
+          "link": "https://www.bbc.co.uk/news/articles/c6jdm095d89yo?at_medium=RSS&at_campaign=rss",
+          "date": "Thu, 22 Oct 2026 15:32:27 GMT",
+          "description": "Paul Flack was \"everyone's favourite person\" but this \"took its toll\", an inquest hears.",
+          "source": "bbc"
+        },
+        {
+          "title": "The real reasons there are so few young politicians in the US",
           "link": "https://www.bbc.co.uk/news/articles/cmde8rr2d6eno?at_medium=RSS&at_campaign=rss",
           "date": "Wed, 21 Oct 2026 23:52:12 GMT",
           "description": "No country for young men and women: why do older politicians seem to have such a tight grip on the US political system?",
           "source": "bbc"
         },
         {
-          "title": "The 'trillion pound' oil fund the government believes Britain could have built",
-          "link": "https://www.bbc.co.uk/news/articles/cm4g1zrl2nrqo?at_medium=RSS&at_campaign=rss",
-          "date": "Wed, 21 Oct 2026 23:27:05 GMT",
-          "description": "For the first time, the Treasury calculates how much the UK could have raised by investing North Sea proceeds.",
-          "source": "bbc"
-        },
-        {
-          "title": "The four locations in the running to be UK City of Culture 2029",
-          "link": "https://www.bbc.co.uk/news/articles/c6jrw03njgxzo?at_medium=RSS&at_campaign=rss",
-          "date": "Wed, 21 Oct 2026 23:02:37 GMT",
-          "description": "The winner, announced in early 2027, will receive £10m to deliver a year of cultural activities.",
-          "source": "bbc"
-        },
-        {
-          "title": "Only one female scientist named in GCSEs, research finds",
-          "link": "https://www.bbc.co.uk/news/articles/c69wzv5pg447o?at_medium=RSS&at_campaign=rss",
-          "date": "Wed, 21 Oct 2026 23:02:45 GMT",
-          "description": "A new study finds Rosalind Franklin is the only woman named in Key Stage 4 science specifications.",
-          "source": "bbc"
-        },
-        {
-          "title": "Pope does not need further treatment after lung cancer surgery",
-          "link": "https://www.bbc.co.uk/news/articles/cqrly2dg5xzzo?at_medium=RSS&at_campaign=rss",
-          "date": "Wed, 21 Oct 2026 20:09:10 GMT",
-          "description": "Test results have confirmed his diagnosis as a lung adenocarcinoma that was localised.",
-          "source": "bbc"
-        },
-        {
-          "title": "Will it bring down your energy bills?",
-          "link": "https://www.bbc.co.uk/news/videos/cqvg0ke2v9njo?at_medium=RSS&at_campaign=rss",
-          "date": "Wed, 21 Oct 2026 16:17:49 GMT",
-          "description": "BBC Verify's Ben Chu explains why energy prices are so high, and what Jackdaw could mean for your bills.",
-          "source": "bbc"
-        },
-        {
-          "title": "How the project will work and the difference it will make",
-          "link": "https://www.bbc.co.uk/news/videos/c6wy4pdqx0w5o?at_medium=RSS&at_campaign=rss",
-          "date": "Wed, 21 Oct 2026 16:45:50 GMT",
-          "description": "Business editor Simon Jack explains how the project will work, and the impact it could have on energy supply and security.",
-          "source": "bbc"
-        },
-        {
-          "title": "Why Jackdaw decision ignites row over climate and costs",
-          "link": "https://www.bbc.co.uk/news/videos/c6n9r7gvngx8o?at_medium=RSS&at_campaign=rss",
-          "date": "Wed, 21 Oct 2026 13:46:34 GMT",
-          "description": "How Jackdaw ignites arguments over climate and costs",
-          "source": "bbc"
-        },
-        {
-          "title": "The grads ditching the UK for a fresh start abroad",
-          "link": "https://www.bbc.co.uk/news/articles/cmzxj4e8w44vo?at_medium=RSS&at_campaign=rss",
-          "date": "Wed, 21 Oct 2026 23:12:06 GMT",
-          "description": "With graduate jobs hard to come by, more young adults are reported to be considering emigrating.",
-          "source": "bbc"
-        },
-        {
-          "title": "'Betrayed by my body': The taboo health issue women are talking about on social media",
+          "title": "Chronic UTIs affect millions in the UK - these women are out to end the stigma",
           "link": "https://www.bbc.co.uk/news/articles/cwly3g0g371go?at_medium=RSS&at_campaign=rss",
           "date": "Wed, 21 Oct 2026 23:03:59 GMT",
           "description": "Women are sharing their experiences with chronic urinary tract infections on social media in an effort to break the stigma surrounding UTIs.",
           "source": "bbc"
         },
         {
-          "title": "Japan is known for world-class events - but the Asian Games were chaotic",
-          "link": "https://www.bbc.co.uk/news/articles/cvze414811jlo?at_medium=RSS&at_campaign=rss",
-          "date": "Wed, 21 Oct 2026 22:00:58 GMT",
-          "description": "Hotel chaos, transport mishaps and diplomatic blunders cast a spotlight on organisers and the firm hired to deliver the games.",
+          "title": "Zoe Kleinman: PHP is the cyber equivalent of an unexploded bomb",
+          "link": "https://www.bbc.co.uk/news/articles/cw98z6qlyvg3o?at_medium=RSS&at_campaign=rss",
+          "date": "Thu, 22 Oct 2026 10:17:26 GMT",
+          "description": "It has been a dramatic, public and global response, but the cyber event hasn't happened yet.",
           "source": "bbc"
         },
         {
-          "title": "Chip muffin? Bacon and egg soda? How Just Eat's AI struggled to depict Britain's regional dishes",
-          "link": "https://www.bbc.co.uk/news/articles/crz981p0klvgo?at_medium=RSS&at_campaign=rss",
-          "date": "Wed, 21 Oct 2026 17:04:13 GMT",
-          "description": "A spokesperson said it was removing inaccurate AI images and pausing the rollout of the tool.",
+          "title": "How Arab parties could hold critical balance of power in Israeli election",
+          "link": "https://www.bbc.co.uk/news/articles/cx8dzrp768j8o?at_medium=RSS&at_campaign=rss",
+          "date": "Thu, 22 Oct 2026 05:30:22 GMT",
+          "description": "Disaffection has often driven down turnout among Arab Israelis, but there is a strong push to get rid of the right-wing governing coalition.",
           "source": "bbc"
         },
         {
-          "title": "The Papers: 'Drill, Andy Drill!' and a Budget for 'bloody-minded entrepreneurs'",
-          "link": "https://www.bbc.co.uk/news/articles/cq3djn4mmypko?at_medium=RSS&at_campaign=rss",
-          "date": "Thu, 22 Oct 2026 00:18:52 GMT",
-          "description": "Several of today's papers continue to follow the \"storm\" surrounding Andy Burnham's decision to approve a new gas field and what that will mean for future ones.",
+          "title": "Better weather, pay, more opportunities: Why graduates are ditching the UK to move abroad",
+          "link": "https://www.bbc.co.uk/news/articles/cmzxj4e8w44vo?at_medium=RSS&at_campaign=rss",
+          "date": "Wed, 21 Oct 2026 23:12:06 GMT",
+          "description": "With graduate jobs hard to come by, more young adults are reported to be considering emigrating.",
           "source": "bbc"
         },
         {
-          "title": "How much gas could Jackdaw provide? And will it cut your energy bills?",
-          "link": "https://www.bbc.co.uk/news/articles/cq4g13pplyzzo?at_medium=RSS&at_campaign=rss",
-          "date": "Wed, 21 Oct 2026 11:57:49 GMT",
-          "description": "BBC Verify looks at what the Jackdaw decision means for bills, energy security and the environment.",
+          "title": "Rosenberg: Russia agrees to Ukraine talks but sees little to talk about in new peace push",
+          "link": "https://www.bbc.co.uk/news/articles/cm98zn5j89kdo?at_medium=RSS&at_campaign=rss",
+          "date": "Wed, 21 Oct 2026 19:58:06 GMT",
+          "description": "President Vladimir Putin does not feel under pressure right now to end the war, the BBC's Russia Editor writes.",
           "source": "bbc"
         },
         {
-          "title": "Huge crowds watch attempt to rescue shark stranded in South Korean canal",
-          "link": "https://www.bbc.co.uk/news/videos/ckq6n56e5qrqo?at_medium=RSS&at_campaign=rss",
-          "date": "Wed, 21 Oct 2026 20:31:47 GMT",
-          "description": "It is thought the shark may have been drawn to the canal by unusually warm water and plenty of fish.",
+          "title": "New York City reconsiders a classic attraction: are horse-drawn carriages abuse?",
+          "link": "https://www.bbc.co.uk/news/articles/c6qjnwd1pgjxo?at_medium=RSS&at_campaign=rss",
+          "date": "Thu, 22 Oct 2026 09:06:48 GMT",
+          "description": "As councillors prepare to banish the vehicles, views in Central Park are divided over the 160-year-old tradition.",
           "source": "bbc"
         },
         {
@@ -1216,52 +1188,52 @@
           "source": "bbc"
         },
         {
-          "title": "Fernandes rounds on Carrick after Man Utd humiliation",
-          "link": "https://www.bbc.co.uk/sport/football/articles/cq74pjn80x4wo?at_medium=RSS&at_campaign=rss",
-          "date": "Wed, 21 Oct 2026 19:59:30 GMT",
-          "description": "Manchester United captain Bruno Fernandes blames head coach Michael Carrick for the tactics that led to an embarrassing 4-1 defeat by Como in the Champions League.",
+          "title": "Civil servant who juggled five jobs 'wasn't thinking straight'",
+          "link": "https://www.bbc.co.uk/news/articles/cmx23dwp3qzro?at_medium=RSS&at_campaign=rss",
+          "date": "Thu, 22 Oct 2026 15:05:47 GMT",
+          "description": "Kashim Chowdhury is accused of fraudulently juggling multiple public sector jobs.",
           "source": "bbc"
         },
         {
-          "title": "Airbnb hosts can no longer make guests strip beds and wash dishes under new rules",
-          "link": "https://www.bbc.co.uk/news/articles/c6n049gg75r4o?at_medium=RSS&at_campaign=rss",
-          "date": "Wed, 21 Oct 2026 22:54:58 GMT",
-          "description": "The updated policy will apply to all reservations booked on the accommodation site on or after 20 November.",
+          "title": "Is the UK set to green-light a huge untapped oil field in the North Atlantic?",
+          "link": "https://www.bbc.co.uk/news/videos/cxnv0emj06v1o?at_medium=RSS&at_campaign=rss",
+          "date": "Thu, 22 Oct 2026 06:09:44 GMT",
+          "description": "Scotland editor James Cook visits Rosebank - the UK's largest known untapped oilfield - in the North Atlantic.",
           "source": "bbc"
         },
         {
-          "title": "Don't Stop Believin'! - high school musical Glee set for reboot",
-          "link": "https://www.bbc.co.uk/news/articles/c6x2vpn4xy0yo?at_medium=RSS&at_campaign=rss",
-          "date": "Wed, 21 Oct 2026 14:38:22 GMT",
-          "description": "Ryan Murphy's popular musical comedy-drama is set to return on Hulu and Disney+ after a decade away.",
+          "title": "Harry Brook's double century breaks record for highest-ever England one-day score",
+          "link": "https://www.bbc.co.uk/sport/cricket/articles/cq99z35zpgzmo?at_medium=RSS&at_campaign=rss",
+          "date": "Thu, 22 Oct 2026 12:15:29 GMT",
+          "description": "Captain Harry Brook becomes the first England batter to make a double century in a one-day international with a sensational 202 against Sri Lanka in Rawalpindi.",
           "source": "bbc"
         },
         {
-          "title": "US State Department orders some staff to leave Saudi Arabia as attacks escalate",
-          "link": "https://www.bbc.co.uk/news/articles/c6x2vpk93770o?at_medium=RSS&at_campaign=rss",
-          "date": "Thu, 22 Oct 2026 01:07:34 GMT",
-          "description": "The warning to US officials comes as at least three people die in the latest strikes at an airport and an oil field.",
+          "title": "Katie Price's ex not guilty of raping girl, 13",
+          "link": "https://www.bbc.co.uk/news/articles/cw1m4pmvx1xdo?at_medium=RSS&at_campaign=rss",
+          "date": "Thu, 22 Oct 2026 14:07:33 GMT",
+          "description": "Kieran Hayler had denied rape, sexual assault and sexual activity with a child at his trial.",
           "source": "bbc"
         },
         {
-          "title": "'Targeted' attack on much-loved MP leaves Australian town heartbroken",
-          "link": "https://www.bbc.co.uk/news/articles/cmgr8q88r5eqo?at_medium=RSS&at_campaign=rss",
-          "date": "Wed, 21 Oct 2026 18:10:42 GMT",
-          "description": "Locals describe the MP, who had to have both legs amputated, as a genuinely kind person who fought for the community.",
+          "title": "Michael Carrick carrying on but senior Man Utd figures concerned by poor performances",
+          "link": "https://www.bbc.co.uk/sport/football/articles/cm1wvl5524rno?at_medium=RSS&at_campaign=rss",
+          "date": "Thu, 22 Oct 2026 14:04:44 GMT",
+          "description": "While head coach Michael Carrick is expected to be in charge for Sunday's match against Bournemouth, Manchester United begin the process of identifying possible replacements.",
           "source": "bbc"
         },
         {
-          "title": "Macron accuses foreign leaders of exploiting French riots",
-          "link": "https://www.bbc.co.uk/news/articles/ckjrw044ggxgo?at_medium=RSS&at_campaign=rss",
-          "date": "Wed, 21 Oct 2026 14:04:28 GMT",
-          "description": "The comment is an apparent swipe at Benjamin Netanyahu and Donald Trump, who both face elections in coming weeks.",
+          "title": "Tougher punishments for criminals who refuse to attend sentencing backed by victim's family",
+          "link": "https://www.bbc.co.uk/news/articles/cr74p0zkd4jjo?at_medium=RSS&at_campaign=rss",
+          "date": "Thu, 22 Oct 2026 09:28:04 GMT",
+          "description": "The aunt of Zara Aleena says the new powers for judges will \"rebalance the power\" from offender to victim.",
           "source": "bbc"
         },
         {
-          "title": "Jailed former DUP leader Jeffrey Donaldson being investigated over alleged rape inside Parliament",
-          "link": "https://www.bbc.co.uk/news/articles/c94g1pjmxg0ko?at_medium=RSS&at_campaign=rss",
-          "date": "Wed, 21 Oct 2026 14:26:24 GMT",
-          "description": "While not naming the disgraced former MP, the Metropolitan Police has issued a statement confirming a 63-year-old man is being investigated.",
+          "title": "First human case of Shamonda virus detected in France, officials say",
+          "link": "https://www.bbc.co.uk/news/articles/c6reyx1d9ge9o?at_medium=RSS&at_campaign=rss",
+          "date": "Thu, 22 Oct 2026 13:53:32 GMT",
+          "description": "The disease, which usually affects cattle, has been identified in a patient who died in early October.",
           "source": "bbc"
         },
         {
@@ -1272,53 +1244,46 @@
           "source": "bbc"
         },
         {
-          "title": "Fernandes rounds on Carrick after Man Utd humiliation",
-          "link": "https://www.bbc.co.uk/sport/football/articles/cq74pjn80x4wo?at_medium=RSS&at_campaign=rss",
-          "date": "Wed, 21 Oct 2026 19:59:30 GMT",
-          "description": "Manchester United captain Bruno Fernandes blames head coach Michael Carrick for the tactics that led to an embarrassing 4-1 defeat by Como in the Champions League.",
+          "title": "Carrick carrying on but senior Man Utd figures concerned by performances",
+          "link": "https://www.bbc.co.uk/sport/football/articles/cm1wvl5524rno?at_medium=RSS&at_campaign=rss",
+          "date": "Thu, 22 Oct 2026 14:04:44 GMT",
+          "description": "While head coach Michael Carrick is expected to be in charge for Sunday's match against Bournemouth, Manchester United begin the process of identifying possible replacements.",
           "source": "bbc"
         },
         {
-          "title": "Man Utd humbled by four-goal Como to pile pressure on Carrick",
-          "link": "https://www.bbc.co.uk/sport/football/videos/cmz7xr3z2vz7o?at_medium=RSS&at_campaign=rss",
-          "date": "Wed, 21 Oct 2026 20:59:43 GMT",
-          "description": "Manchester United suffer a heavy defeat to a Como side playing just their third ever game of Champions League football, as Nico Paz stars for the hosts to pile the pressure on Michael Carrick.",
+          "title": "South Africa complete famous win over Australia",
+          "link": "https://www.bbc.co.uk/sport/cricket/articles/cmg473p9vz6xo?at_medium=RSS&at_campaign=rss",
+          "date": "Thu, 22 Oct 2026 14:13:08 GMT",
+          "description": "South Africa break Australia's resistance in the final session a complete a famous victory in the second Test and set up a series decider in Cape Town.",
           "source": "bbc"
         },
         {
-          "title": "Saka injury 'does not look good' - how will Arsenal cope?",
-          "link": "https://www.bbc.co.uk/sport/football/articles/ckg5j1zdn4m3o?at_medium=RSS&at_campaign=rss",
-          "date": "Wed, 21 Oct 2026 22:51:56 GMT",
-          "description": "Mikel Arteta says the quadriceps injury Arsenal's Bukayo Saka picked up in the Champions League draw with Bayern Munich \"does not look good at all\".",
+          "title": "'Not what a captain should be' - the debate around Fernandes' outburst",
+          "link": "https://www.bbc.co.uk/sport/football/articles/cq5ynp67grjro?at_medium=RSS&at_campaign=rss",
+          "date": "Thu, 22 Oct 2026 10:58:19 GMT",
+          "description": "Bruno Fernandes' comments after Manchester United's humbling by Como have got fans and pundits talking - but what now for the captain?",
           "source": "bbc"
         },
         {
-          "title": "Goal, assist... goal-kick - Kane underlines Ballon d'Or credentials",
-          "link": "https://www.bbc.co.uk/sport/football/articles/ck79p7qq1q9ro?at_medium=RSS&at_campaign=rss",
-          "date": "Wed, 21 Oct 2026 23:11:06 GMT",
-          "description": "Why Declan Rice backs his England team-mate Harry Kane to win the Ballon d'Or after Arsenal's draw with Bayern Munich in the Champions League.",
-          "source": "bbc"
-        },
-        {
-          "title": "Rice strikes to earn Arsenal draw at Bayern",
-          "link": "https://www.bbc.co.uk/sport/football/videos/crx23nx0vp8jo?at_medium=RSS&at_campaign=rss",
-          "date": "Wed, 21 Oct 2026 21:09:36 GMT",
-          "description": "Declan Rice scores a late equaliser as Arsenal and Bayern Munich play out an entertaining draw in the league phase of the Champions League while Bukayo Saka limps off with an early injury.",
-          "source": "bbc"
-        },
-        {
-          "title": "'Playing for their careers' - Australia reeling after extraordinary day",
-          "link": "https://www.bbc.co.uk/sport/cricket/articles/ckzd6r577qvdo?at_medium=RSS&at_campaign=rss",
-          "date": "Wed, 21 Oct 2026 19:46:45 GMT",
-          "description": "Australia are facing defeat in the second Test against South Africa with careers on the line after their shambolic performance on day four.",
+          "title": "Vickery's journey from World Cup winner to bodybuilder at 50",
+          "link": "https://www.bbc.co.uk/sport/rugby-union/articles/ckdd8re793zdo?at_medium=RSS&at_campaign=rss",
+          "date": "Thu, 22 Oct 2026 05:14:22 GMT",
+          "description": "Why England Rugby World Cup winner Phil Vickery has started entering bodybuilding competitions at the age of 50.",
           "source": "bbc"
         }
       ],
-      "fetchedAt": "2026-10-22T02:14:52.071Z",
+      "fetchedAt": "2026-10-22T16:12:13.484Z",
       "error": null
     },
     "cisa": {
       "items": [
+        {
+          "title": "Managing AI Token Consumption for Operational Resilience",
+          "link": "https://www.cisa.gov/resources-tools/resources/managing-ai-token-consumption-operational-resilience",
+          "date": "Thu, 22 Oct 26 12:00:00 +0000",
+          "description": "CISA, the Canadian Centre for Cyber Security (Cyber Centre), and partners are releasing joint guidance, Managing AI Token Consumption for Operational Resilience , to help organizations understand and ",
+          "source": "cisa"
+        },
         {
           "title": "Critical Vulnerabilities in PHP Require Immediate Patching",
           "link": "https://www.cisa.gov/news-events/alerts/2026/10/21/critical-vulnerabilities-php-require-immediate-patching",
@@ -1502,13 +1467,6 @@
           "source": "cisa"
         },
         {
-          "title": "Hitachi Energy REB500",
-          "link": "https://www.cisa.gov/news-events/ics-advisories/icsa-26-279-05",
-          "date": "Tue, 06 Oct 26 12:00:00 +0000",
-          "description": "View CSAF Summary Hitachi Energy is aware of open-source software vulnerabilities that affect REB500 product versions listed in this document. These vulnerabilities can be exploited to carry out Denia",
-          "source": "cisa"
-        },
-        {
           "title": "Hitachi Energy Asset Suite",
           "link": "https://www.cisa.gov/news-events/ics-advisories/icsa-26-279-03",
           "date": "Tue, 06 Oct 26 12:00:00 +0000",
@@ -1530,11 +1488,18 @@
           "source": "cisa"
         }
       ],
-      "fetchedAt": "2026-10-22T02:14:52.174Z",
+      "fetchedAt": "2026-10-22T16:12:13.591Z",
       "error": null
     },
     "darkreading": {
       "items": [
+        {
+          "title": "UAE Transitions 50% of Gov't Services to Agentic AI",
+          "link": "https://www.darkreading.com/cybersecurity-operations/uae-transitions-50-government-services-agentic-ai",
+          "date": "Thu, 22 Oct 2026 05:00:00 GMT",
+          "description": "The United Arab Emirates says it's creating a foundation of security and safety as it transforms its public service footprint.",
+          "source": "darkreading"
+        },
         {
           "title": "TiDB Breach Exposes Flawed Cloud Security Assumptions",
           "link": "https://www.darkreading.com/cloud-security/tidb-breach-flawed-cloud-security",
@@ -1877,20 +1842,48 @@
           "date": "Thu, 08 Oct 2026 18:01:50 GMT",
           "description": "Cyber-espionage actor UAC-0099 has been steadily refining its flagship dropper in campaigns targeting Ukrainian organizations.",
           "source": "darkreading"
-        },
-        {
-          "title": "Writing the Next Chapter",
-          "link": "https://www.darkreading.com/cybersecurity-operations/writing-next-chapter",
-          "date": "Thu, 08 Oct 2026 12:00:00 GMT",
-          "description": "Dark Reading is about to begin a new decade in its storied history, and we have some breaking news of our own to share.",
-          "source": "darkreading"
         }
       ],
-      "fetchedAt": "2026-10-22T02:14:52.754Z",
+      "fetchedAt": "2026-10-22T16:12:13.936Z",
       "error": null
     },
     "bleepingcomputer": {
       "items": [
+        {
+          "title": "Microsoft shares how to fix broken Exchange Online EWS apps",
+          "link": "https://www.bleepingcomputer.com/news/microsoft/microsoft-shares-how-to-fix-broken-exchange-online-ews-apps/",
+          "date": "Thu, 22 Oct 2026 11:49:32 -0400",
+          "description": "Microsoft says IT admins can re-enable the retired Exchange Web Services (EWS) API in Exchange Online to fix EWS apps that have stopped working. [...]",
+          "source": "bleepingcomputer"
+        },
+        {
+          "title": "Machine speed attacks require machine speed detection and response",
+          "link": "https://www.bleepingcomputer.com/news/security/machine-speed-attacks-require-machine-speed-detection-and-response/",
+          "date": "Thu, 22 Oct 2026 10:02:12 -0400",
+          "description": "Attackers can steal credentials and begin exfiltrating data within minutes, often before security teams can respond. Exaforce examines real-world attacks involving stolen GitHub tokens, malicious AI i",
+          "source": "bleepingcomputer"
+        },
+        {
+          "title": "Amazon says PHP2Shell exploitation began 4 days before patches",
+          "link": "https://www.bleepingcomputer.com/news/security/amazon-says-php2shell-exploitation-began-4-days-before-patches/",
+          "date": "Thu, 22 Oct 2026 09:09:12 -0400",
+          "description": "Security researchers at Amazon Threat Intelligence say attackers began targeting the PHP2Shell flaws four days before security patches were released on Wednesday. [...]",
+          "source": "bleepingcomputer"
+        },
+        {
+          "title": "GitLab warns of new max severity code execution vulnerability",
+          "link": "https://www.bleepingcomputer.com/news/security/gitlab-warns-of-new-max-severity-code-execution-vulnerability/",
+          "date": "Thu, 22 Oct 2026 07:41:48 -0400",
+          "description": "GitLab has released security patches for a maximum-severity Regular Expression Compiler flaw that can let remote attackers run arbitrary code on vulnerable servers. [...]",
+          "source": "bleepingcomputer"
+        },
+        {
+          "title": "Authorities disrupt nearly 11,000 cybercrime networks in Africa",
+          "link": "https://www.bleepingcomputer.com/news/security/authorities-disrupt-nearly-11-000-cybercrime-networks-in-africa/",
+          "date": "Thu, 22 Oct 2026 04:27:11 -0400",
+          "description": "Law enforcement agencies have disrupted nearly 11,000 cybercriminal networks and arrested more than 1,400 people in Operation Serengeti III, which targeted business email compromise, ransomware, and o",
+          "source": "bleepingcomputer"
+        },
         {
           "title": "Google Chrome adds Gemini-powered scam detection, warns users of ClickFix attacks",
           "link": "https://www.bleepingcomputer.com/news/google/google-chrome-adds-gemini-powered-scam-detection-warns-users-of-clickfix-attacks/",
@@ -1960,44 +1953,9 @@
           "date": "Wed, 21 Oct 2026 04:36:24 -0400",
           "description": "The Cybersecurity and Infrastructure Security Agency (CISA) says the SafePay ransomware gang has breached over 600 critical infrastructure organizations worldwide since 2024. [...]",
           "source": "bleepingcomputer"
-        },
-        {
-          "title": "Stolen UpdraftCentral keys used to backdoor WordPress sites",
-          "link": "https://www.bleepingcomputer.com/news/security/stolen-updraftcentral-keys-used-to-backdoor-wordpress-sites/",
-          "date": "Tue, 20 Oct 2026 21:01:50 -0400",
-          "description": "A threat actor breached TeamUpdraft's website, a developer of popular WordPress backup and security plugins, potentially compromising UpdraftCentral connection keys that can send commands to connected",
-          "source": "bleepingcomputer"
-        },
-        {
-          "title": "Mozilla, Google, Apple block compromised eMudhra CA certificates",
-          "link": "https://www.bleepingcomputer.com/news/security/mozilla-google-apple-block-compromised-emudhra-ca-certificates/",
-          "date": "Tue, 20 Oct 2026 20:46:42 -0400",
-          "description": "Certificate authority eMudhra revoked eight compromised intermediate certificates after researchers found their private keys were so weak that anyone could recover them almost instantly and use them t",
-          "source": "bleepingcomputer"
-        },
-        {
-          "title": "PHP warns admins of two critical flaws, emergency patches coming tomorrow",
-          "link": "https://www.bleepingcomputer.com/news/security/php-warns-admins-of-two-critical-flaws-emergency-patches-coming-tomorrow/",
-          "date": "Tue, 20 Oct 2026 16:56:43 -0400",
-          "description": "The PHP security team is warning administrators to prepare for emergency security updates tomorrow to address two critical vulnerabilities, as information about the flaws has reportedly leaked ahead o",
-          "source": "bleepingcomputer"
-        },
-        {
-          "title": "Zeabur shutting down after second security breach in two months",
-          "link": "https://www.bleepingcomputer.com/news/security/zeabur-shutting-down-after-second-security-breach-in-two-months/",
-          "date": "Tue, 20 Oct 2026 15:33:02 -0400",
-          "description": "Development platform Zeabur has disclosed details of a cybersecurity incident in which an attacker used leaked internal credentials stored in plaintext to compromise its infrastructure and steal over ",
-          "source": "bleepingcomputer"
-        },
-        {
-          "title": "OpenAI says GPT-6.1 Sol is dramatically better at migrating legacy code",
-          "link": "https://www.bleepingcomputer.com/news/artificial-intelligence/openai-says-gpt-61-sol-is-dramatically-better-at-migrating-legacy-code/",
-          "date": "Tue, 20 Oct 2026 14:11:03 -0400",
-          "description": "OpenAI confirmed that its newer models are much better at writing and migrating software in older programming languages. [...]",
-          "source": "bleepingcomputer"
         }
       ],
-      "fetchedAt": "2026-10-22T02:14:52.881Z",
+      "fetchedAt": "2026-10-22T16:12:14.043Z",
       "error": null
     }
   }
