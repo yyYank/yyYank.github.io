@@ -110,6 +110,9 @@ describe('Ganbari', () => {
     const timeline = screen.getByRole('list', { name: 'たっせいのきろく' });
     expect(within(timeline).getByText(/\d+ねん \d+がつ \d+にち \d{1,2}:\d{2}/)).toBeInTheDocument();
     expect(within(timeline).getByText('もくひょう 1 ポイント たっせい')).toBeInTheDocument();
+    expect(within(timeline).getByText('📝 おもちゃ')).toBeInTheDocument();
     expect(within(timeline).getByText('⭐')).toBeInTheDocument();
+    expect(within(timeline).getByText('10がつ 1にち（もく）')).toBeInTheDocument();
+    expect(within(timeline).getByText('そうじ')).toBeInTheDocument();
   });
 });

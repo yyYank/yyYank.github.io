@@ -200,16 +200,20 @@ function AchievedHistory({ person, records, kind }: AchievedHistoryProps) {
                 {formatAchievedAt(goal.achievedAt)}
               </p>
               <p className="text-sm text-muted mt-0.5">もくひょう {goal.target} ポイント たっせい</p>
-              <div className="flex flex-wrap gap-2 mt-3">
+              {goal.reason && (
+                <p className="text-base text-text mt-2">{`📝 ${goal.reason}`}</p>
+              )}
+              <ul className="mt-3 space-y-2">
                 {achievedGoalRecords(person, records, kind, i).map((record) => (
-                  <span
-                    key={record.id}
-                    className="w-10 h-10 flex items-center justify-center text-2xl bg-surface-2 rounded-[10px]"
-                  >
-                    {record.stamp}
-                  </span>
+                  <li key={record.id} className="flex items-center gap-3">
+                    <span className="w-10 h-10 shrink-0 flex items-center justify-center text-2xl bg-surface-2 rounded-[10px]">
+                      {record.stamp}
+                    </span>
+                    <span className="text-sm text-muted shrink-0 tabular-nums">{formatDate(record.date)}</span>
+                    <span className="text-base text-text">{record.content}</span>
+                  </li>
                 ))}
-              </div>
+              </ul>
             </li>
           ))}
         </ol>
