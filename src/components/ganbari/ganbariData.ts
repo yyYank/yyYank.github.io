@@ -196,3 +196,24 @@ export function achieveGoal(
     ],
   };
 }
+
+export function achievedGoalRecords(
+  person: Person,
+  records: GanbariRecord[],
+  kind: GanbariKind,
+  index: number,
+): GanbariRecord[] {
+  const goals = (person.achievedGoals ?? [])
+    .filter((goal) => goal.kind === kind)
+    .sort((a, b) => a.achievedAt.localeCompare(b.achievedAt));
+  const goal = goals[index];
+  if (!goal) return [];
+  const since = goals[index - 1]?.achievedAt;
+  return records
+    .filter((record) =>
+      record.personId === person.id
+      && record.kind === kind
+      && (since === undefined || record.createdAt > since)
+      && record.createdAt <= goal.achievedAt)
+    .sort((a, b) => a.createdAt.localeCompare(b.createdAt));
+}

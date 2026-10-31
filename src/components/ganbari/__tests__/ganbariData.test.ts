@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import {
   GANBARI_STORAGE_KEY,
   achieveGoal,
+  achievedGoalRecords,
   countPoints,
   lastAchievedAt,
   loadGanbariData,
@@ -158,5 +159,27 @@ describe('ganbariData', () => {
       achievedAt: '2026-10-31T00:00:00.000Z',
     }]);
     expect(achieved.goals).toEqual({ naraigoto: { target: 3 } });
+  });
+
+  it('たっせいした目標ごとに、その目標のあいだにつけた記録を集めた順に返す', () => {
+    const person = {
+      id: 'p1',
+      name: 'ゆう',
+      achievedGoals: [
+        { kind: 'otetsudai' as const, target: 1, points: 1, achievedAt: '2026-10-05T00:00:00.000Z' },
+        { kind: 'otetsudai' as const, target: 2, points: 2, achievedAt: '2026-10-20T00:00:00.000Z' },
+      ],
+    };
+    const records = [
+      { id: '1', personId: 'p1', date: '2026-10-01', content: 'そうじ', stamp: '⭐', createdAt: '2026-10-01T00:00:00.000Z', kind: 'otetsudai' as const },
+      { id: '3', personId: 'p1', date: '2026-10-12', content: 'せんたく', stamp: '🌸', createdAt: '2026-10-12T00:00:00.000Z', kind: 'otetsudai' as const },
+      { id: '2', personId: 'p1', date: '2026-10-08', content: 'さらあらい', stamp: '🍎', createdAt: '2026-10-15T00:00:00.000Z', kind: 'otetsudai' as const },
+      { id: '4', personId: 'p1', date: '2026-10-10', content: 'ピアノ', stamp: '🎵', createdAt: '2026-10-10T00:00:00.000Z', kind: 'naraigoto' as const },
+      { id: '5', personId: 'p2', date: '2026-10-10', content: 'そうじ', stamp: '⭐', createdAt: '2026-10-10T00:00:00.000Z', kind: 'otetsudai' as const },
+      { id: '6', personId: 'p1', date: '2026-10-25', content: 'そうじ', stamp: '⭐', createdAt: '2026-10-25T00:00:00.000Z', kind: 'otetsudai' as const },
+    ];
+
+    expect(achievedGoalRecords(person, records, 'otetsudai', 0).map((record) => record.id)).toEqual(['1']);
+    expect(achievedGoalRecords(person, records, 'otetsudai', 1).map((record) => record.id)).toEqual(['3', '2']);
   });
 });

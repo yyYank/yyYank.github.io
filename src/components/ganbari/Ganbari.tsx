@@ -1,13 +1,13 @@
 import { useState, useEffect, useCallback } from 'react';
 import {
   achieveGoal,
+  achievedGoalRecords,
   countPoints,
   lastAchievedAt,
   loadGanbariData,
   saveGanbariData,
   type GanbariData,
   type GanbariKind,
-  type AchievedGoal,
   type GanbariRecord,
   type Person,
 } from './ganbariData';
@@ -147,16 +147,21 @@ function StampBook({ records, personId }: StampBookProps) {
 }
 
 interface AchievedHistoryProps {
-  achievedGoals: AchievedGoal[];
+  person: Person;
+  records: GanbariRecord[];
+  kind: GanbariKind;
 }
 
 function formatAchievedAt(achievedAt: string): string {
   const d = new Date(achievedAt);
-  return `${d.getFullYear()}ねん ${d.getMonth() + 1}がつ ${d.getDate()}にち`;
+  return `${d.getFullYear()}ねん ${d.getMonth() + 1}がつ ${d.getDate()}にち ${d.getHours()}:${String(d.getMinutes()).padStart(2, '0')}`;
 }
 
-function AchievedHistory({ achievedGoals }: AchievedHistoryProps) {
+function AchievedHistory({ person, records, kind }: AchievedHistoryProps) {
   const [open, setOpen] = useState(false);
+  const achievedGoals = (person.achievedGoals ?? [])
+    .filter((goal) => goal.kind === kind)
+    .sort((a, b) => a.achievedAt.localeCompare(b.achievedAt));
 
   return (
     <section className="mt-6 bg-surface border border-border rounded-2xl overflow-hidden">
@@ -177,22 +182,37 @@ function AchievedHistory({ achievedGoals }: AchievedHistoryProps) {
       </button>
 
       {open && (
-        <ul id="achieved-history-list" className="border-t border-border px-5 py-2">
+        <ol
+          id="achieved-history-list"
+          aria-label="たっせいのきろく"
+          className="border-t border-border px-5 pt-4 pb-2"
+        >
           {achievedGoals.map((goal, i) => (
             <li
               key={`${goal.kind}-${goal.target}-${goal.reason ?? ''}-${i}`}
-              className="py-3 border-b border-border/50 last:border-b-0"
+              className="relative pl-8 pb-8 last:pb-4 before:absolute before:left-[7px] before:top-5 before:bottom-0 before:w-0.5 before:bg-border-strong last:before:hidden"
             >
-              <div className="flex items-center justify-between gap-4">
-                <span className="text-text font-bold">もくひょう {goal.target} ポイント</span>
-                <span className="text-sm text-muted">{formatAchievedAt(goal.achievedAt)}</span>
+              <span
+                aria-hidden="true"
+                className="absolute left-0 top-1 w-4 h-4 rounded-full bg-accent ring-4 ring-accent-soft"
+              />
+              <p className="text-lg font-bold text-text leading-snug tabular-nums">
+                {formatAchievedAt(goal.achievedAt)}
+              </p>
+              <p className="text-sm text-muted mt-0.5">もくひょう {goal.target} ポイント たっせい</p>
+              <div className="flex flex-wrap gap-2 mt-3">
+                {achievedGoalRecords(person, records, kind, i).map((record) => (
+                  <span
+                    key={record.id}
+                    className="w-10 h-10 flex items-center justify-center text-2xl bg-surface-2 rounded-[10px]"
+                  >
+                    {record.stamp}
+                  </span>
+                ))}
               </div>
-              {goal.reason && (
-                <p className="text-muted text-sm mt-1">📝 {goal.reason}</p>
-              )}
             </li>
           ))}
-        </ul>
+        </ol>
       )}
     </section>
   );
@@ -872,9 +892,7 @@ export default function Ganbari() {
           <StampBook records={data.records} personId={selectedPerson.id} />
 
           {(selectedPerson.achievedGoals ?? []).some((goal) => goal.kind === selectedKind) && (
-            <AchievedHistory
-              achievedGoals={(selectedPerson.achievedGoals ?? []).filter((goal) => goal.kind === selectedKind)}
-            />
+            <AchievedHistory person={selectedPerson} records={data.records} kind={selectedKind} />
           )}
         </>
       )}

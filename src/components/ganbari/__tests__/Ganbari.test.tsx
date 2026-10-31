@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, it } from 'vitest';
 import Ganbari from '../Ganbari';
@@ -107,6 +107,9 @@ describe('Ganbari', () => {
 
     await userEvent.click(screen.getByRole('button', { name: /たっせいのきろく.*1/ }));
 
-    expect(screen.getByText(/おもちゃ/)).toBeInTheDocument();
+    const timeline = screen.getByRole('list', { name: 'たっせいのきろく' });
+    expect(within(timeline).getByText(/\d+ねん \d+がつ \d+にち \d{1,2}:\d{2}/)).toBeInTheDocument();
+    expect(within(timeline).getByText('もくひょう 1 ポイント たっせい')).toBeInTheDocument();
+    expect(within(timeline).getByText('⭐')).toBeInTheDocument();
   });
 });
