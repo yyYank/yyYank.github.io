@@ -1,7 +1,9 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import {
   GANBARI_STORAGE_KEY,
+  achieveGoal,
   countPoints,
+  lastAchievedAt,
   loadGanbariData,
   saveGanbariData,
 } from '../ganbariData';
@@ -57,6 +59,16 @@ describe('ganbariData', () => {
     expect(countPoints(records, 'p1', 'naraigoto')).toBe(2);
   });
 
+  it('最後にたっせいした日時より後の記録だけを、ポイントとして数える', () => {
+    const records = [
+      { id: '1', personId: 'p1', date: '2026-10-01', content: 'そうじ', stamp: '⭐', createdAt: '2026-10-01T00:00:00.000Z', kind: 'otetsudai' as const },
+      { id: '2', personId: 'p1', date: '2026-10-11', content: 'そうじ', stamp: '⭐', createdAt: '2026-10-11T00:00:00.000Z', kind: 'otetsudai' as const },
+    ];
+
+    expect(countPoints(records, 'p1', 'otetsudai')).toBe(2);
+    expect(countPoints(records, 'p1', 'otetsudai', '2026-10-10T00:00:00.000Z')).toBe(1);
+  });
+
   it('既存と同じ保存キーで往復できる', () => {
     const data = {
       people: [{ id: 'person-1', name: 'ゆう' }],
@@ -108,5 +120,43 @@ describe('ganbariData', () => {
     saveGanbariData(storage, data);
 
     expect(loadGanbariData(storage)).toEqual(data);
+  });
+
+  it('しゅるいごとに、最後にたっせいした日時を返す', () => {
+    const person = {
+      id: 'p1',
+      name: 'ゆう',
+      achievedGoals: [
+        { kind: 'otetsudai' as const, target: 5, points: 5, achievedAt: '2026-10-01T00:00:00.000Z' },
+        { kind: 'otetsudai' as const, target: 10, points: 10, achievedAt: '2026-10-20T00:00:00.000Z' },
+        { kind: 'naraigoto' as const, target: 3, points: 3, achievedAt: '2026-10-05T00:00:00.000Z' },
+      ],
+    };
+
+    expect(lastAchievedAt(person, 'otetsudai')).toBe('2026-10-20T00:00:00.000Z');
+    expect(lastAchievedAt(person, 'naraigoto')).toBe('2026-10-05T00:00:00.000Z');
+    expect(lastAchievedAt({ id: 'p2', name: 'あお' }, 'otetsudai')).toBeUndefined();
+  });
+
+  it('もくひょうたっせいを記録すると、たっせいのきろくに足して、いまのもくひょうを空にする', () => {
+    const person = {
+      id: 'p1',
+      name: 'ゆう',
+      goals: {
+        otetsudai: { target: 10, reason: 'おもちゃ' },
+        naraigoto: { target: 3 },
+      },
+    };
+
+    const achieved = achieveGoal(person, 'otetsudai', 12, '2026-10-31T00:00:00.000Z');
+
+    expect(achieved.achievedGoals).toEqual([{
+      kind: 'otetsudai',
+      target: 10,
+      reason: 'おもちゃ',
+      points: 12,
+      achievedAt: '2026-10-31T00:00:00.000Z',
+    }]);
+    expect(achieved.goals).toEqual({ naraigoto: { target: 3 } });
   });
 });

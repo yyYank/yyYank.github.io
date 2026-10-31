@@ -83,4 +83,30 @@ describe('Ganbari', () => {
     expect(screen.getByLabelText('⭐ 2こ')).toHaveTextContent('×2');
     expect(screen.getByLabelText('🌊 1こ')).toHaveTextContent('×1');
   });
+
+  it('もくひょうたっせいを記録すると、記録は残したまま、ポイントを0から数え直す', async () => {
+    storage.setItem(GANBARI_STORAGE_KEY, JSON.stringify({
+      people: [{ id: 'person-1', name: 'ゆう', goals: { otetsudai: { target: 1, reason: 'おもちゃ' } } }],
+      records: [
+        { id: '1', personId: 'person-1', date: '2026-10-01', content: 'そうじ', stamp: '⭐', createdAt: '2026-10-01T00:00:00.000Z', kind: 'otetsudai' },
+        { id: '2', personId: 'person-1', date: '2026-10-02', content: 'ピアノ', stamp: '⭐', createdAt: '2026-10-02T00:00:00.000Z', kind: 'naraigoto' },
+        { id: '3', personId: 'person-1', date: '2026-10-03', content: 'すいえい', stamp: '🌊', createdAt: '2026-10-03T00:00:00.000Z', kind: 'naraigoto' },
+      ],
+    }));
+    render(<Ganbari />);
+
+    await userEvent.click(await screen.findByRole('button', { name: 'たっせいを きろくする' }));
+
+    const saved = JSON.parse(storage.getItem(GANBARI_STORAGE_KEY) ?? '{}');
+    expect(saved.records).toHaveLength(3);
+    expect(saved.people[0].achievedGoals).toEqual([
+      expect.objectContaining({ kind: 'otetsudai', target: 1, reason: 'おもちゃ', points: 1 }),
+    ]);
+    expect(screen.getByRole('tab', { name: /おてつだい.*0 ポイント/ })).toBeInTheDocument();
+    expect(screen.getByRole('tab', { name: /ならいごと.*2 ポイント/ })).toBeInTheDocument();
+
+    await userEvent.click(screen.getByRole('button', { name: /たっせいのきろく.*1/ }));
+
+    expect(screen.getByText(/おもちゃ/)).toBeInTheDocument();
+  });
 });

@@ -1,10 +1,13 @@
 import { useState, useEffect, useCallback } from 'react';
 import {
+  achieveGoal,
   countPoints,
+  lastAchievedAt,
   loadGanbariData,
   saveGanbariData,
   type GanbariData,
   type GanbariKind,
+  type AchievedGoal,
   type GanbariRecord,
   type Person,
 } from './ganbariData';
@@ -138,6 +141,58 @@ function StampBook({ records, personId }: StampBookProps) {
             );
           })}
         </div>
+      )}
+    </section>
+  );
+}
+
+interface AchievedHistoryProps {
+  achievedGoals: AchievedGoal[];
+}
+
+function formatAchievedAt(achievedAt: string): string {
+  const d = new Date(achievedAt);
+  return `${d.getFullYear()}ねん ${d.getMonth() + 1}がつ ${d.getDate()}にち`;
+}
+
+function AchievedHistory({ achievedGoals }: AchievedHistoryProps) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <section className="mt-6 bg-surface border border-border rounded-2xl overflow-hidden">
+      <button
+        type="button"
+        aria-expanded={open}
+        aria-controls="achieved-history-list"
+        onClick={() => setOpen((current) => !current)}
+        className="w-full flex items-center justify-between gap-4 px-5 py-4 text-left hover:bg-surface-2/50 transition-colors"
+      >
+        <span>
+          <span className="block text-lg font-bold text-text">🏆 たっせいのきろく</span>
+          <span className="block text-sm text-muted mt-0.5">
+            {achievedGoals.length} こ
+          </span>
+        </span>
+        <span className="text-muted text-xl" aria-hidden="true">{open ? '▲' : '▼'}</span>
+      </button>
+
+      {open && (
+        <ul id="achieved-history-list" className="border-t border-border px-5 py-2">
+          {achievedGoals.map((goal, i) => (
+            <li
+              key={`${goal.kind}-${goal.target}-${goal.reason ?? ''}-${i}`}
+              className="py-3 border-b border-border/50 last:border-b-0"
+            >
+              <div className="flex items-center justify-between gap-4">
+                <span className="text-text font-bold">もくひょう {goal.target} ポイント</span>
+                <span className="text-sm text-muted">{formatAchievedAt(goal.achievedAt)}</span>
+              </div>
+              {goal.reason && (
+                <p className="text-muted text-sm mt-1">📝 {goal.reason}</p>
+              )}
+            </li>
+          ))}
+        </ul>
       )}
     </section>
   );
@@ -478,6 +533,15 @@ export default function Ganbari() {
     setShowGoalModal(false);
   };
 
+  const handleAchieveGoal = (points: number) => {
+    if (!selectedPersonId) return;
+    const achievedAt = new Date().toISOString();
+    const newPeople = data.people.map((person) =>
+      person.id === selectedPersonId ? achieveGoal(person, selectedKind, points, achievedAt) : person,
+    );
+    updateData({ ...data, people: newPeople });
+  };
+
   const handleAddRecord = (content: string, stamp: string) => {
     if (!selectedDate || !selectedPersonId) return;
     const newRecord: GanbariRecord = {
@@ -557,8 +621,12 @@ export default function Ganbari() {
   }
 
   const pointTotals: Record<GanbariKind, number> = {
-    otetsudai: selectedPersonId ? countPoints(data.records, selectedPersonId, 'otetsudai') : 0,
-    naraigoto: selectedPersonId ? countPoints(data.records, selectedPersonId, 'naraigoto') : 0,
+    otetsudai: selectedPerson
+      ? countPoints(data.records, selectedPerson.id, 'otetsudai', lastAchievedAt(selectedPerson, 'otetsudai'))
+      : 0,
+    naraigoto: selectedPerson
+      ? countPoints(data.records, selectedPerson.id, 'naraigoto', lastAchievedAt(selectedPerson, 'naraigoto'))
+      : 0,
   };
   const currentPoints = pointTotals[selectedKind];
   const currentGoal = selectedPerson?.goals?.[selectedKind];
@@ -684,9 +752,18 @@ export default function Ganbari() {
                   />
                 </div>
                 {goalAchieved && (
-                  <p className="text-center text-warning font-bold text-lg mt-2">
-                    🎉 もくひょう たっせい！ 🎉
-                  </p>
+                  <>
+                    <p className="text-center text-warning font-bold text-lg mt-2">
+                      🎉 もくひょう たっせい！ 🎉
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => handleAchieveGoal(currentPoints)}
+                      className="mt-2 w-full bg-accent-cyan/20 text-accent border border-accent/30 rounded-xl px-4 py-3 text-base font-bold hover:bg-accent-cyan/30 transition-colors"
+                    >
+                      たっせいを きろくする
+                    </button>
+                  </>
                 )}
                 {currentGoal.reason && (
                   <p className="text-muted text-sm mt-2 bg-surface-2 rounded-lg p-3 border border-border">
@@ -793,6 +870,12 @@ export default function Ganbari() {
           </div>
 
           <StampBook records={data.records} personId={selectedPerson.id} />
+
+          {(selectedPerson.achievedGoals ?? []).some((goal) => goal.kind === selectedKind) && (
+            <AchievedHistory
+              achievedGoals={(selectedPerson.achievedGoals ?? []).filter((goal) => goal.kind === selectedKind)}
+            />
+          )}
         </>
       )}
 

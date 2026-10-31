@@ -162,6 +162,37 @@ export function countPoints(
   records: GanbariRecord[],
   personId: string,
   kind: GanbariKind,
+  since?: string,
 ): number {
-  return records.filter((record) => record.personId === personId && record.kind === kind).length;
+  return records.filter((record) =>
+    record.personId === personId
+    && record.kind === kind
+    && (since === undefined || record.createdAt > since)).length;
+}
+
+export function lastAchievedAt(person: Person, kind: GanbariKind): string | undefined {
+  return (person.achievedGoals ?? [])
+    .filter((goal) => goal.kind === kind)
+    .map((goal) => goal.achievedAt)
+    .sort()
+    .at(-1);
+}
+
+export function achieveGoal(
+  person: Person,
+  kind: GanbariKind,
+  points: number,
+  achievedAt: string,
+): Person {
+  const goal = person.goals?.[kind];
+  if (!goal) return person;
+  const { [kind]: _achieved, ...goals } = person.goals ?? {};
+  return {
+    ...person,
+    goals: Object.keys(goals).length > 0 ? goals : undefined,
+    achievedGoals: [
+      ...(person.achievedGoals ?? []),
+      { kind, target: goal.target, ...(goal.reason ? { reason: goal.reason } : {}), points, achievedAt },
+    ],
+  };
 }
