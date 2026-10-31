@@ -115,4 +115,34 @@ describe('Ganbari', () => {
     expect(within(timeline).getByText('10がつ 1にち（もく）')).toBeInTheDocument();
     expect(within(timeline).getByText('そうじ')).toBeInTheDocument();
   });
+
+  it('たっせい→あたらしいもくひょう→たっせいを続けても、2つのたっせいが両方とも残る', async () => {
+    storage.setItem(GANBARI_STORAGE_KEY, JSON.stringify({
+      people: [{ id: 'person-1', name: 'ゆう', goals: { otetsudai: { target: 1, reason: 'おもちゃ' } } }],
+      records: [
+        { id: '1', personId: 'person-1', date: '2026-10-01', content: 'そうじ', stamp: '⭐', createdAt: '2026-10-01T00:00:00.000Z', kind: 'otetsudai' },
+      ],
+    }));
+    render(<Ganbari />);
+
+    await userEvent.click(await screen.findByRole('button', { name: 'たっせいを きろくする' }));
+
+    await userEvent.click(screen.getByRole('button', { name: 'もくひょうをきめる' }));
+    await userEvent.type(screen.getByPlaceholderText('10'), '1');
+    await userEvent.type(screen.getByPlaceholderText('たとえば：10ポイントで おもちゃを かってもらう'), 'ほん');
+    await userEvent.click(screen.getByRole('button', { name: 'きめる' }));
+
+    await userEvent.click(screen.getByRole('button', { name: '2' }));
+    await userEvent.type(screen.getByPlaceholderText('なにをおてつだいしたかな？'), 'さらあらい');
+    await userEvent.click(screen.getByRole('button', { name: 'きろくする' }));
+
+    await userEvent.click(screen.getByRole('button', { name: 'たっせいを きろくする' }));
+
+    const saved = JSON.parse(storage.getItem(GANBARI_STORAGE_KEY) ?? '{}');
+    expect(saved.records).toHaveLength(2);
+    expect(saved.people[0].achievedGoals).toEqual([
+      expect.objectContaining({ kind: 'otetsudai', target: 1, reason: 'おもちゃ', points: 1 }),
+      expect.objectContaining({ kind: 'otetsudai', target: 1, reason: 'ほん', points: 1 }),
+    ]);
+  });
 });
