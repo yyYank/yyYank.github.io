@@ -8,10 +8,19 @@ export interface Goal {
   reason?: string;
 }
 
+export interface AchievedGoal {
+  kind: GanbariKind;
+  target: number;
+  reason?: string;
+  points: number;
+  achievedAt: string;
+}
+
 export interface Person {
   id: string;
   name: string;
   goals?: Partial<Record<GanbariKind, Goal>>;
+  achievedGoals?: AchievedGoal[];
 }
 
 export interface GanbariRecord {
@@ -45,6 +54,26 @@ function normalizeGoal(value: unknown): Goal | undefined {
   return { target: value.target, ...(reason ? { reason } : {}) };
 }
 
+function normalizeAchievedGoal(value: unknown): AchievedGoal | null {
+  if (
+    !isObject(value)
+    || !isKind(value.kind)
+    || typeof value.target !== 'number'
+    || typeof value.points !== 'number'
+    || typeof value.achievedAt !== 'string'
+  ) {
+    return null;
+  }
+  const reason = typeof value.reason === 'string' && value.reason ? value.reason : undefined;
+  return {
+    kind: value.kind,
+    target: value.target,
+    ...(reason ? { reason } : {}),
+    points: value.points,
+    achievedAt: value.achievedAt,
+  };
+}
+
 function normalizePerson(value: unknown): Person | null {
   if (!isObject(value) || typeof value.id !== 'string' || typeof value.name !== 'string') return null;
 
@@ -64,10 +93,17 @@ function normalizePerson(value: unknown): Person | null {
     ...(naraigotoGoal ? { naraigoto: naraigotoGoal } : {}),
   };
 
+  const achievedGoals = Array.isArray(value.achievedGoals)
+    ? value.achievedGoals
+      .map(normalizeAchievedGoal)
+      .filter((goal): goal is AchievedGoal => goal !== null)
+    : [];
+
   return {
     id: value.id,
     name: value.name,
     ...(Object.keys(goals).length > 0 ? { goals } : {}),
+    ...(achievedGoals.length > 0 ? { achievedGoals } : {}),
   };
 }
 

@@ -78,4 +78,35 @@ describe('ganbariData', () => {
     expect(storage.getItem(GANBARI_STORAGE_KEY)).not.toBeNull();
     expect(loadGanbariData(storage)).toEqual(data);
   });
+
+  it('たっせいのきろくを保存して読み込み直しても、記録と一緒に残る', () => {
+    const data = {
+      people: [{
+        id: 'person-1',
+        name: 'ゆう',
+        achievedGoals: [{
+          kind: 'otetsudai' as const,
+          target: 10,
+          reason: 'おもちゃ',
+          points: 10,
+          achievedAt: '2026-10-10T00:00:00.000Z',
+        }],
+      }],
+      records: [
+        {
+          id: 'record-1',
+          personId: 'person-1',
+          date: '2026-10-01',
+          content: 'そうじ',
+          stamp: '⭐',
+          createdAt: '2026-10-01T00:00:00.000Z',
+          kind: 'otetsudai' as const,
+        },
+      ],
+    };
+
+    saveGanbariData(storage, data);
+
+    expect(loadGanbariData(storage)).toEqual(data);
+  });
 });
