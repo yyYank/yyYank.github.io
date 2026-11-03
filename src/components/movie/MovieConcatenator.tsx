@@ -6,11 +6,9 @@ import {
   buildConcatList,
   buildReencodeArgs,
   canStreamCopy,
-  fileProgress,
   moveItem,
   OUTPUT_SIZES,
   parseProbeLog,
-  parseProgressTime,
   type VideoInfo,
 } from './movieConcatUtils';
 import { readFileBytes, readOutputBlob, writeInputFile } from './movieExport';
@@ -41,7 +39,6 @@ export default function MovieConcatenator() {
   const [errorMessage, setErrorMessage] = useState('');
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  const [progress, setProgress] = useState<number[] | null>(null);
 
   useEffect(() => {
     void getFFmpeg();
@@ -69,7 +66,6 @@ export default function MovieConcatenator() {
 
   const updateItems = (next: ConcatItem[]) => {
     setItems(next);
-    setProgress(null);
     setOutputBlob(null);
     setStatus('');
     setErrorMessage('');
@@ -91,7 +87,6 @@ export default function MovieConcatenator() {
     setLoading(true);
     setErrorMessage('');
     setOutputBlob(null);
-    setProgress(null);
 
     const token = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
     const inputNames = items.map((_, i) => `concat-input-${token}-${i}.mp4`);
@@ -123,19 +118,7 @@ export default function MovieConcatenator() {
         args = buildReencodeArgs(inputNames, infos, outputSize, outputName);
       }
 
-      const durations = infos.map((info) => info.duration);
-      setProgress(fileProgress(0, durations));
-      const onProgressLog = ({ message }: { message: string }) => {
-        const elapsed = parseProgressTime(message);
-        if (elapsed !== null) setProgress(fileProgress(elapsed, durations));
-      };
-      ffmpeg.on('log', onProgressLog);
-      let exitCode: number;
-      try {
-        exitCode = await ffmpeg.exec(args);
-      } finally {
-        ffmpeg.off('log', onProgressLog);
-      }
+      const exitCode = await ffmpeg.exec(args);
       if (exitCode !== 0) {
         throw new Error(`ffmpeg が失敗しました（終了コード ${exitCode}）`);
       }
@@ -145,7 +128,6 @@ export default function MovieConcatenator() {
         throw new Error('連結結果が空でした');
       }
 
-      setProgress(durations.map(() => 1));
       setOutputBlob(blob);
       setOutputFilename(`${baseName}_concat.mp4`);
       setStatus('連結完了');
@@ -193,11 +175,6 @@ export default function MovieConcatenator() {
             <li key={`${file.name}-${i}`} className="flex items-center gap-2 text-sm text-muted">
               <span className="w-6 text-faint">{i + 1}.</span>
               <span className="flex-1 truncate">{file.name}</span>
-              {progress && progress[i] !== undefined && (
-                <span className="text-xs text-faint">
-                  {progress[i] >= 1 ? '完了' : progress[i] > 0 ? `処理中 ${Math.floor(progress[i] * 100)}%` : '待機中'}
-                </span>
-              )}
               <button
                 onClick={() => updateItems(moveItem(items, i, -1))}
                 disabled={i === 0 || loading}

@@ -4,11 +4,9 @@ import {
   buildConcatList,
   buildReencodeArgs,
   canStreamCopy,
-  fileProgress,
   moveItem,
   OUTPUT_SIZES,
   parseProbeLog,
-  parseProgressTime,
   type VideoInfo,
 } from '../movieConcatUtils';
 
@@ -157,20 +155,5 @@ describe('movieConcatUtils', () => {
     expect(moveItem(['a', 'b', 'c'], 1, 1)).toEqual(['a', 'c', 'b']);
     expect(moveItem(['a', 'b', 'c'], 0, -1)).toEqual(['a', 'b', 'c']);
     expect(moveItem(['a', 'b', 'c'], 2, 1)).toEqual(['a', 'b', 'c']);
-  });
-
-  // ffmpeg の進み具合のログから、処理済みの時間(秒)を読み取れること。時間のない行は null
-  it('parses processed time from an ffmpeg progress log line', () => {
-    expect(parseProgressTime('frame=  90 fps= 30 q=-1.0 size=    512kB time=00:01:02.50 bitrate= 67.1kbits/s speed=1x')).toBe(62.5);
-    expect(parseProgressTime('size=       0kB time=N/A bitrate=N/A speed=N/A')).toBeNull();
-    expect(parseProgressTime('Stream mapping:')).toBeNull();
-  });
-
-  // 処理済みの時間と各ファイルの長さから、ファイルごとの進み具合(0〜1)を出すこと
-  it('splits the processed time into per-file progress', () => {
-    expect(fileProgress(0, [2, 4])).toEqual([0, 0]);
-    expect(fileProgress(1, [2, 4])).toEqual([0.5, 0]);
-    expect(fileProgress(3, [2, 4])).toEqual([1, 0.25]);
-    expect(fileProgress(10, [2, 4])).toEqual([1, 1]);
   });
 });

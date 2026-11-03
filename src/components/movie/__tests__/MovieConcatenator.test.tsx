@@ -176,57 +176,6 @@ describe('MovieConcatenator', () => {
     });
   });
 
-  // 連結中は、ffmpeg のログの処理済み時間から、ファイルごとの進み具合が一覧に出て、終わると全部完了になること
-  it('shows per-file progress while concatenating and marks all files done at the end', async () => {
-    let finish: (code: number) => void = () => undefined;
-    mocks.exec.mockImplementation(async (args: string[]) => {
-      if (args[0] === '-hide_banner') {
-        portraitLog.split('\n').forEach((message) => mocks.logListeners.forEach((listener) => listener({ message })));
-        return 1;
-      }
-      // 各ファイルは2秒なので、3秒まで進んだ時点では1本目が完了、2本目が半分
-      mocks.logListeners.forEach((listener) => listener({ message: 'frame=   90 fps= 30 time=00:00:03.00 speed=1x' }));
-      return new Promise<number>((resolve) => {
-        finish = resolve;
-      });
-    });
-    render(<MovieConcatenator />);
-
-    await userEvent.upload(screen.getByLabelText('MP4 Files'), [
-      createMp4('a.mp4', [1]),
-      createMp4('b.mp4', [2]),
-    ]);
-    await userEvent.click(screen.getByRole('button', { name: 'Concat' }));
-
-    await waitFor(() => {
-      const rows = screen.getAllByRole('listitem');
-      expect(rows[0]).toHaveTextContent('完了');
-      expect(rows[1]).toHaveTextContent('処理中 50%');
-    });
-
-    finish(0);
-
-    await waitFor(() => {
-      const rows = screen.getAllByRole('listitem');
-      expect(rows[0]).toHaveTextContent('完了');
-      expect(rows[1]).toHaveTextContent('完了');
-    });
-  });
-
-  // 連結前は、一覧に進み具合を出さないこと
-  it('does not show progress before concatenating', async () => {
-    render(<MovieConcatenator />);
-
-    await userEvent.upload(screen.getByLabelText('MP4 Files'), [
-      createMp4('a.mp4', [1]),
-      createMp4('b.mp4', [2]),
-    ]);
-
-    const rows = screen.getAllByRole('listitem');
-    expect(rows[0]).not.toHaveTextContent(/待機中|処理中|完了/);
-    expect(rows[1]).not.toHaveTextContent(/待機中|処理中|完了/);
-  });
-
   // 出力サイズを4つから選べ、最初はスマホ縦になっていること
   it('lets the user choose one of four fixed output sizes', () => {
     render(<MovieConcatenator />);

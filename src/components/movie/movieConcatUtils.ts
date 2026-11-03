@@ -48,21 +48,6 @@ export function parseProbeLog(log: string): VideoInfo {
   };
 }
 
-export function parseProgressTime(message: string): number | null {
-  const time = message.match(/time=(\d+):(\d+):(\d+(?:\.\d+)?)/);
-  return time ? Number(time[1]) * 3600 + Number(time[2]) * 60 + Number(time[3]) : null;
-}
-
-export function fileProgress(elapsed: number, durations: number[]): number[] {
-  let start = 0;
-  return durations.map((duration) => {
-    const done = elapsed - start;
-    start += duration;
-    if (duration <= 0) return done >= 0 ? 1 : 0;
-    return Math.min(Math.max(done / duration, 0), 1);
-  });
-}
-
 export function canStreamCopy(infos: VideoInfo[]): boolean {
   const [first] = infos;
   return infos.every(
