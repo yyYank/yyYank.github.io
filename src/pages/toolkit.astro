@@ -10,6 +10,7 @@ import AudioTrimmer from '../components/sounds/AudioTrimmer.tsx';
 import AudioVolumeChanger from '../components/sounds/AudioVolumeChanger.tsx';
 import MovieTrimmer from '../components/movie/MovieTrimmer.tsx';
 import MovToMp4Converter from '../components/movie/MovToMp4Converter.tsx';
+import MovieConcatenator from '../components/movie/MovieConcatenator.tsx';
 import OcrTool from '../components/ocr/OcrTool.astro';
 import SnippetSearch from '../components/snippet/SnippetSearch.tsx';
 import { loadAllSnippets } from '../lib/snippets';
@@ -115,6 +116,9 @@ const groups = [
       <MovieTrimmer client:load />
       <div class="mt-6">
         <MovToMp4Converter client:load />
+      </div>
+      <div class="mt-6">
+        <MovieConcatenator client:load />
       </div>
       <p class="mt-6 text-xs text-faint">
         処理はすべてブラウザ内で行われます。ファイルはサーバーに送信されません。<br />
