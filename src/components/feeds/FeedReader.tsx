@@ -46,7 +46,7 @@ interface CacheData {
     holidays: Record<string, string>;
     exchangeRates: ExchangeRate[];
     loaded?: Partial<Record<LoadKey, boolean>>;
-    loadedAt?: Partial<Record<LoadKey, number>>;
+    loadedAt?: Partial<Record<LoadKey, number | null>>;
   };
   expiresAt: number;
   staleUntil?: number;

@@ -63,7 +63,7 @@ export default function AudioVolumeChanger() {
         'output.mp3',
       ]);
       const data = await ffmpeg.readFile('output.mp3');
-      setOutputBlob(new Blob([data], { type: 'audio/mpeg' }));
+      setOutputBlob(new Blob([data as BlobPart], { type: 'audio/mpeg' }));
       setStatus('変換完了');
     } catch (e) {
       setStatus(`エラー: ${e instanceof Error ? e.message : String(e)}`);

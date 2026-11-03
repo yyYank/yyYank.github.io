@@ -1,7 +1,7 @@
 import type { FFmpeg, FileData } from '@ffmpeg/ffmpeg';
 
 export function toUint8Array(data: FileData): Uint8Array {
-  return data instanceof Uint8Array ? data : new Uint8Array(data);
+  return typeof data === 'string' ? new TextEncoder().encode(data) : data;
 }
 
 export async function readFileBytes(file: File): Promise<Uint8Array> {
@@ -10,7 +10,7 @@ export async function readFileBytes(file: File): Promise<Uint8Array> {
 
 export async function readOutputBlob(ffmpeg: FFmpeg, outputName: string, type: string): Promise<Blob> {
   const data = await ffmpeg.readFile(outputName);
-  return new Blob([toUint8Array(data)], { type });
+  return new Blob([toUint8Array(data) as BlobPart], { type });
 }
 
 export async function writeInputFile(ffmpeg: FFmpeg, inputName: string, fileData: Uint8Array): Promise<void> {

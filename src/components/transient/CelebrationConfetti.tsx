@@ -144,7 +144,7 @@ export default function CelebrationConfetti() {
             ...(launcher.side === 'left'
               ? { left: `${launcher.anchor - 2}px` }
               : { right: `${launcher.anchor - 2}px` }),
-            ...(launcher.edge === 'top' ? { top: launcher.offset } : { bottom: launcher.offset }),
+            bottom: launcher.offset,
           }}
         >
           <motion.div
@@ -217,7 +217,7 @@ export default function CelebrationConfetti() {
           className={`absolute ${burst.size} ${burst.color} rounded-sm shadow-[0_0_18px_rgba(255,255,255,0.12)]`}
           style={{
             ...(burst.side === 'left' ? { left: `${burst.anchor}px` } : { right: `${burst.anchor}px` }),
-            ...(burst.edge === 'top' ? { top: burst.offset } : { bottom: burst.offset }),
+            bottom: burst.offset,
           }}
         />
       ))}

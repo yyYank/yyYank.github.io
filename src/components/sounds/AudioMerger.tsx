@@ -31,7 +31,7 @@ export default function AudioMerger() {
         'merged.mp3',
       ]);
       const data = await ffmpeg.readFile('merged.mp3');
-      setOutputBlob(new Blob([data], { type: 'audio/mpeg' }));
+      setOutputBlob(new Blob([data as BlobPart], { type: 'audio/mpeg' }));
       setStatus('連結完了');
     } catch (e) {
       setStatus(`エラー: ${e instanceof Error ? e.message : String(e)}`);

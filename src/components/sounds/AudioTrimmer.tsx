@@ -336,7 +336,7 @@ export default function AudioTrimmer() {
       ]);
 
       const data = await ffmpeg.readFile('trimmed.mp3');
-      setOutputBlob(new Blob([data], { type: 'audio/mpeg' }));
+      setOutputBlob(new Blob([data as BlobPart], { type: 'audio/mpeg' }));
       setStatus('完了');
     } catch (e) {
       setStatus(`エラー: ${e instanceof Error ? e.message : String(e)}`);

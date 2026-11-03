@@ -3,7 +3,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import FeedReader, { getGitHubTrendCondition } from '../FeedReader';
 
 // Mock fetch to prevent actual network requests
-const fetchMock = vi.fn(() => Promise.reject(new Error('no fetch in test')));
+const fetchMock = vi.fn<typeof fetch>(() => Promise.reject(new Error('no fetch in test')));
 vi.stubGlobal('fetch', fetchMock);
 
 // Mock localStorage

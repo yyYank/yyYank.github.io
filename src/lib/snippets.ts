@@ -61,5 +61,5 @@ export function extractSnippets(body: string, docTitle: string, source: string):
 
 export async function loadAllSnippets(): Promise<Snippet[]> {
   const docs = await getCollection('docs', ({ data }) => !data.draft);
-  return docs.flatMap((doc) => extractSnippets(doc.body, doc.data.title, doc.id));
+  return docs.flatMap((doc) => extractSnippets(doc.body ?? '', doc.data.title, doc.id));
 }
