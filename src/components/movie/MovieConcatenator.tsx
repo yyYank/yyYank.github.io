@@ -1,37 +1,13 @@
 import { useEffect, useState } from 'react';
 import { getFFmpeg } from '../../lib/ffmpeg';
 import DownloadButton from '../sounds/DownloadButton';
-import {
-  buildConcatArgs,
-  buildConcatList,
-  buildReencodeArgs,
-  canStreamCopy,
-  moveItem,
-  OUTPUT_SIZES,
-  parseProbeLog,
-  type VideoInfo,
-} from './movieConcatUtils';
+import { buildConcatArgs, buildConcatList, moveItem } from './movieConcatUtils';
 import { readFileBytes, readOutputBlob, writeInputFile } from './movieExport';
 
 type ConcatItem = { file: File; data: Uint8Array };
-type FFmpegInstance = Awaited<ReturnType<typeof getFFmpeg>>;
-
-async function probeVideo(ffmpeg: FFmpegInstance, inputName: string): Promise<VideoInfo> {
-  const lines: string[] = [];
-  const onLog = ({ message }: { message: string }) => lines.push(message);
-  ffmpeg.on('log', onLog);
-  try {
-    // 出力先を指定しないので終了コードは0以外になるが、ログに動画の情報が出る
-    await ffmpeg.exec(['-hide_banner', '-i', inputName]);
-  } finally {
-    ffmpeg.off('log', onLog);
-  }
-  return parseProbeLog(lines.join('\n'));
-}
 
 export default function MovieConcatenator() {
   const [items, setItems] = useState<ConcatItem[]>([]);
-  const [outputSizeLabel, setOutputSizeLabel] = useState(OUTPUT_SIZES[0].label);
   const [outputBlob, setOutputBlob] = useState<Blob | null>(null);
   const [outputFilename, setOutputFilename] = useState('output.mp4');
   const [loading, setLoading] = useState(false);
@@ -92,7 +68,7 @@ export default function MovieConcatenator() {
     const inputNames = items.map((_, i) => `concat-input-${token}-${i}.mp4`);
     const listName = `concat-list-${token}.txt`;
     const outputName = `concat-${token}.mp4`;
-    let ffmpeg: FFmpegInstance | null = null;
+    let ffmpeg: Awaited<ReturnType<typeof getFFmpeg>> | null = null;
 
     try {
       setStatus('ffmpegを読み込み中...');
@@ -103,22 +79,9 @@ export default function MovieConcatenator() {
       for (let i = 0; i < items.length; i++) {
         await writeInputFile(ffmpeg, inputNames[i], items[i].data.slice());
       }
-      const infos: VideoInfo[] = [];
-      for (const name of inputNames) {
-        infos.push(await probeVideo(ffmpeg, name));
-      }
+      await ffmpeg.writeFile(listName, buildConcatList(inputNames));
 
-      let args: string[];
-      if (canStreamCopy(infos)) {
-        await ffmpeg.writeFile(listName, buildConcatList(inputNames));
-        args = buildConcatArgs(listName, outputName);
-      } else {
-        const outputSize = OUTPUT_SIZES.find((size) => size.label === outputSizeLabel) ?? OUTPUT_SIZES[0];
-        setStatus(`${items.length} 本の MP4 を ${outputSize.label} に収めて再エンコード中...`);
-        args = buildReencodeArgs(inputNames, infos, outputSize, outputName);
-      }
-
-      const exitCode = await ffmpeg.exec(args);
+      const exitCode = await ffmpeg.exec(buildConcatArgs(listName, outputName));
       if (exitCode !== 0) {
         throw new Error(`ffmpeg が失敗しました（終了コード ${exitCode}）`);
       }
@@ -204,28 +167,6 @@ export default function MovieConcatenator() {
         </ol>
       )}
 
-      <div>
-        <label htmlFor="concat-output-size" className="block text-sm text-muted mb-2">
-          出力サイズ
-        </label>
-        <select
-          id="concat-output-size"
-          value={outputSizeLabel}
-          onChange={(event) => {
-            setOutputSizeLabel(event.target.value);
-            setOutputBlob(null);
-          }}
-          disabled={loading}
-          className="w-full rounded-lg bg-surface-2 text-text text-sm px-3 py-2"
-        >
-          {OUTPUT_SIZES.map((size) => (
-            <option key={size.label} value={size.label}>
-              {`${size.label} (${size.width}×${size.height})`}
-            </option>
-          ))}
-        </select>
-      </div>
-
       <button
         onClick={() => void handleConcat()}
         disabled={items.length < 2 || loading}
@@ -234,7 +175,7 @@ export default function MovieConcatenator() {
         {loading ? '処理中...' : 'Concat'}
       </button>
       <p className="text-xs text-faint">
-        すべての動画が同じ形式なら、再エンコードせず元の動画のままつなげます。縦と横が混ざるなど形式が違うときは、縦横そのまま出力サイズに収めて再エンコードします（余白は黒、コーデックと fps は元のまま）。
+        再エンコードせず、元の動画のままつなげます。1本目に音声がない場合、連結後の動画は音声なしになります。
       </p>
 
       {status && (
