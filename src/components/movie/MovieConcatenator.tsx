@@ -4,8 +4,10 @@ import DownloadButton from '../sounds/DownloadButton';
 import { buildConcatArgs, buildConcatList, moveItem } from './movieConcatUtils';
 import { readFileBytes, readOutputBlob, writeInputFile } from './movieExport';
 
+type ConcatItem = { file: File; data: Uint8Array };
+
 export default function MovieConcatenator() {
-  const [files, setFiles] = useState<File[]>([]);
+  const [items, setItems] = useState<ConcatItem[]>([]);
   const [outputBlob, setOutputBlob] = useState<Blob | null>(null);
   const [outputFilename, setOutputFilename] = useState('output.mp4');
   const [loading, setLoading] = useState(false);
@@ -38,22 +40,32 @@ export default function MovieConcatenator() {
     return () => window.clearInterval(id);
   }, [loading]);
 
-  const updateFiles = (next: File[]) => {
-    setFiles(next);
+  const updateItems = (next: ConcatItem[]) => {
+    setItems(next);
     setOutputBlob(null);
     setStatus('');
     setErrorMessage('');
   };
 
+  const addFiles = async (selected: File[]) => {
+    try {
+      const added = await Promise.all(selected.map(async (file) => ({ file, data: await readFileBytes(file) })));
+      updateItems([...items, ...added]);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      setErrorMessage(`エラー: ${message}`);
+    }
+  };
+
   const handleConcat = async () => {
-    if (files.length < 2) return;
+    if (items.length < 2) return;
 
     setLoading(true);
     setErrorMessage('');
     setOutputBlob(null);
 
     const token = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
-    const inputNames = files.map((_, i) => `concat-input-${token}-${i}.mp4`);
+    const inputNames = items.map((_, i) => `concat-input-${token}-${i}.mp4`);
     const listName = `concat-list-${token}.txt`;
     const outputName = `concat-${token}.mp4`;
     let ffmpeg: Awaited<ReturnType<typeof getFFmpeg>> | null = null;
@@ -61,11 +73,11 @@ export default function MovieConcatenator() {
     try {
       setStatus('ffmpegを読み込み中...');
       ffmpeg = await getFFmpeg();
-      const baseName = files[0].name.replace(/\.[^.]+$/, '');
+      const baseName = items[0].file.name.replace(/\.[^.]+$/, '');
 
-      setStatus(`${files.length} 本の MP4 を連結中...`);
-      for (let i = 0; i < files.length; i++) {
-        await writeInputFile(ffmpeg, inputNames[i], await readFileBytes(files[i]));
+      setStatus(`${items.length} 本の MP4 を連結中...`);
+      for (let i = 0; i < items.length; i++) {
+        await writeInputFile(ffmpeg, inputNames[i], items[i].data.slice());
       }
       await ffmpeg.writeFile(listName, buildConcatList(inputNames));
 
@@ -114,21 +126,20 @@ export default function MovieConcatenator() {
           accept=".mp4,video/mp4"
           multiple
           onChange={(event) => {
-            updateFiles([...files, ...Array.from(event.target.files ?? [])]);
-            event.target.value = '';
+            void addFiles(Array.from(event.target.files ?? []));
           }}
           className="block w-full text-sm text-muted file:mr-3 file:py-1.5 file:px-4 file:rounded-lg file:border-0 file:text-sm file:bg-surface-2 file:text-text hover:file:bg-surface-2 cursor-pointer"
         />
       </div>
 
-      {files.length > 0 && (
+      {items.length > 0 && (
         <ol className="space-y-1">
-          {files.map((file, i) => (
+          {items.map(({ file }, i) => (
             <li key={`${file.name}-${i}`} className="flex items-center gap-2 text-sm text-muted">
               <span className="w-6 text-faint">{i + 1}.</span>
               <span className="flex-1 truncate">{file.name}</span>
               <button
-                onClick={() => updateFiles(moveItem(files, i, -1))}
+                onClick={() => updateItems(moveItem(items, i, -1))}
                 disabled={i === 0 || loading}
                 aria-label={`${file.name} を上へ`}
                 className="px-2 py-0.5 rounded bg-surface-2 text-text disabled:opacity-40"
@@ -136,15 +147,15 @@ export default function MovieConcatenator() {
                 ↑
               </button>
               <button
-                onClick={() => updateFiles(moveItem(files, i, 1))}
-                disabled={i === files.length - 1 || loading}
+                onClick={() => updateItems(moveItem(items, i, 1))}
+                disabled={i === items.length - 1 || loading}
                 aria-label={`${file.name} を下へ`}
                 className="px-2 py-0.5 rounded bg-surface-2 text-text disabled:opacity-40"
               >
                 ↓
               </button>
               <button
-                onClick={() => updateFiles(files.filter((_, j) => j !== i))}
+                onClick={() => updateItems(items.filter((_, j) => j !== i))}
                 disabled={loading}
                 aria-label={`${file.name} を削除`}
                 className="px-2 py-0.5 rounded bg-surface-2 text-text disabled:opacity-40"
@@ -158,7 +169,7 @@ export default function MovieConcatenator() {
 
       <button
         onClick={() => void handleConcat()}
-        disabled={files.length < 2 || loading}
+        disabled={items.length < 2 || loading}
         className="w-full py-2 px-4 bg-accent-purple text-text font-semibold rounded-lg hover:bg-accent-purple/80 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
       >
         {loading ? '処理中...' : 'Concat'}

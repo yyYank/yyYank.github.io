@@ -130,6 +130,20 @@ describe('MovieConcatenator', () => {
     expect(concatenatedContents()).toEqual([[1], [3]]);
   });
 
+  // トリムと同じく、ファイルを選んだ時点で中身を読み込んでおくこと(Concat を押すまで読み込みを遅らせない)
+  it('reads file contents as soon as files are selected', async () => {
+    const a = createMp4('a.mp4', [1]);
+    const b = createMp4('b.mp4', [2]);
+    render(<MovieConcatenator />);
+
+    await userEvent.upload(screen.getByLabelText('MP4 Files'), [a, b]);
+
+    await waitFor(() => {
+      expect(a.arrayBuffer).toHaveBeenCalled();
+      expect(b.arrayBuffer).toHaveBeenCalled();
+    });
+  });
+
   // ffmpeg が失敗(戻り値が0以外)したら、エラーを表示してダウンロードもプレビューも出さないこと
   it('shows an error instead of a download when ffmpeg fails', async () => {
     mocks.exec.mockResolvedValue(1);
