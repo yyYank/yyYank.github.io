@@ -48,6 +48,7 @@ describe('MovieConcatenator', () => {
     mocks.exec.mockReset();
     mocks.readFile.mockReset();
     mocks.deleteFile.mockReset();
+    mocks.deleteFile.mockResolvedValue(undefined);
     mocks.exec.mockResolvedValue(0);
     mocks.readFile.mockResolvedValue(new Uint8Array([1, 2, 3]));
 
