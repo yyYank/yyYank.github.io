@@ -77,6 +77,24 @@ describe('MovieConcatenator', () => {
     expect(mocks.exec.mock.calls[0]?.[0]).toContain('output.mp4');
   });
 
+  // 連結が終わると、結果の動画がプレビューとして再生できる状態で表示されること
+  it('shows a preview of the concatenated movie', async () => {
+    render(<MovieConcatenator />);
+
+    expect(screen.queryByLabelText('連結結果のプレビュー')).not.toBeInTheDocument();
+
+    await userEvent.upload(screen.getByLabelText('MP4 Files'), [
+      createMp4('a.mp4', [1]),
+      createMp4('b.mp4', [2]),
+    ]);
+    await userEvent.click(screen.getByRole('button', { name: 'Concat' }));
+
+    const preview = await screen.findByLabelText('連結結果のプレビュー');
+    expect(preview.tagName).toBe('VIDEO');
+    expect(preview).toHaveAttribute('src', 'blob:movie');
+    expect(preview).toHaveAttribute('controls');
+  });
+
   // 一覧から削除したファイルは連結対象に含まれないこと
   it('excludes removed files from concatenation', async () => {
     render(<MovieConcatenator />);

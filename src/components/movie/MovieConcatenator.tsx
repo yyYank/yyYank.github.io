@@ -13,10 +13,21 @@ export default function MovieConcatenator() {
   const [status, setStatus] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   useEffect(() => {
     void getFFmpeg();
   }, []);
+
+  useEffect(() => {
+    if (!outputBlob) {
+      setPreviewUrl(null);
+      return;
+    }
+    const url = URL.createObjectURL(outputBlob);
+    setPreviewUrl(url);
+    return () => URL.revokeObjectURL(url);
+  }, [outputBlob]);
 
   useEffect(() => {
     if (!loading) return;
@@ -147,6 +158,14 @@ export default function MovieConcatenator() {
       )}
       {errorMessage && <p className="text-sm text-danger">{errorMessage}</p>}
 
+      {previewUrl && (
+        <video
+          src={previewUrl}
+          controls
+          aria-label="連結結果のプレビュー"
+          className="w-full rounded-lg bg-black"
+        />
+      )}
       {outputBlob && <DownloadButton blob={outputBlob} filename={outputFilename} />}
     </div>
   );
