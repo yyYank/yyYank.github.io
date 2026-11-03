@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
 import { getFFmpeg } from '../../lib/ffmpeg';
 import DownloadButton from '../sounds/DownloadButton';
-import { buildConcatArgs, moveItem } from './movieConcatUtils';
+import { buildConcatArgs, buildConcatList, moveItem } from './movieConcatUtils';
 import { readFileBytes, readOutputBlob, writeInputFile } from './movieExport';
-import { readVideoSize } from './videoSize';
 
 export default function MovieConcatenator() {
   const [files, setFiles] = useState<File[]>([]);
@@ -53,21 +52,34 @@ export default function MovieConcatenator() {
     setErrorMessage('');
     setOutputBlob(null);
 
+    const token = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+    const inputNames = files.map((_, i) => `concat-input-${token}-${i}.mp4`);
+    const listName = `concat-list-${token}.txt`;
+    const outputName = `concat-${token}.mp4`;
+    let ffmpeg: Awaited<ReturnType<typeof getFFmpeg>> | null = null;
+
     try {
       setStatus('ffmpegを読み込み中...');
-      const ffmpeg = await getFFmpeg();
-      const size = await readVideoSize(files[0]);
-      const inputNames = files.map((_, i) => `concat_in${i}.mp4`);
-      const outputName = 'output.mp4';
+      ffmpeg = await getFFmpeg();
       const baseName = files[0].name.replace(/\.[^.]+$/, '');
 
       setStatus(`${files.length} 本の MP4 を連結中...`);
       for (let i = 0; i < files.length; i++) {
         await writeInputFile(ffmpeg, inputNames[i], await readFileBytes(files[i]));
       }
-      await ffmpeg.exec(buildConcatArgs(inputNames, outputName, size));
+      await ffmpeg.writeFile(listName, buildConcatList(inputNames));
 
-      setOutputBlob(await readOutputBlob(ffmpeg, outputName, 'video/mp4'));
+      const exitCode = await ffmpeg.exec(buildConcatArgs(listName, outputName));
+      if (exitCode !== 0) {
+        throw new Error(`ffmpeg が失敗しました（終了コード ${exitCode}）`);
+      }
+
+      const blob = await readOutputBlob(ffmpeg, outputName, 'video/mp4');
+      if (blob.size === 0) {
+        throw new Error('連結結果が空でした');
+      }
+
+      setOutputBlob(blob);
       setOutputFilename(`${baseName}_concat.mp4`);
       setStatus('連結完了');
     } catch (error) {
@@ -75,6 +87,11 @@ export default function MovieConcatenator() {
       setStatus('');
       setErrorMessage(`エラー: ${message}`);
     } finally {
+      if (ffmpeg) {
+        for (const name of [...inputNames, listName, outputName]) {
+          await ffmpeg.deleteFile(name).catch(() => undefined);
+        }
+      }
       setLoading(false);
     }
   };
@@ -147,7 +164,7 @@ export default function MovieConcatenator() {
         {loading ? '処理中...' : 'Concat'}
       </button>
       <p className="text-xs text-faint">
-        解像度は1本目に揃えます。音声のないファイルは連結できません。エンコードは数分〜十分程度かかることがあります。
+        再エンコードせず、元の動画のままつなげます。1本目に音声がない場合、連結後の動画は音声なしになります。
       </p>
 
       {status && (
