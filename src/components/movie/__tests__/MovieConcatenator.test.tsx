@@ -260,8 +260,37 @@ describe('MovieConcatenator', () => {
     expect(args).not.toContain('-filter_complex');
   });
 
-  // 縦と横の動画を混ぜると、選んだ出力サイズに収めて再エンコードでつなぐこと
-  it('re-encodes into the chosen output size when portrait and landscape are mixed', async () => {
+  // 縦と横を混ぜてスマホ横を選ぶと、横の動画はそのまま使い、縦の動画だけ作り直してからエンコードせずにつなぐこと
+  it('re-encodes only the mismatched file and joins the rest without encoding', async () => {
+    render(<MovieConcatenator />);
+
+    await userEvent.selectOptions(screen.getByLabelText('出力サイズ'), 'スマホ横');
+    await userEvent.upload(screen.getByLabelText('MP4 Files'), [
+      createMp4('a.mp4', [9]),
+      createMp4('b.mp4', [1]),
+    ]);
+    await userEvent.click(screen.getByRole('button', { name: 'Concat' }));
+
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: /Download a_concat\.mp4/ })).toBeInTheDocument();
+    });
+
+    const [clip, join] = concatCalls();
+    expect(concatCalls()).toHaveLength(2);
+    expect(clip[clip.indexOf('-i') + 1]).toMatch(/-1\.mp4$/);
+    expect(clip[clip.indexOf('-filter_complex') + 1]).toContain('pad=1920:1080');
+    expect(join).toContain('copy');
+    expect(join).not.toContain('-filter_complex');
+
+    // つなぐリストには、1本目は元のファイル、2本目は作り直したファイルが並ぶ
+    const list = mocks.writeFile.mock.calls.find((call) => typeof call[1] === 'string')?.[1] as string;
+    const names = [...list.matchAll(/file '([^']+)'/g)].map((m) => m[1]);
+    expect(names[0]).toMatch(/concat-input-.*-0\.mp4$/);
+    expect(names[1]).toBe(clip[clip.length - 1]);
+  });
+
+  // どの動画も選んだサイズに合わなければ、全部を作り直してからつなぐこと
+  it('re-encodes every file when none fits the chosen output size', async () => {
     render(<MovieConcatenator />);
 
     await userEvent.selectOptions(screen.getByLabelText('出力サイズ'), 'PC横');
@@ -272,13 +301,14 @@ describe('MovieConcatenator', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Concat' }));
 
     await waitFor(() => {
-      expect(concatCalls()).toHaveLength(1);
       expect(screen.getByRole('button', { name: /Download a_concat\.mp4/ })).toBeInTheDocument();
     });
 
-    const args = concatCalls()[0];
-    expect(args[args.indexOf('-filter_complex') + 1]).toContain('pad=2560:1440');
-    expect(args).not.toContain('copy');
+    const calls = concatCalls();
+    expect(calls).toHaveLength(3);
+    expect(calls[0][calls[0].indexOf('-filter_complex') + 1]).toContain('pad=2560:1440');
+    expect(calls[1][calls[1].indexOf('-filter_complex') + 1]).toContain('pad=2560:1440');
+    expect(calls[2]).toContain('copy');
   });
 
   // ffmpeg が失敗(戻り値が0以外)したら、エラーを表示してダウンロードもプレビューも出さないこと

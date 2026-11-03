@@ -19,6 +19,9 @@ export type AudioInfo = { codec: string; sampleRate: number; channelLayout: stri
 
 export type VideoInfo = {
   videoCodec: string;
+  profile: string | null;
+  pixFmt: string;
+  timescale: number;
   width: number;
   height: number;
   rotation: number;
@@ -36,9 +39,15 @@ export function parseProbeLog(log: string): VideoInfo {
   const rotation = log.match(/displaymatrix: rotation of (-?\d+(?:\.\d+)?) degrees/);
   const fps = log.match(/Video: .*?, (\d+(?:\.\d+)?) fps/);
   const audio = log.match(/Stream #\d+:\d+.*?: Audio: (\w+).*?, (\d+) Hz, ([^,]+)/);
+  const profile = log.match(/Video: \w+ \(([^)]+)\)/);
+  const pixFmt = log.match(/Video: \w+[^,]*, (\w+)/);
+  const timescale = log.match(/Video: .*?, (\d+(?:\.\d+)?)(k?) tbn/);
 
   return {
     videoCodec: video[1],
+    profile: profile ? profile[1] : null,
+    pixFmt: pixFmt ? pixFmt[1] : '',
+    timescale: timescale ? Math.round(Number(timescale[1]) * (timescale[2] ? 1000 : 1)) : 0,
     width: Number(video[2]),
     height: Number(video[3]),
     rotation: rotation ? Number(rotation[1]) : 0,
@@ -81,56 +90,128 @@ export function canStreamCopy(infos: VideoInfo[]): boolean {
 const VIDEO_ENCODERS: Record<string, string> = { h264: 'libx264', hevc: 'libx265' };
 const AUDIO_ENCODERS: Record<string, string> = { aac: 'aac', mp3: 'libmp3lame', opus: 'libopus' };
 
-export function buildReencodeArgs(
-  inputNames: string[],
-  infos: VideoInfo[],
+// ffmpeg -i のログに出るプロファイル名を、エンコーダに渡す名前にする
+const PROFILES: Record<string, string> = {
+  'Constrained Baseline': 'baseline',
+  Baseline: 'baseline',
+  Main: 'main',
+  High: 'high',
+  'High 10': 'high10',
+  'Main 10': 'main10',
+};
+
+export type Reference = {
+  videoCodec: string;
+  profile: string | null;
+  pixFmt: string;
+  timescale: number;
+  audio: AudioInfo | null;
+};
+
+function fitsSize(info: VideoInfo, size: OutputSize): boolean {
+  return info.rotation === 0 && info.width === size.width && info.height === size.height;
+}
+
+function sameAudio(a: AudioInfo | null, b: AudioInfo | null): boolean {
+  return a?.codec === b?.codec && a?.sampleRate === b?.sampleRate && a?.channelLayout === b?.channelLayout;
+}
+
+function sameVideo(info: VideoInfo, reference: Reference): boolean {
+  return (
+    info.videoCodec === reference.videoCodec &&
+    info.profile === reference.profile &&
+    info.pixFmt === reference.pixFmt &&
+    info.timescale === reference.timescale
+  );
+}
+
+// 作り直す動画は、そのまま使う動画と同じ作りにしないと、エンコードせずにつなげない
+export function chooseReference(infos: VideoInfo[], size: OutputSize): Reference {
+  const base = infos.find((info) => fitsSize(info, size)) ?? infos[0];
+  return {
+    videoCodec: base.videoCodec,
+    profile: base.profile,
+    pixFmt: base.pixFmt,
+    timescale: base.timescale,
+    audio: base.audio ?? infos.find((info) => info.audio)?.audio ?? null,
+  };
+}
+
+export function isPassthrough(info: VideoInfo, size: OutputSize, reference: Reference): boolean {
+  return fitsSize(info, size) && sameVideo(info, reference) && sameAudio(info.audio, reference.audio);
+}
+
+export function buildClipArgs(
+  inputName: string,
+  info: VideoInfo,
   { width, height }: OutputSize,
+  reference: Reference,
   outputName: string
 ): string[] {
-  const videoEncoder = VIDEO_ENCODERS[infos[0].videoCodec];
-  if (!videoEncoder) {
-    throw new Error(`${infos[0].videoCodec} の動画は再エンコードに対応していません`);
+  const copyVideo = fitsSize(info, { label: '', width, height }) && sameVideo(info, reference);
+  const videoEncoder = VIDEO_ENCODERS[reference.videoCodec];
+  if (!copyVideo && !videoEncoder) {
+    throw new Error(`${reference.videoCodec} の動画は再エンコードに対応していません`);
   }
-  const audio = infos.find((info) => info.audio)?.audio ?? null;
+  const audio = reference.audio;
   const audioEncoder = audio ? AUDIO_ENCODERS[audio.codec] : undefined;
-  if (audio && !audioEncoder) {
-    throw new Error(`${audio.codec} の音声は再エンコードに対応していません`);
+  const copyAudio = !audio || sameAudio(info.audio, audio);
+  if (!copyAudio && !audioEncoder) {
+    throw new Error(`${audio?.codec} の音声は再エンコードに対応していません`);
   }
 
-  // 縦横比を保ったまま画面に収める。小さい動画は拡大せず、余白は黒で埋める
-  const fit = `scale='min(${width},iw)':'min(${height},ih)':force_original_aspect_ratio=decrease:force_divisible_by=2,pad=${width}:${height}:(ow-iw)/2:(oh-ih)/2:black,setsar=1`;
-  const parts: string[] = [];
-  const pairs: string[] = [];
-  infos.forEach((info, i) => {
-    parts.push(`[${i}:v]${fit}[v${i}]`);
-    if (audio) {
-      parts.push(
-        info.audio
-          ? `[${i}:a]aformat=sample_rates=${audio.sampleRate}:channel_layouts=${audio.channelLayout}[a${i}]`
-          : `anullsrc=r=${audio.sampleRate}:cl=${audio.channelLayout},atrim=duration=${info.duration}[a${i}]`
-      );
-    }
-    pairs.push(audio ? `[v${i}][a${i}]` : `[v${i}]`);
-  });
-  parts.push(
-    audio
-      ? `${pairs.join('')}concat=n=${infos.length}:v=1:a=1[outv][outa]`
-      : `${pairs.join('')}concat=n=${infos.length}:v=1:a=0[outv]`
-  );
+  const filters: string[] = [];
+  if (!copyVideo) {
+    // 縦横比を保ったまま画面に収める。小さい動画は拡大せず、余白は黒で埋める
+    filters.push(
+      `[0:v]scale='min(${width},iw)':'min(${height},ih)':force_original_aspect_ratio=decrease:force_divisible_by=2,pad=${width}:${height}:(ow-iw)/2:(oh-ih)/2:black,setsar=1[v]`
+    );
+  }
+  if (audio && !info.audio) {
+    filters.push(`anullsrc=r=${audio.sampleRate}:cl=${audio.channelLayout},atrim=duration=${info.duration}[a]`);
+  }
+
+  const profile = reference.profile ? PROFILES[reference.profile] : undefined;
+  const videoArgs = copyVideo
+    ? ['-map', '0:v:0', '-c:v', 'copy']
+    : [
+        '-map',
+        '[v]',
+        '-c:v',
+        videoEncoder,
+        ...(profile ? ['-profile:v', profile] : []),
+        '-pix_fmt',
+        reference.pixFmt,
+        '-fps_mode',
+        'passthrough',
+      ];
+  let audioArgs: string[];
+  if (!audio) {
+    audioArgs = ['-an'];
+  } else if (!info.audio) {
+    audioArgs = ['-map', '[a]', '-c:a', audioEncoder!];
+  } else if (copyAudio) {
+    audioArgs = ['-map', '0:a:0', '-c:a', 'copy'];
+  } else {
+    audioArgs = [
+      '-map',
+      '0:a:0',
+      '-af',
+      `aformat=sample_rates=${audio.sampleRate}:channel_layouts=${audio.channelLayout}`,
+      '-c:a',
+      audioEncoder!,
+    ];
+  }
 
   return [
-    ...inputNames.flatMap((name) => ['-i', name]),
-    '-filter_complex',
-    parts.join(';'),
-    '-map',
-    '[outv]',
-    ...(audio ? ['-map', '[outa]'] : []),
-    '-fps_mode',
-    'passthrough',
-    '-c:v',
-    videoEncoder,
-    ...(videoEncoder === 'libx265' ? ['-tag:v', 'hvc1'] : []),
-    ...(audioEncoder ? ['-c:a', audioEncoder] : []),
+    '-i',
+    inputName,
+    ...(filters.length > 0 ? ['-filter_complex', filters.join(';')] : []),
+    ...videoArgs,
+    ...(reference.videoCodec === 'hevc' ? ['-tag:v', 'hvc1'] : []),
+    ...audioArgs,
+    '-video_track_timescale',
+    String(reference.timescale),
     outputName,
   ];
 }

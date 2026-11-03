@@ -2,9 +2,11 @@ import { describe, expect, it } from 'vitest';
 import {
   buildConcatArgs,
   buildConcatList,
-  buildReencodeArgs,
+  buildClipArgs,
   canStreamCopy,
+  chooseReference,
   fileProgress,
+  isPassthrough,
   moveItem,
   OUTPUT_SIZES,
   parseProbeLog,
@@ -28,6 +30,9 @@ const rotatedPortraitLog = [
 
 const landscape: VideoInfo = {
   videoCodec: 'h264',
+  profile: 'High',
+  pixFmt: 'yuv420p',
+  timescale: 30000,
   width: 1920,
   height: 1080,
   rotation: 0,
@@ -35,7 +40,14 @@ const landscape: VideoInfo = {
   audio: { codec: 'aac', sampleRate: 44100, channelLayout: 'stereo' },
   duration: 5.5,
 };
-const rotatedPortrait: VideoInfo = { ...landscape, rotation: -90, fps: 29.97, audio: null, duration: 3.25 };
+const rotatedPortrait: VideoInfo = {
+  ...landscape,
+  timescale: 600,
+  rotation: -90,
+  fps: 29.97,
+  audio: null,
+  duration: 3.25,
+};
 
 const phoneLandscape = OUTPUT_SIZES[1];
 
@@ -67,66 +79,127 @@ describe('movieConcatUtils', () => {
     expect(canStreamCopy([landscape, { ...landscape, audio: null }])).toBe(false);
   });
 
-  // 再エンコード時は、縦横比を保って画面に収め(大きい動画だけ縮め、小さい動画は拡大しない)、余白は黒、
-  // 音声のない動画には無音を足し、元のコーデックと fps のまま出力し、エンコード設定は何も足さないこと
-  it('builds re-encode args that fit each input into the fixed size with black bars and silence', () => {
-    const args = buildReencodeArgs(['in0.mp4', 'in1.mp4'], [landscape, rotatedPortrait], phoneLandscape, 'out.mp4');
-    const filter = args[args.indexOf('-filter_complex') + 1];
-    const fit =
-      "scale='min(1920,iw)':'min(1080,ih)':force_original_aspect_ratio=decrease:force_divisible_by=2,pad=1920:1080:(ow-iw)/2:(oh-ih)/2:black,setsar=1";
+  // 出力サイズと同じ大きさで回転情報のない最初の動画を、作り直す動画の手本にすること
+  it('chooses the first input that already fits the output size as the reference', () => {
+    expect(chooseReference([rotatedPortrait, landscape], phoneLandscape)).toEqual({
+      videoCodec: 'h264',
+      profile: 'High',
+      pixFmt: 'yuv420p',
+      timescale: 30000,
+      audio: landscape.audio,
+    });
+  });
 
-    expect(args.slice(0, 4)).toEqual(['-i', 'in0.mp4', '-i', 'in1.mp4']);
-    expect(filter).toBe(
+  // 出力サイズに合う動画がなければ、1本目の作りと、最初に見つかった音声の作りを手本にすること
+  it('falls back to the first input and the first audio when nothing fits the output size', () => {
+    expect(chooseReference([rotatedPortrait, landscape], OUTPUT_SIZES[0])).toEqual({
+      videoCodec: 'h264',
+      profile: 'High',
+      pixFmt: 'yuv420p',
+      timescale: 600,
+      audio: landscape.audio,
+    });
+  });
+
+  // 向き・サイズ・作り・音声が手本と同じ動画だけ、何もせずそのまま使うこと
+  it('passes through only inputs that already match the output size and the reference', () => {
+    const reference = chooseReference([landscape, rotatedPortrait], phoneLandscape);
+
+    expect(isPassthrough(landscape, phoneLandscape, reference)).toBe(true);
+    expect(isPassthrough(rotatedPortrait, phoneLandscape, reference)).toBe(false);
+    expect(isPassthrough({ ...landscape, width: 1280, height: 720 }, phoneLandscape, reference)).toBe(false);
+    expect(isPassthrough({ ...landscape, audio: null }, phoneLandscape, reference)).toBe(false);
+  });
+
+  // 向きの違う動画は、映像だけ手本と同じ作りで出力サイズに収めて作り直し、音声のない動画には無音を足すこと
+  it('re-encodes only the video of a mismatched input to match the reference', () => {
+    const reference = chooseReference([landscape, rotatedPortrait], phoneLandscape);
+
+    expect(buildClipArgs('in1.mp4', rotatedPortrait, phoneLandscape, reference, 'seg1.mp4')).toEqual([
+      '-i',
+      'in1.mp4',
+      '-filter_complex',
       [
-        `[0:v]${fit}[v0]`,
-        '[0:a]aformat=sample_rates=44100:channel_layouts=stereo[a0]',
-        `[1:v]${fit}[v1]`,
-        'anullsrc=r=44100:cl=stereo,atrim=duration=3.25[a1]',
-        '[v0][a0][v1][a1]concat=n=2:v=1:a=1[outv][outa]',
-      ].join(';')
-    );
-    expect(args.slice(args.indexOf('-filter_complex') + 2)).toEqual([
+        "[0:v]scale='min(1920,iw)':'min(1080,ih)':force_original_aspect_ratio=decrease:force_divisible_by=2,pad=1920:1080:(ow-iw)/2:(oh-ih)/2:black,setsar=1[v]",
+        'anullsrc=r=44100:cl=stereo,atrim=duration=3.25[a]',
+      ].join(';'),
       '-map',
-      '[outv]',
-      '-map',
-      '[outa]',
-      '-fps_mode',
-      'passthrough',
+      '[v]',
       '-c:v',
       'libx264',
+      '-profile:v',
+      'high',
+      '-pix_fmt',
+      'yuv420p',
+      '-fps_mode',
+      'passthrough',
+      '-map',
+      '[a]',
       '-c:a',
       'aac',
-      'out.mp4',
+      '-video_track_timescale',
+      '30000',
+      'seg1.mp4',
     ]);
   });
 
-  // どの動画にも音声がないときは、音声なしで出力すること
-  it('builds video-only re-encode args when no input has audio', () => {
-    const silent = { ...landscape, audio: null };
-    const args = buildReencodeArgs(['in0.mp4', 'in1.mp4'], [silent, rotatedPortrait], phoneLandscape, 'out.mp4');
-    const filter = args[args.indexOf('-filter_complex') + 1];
+  // 向きもサイズも合っていて音声だけないときは、映像はコピーして無音だけ足すこと
+  it('copies the video and adds silence when only the audio is missing', () => {
+    const reference = chooseReference([landscape, rotatedPortrait], phoneLandscape);
+    const silent = { ...landscape, audio: null, duration: 2 };
 
-    expect(filter).toContain('[v0][v1]concat=n=2:v=1:a=0[outv]');
-    expect(filter).not.toContain('anullsrc');
-    expect(args).not.toContain('[outa]');
-    expect(args).not.toContain('-c:a');
+    expect(buildClipArgs('in2.mp4', silent, phoneLandscape, reference, 'seg2.mp4')).toEqual([
+      '-i',
+      'in2.mp4',
+      '-filter_complex',
+      'anullsrc=r=44100:cl=stereo,atrim=duration=2[a]',
+      '-map',
+      '0:v:0',
+      '-c:v',
+      'copy',
+      '-map',
+      '[a]',
+      '-c:a',
+      'aac',
+      '-video_track_timescale',
+      '30000',
+      'seg2.mp4',
+    ]);
   });
 
-  // 元のコーデックが HEVC なら HEVC で出力し、iPhone などで再生できるよう hvc1 タグを付けること
-  it('re-encodes HEVC input as HEVC with the hvc1 tag', () => {
-    const hevc = { ...landscape, videoCodec: 'hevc' };
-    const args = buildReencodeArgs(['in0.mp4', 'in1.mp4'], [hevc, { ...hevc, rotation: -90 }], phoneLandscape, 'out.mp4');
+  // 映像を作り直すときも、音声が手本と同じならエンコードせずにコピーすること
+  it('copies the audio when it already matches the reference', () => {
+    const reference = chooseReference([landscape], phoneLandscape);
+    const rotatedWithAudio = { ...rotatedPortrait, audio: landscape.audio };
+    const args = buildClipArgs('in1.mp4', rotatedWithAudio, phoneLandscape, reference, 'seg1.mp4');
+
+    expect(args.slice(args.indexOf('-map', args.indexOf('[v]') + 1))).toEqual([
+      '-map',
+      '0:a:0',
+      '-c:a',
+      'copy',
+      '-video_track_timescale',
+      '30000',
+      'seg1.mp4',
+    ]);
+  });
+
+  // 手本が HEVC なら HEVC で作り直し、iPhone などで再生できるよう hvc1 タグを付けること
+  it('re-encodes as HEVC with the hvc1 tag when the reference is HEVC', () => {
+    const hevc = { ...landscape, videoCodec: 'hevc', profile: 'Main' };
+    const reference = chooseReference([hevc], phoneLandscape);
+    const args = buildClipArgs('in1.mp4', { ...hevc, rotation: -90 }, phoneLandscape, reference, 'seg1.mp4');
 
     expect(args[args.indexOf('-c:v') + 1]).toBe('libx265');
+    expect(args[args.indexOf('-profile:v') + 1]).toBe('main');
     expect(args[args.indexOf('-tag:v') + 1]).toBe('hvc1');
   });
 
   // 対応していないコーデックのときは、勝手に別のコーデックにせずエラーにすること
   it('throws for an unsupported video codec instead of switching codecs', () => {
     const unknown = { ...landscape, videoCodec: 'prores' };
-    expect(() =>
-      buildReencodeArgs(['in0.mp4', 'in1.mp4'], [unknown, rotatedPortrait], phoneLandscape, 'out.mp4')
-    ).toThrow(/prores/);
+    const reference = chooseReference([unknown], phoneLandscape);
+    expect(() => buildClipArgs('in1.mp4', rotatedPortrait, phoneLandscape, reference, 'seg1.mp4')).toThrow(/prores/);
   });
 
   // concat 用のリストに、渡した順番どおりにファイルが並ぶこと

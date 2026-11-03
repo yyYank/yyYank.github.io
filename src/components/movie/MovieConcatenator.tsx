@@ -4,9 +4,11 @@ import DownloadButton from '../sounds/DownloadButton';
 import {
   buildConcatArgs,
   buildConcatList,
-  buildReencodeArgs,
+  buildClipArgs,
   canStreamCopy,
+  chooseReference,
   fileProgress,
+  isPassthrough,
   moveItem,
   OUTPUT_SIZES,
   parseProbeLog,
@@ -95,6 +97,7 @@ export default function MovieConcatenator() {
 
     const token = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
     const inputNames = items.map((_, i) => `concat-input-${token}-${i}.mp4`);
+    const clipNames = items.map((_, i) => `concat-clip-${token}-${i}.mp4`);
     const listName = `concat-list-${token}.txt`;
     const outputName = `concat-${token}.mp4`;
     let ffmpeg: FFmpegInstance | null = null;
@@ -113,31 +116,60 @@ export default function MovieConcatenator() {
         infos.push(await probeVideo(ffmpeg, name));
       }
 
-      let args: string[];
+      const durations = infos.map((info) => info.duration);
+      const runWithProgress = async (args: string[], onElapsed: (elapsed: number) => void) => {
+        const onProgressLog = ({ message }: { message: string }) => {
+          const elapsed = parseProgressTime(message);
+          if (elapsed !== null) onElapsed(elapsed);
+        };
+        ffmpeg!.on('log', onProgressLog);
+        try {
+          return await ffmpeg!.exec(args);
+        } finally {
+          ffmpeg!.off('log', onProgressLog);
+        }
+      };
+      const assertSucceeded = (exitCode: number) => {
+        if (exitCode !== 0) {
+          throw new Error(`ffmpeg が失敗しました（終了コード ${exitCode}）`);
+        }
+      };
+      const setFileProgress = (index: number, ratio: number) =>
+        setProgress((prev) => prev && prev.map((value, i) => (i === index ? ratio : value)));
+
+      setProgress(fileProgress(0, durations));
       if (canStreamCopy(infos)) {
         await ffmpeg.writeFile(listName, buildConcatList(inputNames));
-        args = buildConcatArgs(listName, outputName);
+        assertSucceeded(
+          await runWithProgress(buildConcatArgs(listName, outputName), (elapsed) =>
+            setProgress(fileProgress(elapsed, durations))
+          )
+        );
       } else {
+        // 出力サイズに合っている動画はそのまま使い、合わない動画だけ作り直してから、エンコードせずにつなぐ
         const outputSize = OUTPUT_SIZES.find((size) => size.label === outputSizeLabel) ?? OUTPUT_SIZES[0];
-        setStatus(`${items.length} 本の MP4 を ${outputSize.label} に収めて再エンコード中...`);
-        args = buildReencodeArgs(inputNames, infos, outputSize, outputName);
-      }
-
-      const durations = infos.map((info) => info.duration);
-      setProgress(fileProgress(0, durations));
-      const onProgressLog = ({ message }: { message: string }) => {
-        const elapsed = parseProgressTime(message);
-        if (elapsed !== null) setProgress(fileProgress(elapsed, durations));
-      };
-      ffmpeg.on('log', onProgressLog);
-      let exitCode: number;
-      try {
-        exitCode = await ffmpeg.exec(args);
-      } finally {
-        ffmpeg.off('log', onProgressLog);
-      }
-      if (exitCode !== 0) {
-        throw new Error(`ffmpeg が失敗しました（終了コード ${exitCode}）`);
+        const reference = chooseReference(infos, outputSize);
+        const segments: string[] = [];
+        for (let i = 0; i < items.length; i++) {
+          if (isPassthrough(infos[i], outputSize, reference)) {
+            segments.push(inputNames[i]);
+            setFileProgress(i, 1);
+            continue;
+          }
+          setStatus(`${i + 1}/${items.length} 本目を ${outputSize.label} に合わせて作り直し中...`);
+          assertSucceeded(
+            await runWithProgress(buildClipArgs(inputNames[i], infos[i], outputSize, reference, clipNames[i]), (elapsed) =>
+              setFileProgress(i, durations[i] > 0 ? Math.min(elapsed / durations[i], 1) : 1)
+            )
+          );
+          segments.push(clipNames[i]);
+          setFileProgress(i, 1);
+        }
+        setStatus(`${items.length} 本の MP4 をつないでいます...`);
+        await ffmpeg.writeFile(listName, buildConcatList(segments));
+        const joinArgs = buildConcatArgs(listName, outputName);
+        if (reference.videoCodec === 'hevc') joinArgs.splice(-1, 0, '-tag:v', 'hvc1');
+        assertSucceeded(await ffmpeg.exec(joinArgs));
       }
 
       const blob = await readOutputBlob(ffmpeg, outputName, 'video/mp4');
@@ -155,7 +187,7 @@ export default function MovieConcatenator() {
       setErrorMessage(`エラー: ${message}`);
     } finally {
       if (ffmpeg) {
-        for (const name of [...inputNames, listName, outputName]) {
+        for (const name of [...inputNames, ...clipNames, listName, outputName]) {
           await ffmpeg.deleteFile(name).catch(() => undefined);
         }
       }
@@ -257,7 +289,7 @@ export default function MovieConcatenator() {
         {loading ? '処理中...' : 'Concat'}
       </button>
       <p className="text-xs text-faint">
-        すべての動画が同じ形式なら、再エンコードせず元の動画のままつなげます。縦と横が混ざるなど形式が違うときは、縦横そのまま出力サイズに収めて再エンコードします（余白は黒、コーデックと fps は元のまま）。
+        すべての動画が同じ形式なら、再エンコードせず元の動画のままつなげます。縦と横が混ざるなど形式が違うときは、出力サイズに合わない動画だけを、縦横そのまま収めて作り直します（余白は黒、コーデックと fps は元のまま、音声はそのまま）。
       </p>
 
       {status && (
