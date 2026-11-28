@@ -1,55 +1,69 @@
 {
-  "generatedAt": "2026-11-27T20:25:07.505Z",
+  "generatedAt": "2026-11-28T05:19:48.085Z",
   "feeds": {
     "hatena": {
       "items": [
         {
-          "title": "はじめての Lean",
-          "link": "https://unaoya.github.io/lean-intro/",
-          "date": "2026-11-27T11:19:18Z",
-          "description": "この教材の目的は、Lean のコードを書けるようになることではなく、証明が検査される仕組みを納得することである。 目標目標1 — Lean を読めるようになる。Lean のコードを読むとは、書かれた項の型を推測することである。そしてこの推測は機械的な手順で実行できる——だからコンピュータにも実行できる。実際に自分の手...",
+          "title": "なぜAIは超難問を解けるのに、あなたの現場では“綺麗なゴミ”を量産するのか？ - サッとぶ",
+          "link": "https://kei-1010.hatenablog.com/entry/2026/11/27/133416",
+          "date": "2026-11-27T06:22:00Z",
+          "description": "最近のAI関連のニュースでは、人間離れした成果が次々に出ている。 167年間どの天才数学者も解けなかったリーマン予想をAnthropicのClaudeが約1,700万行のコードで形式証明したかと思えば、OpenAIのGPT-6.2 Astraは200年以上も作者不明だった1808年のスケッチブックの描き手をたった22分で突き止めた。さらに新興企業のA...",
           "source": "hatena"
         },
         {
-          "title": "「ロリポップ！レンタルサーバー」の平文パスワード情報などが漏えい。GMOペパボの内部システムに不正アクセス 顧客情報51万6564件が漏えいの可能性、対象者に個別メール連絡",
-          "link": "https://internet.watch.impress.co.jp/docs/news/2160136.html",
-          "date": "2026-11-27T12:29:54Z",
+          "title": "｢もう管理職はいらない｣ 震源はシリコンバレー、AIで消える肩書と階層 - 日本経済新聞",
+          "link": "https://www.nikkei.com/article/DGXZQOGN246EE0U6A121C2000000/",
+          "date": "2026-11-27T21:48:54Z",
+          "description": "人工知能（AI）が経験の少ない若者の職を奪うと言われてきた。実際には若者だけでなく、経営陣と現場をつなぐ管理職の役割もAIが担おうとしている。米テック企業トップからは「管理職はいらない」との発言が飛び出す。シリコンバレー発の激震は日本企業にも訪れる変化を先取りしている可能性がある。COOから「技術職メン...",
+          "source": "hatena"
+        },
+        {
+          "title": "ノンフライヤーはからあげだけじゃない 夕飯作りラクにしてくれるかも",
+          "link": "https://kaden.watch.impress.co.jp/docs/column/iikoto/2160002.html",
+          "date": "2026-11-27T07:00:16Z",
           "description": "",
           "source": "hatena"
         },
         {
-          "title": "GMO熊谷氏「ハッカーを丸裸に」 サイバー攻撃の可視化サイト開設 - 日本経済新聞",
-          "link": "https://www.nikkei.com/article/DGXZQOUC271FH0X21C26A1000000/",
-          "date": "2026-11-27T08:16:56Z",
-          "description": "GMOインターネットグループの熊谷正寿会長兼社長は27日までに日本経済新聞のオンライン取材に応じ、サイバー攻撃を可視化するサイトを同日開設した狙いについて「ハッカーを丸裸にする」と語った。独自の防御サービスを展開する考えも示した。GMOが開設したサイトでは攻撃者が侵入後に行った行動や、人工知能（AI）を使...",
+          "title": "「日本語で」と書いても AI が英語に戻るので、Stop フックで止めた",
+          "link": "https://zenn.dev/hitori_pm/articles/cc955887656339",
+          "date": "2026-11-27T13:49:22Z",
+          "description": "ちなみに 3 回目の「誤字」は、日本語の「案内」の 1 文字が韓国語の文字に化けたものでした。それを直す報告が英語です。 4 回目は特に目立ちました。私は返答の中の 1 文を音声で読み上げる仕組みを使っています。その読み上げ用の文も英語になり、日本語の音声が英語を読み始めました。 原因 4 回目をたどると、こう...",
           "source": "hatena"
         },
         {
-          "title": "Linuxカーネルのバグ「TCPanic」を発見、TCP通信のみでホストが停止する脆弱性 | Ikotas Labs",
-          "link": "https://ikotaslabs.com/news/2026-11-27",
-          "date": "2026-11-27T09:14:53Z",
-          "description": "研究・開発 Linuxカーネルのバグ「TCPanic」を発見、TCP通信のみでホストが停止する脆弱性Ikotas Labsは、TCP通信のみでホスト全体が停止する可能性のあるLinuxカーネルのバグを独自に発見しました。Linux 7.3.4にはこの問題の修正が含まれています。 概要 株式会社Ikotas Labsは、LinuxカーネルのTCP処理にあるバグを独...",
+          "title": "AWSのAI-DLC v2に学ぶ AIにドメイン境界を守らせる設計",
+          "link": "https://speakerdeck.com/j5ik2o/archcon2026",
+          "date": "2026-11-27T10:26:22Z",
+          "description": "AIに正しさの基準を与えるのはドメインモデルです。今日はAWSのAI-DLC v2を解剖し、まず標準の基盤だけでタスク管理APIを作らせます。そのうえで自作プラグインを通じ、設計の形・入口の境界・層の依存の向きがどう変わったかを実例で整理します。検証対象は1つのAPIの中までとし、今後の拡張余地と人間が…",
           "source": "hatena"
         },
         {
-          "title": "「ロリポップ！レンタルサーバー」および関連サービスに対する不正アクセスによるお客様情報の漏えいについて - ロリポップ！レンタルサーバー",
-          "link": "https://lolipop.jp/info/news/8279/",
-          "date": "2026-11-27T06:15:17Z",
-          "description": "平素より「ロリポップ！レンタルサーバー」をご利用いただき、誠にありがとうございます。 このたび、「ロリポップ！レンタルサーバー」および一部の関連サービスにおいて、第三者による不正アクセスが確認され、お客様情報が漏えいしたことが判明いたしました。 お客様および関係者の皆様にご迷惑をおかけしております...",
+          "title": "シンプルな構文で美しい図を自動生成する「D2」が進化、非営利化で独自レイアウトエンジンもオープンソース化",
+          "link": "https://gigazine.net/news/20261127-d2/",
+          "date": "2026-11-27T14:05:38Z",
+          "description": "テキストで図形や矢印の関係を記述するだけで図を自動生成できる「D2」は、2022年に基本的な使い方をレビューしました。その後は手描き風のデザインやアニメーション、ターミナルでも表示できるASCII出力などに対応し、図の表現方法が広がっています。2026年9月には運営体制が非営利に切り替わり、独自の自動配置エンジ...",
           "source": "hatena"
         },
         {
-          "title": "2026年に刊行されてよかったなと思うコンピューター技術書 - golden-luckyの日記",
-          "link": "https://golden-lucky.hatenablog.com/entry/2026/11/27/111643",
-          "date": "2026-11-27T02:26:32Z",
-          "description": "コンピューター技術書の市況は2026年に入ったころから冷え込みに拍車がかかっているように感じてます。AIチャットで答えらしきものが得られるのでリファレンスの需要は激減したし、ノウハウ集っぽい本も不要になりました。自分でコードを読み書きしなくてもエージェントでとりあえずアプリが生成されるので、プログラミ...",
+          "title": "AIでしか生み出せない価値とは何か ― 4つの壁と8つの価値創造 - ニューロサイエンスとマーケティングの間 - Between Neuroscience and Marketing",
+          "link": "https://kaz-ataka.hatenablog.com/entry/2026/11/28/085335",
+          "date": "2026-11-28T00:34:06Z",
+          "description": "Meguro River, in the uppermost reaches of the Shimanto River, Shikoku, Japan. Leica M10-P, Summilux-M 50mm f/1.4 ASPH., RAW. AIはすごい、これを感じていない人は僕の周りではもう殆どいない。 ちょっと指示を出せばメールの返信を書いてくれる。かなり面倒な分析も、こういうことをや",
           "source": "hatena"
         },
         {
-          "title": "後回しできる設計、 前倒しすべき設計。",
-          "link": "https://speakerdeck.com/anizozina/akitekucha-kanfarensu-2026-atomawashi-dekiru-sekkei-maedaoshi-subeki-sekkei",
-          "date": "2026-11-27T07:20:50Z",
-          "description": "Annual Pro sale · Save $30 Have presentations of your own? Share with private links, password protection, and more control over your work.",
+          "title": "通勤流出入マップ",
+          "link": "https://commuter-inflow-map.idoajob.chatgpt.site/?city=none",
+          "date": "2026-11-27T17:41:10Z",
+          "description": "2020年の国勢調査に基づき、市区町村間の通勤者（15歳以上、男女計）を表示します。「同じ市区町村内で通勤」は、住んでいる市区町村内の自宅以外の職場で働く人の数です。 ランキングと矢印 流入は他の市区町村から選んだ市区町村に通勤する人数、流出は選んだ市区町村から他の市区町村に通勤する人数です。差分は流入...",
+          "source": "hatena"
+        },
+        {
+          "title": "GMO、サーバー貸出事業で不正アクセス 顧客情報51万件漏洩 - 日本経済新聞",
+          "link": "https://www.nikkei.com/article/DGXZQOUC27B210X21C26A1000000/",
+          "date": "2026-11-27T22:28:30Z",
+          "description": "GMOインターネットグループ傘下のGMOペパボは27日、サーバーの貸し出しサービスで不正アクセスがあったと発表した。顧客情報51万6564件が流出した可能性がある。個人情報に加え、一部顧客のパスワード計約12万件の漏洩も確認されたという。不正アクセスがあったのはGMOペパボが提供する「ロリポップ！レンタルサーバー」...",
           "source": "hatena"
         },
         {
@@ -60,6 +74,83 @@
           "source": "hatena"
         },
         {
+          "title": "GMOペパボへの不正アクセスについてまとめてみた - piyolog",
+          "link": "https://piyolog.hatenadiary.jp/entry/2026/11/28/110735",
+          "date": "2026-11-28T03:28:03Z",
+          "description": "2026年11月27日、GMOペパボは「ロリポップ！レンタルサーバー」などで第三者による不正アクセスが確認され、顧客情報が漏えいしたことが判明したと公表しました。ここでは関連する情報をまとめます。 データ分析基盤を経由した顧客情報の持ち出し GMOペパボは原因について、サービス利用者のWebサイトではなく自社の内部...",
+          "source": "hatena"
+        },
+        {
+          "title": "はじめての Lean",
+          "link": "https://unaoya.github.io/lean-intro/",
+          "date": "2026-11-27T11:19:18Z",
+          "description": "この教材の目的は、Lean のコードを書けるようになることではなく、証明が検査される仕組みを納得することである。 目標目標1 — Lean を読めるようになる。Lean のコードを読むとは、書かれた項の型を推測することである。そしてこの推測は機械的な手順で実行できる——だからコンピュータにも実行できる。実際に自分の手...",
+          "source": "hatena"
+        },
+        {
+          "title": "Docker HubのPHP公式イメージから自前ビルドへ移行 〜Debian移行と最適化で稼働Pod数を約25%削減〜 - COLOPL Tech Blog",
+          "link": "https://blog.colopl.dev/entry/2026/11/27/110000",
+          "date": "2026-11-27T04:05:22Z",
+          "description": "こんにちは、サーバー基盤グループの駒崎です。 Google Kubernetes Engine（GKE）などコンテナ上で動く複数のゲームタイトル向けに、社内共通のPHPベースイメージを運用しています。インフラのCPU効率を基盤側から改善しようと手を入れた結果、Docker Hubの php 公式イメージをやめて、php.net のソースコードから自前で...",
+          "source": "hatena"
+        },
+        {
+          "title": "自宅PCを格安ファイルサーバーとして構築してみた",
+          "link": "https://zenn.dev/nextbeat/articles/7c820845a91d7d",
+          "date": "2026-11-27T10:43:41Z",
+          "description": "1. はじめに ポート開放なしで、外からアクセスできる自宅ファイルサーバーを構築したので、構成をご紹介します。 この記事は、こんな人に向けています。 外部から接続できる自宅サーバーをなるべく安く構築したいが、ポート開放や認証まわりが不安な人 2. モチベーション PC が余っていた 外から接続できるファイルサー...",
+          "source": "hatena"
+        },
+        {
+          "title": "YAPC::Asia Tokyo 2010 Keynoteを観た - 生涯未熟",
+          "link": "https://syossan.hateblo.jp/entry/2026/09/08/093000",
+          "date": "2026-09-08T00:57:41Z",
+          "description": "先日、Songmuさん（@songmu）にお会いした時に、「宮川達彦さんのYAPCのキーノートは観といた方が良いよ」と仰られていたので、観ました。 www.youtube.com www.youtube.com 16年前の映像が残ってるのが本当に有難いですね。 どういうお話か PerlのPlackのお話で「なぜPlackはさまざまな企業に使われるほど成功したのか...",
+          "source": "hatena"
+        },
+        {
+          "title": "Windowsで定番のターミナルエミュレーター「Tera Term」にMac版が登場、原作者公認／本家の設定ファイル、「.ttl」ファイルもそのまま扱える【やじうまの杜】",
+          "link": "https://forest.watch.impress.co.jp/docs/serial/yajiuma/2159779.html",
+          "date": "2026-11-27T04:19:49Z",
+          "description": "",
+          "source": "hatena"
+        },
+        {
+          "title": "スマホの「マイナアプリ」に脆弱性、不正リンクからマイナンバーカード情報窃取のおそれ／iOS版/Android版ともに最新バージョンへのアップデートを",
+          "link": "https://forest.watch.impress.co.jp/docs/news/2160150.html",
+          "date": "2026-11-27T11:50:35Z",
+          "description": "",
+          "source": "hatena"
+        },
+        {
+          "title": "NumPyroで混合正規分布モデリング - ドワンゴ教育サービス開発者ブログ",
+          "link": "https://blog.nnn.dev/entry/2026/11/27/110000",
+          "date": "2026-11-27T02:33:03Z",
+          "description": "はじめに データ活用システム開発セクションの田沼です。部署の名前の通り、データを活用した仕組みの企画、検証、開発などを広めに担当しています。 我々のチームでは学力や問題特性の分析に確率的プログラミングライブラリであるNumPyroを利用しています。NumPyroはモデルを設計すれば、こちらでアルゴリズム実装に頭...",
+          "source": "hatena"
+        },
+        {
+          "title": "XYZA、何度も自由に描き替え可能なカラーE Ink搭載スマートキーホルダー",
+          "link": "https://www.itmedia.co.jp/pcuser/articles/2611/27/news083.html",
+          "date": "2026-11-27T09:23:05Z",
+          "description": "XYZAは11月27日、充電不要で利用可能な小型E Inkパネル内蔵スマートキーホルダー「6色E Inkスマートキーホルダー」を発表、Amazon.co.jpで予約販売を開始した。価格は3500円（税込み）。 200×200ピクセル表示対応の1.54型カラーE Inkパネルを備えたキーホルダーで、NFC対応スマートフォンをかざすことで画像に変更を行う...",
+          "source": "hatena"
+        },
+        {
+          "title": "「ロリポップ！レンタルサーバー」の平文パスワード情報などが漏えい。GMOペパボの内部システムに不正アクセス 顧客情報51万6564件が漏えいの可能性、対象者に個別メール連絡",
+          "link": "https://internet.watch.impress.co.jp/docs/news/2160136.html",
+          "date": "2026-11-27T12:29:54Z",
+          "description": "",
+          "source": "hatena"
+        },
+        {
+          "title": "パールスター感謝祭 YAPC::Tokyo 2026 総合順位発表 #yapcjapan - YAPC::Japan 運営ブログ",
+          "link": "https://blog.yapcjapan.org/entry/2026/11/28/014109",
+          "date": "2026-11-27T21:19:35Z",
+          "description": "id:Pasta-K です。前夜祭で実施した「パールスター感謝祭」の総合順位を掲載します。同一名が複数ある人は識別IDが異なっているので、QRコード読み込み時はWebViewになっていて、その後Safariに移行したなどが予想されますが、その辺もまた追って解消したいと思います。改めてご参加ありがとうございました！！！！！ 参...",
+          "source": "hatena"
+        },
+        {
           "title": "大阪大学、学生と教職員のメアド5万件漏洩 アララへの不正アクセス - 日本経済新聞",
           "link": "https://www.nikkei.com/article/DGXZQOUF272NY0X21C26A1000000/",
           "date": "2026-11-27T17:19:05Z",
@@ -67,52 +158,24 @@
           "source": "hatena"
         },
         {
-          "title": "止まらないKARTE漏えい 契約終了後「削除されたはず」のデータ流出相次ぐ 「人的オペレーションと管理の不備」",
-          "link": "https://www.itmedia.co.jp/news/article/2611/27/2000003517/",
-          "date": "2026-11-27T06:13:26Z",
-          "description": "プレイドのCXプラットフォーム「KARTE」が11月13日に不正アクセスを受け、大手から中小まで多数の企業の顧客情報が流出した問題で、すでにKARTEの契約を終了していた企業の顧客情報も漏えいしたとの発表が相次いでいる。 11月26日、LCCのPeach Aviationと、ファンケル傘下の化粧品メーカー・アテニアがそれぞれ、契約終...",
+          "title": "後回しできる設計、 前倒しすべき設計。",
+          "link": "https://speakerdeck.com/anizozina/akitekucha-kanfarensu-2026-atomawashi-dekiru-sekkei-maedaoshi-subeki-sekkei",
+          "date": "2026-11-27T07:20:50Z",
+          "description": "Annual Pro sale · Save $30 Have presentations of your own? Share with private links, password protection, and more control over your work.",
           "source": "hatena"
         },
         {
-          "title": "「勇気ありすぎだろ」GMOが買収した激安サーバー「ロリポップ！」が顧客情報の漏洩を公表、漏れた一部パスワードを“平文で”保存していた模様",
-          "link": "https://togetter.com/li/2775731",
-          "date": "2026-11-27T11:42:54Z",
-          "description": "「勇気ありすぎだろ」GMOが買収した激安サーバー「ロリポップ！」が顧客情報の漏洩を公表、漏れた一部パスワードを“平文で”保存していた模様",
+          "title": "Kizuna AI、春猿火ら9組がバーチャル空間に集結 VRChat音楽フェス「ESPERA」レポート",
+          "link": "https://kai-you.net/article/97275",
+          "date": "2026-11-27T09:21:56Z",
+          "description": "ソーシャルVRプラットフォーム「VRChat」で開催された音楽フェス「ESPERA -AdHoc Live Festival 2026-」のオフィシャルレポートが公開された。 「ESPERA」は、RIOT MUSICとカルチュア・エンタテインメントが共同企画したバーチャル音楽フェス。11月20日から22日までの3日間、VRChatを舞台に開催された。 最終日となる11...",
           "source": "hatena"
         },
         {
-          "title": "顧客情報を守るため、売上15％の自社ECを閉店 ドールメーカーが明かした「決断」の背景",
-          "link": "https://www.itmedia.co.jp/news/article/2611/27/2000003518/",
-          "date": "2026-11-27T08:09:28Z",
-          "description": "ドールの製造・販売を手掛けるアゾンインターナショナル（神奈川県藤沢市）は11月6日、個人情報保護を理由に公式オンラインショップ「AZONET」の閉店を発表した。同サイトの会員は約8万人、全社売上高の約15％を占めるという。18年続けてきた自社ECを、なぜ手放すのか。同社の早園正社長と戦略企画室室長の難波いつみ氏...",
-          "source": "hatena"
-        },
-        {
-          "title": "サブスクの「お試し→自動更新」は客を逃していた？ 新規購読者数は「お試し→自動解約」比23％減 140万人で実験",
-          "link": "https://www.itmedia.co.jp/news/article/2611/27/2000003503/",
-          "date": "2026-11-27T03:22:23Z",
-          "description": "2019年の開始以来、多様な最新論文を取り上げている連載「Innovative Tech」。ここではその番外編として“ちょっと昔”に発表された世界中の個性的な研究論文を独自視点で厳選、解説する。執筆は研究論文メディア「Seamless」（シームレス）を主宰し、日課として数多くの論文に目を通す山下氏が担当。イラストや漫画は、同...",
-          "source": "hatena"
-        },
-        {
-          "title": "初期iPhoneは「携帯電話としてあり得ない」と思った ガングロギャルが教えてくれた“技術普及の絶対条件”",
-          "link": "https://www.itmedia.co.jp/mobile/articles/2611/27/news079.html",
-          "date": "2026-11-27T06:42:21Z",
-          "description": "初期iPhoneは「携帯電話としてあり得ない」と思った ガングロギャルが教えてくれた“技術普及の絶対条件”：私とモバイルの25年（1/2 ページ） ITmedia Mobileの創刊から、2026年で25周年を迎えるとのこと。以前20周年企画で記事を執筆してから、もう5年もたっていたことに驚かされるが、これだけ長く継続しているのは編...",
-          "source": "hatena"
-        },
-        {
-          "title": "DNAで『マインクラフト』のように立体構造を構築する技術が登場、合計400個のDNAブロックでナノサイズの複雑な構造の形成に成功",
-          "link": "https://gigazine.net/news/20261127-dna-polycube-like-minecraft/",
-          "date": "2026-11-27T03:48:31Z",
-          "description": "アリゾナ州立大学などの研究チームが、DNAでできた立方体をブロックのように組み合わせ、複雑な極小立体構造を作り出す技術を開発しました。ゲーム『マインクラフト』のように立方体の組み合わせでさまざまな形状を表現できる技術で、ナノロボットや3次元電子回路の製造への応用が期待されています。研究成果は2026年11...",
-          "source": "hatena"
-        },
-        {
-          "title": "ISUCON2026 マルチリージョン構成におけるデータのインメモリ化 #isucon_namalog",
-          "link": "https://speakerdeck.com/kawasy/isucon2026-statemachine-replication-for-multi-region-in-memory-data-store-maruchi-rijon-kousei-niokeru-deta-no-in-memorika-e46becf2-a792-4df7-b614-7d36bae5e42e",
-          "date": "2026-11-27T01:52:22Z",
-          "description": "2027-11-26 に開催したイベント、「ISUCON2026 優勝AIエージェント、8時間分の生ログを眺める会 sponsored by HERP」で投影した資料です。 ステートマシン・レプリケーションという手法を紹介し、AIエージェントがin-memory化のために書いたコードの設計を解説し…",
+          "title": "日本のものづくり、AIでカイゼンを 現場に眠る「暗黙知」は宝の山 - 日本経済新聞",
+          "link": "https://www.nikkei.com/article/DGXZQOCD05B430V01C26A1000000/",
+          "date": "2026-11-27T00:05:37Z",
+          "description": "日本が直面する課題にいかに対応すればよいか、本社コメンテーターや有識者らが論じた記事を5回にわたり連載します。日本経済新聞社の前身ができた1870年代の日本はまだ「坂の上の雲」を追う時代だった。明治政府の「殖産興業」で製糸業が盛んになったが、欧米はすでに重厚長大産業という別のステージにいた。日本はその...",
           "source": "hatena"
         },
         {
@@ -123,17 +186,17 @@
           "source": "hatena"
         },
         {
-          "title": "さくさく作れる毎日を支える、AI 時代の開発環境 — 隔離・コンテキスト・ガードレール・検証の整理 - [はてなCMS] 電通総研 テックブログ",
-          "link": "https://tech.dentsusoken.com/entry/2026/11/27/133501",
-          "date": "2026-11-27T05:00:35Z",
-          "description": "はじめに 1. どこで動かすか：隔離基盤 外部入力と並列実行が前提を変える ホスト端末から切り離す（microVM 隔離と最小露出） 認証情報を中に置かない（プロキシ注入と署名専用の鍵委譲） 外向き通信と取得元を絞る（Egress 制御と権限の分離） 作業空間どうしを分け切る（worktree 単位の DB・動的ポート・後始末） 2....",
+          "title": "ドコモに聞く「新ahamo」の狙い 3段階制と165円値上げ、既存契約者に“40GBリミッター”実装の理由",
+          "link": "https://www.itmedia.co.jp/mobile/articles/2611/26/news074.html",
+          "date": "2026-11-26T07:33:31Z",
+          "description": "ドコモに聞く「新ahamo」の狙い 3段階制と165円値上げ、既存契約者に“40GBリミッター”実装の理由（1/3 ページ） ドコモは、12月1日に料金プランを一斉に改定する。新規受付を終了している“旧料金”は単純な値上げだが、現行の料金プランは対応が分かれた。コンテンツサービスがセットになった無制限プランの「ドコモ MAX...",
           "source": "hatena"
         },
         {
-          "title": "Devin Bot に毎朝のパフォーマンス改善を任せてみた - kickflow Tech Blog",
-          "link": "https://tech.kickflow.co.jp/entry/2026/11/27/154920",
-          "date": "2026-11-27T07:33:50Z",
-          "description": "毎朝規則正しく巡回してくれる Devin こんにちは。エンジニアの芳賀です。 ループエンジニアリング、流行ってますね！ さて、2026年11月17日、Cognition が Devin の新機能「Devin Bots」を発表しました。 ひと言でいうと、タスク単位ではなく成果単位で Devin に仕事を任せる機能です。 ということで、発表を見て早速 B...",
+          "title": "GMO熊谷氏「ハッカーを丸裸に」 サイバー攻撃の可視化サイト開設 - 日本経済新聞",
+          "link": "https://www.nikkei.com/article/DGXZQOUC271FH0X21C26A1000000/",
+          "date": "2026-11-27T08:16:56Z",
+          "description": "GMOインターネットグループの熊谷正寿会長兼社長は27日までに日本経済新聞のオンライン取材に応じ、サイバー攻撃を可視化するサイトを同日開設した狙いについて「ハッカーを丸裸にする」と語った。独自の防御サービスを展開する考えも示した。GMOが開設したサイトでは攻撃者が侵入後に行った行動や、人工知能（AI）を使...",
           "source": "hatena"
         },
         {
@@ -144,81 +207,88 @@
           "source": "hatena"
         },
         {
-          "title": "OpenAIが57年来の数学の難問「行列乗算はどこまで効率化できるのか」に決着をつける論文を公開",
-          "link": "https://gigazine.net/news/20261126-openai-matrix-multiplication/",
-          "date": "2026-11-26T08:35:02Z",
-          "description": "OpenAIが2026年11月25日、2つの正方行列を掛け合わせる際の計算量を左右する「行列乗算の指数(ω)」が正確に4分の9であることを証明したとする論文を公開しました。行列乗算の計算量をどこまで削減できるのかは1969年から研究が続けられてきた問題で、数学やコンピューター科学における重要な未解決問題の1つとされてきま...",
-          "source": "hatena"
-        },
-        {
-          "title": "業務向け「Copilot」アプリに「Office」を統合、人とエージェントが協働する「Workspaces」も【Ignite 2026】／「Home」は一般提供、自律型の「Autopilot」はFrontier向けに展開開始",
-          "link": "https://forest.watch.impress.co.jp/docs/news/2159782.html",
-          "date": "2026-11-27T07:28:30Z",
-          "description": "",
-          "source": "hatena"
-        },
-        {
-          "title": "iPhoneという奇跡:江島健太郎 / Kenn's Clairvoyance - CNET Japan",
-          "link": "https://web.archive.org/web/20080714082210/https://japan.cnet.com/blog/kenn/2008/07/13/entry_27012223/",
-          "date": "2023-10-09T23:51:29Z",
-          "description": "前回に引き続き、今年も友人＆奥さん＆犬連れでアップルストア総本山のパロアルト店に並んでゲットしました、iPhone 3G。 もうiPhone自体についてはあちこちで語り尽くされていますし、今さら私が何かを付け加えたところで、いつも言ってることの繰り返しになってしまうのですが、もう一度あらためて伝えたいことがあり...",
-          "source": "hatena"
-        },
-        {
-          "title": "DeNA、相づちを聞き逃さない日本語音声認識モデル3種を無償公開",
-          "link": "https://pc.watch.impress.co.jp/docs/news/2159894.html",
-          "date": "2026-11-27T05:41:30Z",
-          "description": "",
-          "source": "hatena"
-        },
-        {
-          "title": "AI使って開発するなら、モデリングするんだよ - 4つの図で始めるモデリングと、AIにモデルを実装させるアーキテクチャ",
-          "link": "https://speakerdeck.com/littlehands/umtp-suraido-20261125",
-          "date": "2026-11-26T23:54:33Z",
-          "description": "UMTP モデリングフォーラム 2026（2026/11/25）での登壇資料です。 https://umtp-japan.org/event-seminar/mf2026/78668 AIで実装が速くなった今、人に残る仕事は何か。それは、問題を理解し、解決策を立てて確かめる「問題解決力」だと考え…",
-          "source": "hatena"
-        },
-        {
-          "title": "マイナアプリに複数の脆弱性、マイナンバーカードの情報窃取の恐れ 最新版に更新を",
-          "link": "https://ascii.jp/elem/000/004/455/4455531/",
-          "date": "2026-11-27T05:14:25Z",
-          "description": "Japan Vulnerability Notes（JVN）は11月27日、デジタル庁が提供するスマートフォンアプリ「マイナアプリ（旧マイナポータルアプリ）」の脆弱性情報を公開した。 想定される影響および脆弱性の対象となるバージョンは、それぞれ以下のとおり。 ●想定される影響 ・ユーザーが不正なリンクをクリックすることで、任意のサ...",
-          "source": "hatena"
-        },
-        {
-          "title": "GitHub ActionsからPATもGitHub App Private Keyも駆逐する",
-          "link": "https://zenn.dev/tmknom/articles/github-app-token-exchange-system",
-          "date": "2026-11-27T04:35:43Z",
-          "description": "GitHub ActionsではGITHUB_TOKENで権限が足りない場合、PAT（Personal Access Token）やGitHub App Token（Installation Access Token）を使います。PATに比べるとGitHub App Tokenはだいぶマシですが、Private Keyの管理が課題になります。そこで GATES というソフトウェアを作ってみたので紹",
-          "source": "hatena"
-        },
-        {
-          "title": "さまざまなドキュメントを“AIが読める形”にする.NET API、Microsoftが「DocumentExtractionClient」を発表／OCRサービスやローカルモデルを切り替えて使える共通の仕組み、まずはプレビュー",
-          "link": "https://forest.watch.impress.co.jp/docs/news/2159777.html",
-          "date": "2026-11-27T07:09:52Z",
-          "description": "",
-          "source": "hatena"
-        },
-        {
-          "title": "通話とSMSだけの「INFOBAR ZERO」は若者に刺さるか？ 米国のダムフォンブームが日本で起きない理由",
-          "link": "https://www.itmedia.co.jp/mobile/articles/2611/27/news076.html",
-          "date": "2026-11-27T05:37:18Z",
-          "description": "KDDIは11月18日、au Design projectの新機種として「INFOBAR ZERO」を発表しました。Webサイトの閲覧やSNSには対応しておらず、使えるのは通話、SMS、カメラ、端末内の音楽再生など、限られた機能だけです。価格は3万2780円で、12月25日に発売します。 初代INFOBARのデザインを受け継いだ、懐かしいストレート型のボディ...",
-          "source": "hatena"
-        },
-        {
-          "title": "Skills over MCP、めっちゃよさそう | ashunar0",
-          "link": "https://ashunar0.dev/posts/skills-over-mcp/",
-          "date": "2026-11-26T22:15:24Z",
-          "description": "はじめに 11 月 24 日に、Anthropic から MCP まわりのアップデートが発表されました。 MCP servers can now ship skills, run tasks, and more with Claude Skills over MCP is in public beta in Claude, so MCP servers can ship skills alongs",
+          "title": "Linuxカーネルのバグ「TCPanic」を発見、TCP通信のみでホストが停止する脆弱性 | Ikotas Labs",
+          "link": "https://ikotaslabs.com/news/2026-11-27",
+          "date": "2026-11-27T09:14:53Z",
+          "description": "研究・開発 Linuxカーネルのバグ「TCPanic」を発見、TCP通信のみでホストが停止する脆弱性Ikotas Labsは、TCP通信のみでホスト全体が停止する可能性のあるLinuxカーネルのバグを独自に発見しました。Linux 7.3.4にはこの問題の修正が含まれています。 概要 株式会社Ikotas Labsは、LinuxカーネルのTCP処理にあるバグを独...",
           "source": "hatena"
         }
       ],
-      "fetchedAt": "2026-11-27T20:25:07.711Z",
+      "fetchedAt": "2026-11-28T05:19:48.228Z",
       "error": null
     },
     "hackernews": {
       "items": [
+        {
+          "title": "Unkernel: Real Linux kernel, compiled to WebAssembly",
+          "link": "https://unkernel.dev",
+          "date": "Sat, 28 Nov 2026 03:19:20 +0000",
+          "description": "Article URL: https://unkernel.dev Comments URL: https://news.ycombinator.com/item?id=50674218 Points: 53 # Comments: 4",
+          "source": "hackernews"
+        },
+        {
+          "title": "Atari Homebrew Awards Cancelled",
+          "link": "https://forums.atariage.com/topic/394894-atari-homebrew-awards-cancelled/",
+          "date": "Sat, 28 Nov 2026 02:03:25 +0000",
+          "description": "Article URL: https://forums.atariage.com/topic/394894-atari-homebrew-awards-cancelled/ Comments URL: https://news.ycombinator.com/item?id=50673688 Points: 140 # Comments: 134",
+          "source": "hackernews"
+        },
+        {
+          "title": "Woman evicted after landlord's AI assistant told her she could delay rent",
+          "link": "https://drmahfouz.substack.com/p/woman-evicted-after-landlords-ai",
+          "date": "Sat, 28 Nov 2026 01:32:56 +0000",
+          "description": "Article URL: https://drmahfouz.substack.com/p/woman-evicted-after-landlords-ai Comments URL: https://news.ycombinator.com/item?id=50673521 Points: 121 # Comments: 95",
+          "source": "hackernews"
+        },
+        {
+          "title": "Google's DeepCrossAttention achieves comparable model quality up to 3x faster",
+          "link": "https://research.google/blog/supercharging-transformer-residual-connections/",
+          "date": "Fri, 27 Nov 2026 23:06:29 +0000",
+          "description": "Article URL: https://research.google/blog/supercharging-transformer-residual-connections/ Comments URL: https://news.ycombinator.com/item?id=50672565 Points: 247 # Comments: 84",
+          "source": "hackernews"
+        },
+        {
+          "title": "Tabernetes: A Kubernetes cluster whose nodes are browser tabs",
+          "link": "https://tabernet.es/",
+          "date": "Fri, 27 Nov 2026 23:00:30 +0000",
+          "description": "Article URL: https://tabernet.es/ Comments URL: https://news.ycombinator.com/item?id=50672521 Points: 61 # Comments: 29",
+          "source": "hackernews"
+        },
+        {
+          "title": "Source Control from Hell",
+          "link": "https://frantic.im/git/",
+          "date": "Fri, 27 Nov 2026 22:06:44 +0000",
+          "description": "Article URL: https://frantic.im/git/ Comments URL: https://news.ycombinator.com/item?id=50672142 Points: 78 # Comments: 59",
+          "source": "hackernews"
+        },
+        {
+          "title": "9/UX: a Macintosh-inspired desktop for 9front",
+          "link": "https://progrium.github.io/9ux/",
+          "date": "Fri, 27 Nov 2026 21:48:14 +0000",
+          "description": "Article URL: https://progrium.github.io/9ux/ Comments URL: https://news.ycombinator.com/item?id=50672008 Points: 95 # Comments: 24",
+          "source": "hackernews"
+        },
+        {
+          "title": "SessionGraph: Visualize all your coding agent sessions in one interactive graph",
+          "link": "https://sessiongraph.ai/",
+          "date": "Fri, 27 Nov 2026 21:07:34 +0000",
+          "description": "Article URL: https://sessiongraph.ai/ Comments URL: https://news.ycombinator.com/item?id=50671651 Points: 39 # Comments: 21",
+          "source": "hackernews"
+        },
+        {
+          "title": "Quad9 Blocks Nginx2root.com",
+          "link": "https://quad9.net/?url=nginx2root.com#domain-tester",
+          "date": "Fri, 27 Nov 2026 21:03:56 +0000",
+          "description": "Article URL: https://quad9.net/?url=nginx2root.com#domain-tester Comments URL: https://news.ycombinator.com/item?id=50671619 Points: 22 # Comments: 15",
+          "source": "hackernews"
+        },
+        {
+          "title": "Prospero: Bloat-free, native AI coding harness with ImGui",
+          "link": "https://github.com/skeeto/prospero",
+          "date": "Fri, 27 Nov 2026 20:23:14 +0000",
+          "description": "Article URL: https://github.com/skeeto/prospero Comments URL: https://news.ycombinator.com/item?id=50671275 Points: 50 # Comments: 10",
+          "source": "hackernews"
+        },
         {
           "title": "States sue SpaceX to stop Grok from generating child sex images, revenge porn",
           "link": "https://www.oag.state.va.us/media-center/news-releases/jay-jones/3162-attorneys-general-jones-and-rayfield-file-suit-against-spacex-parent-company-of-x-xai-and-grok-over-creation-and-promotion-of-child-exploitation-and-non-consensual-images-on-platform",
@@ -230,35 +300,21 @@
           "title": "The AT&T Unix PC (3B1) VM",
           "link": "https://virtuallyfun.com/2026/11/22/the-ultimate-att-unix-pc-3b1-vm-w-tcp-ip-and-apps/",
           "date": "Fri, 27 Nov 2026 19:40:33 +0000",
-          "description": "Article URL: https://virtuallyfun.com/2026/11/22/the-ultimate-att-unix-pc-3b1-vm-w-tcp-ip-and-apps/ Comments URL: https://news.ycombinator.com/item?id=50670841 Points: 7 # Comments: 0",
+          "description": "Article URL: https://virtuallyfun.com/2026/11/22/the-ultimate-att-unix-pc-3b1-vm-w-tcp-ip-and-apps/ Comments URL: https://news.ycombinator.com/item?id=50670841 Points: 73 # Comments: 13",
           "source": "hackernews"
         },
         {
           "title": "Michael Nielsen took down his book on neural nets",
-          "link": "https://twitter.com/michael_nielsen/status/2126359767362748777",
+          "link": "https://neuralnetworksanddeeplearning.com/",
           "date": "Fri, 27 Nov 2026 19:31:01 +0000",
-          "description": "Article URL: https://twitter.com/michael_nielsen/status/2126359767362748777 Comments URL: https://news.ycombinator.com/item?id=50670757 Points: 76 # Comments: 58",
-          "source": "hackernews"
-        },
-        {
-          "title": "Michael Giles, co-founder and drummer of King Crimson, dies aged 84",
-          "link": "https://www.theguardian.com/music/2026/nov/26/michael-giles-co-founder-and-drummer-of-king-crimson-dies-aged-84",
-          "date": "Fri, 27 Nov 2026 19:25:16 +0000",
-          "description": "Article URL: https://www.theguardian.com/music/2026/nov/26/michael-giles-co-founder-and-drummer-of-king-crimson-dies-aged-84 Comments URL: https://news.ycombinator.com/item?id=50670694 Points: 10 # Co",
-          "source": "hackernews"
-        },
-        {
-          "title": "Euclidean geometry in the asymptotic spectrum of tensors [pdf]",
-          "link": "https://github.com/openai/math/blob/main/preprints/Euclidean-geometry-in-the-asymptotic-spectrum-of-tensors-November-24-2026/paper.pdf",
-          "date": "Fri, 27 Nov 2026 18:28:29 +0000",
-          "description": "Article URL: https://github.com/openai/math/blob/main/preprints/Euclidean-geometry-in-the-asymptotic-spectrum-of-tensors-November-24-2026/paper.pdf Comments URL: https://news.ycombinator.com/item?id=5",
+          "description": "Article URL: https://neuralnetworksanddeeplearning.com/ Comments URL: https://news.ycombinator.com/item?id=50670757 Points: 454 # Comments: 284",
           "source": "hackernews"
         },
         {
           "title": "Convex skills send the user's app idea to a remote server without telling them",
           "link": "https://github.com/convex/convex-backend-skill/issues/64",
           "date": "Fri, 27 Nov 2026 18:02:45 +0000",
-          "description": "Article URL: https://github.com/convex/convex-backend-skill/issues/64 Comments URL: https://news.ycombinator.com/item?id=50669765 Points: 88 # Comments: 25",
+          "description": "Article URL: https://github.com/convex/convex-backend-skill/issues/64 Comments URL: https://news.ycombinator.com/item?id=50669765 Points: 258 # Comments: 83",
           "source": "hackernews"
         },
         {
@@ -272,14 +328,14 @@
           "title": "Credit card skimming scripts using WebRTC found on popular shopping sites",
           "link": "https://www.infohawk.com/news/2026-11-27-black-friday-webrtc-skimmer",
           "date": "Fri, 27 Nov 2026 15:40:31 +0000",
-          "description": "Article URL: https://www.infohawk.com/news/2026-11-27-black-friday-webrtc-skimmer Comments URL: https://news.ycombinator.com/item?id=50668145 Points: 251 # Comments: 140",
+          "description": "Article URL: https://www.infohawk.com/news/2026-11-27-black-friday-webrtc-skimmer Comments URL: https://news.ycombinator.com/item?id=50668145 Points: 479 # Comments: 242",
           "source": "hackernews"
         },
         {
           "title": "False computer-checked proofs",
           "link": "https://cr.yp.to/proofs/falseccp.html",
           "date": "Fri, 27 Nov 2026 15:26:09 +0000",
-          "description": "Article URL: https://cr.yp.to/proofs/falseccp.html Comments URL: https://news.ycombinator.com/item?id=50667989 Points: 120 # Comments: 55",
+          "description": "Article URL: https://cr.yp.to/proofs/falseccp.html Comments URL: https://news.ycombinator.com/item?id=50667989 Points: 202 # Comments: 79",
           "source": "hackernews"
         },
         {
@@ -290,81 +346,207 @@
           "source": "hackernews"
         },
         {
-          "title": "Show HN: I restored Palm's last device, and brought its OS to other platforms",
-          "link": "https://www.webosarchive.org/pivot/2026/11/27/the-story-so-far/",
-          "date": "Fri, 27 Nov 2026 14:37:02 +0000",
-          "description": "webOS Community Edition 3.2.0 is the first OTA Update for Palm/HP's TouchPad, modernizing a 15-year old device. Lunacy is its sibling: the webOS experience, and apps, on Android. Luna DE is a develope",
-          "source": "hackernews"
-        },
-        {
           "title": "Rayshader 1.0: Exit the Matrix",
           "link": "https://www.tylermw.com/posts/rayverse/rayshader-1-0-exit-the-matrix.html",
           "date": "Fri, 27 Nov 2026 14:30:20 +0000",
-          "description": "Article URL: https://www.tylermw.com/posts/rayverse/rayshader-1-0-exit-the-matrix.html Comments URL: https://news.ycombinator.com/item?id=50667371 Points: 15 # Comments: 3",
+          "description": "Article URL: https://www.tylermw.com/posts/rayverse/rayshader-1-0-exit-the-matrix.html Comments URL: https://news.ycombinator.com/item?id=50667371 Points: 101 # Comments: 13",
           "source": "hackernews"
         },
         {
-          "title": "Making a 3D fantasy map like a 16th-Century atlas",
-          "link": "https://www.spritefusion.com/blog/making-a-fantasy-map-like-a-16th-century-atlas",
-          "date": "Fri, 27 Nov 2026 14:02:52 +0000",
-          "description": "Article URL: https://www.spritefusion.com/blog/making-a-fantasy-map-like-a-16th-century-atlas Comments URL: https://news.ycombinator.com/item?id=50667062 Points: 63 # Comments: 8",
-          "source": "hackernews"
-        },
-        {
-          "title": "Mental Health Resources and Political Engagement",
-          "link": "https://onlinelibrary.wiley.com/doi/abs/10.1111/ssqu.70219",
-          "date": "Fri, 27 Nov 2026 13:01:02 +0000",
-          "description": "Article URL: https://onlinelibrary.wiley.com/doi/abs/10.1111/ssqu.70219 Comments URL: https://news.ycombinator.com/item?id=50666436 Points: 112 # Comments: 200",
-          "source": "hackernews"
-        },
-        {
-          "title": "US Air Force's cloud computing platform hacked",
-          "link": "https://news.sky.com/story/us-air-forces-cloud-computing-platform-hacked-13617163",
-          "date": "Fri, 27 Nov 2026 12:54:11 +0000",
-          "description": "Article URL: https://news.sky.com/story/us-air-forces-cloud-computing-platform-hacked-13617163 Comments URL: https://news.ycombinator.com/item?id=50666375 Points: 270 # Comments: 166",
-          "source": "hackernews"
-        },
-        {
-          "title": "New York and California age gating rules go into effect in the new year",
-          "link": "https://www.eff.org/deeplinks/2026/11/new-york-and-california-age-gating-rules-go-effect-new-year",
-          "date": "Fri, 27 Nov 2026 12:43:40 +0000",
-          "description": "Article URL: https://www.eff.org/deeplinks/2026/11/new-york-and-california-age-gating-rules-go-effect-new-year Comments URL: https://news.ycombinator.com/item?id=50666279 Points: 171 # Comments: 189",
-          "source": "hackernews"
-        },
-        {
-          "title": "A Deterministic Subexponential-Time Algorithm for the Discrete Logarithm Problem [pdf]",
-          "link": "https://eprint.iacr.org/2026/3020.pdf",
-          "date": "Fri, 27 Nov 2026 12:08:51 +0000",
-          "description": "Article URL: https://eprint.iacr.org/2026/3020.pdf Comments URL: https://news.ycombinator.com/item?id=50665968 Points: 190 # Comments: 86",
-          "source": "hackernews"
-        },
-        {
-          "title": "Claude sabotaging ML research tasks?",
-          "link": "https://twitter.com/RealAstropulse/status/2126119408997466389",
-          "date": "Fri, 27 Nov 2026 08:28:08 +0000",
-          "description": "Article URL: https://twitter.com/RealAstropulse/status/2126119408997466389 Comments URL: https://news.ycombinator.com/item?id=50664325 Points: 441 # Comments: 227",
-          "source": "hackernews"
-        },
-        {
-          "title": "Group chat where your AI talks behind your back",
-          "link": "https://construct22.com/",
-          "date": "Fri, 27 Nov 2026 06:44:34 +0000",
-          "description": "Article URL: https://construct22.com/ Comments URL: https://news.ycombinator.com/item?id=50663595 Points: 625 # Comments: 264",
-          "source": "hackernews"
-        },
-        {
-          "title": "The need for a formally verifiable mainstream programming language",
-          "link": "https://blainehansen.me/post/mainstream-verifiable-language/",
-          "date": "Fri, 27 Nov 2026 05:22:06 +0000",
-          "description": "Article URL: https://blainehansen.me/post/mainstream-verifiable-language/ Comments URL: https://news.ycombinator.com/item?id=50663089 Points: 277 # Comments: 279",
+          "title": "Citroën Hydraulic System",
+          "link": "https://www.citroenet.org.uk/miscellaneous/hydraulics/hydraulics-1.html",
+          "date": "Fri, 27 Nov 2026 03:10:19 +0000",
+          "description": "Article URL: https://www.citroenet.org.uk/miscellaneous/hydraulics/hydraulics-1.html Comments URL: https://news.ycombinator.com/item?id=50662313 Points: 154 # Comments: 50",
           "source": "hackernews"
         }
       ],
-      "fetchedAt": "2026-11-27T20:25:08.060Z",
+      "fetchedAt": "2026-11-28T05:19:48.739Z",
       "error": null
     },
     "nikkei": {
       "items": [
+        {
+          "title": "中国・恒大のEV子会社、香港取引所が上場廃止方針 決算開示できず",
+          "link": "https://www.nikkei.com/article/DGXZQOGM280QO0Y6A121C2000000/",
+          "date": "2026-11-28T13:04:22+09:00",
+          "description": "",
+          "source": "nikkei"
+        },
+        {
+          "title": "伊藤大海がカブスと契約合意 米報道、高橋光成はDバックスと",
+          "link": "https://www.nikkei.com/article/DGXZQOKC280730Y6A121C2000000/",
+          "date": "2026-11-28T12:44:12+09:00",
+          "description": "",
+          "source": "nikkei"
+        },
+        {
+          "title": "米国防総省「全てのシステム維持」 空軍へのサイバー攻撃受け",
+          "link": "https://www.nikkei.com/article/DGXZQOGN280VJ0Y6A121C2000000/",
+          "date": "2026-11-28T12:39:49+09:00",
+          "description": "",
+          "source": "nikkei"
+        },
+        {
+          "title": "イノシシに襲われ7人けが、静岡・清水の市街地 市が駆除",
+          "link": "https://www.nikkei.com/article/DGXZQOUD280R10Y6A121C2000000/",
+          "date": "2026-11-28T12:02:37+09:00",
+          "description": "",
+          "source": "nikkei"
+        },
+        {
+          "title": "皇居の紅葉並木を散策、乾通り公開開始 12月6日まで",
+          "link": "https://www.nikkei.com/article/DGXZQOUD280RL0Y6A121C2000000/",
+          "date": "2026-11-28T11:51:13+09:00",
+          "description": "",
+          "source": "nikkei"
+        },
+        {
+          "title": "トヨタやデンソー「からくり」設備で工場カイゼン 展示会で生産性競う",
+          "link": "https://www.nikkei.com/article/DGXZQOFD246VG0U6A121C2000000/",
+          "date": "2026-11-28T11:00:00+09:00",
+          "description": "",
+          "source": "nikkei"
+        },
+        {
+          "title": "不足のDRAM「2027年にさらに逼迫」 マイクロン日本法人トップ",
+          "link": "https://www.nikkei.com/article/DGXZQOUB1637F0W6A111C2000000/",
+          "date": "2026-11-28T11:00:00+09:00",
+          "description": "",
+          "source": "nikkei"
+        },
+        {
+          "title": "台湾で統一地方選の投票始まる 総統選の前哨戦、頼政権に中間評価",
+          "link": "https://www.nikkei.com/article/DGXZQOGM26A7F0W6A121C2000000/",
+          "date": "2026-11-28T10:33:28+09:00",
+          "description": "",
+          "source": "nikkei"
+        },
+        {
+          "title": "「Appleが企業秘密盗用」 OpenAI、個人向け端末開発巡り反訴",
+          "link": "https://www.nikkei.com/article/DGXZQOUC280J00Y6A121C2000000/",
+          "date": "2026-11-28T10:22:50+09:00",
+          "description": "",
+          "source": "nikkei"
+        },
+        {
+          "title": "イタリア首相、リビアでの攻撃に苦言 ウクライナ大統領と電話会談",
+          "link": "https://www.nikkei.com/article/DGXZQOCB280HZ0Y6A121C2000000/",
+          "date": "2026-11-28T10:07:00+09:00",
+          "description": "",
+          "source": "nikkei"
+        },
+        {
+          "title": "サッカーU17ワールドカップ、日本が決勝トーナメント進出",
+          "link": "https://www.nikkei.com/article/DGXZQOKC280FV0Y6A121C2000000/",
+          "date": "2026-11-28T09:55:47+09:00",
+          "description": "",
+          "source": "nikkei"
+        },
+        {
+          "title": "ラグビー豪州代表完敗、逸機で流れ手放す W杯で日本と対戦の可能性",
+          "link": "https://www.nikkei.com/article/DGXZQODH27BTD0X21C26A1000000/",
+          "date": "2026-11-28T09:37:51+09:00",
+          "description": "",
+          "source": "nikkei"
+        },
+        {
+          "title": "鎌田大地、英で起訴 不注意運転と地元メディア報道",
+          "link": "https://www.nikkei.com/article/DGXZQOKC280CR0Y6A121C2000000/",
+          "date": "2026-11-28T09:14:30+09:00",
+          "description": "",
+          "source": "nikkei"
+        },
+        {
+          "title": "宇野禅斗がアシスト サッカードイツ1部",
+          "link": "https://www.nikkei.com/article/DGXZQOKC280BK0Y6A121C2000000/",
+          "date": "2026-11-28T09:12:09+09:00",
+          "description": "",
+          "source": "nikkei"
+        },
+        {
+          "title": "ラグビー・ネーションズ選手権、アイルランドがオーストラリア下す",
+          "link": "https://www.nikkei.com/article/DGXZQODH280CJ0Y6A121C2000000/",
+          "date": "2026-11-28T09:10:56+09:00",
+          "description": "",
+          "source": "nikkei"
+        },
+        {
+          "title": "カブス、佐藤輝明獲得を発表 平良海馬はブルージェイズ入り",
+          "link": "https://www.nikkei.com/article/DGXZQOKC280520Y6A121C2000000/",
+          "date": "2026-11-28T08:42:56+09:00",
+          "description": "",
+          "source": "nikkei"
+        },
+        {
+          "title": "GM、バーラCEOの13年ぶり交代観測 本命は「マスク氏の旧敵」",
+          "link": "https://www.nikkei.com/article/DGXZQOGN2304P0T21C26A1000000/",
+          "date": "2026-11-28T08:28:18+09:00",
+          "description": "",
+          "source": "nikkei"
+        },
+        {
+          "title": "NY円相場、反落 1ドル=159円50〜60銭 米株高と金利高受け",
+          "link": "https://www.nikkei.com/article/DGXZQOFL27BVU0X21C26A1000000/",
+          "date": "2026-11-28T07:40:12+09:00",
+          "description": "",
+          "source": "nikkei"
+        },
+        {
+          "title": "琉球の歴史をしのぶ 首里城正殿から30分、おすすめ周遊ガイド",
+          "link": "https://www.nikkei.com/article/DGXZQOJC041LY0U6A101C2000000/",
+          "date": "2026-11-28T07:28:33+09:00",
+          "description": "",
+          "source": "nikkei"
+        },
+        {
+          "title": "米ブラックフライデー、高額消費に変調の兆し ｢高級ブランドやめる｣",
+          "link": "https://www.nikkei.com/article/DGXZQOGN250370V21C26A1000000/",
+          "date": "2026-11-28T06:55:28+09:00",
+          "description": "",
+          "source": "nikkei"
+        },
+        {
+          "title": "米、オマーン湾で商船攻撃 イラン港湾封鎖の突破阻止",
+          "link": "https://www.nikkei.com/article/DGXZQOGN2802A0Y6A121C2000000/",
+          "date": "2026-11-28T06:40:40+09:00",
+          "description": "",
+          "source": "nikkei"
+        },
+        {
+          "title": "米テック株、11月は4年ぶり下落率 AI不安拡散で暗号資産や銅急落",
+          "link": "https://www.nikkei.com/article/DGXZQOGN25CLO0V21C26A1000000/",
+          "date": "2026-11-28T06:16:17+09:00",
+          "description": "",
+          "source": "nikkei"
+        },
+        {
+          "title": "日経平均先物、大取の夜間取引で上昇 140円高の5万8970円",
+          "link": "https://www.nikkei.com/article/DGXZQOFL27C5Q0X21C26A1000000/",
+          "date": "2026-11-28T06:12:19+09:00",
+          "description": "",
+          "source": "nikkei"
+        },
+        {
+          "title": "AIとの会話データ売却、破産企業に中止求める 全米42の司法長官",
+          "link": "https://www.nikkei.com/article/DGXZQOGN2657U0W6A121C2000000/",
+          "date": "2026-11-28T06:10:22+09:00",
+          "description": "",
+          "source": "nikkei"
+        },
+        {
+          "title": "シカゴ日本株先物概況・27日 日経平均先物は1625円高の5万8970円",
+          "link": "https://www.nikkei.com/article/DGXZQOFL27C5P0X21C26A1000000/",
+          "date": "2026-11-28T05:33:51+09:00",
+          "description": "",
+          "source": "nikkei"
+        },
+        {
+          "title": "NY商品、原油反落 持ち高調整の売り 金は反発",
+          "link": "https://www.nikkei.com/article/DGXZQOFL27BVR0X21C26A1000000/",
+          "date": "2026-11-28T05:31:13+09:00",
+          "description": "",
+          "source": "nikkei"
+        },
         {
           "title": "米国株23時間取引、米大手金融系は慎重姿勢 取引量の少なさを警戒",
           "link": "https://www.nikkei.com/article/DGXZQOGN27BI80X21C26A1000000/",
@@ -392,191 +574,9 @@
           "date": "2026-11-28T05:00:00+09:00",
           "description": "",
           "source": "nikkei"
-        },
-        {
-          "title": "「Temuレンジローバー」620万円 本家ほうふつのデザインで3割安",
-          "link": "https://www.nikkei.com/article/DGXZQOUC26CA60W6A121C2000000/",
-          "date": "2026-11-28T05:00:00+09:00",
-          "description": "",
-          "source": "nikkei"
-        },
-        {
-          "title": "野球不毛の中国で「MLB」人気 野球色薄め、韓流ファッション化",
-          "link": "https://www.nikkei.com/article/DGXZQOUC26C8W0W6A121C2000000/",
-          "date": "2026-11-28T05:00:00+09:00",
-          "description": "",
-          "source": "nikkei"
-        },
-        {
-          "title": "かどや製油争奪戦、創業家の設定した「土俵」 高値提案のJオイルは撤退",
-          "link": "https://www.nikkei.com/article/DGXZQOUC18BWQ0Y6A111C2000000/",
-          "date": "2026-11-28T05:00:00+09:00",
-          "description": "",
-          "source": "nikkei"
-        },
-        {
-          "title": "大阪府寝屋川市、シニアを保育・介護人材に 研修から就労まで支援",
-          "link": "https://www.nikkei.com/article/DGXZQOUF30B2W0Q6A031C2000000/",
-          "date": "2026-11-28T05:00:00+09:00",
-          "description": "",
-          "source": "nikkei"
-        },
-        {
-          "title": "バンクシー作品も展示のロンドン博物館、12世紀からの食肉市場跡に",
-          "link": "https://www.nikkei.com/article/DGXZQOUB24AWO0U6A121C2000000/",
-          "date": "2026-11-28T05:00:00+09:00",
-          "description": "",
-          "source": "nikkei"
-        },
-        {
-          "title": "台湾で統一地方選投開票、28年総統選の前哨戦 頼清徳政権に中間評価",
-          "link": "https://www.nikkei.com/article/DGXZQOGM26A7F0W6A121C2000000/",
-          "date": "2026-11-28T05:00:00+09:00",
-          "description": "",
-          "source": "nikkei"
-        },
-        {
-          "title": "不正アクセス被害のKARTE、12億人分のデータ解析 止まらぬ漏洩",
-          "link": "https://www.nikkei.com/article/DGXZQOUC26A6E0W6A121C2000000/",
-          "date": "2026-11-28T05:00:00+09:00",
-          "description": "",
-          "source": "nikkei"
-        },
-        {
-          "title": "TOYO TIRE人事部長が求める新卒「考え、やり抜き、踏み出す人」",
-          "link": "https://www.nikkei.com/article/DGXZQOUF249TY0U6A121C2000000/",
-          "date": "2026-11-28T05:00:00+09:00",
-          "description": "",
-          "source": "nikkei"
-        },
-        {
-          "title": "競馬の番組編成にみる1日7レース制導入の余波 3歳未勝利戦に影響",
-          "link": "https://www.nikkei.com/article/DGXZQODH208VS0Q6A121C2000000/",
-          "date": "2026-11-28T05:00:00+09:00",
-          "description": "",
-          "source": "nikkei"
-        },
-        {
-          "title": "大阪の鉄工所が生んだ「ちりとり鍋」 多様な具材とタレが決め手",
-          "link": "https://www.nikkei.com/article/DGXZQOUF208HV0Q6A121C2000000/",
-          "date": "2026-11-28T05:00:00+09:00",
-          "description": "",
-          "source": "nikkei"
-        },
-        {
-          "title": "食品値上げ、まだ続く？ 紛争と異常気象で終息せず",
-          "link": "https://www.nikkei.com/article/DGXZQOCD207TL0Q6A021C2000000/",
-          "date": "2026-11-28T05:00:00+09:00",
-          "description": "",
-          "source": "nikkei"
-        },
-        {
-          "title": "AIは心を持つか、苦痛や恐怖に似た反応示す 利用時の配慮求める声も",
-          "link": "https://www.nikkei.com/article/DGXZQOSG126RH0S6A111C2000000/",
-          "date": "2026-11-28T05:00:00+09:00",
-          "description": "",
-          "source": "nikkei"
-        },
-        {
-          "title": "植田日銀、グリーンでパターを握れるか 利上げ加速の副作用に苦悩",
-          "link": "https://www.nikkei.com/article/DGXZQOUB256DG0V21C26A1000000/",
-          "date": "2026-11-28T05:00:00+09:00",
-          "description": "",
-          "source": "nikkei"
-        },
-        {
-          "title": "DJ×「飲茶」で伝統刷新 香港100年の老舗、中国本土勢に応戦",
-          "link": "https://www.nikkei.com/article/DGXZQOGM136DF0T11C26A1000000/",
-          "date": "2026-11-28T05:00:00+09:00",
-          "description": "",
-          "source": "nikkei"
-        },
-        {
-          "title": "学生スポーツも稼ぐ力を 青学大・原晋監督「箱根駅伝から変える」",
-          "link": "https://www.nikkei.com/article/DGXZQODH1266K0S6A111C2000000/",
-          "date": "2026-11-28T05:00:00+09:00",
-          "description": "",
-          "source": "nikkei"
-        },
-        {
-          "title": "「生成AIが止まる日」への備え、企業の急務 中崎尚弁護士に聞く",
-          "link": "https://www.nikkei.com/article/DGXZQOUB065OV0W6A101C2000000/",
-          "date": "2026-11-28T05:00:00+09:00",
-          "description": "",
-          "source": "nikkei"
-        },
-        {
-          "title": "JR東日本株、高値へタッチ Suica刷新でさらに跳べるか",
-          "link": "https://www.nikkei.com/article/DGXZQOUB275C40X21C26A1000000/",
-          "date": "2026-11-28T05:00:00+09:00",
-          "description": "",
-          "source": "nikkei"
-        },
-        {
-          "title": "JR東日本、成田―羽田空港の直通運転は常磐線・東京駅経由で最終調整",
-          "link": "https://www.nikkei.com/article/DGXZQOUC2553V0V21C26A1000000/",
-          "date": "2026-11-28T05:00:00+09:00",
-          "description": "",
-          "source": "nikkei"
-        },
-        {
-          "title": "イオンやキユーピー、「フレイル予防」の独自認証 レシピなど提案",
-          "link": "https://www.nikkei.com/article/DGXZQOUC263OO0W6A121C2000000/",
-          "date": "2026-11-28T05:00:00+09:00",
-          "description": "",
-          "source": "nikkei"
-        },
-        {
-          "title": "社内炭素価格､「GX500」上位20社9割超が設定 豊田通商は3万円",
-          "link": "https://www.nikkei.com/article/DGXZQOUC263M30W6A121C2000000/",
-          "date": "2026-11-28T05:00:00+09:00",
-          "description": "",
-          "source": "nikkei"
-        },
-        {
-          "title": "絶景ホノルルマラソン、食を楽しみ求婚まで アロハ精神で4万人走る",
-          "link": "https://www.nikkei.com/article/DGXZQODL173DF0X11C26A1000000/",
-          "date": "2026-11-28T05:00:00+09:00",
-          "description": "",
-          "source": "nikkei"
-        },
-        {
-          "title": "グソクムシ食べられます 粉末入り煎餅が人気、愛知・蒲郡の竹島水族館",
-          "link": "https://www.nikkei.com/article/DGXZQOUC273C60X21C26A1000000/",
-          "date": "2026-11-28T05:00:00+09:00",
-          "description": "",
-          "source": "nikkei"
-        },
-        {
-          "title": "「岡山愛」ガチャやご当地銘菓コラボ、ユニークな独自文具 文具うさぎや",
-          "link": "https://www.nikkei.com/article/DGXZQOUC2736B0X21C26A1000000/",
-          "date": "2026-11-28T05:00:00+09:00",
-          "description": "",
-          "source": "nikkei"
-        },
-        {
-          "title": "AI証明ラッシュ 「数学者が取り組むべきことは増えた」小澤登高氏",
-          "link": "https://www.nikkei.com/article/DGXZQOSG212AO0R21C26A1000000/",
-          "date": "2026-11-28T05:00:00+09:00",
-          "description": "",
-          "source": "nikkei"
-        },
-        {
-          "title": "飲食で光のアート体験 チームラボ、京都のミュージアムにカフェ開設",
-          "link": "https://www.nikkei.com/article/DGXZQODK231ZO0T21C26A1000000/",
-          "date": "2026-11-28T05:00:00+09:00",
-          "description": "",
-          "source": "nikkei"
-        },
-        {
-          "title": "VIVANTの教訓、中国と対峙するための心得 日本の学びは十分か",
-          "link": "https://www.nikkei.com/article/DGXZQOUA151X70V11C26A1000000/",
-          "date": "2026-11-28T05:00:00+09:00",
-          "description": "",
-          "source": "nikkei"
         }
       ],
-      "fetchedAt": "2026-11-27T20:25:08.159Z",
+      "fetchedAt": "2026-11-28T05:19:48.914Z",
       "error": null
     },
     "reuters": {
@@ -728,147 +728,147 @@
     "toyokeizai": {
       "items": [
         {
-          "title": "その代償は意外と大きかった… 関文科相の問責決議｢薄氷の否決｣で忍び寄る自民･維新連立\"不吉な不協和音\"の正体 | 政治・経済・投資 | 東洋経済オンライン",
-          "link": "https://toyokeizai.net/articles/-/966160?utm_source=rss&utm_medium=http&utm_campaign=link_back",
-          "date": "Sat, 28 Nov 2026 05:00:00 +0900",
-          "description": "関文科相への問責決議は賛成120･反対124でかろうじて否決に。今臨時国会のヤマ場をひとまず乗り切った高市政権ですが､その代償は意外と大きいようです。連立与党を待ち受ける､これから先の隘路とは？",
+          "title": "【元付き人が証言】1987年､アントニオ猪木が\"ビッグマッチ\"でも見せない殺気を発した《巌流島の闘い》の意外な顚末 | ライフ | 東洋経済オンライン",
+          "link": "https://toyokeizai.net/articles/-/964791?utm_source=rss&utm_medium=http&utm_campaign=link_back",
+          "date": "Sat, 28 Nov 2026 13:00:00 +0900",
+          "description": "アントニオ猪木の付き人を務めた大矢剛功氏が語る､スーパースター猪木の素顔と壮絶な舞台裏。厳しさと茶目っ気､糖尿病や離婚問題に苦しみながらも闘い続けた男の真実とは？ 巌流島決戦の秘話も交え､伝説の裏側…",
           "source": "toyokeizai"
         },
         {
-          "title": "山陰本線｢長距離鈍行｣が走った国鉄時代の記憶 ｢長大なローカル線｣の保津峡\"旧線\"や旧余部鉄橋 | ビジネス | 東洋経済オンライン",
-          "link": "https://toyokeizai.net/articles/-/966034?utm_source=rss&utm_medium=http&utm_campaign=link_back",
-          "date": "Sat, 28 Nov 2026 04:30:00 +0900",
-          "description": "山陰地方の日本海沿いを走る山陰本線。ローカル色豊かなこの路線は､かつては今では考えられないような｢長距離普通列車｣などが走っていました。鉄道写真家･南正時氏が撮影した国鉄時代から近年までの貴重な写真…",
+          "title": "月収45万円が15万円に…WEBライターが\"ギュられた\"現実 ｢AIに奪われやすい職･残りやすい職｣とは何か | ライフ | 東洋経済オンライン",
+          "link": "https://toyokeizai.net/articles/-/965795?utm_source=rss&utm_medium=http&utm_campaign=link_back",
+          "date": "Sat, 28 Nov 2026 12:00:00 +0900",
+          "description": "AIの進化が加速し､知的労働さえも｢ギュられる｣時代が到来。かつて安泰と思われていた職業が次々と危機に直面し､仕事の在り方が大きく変わろうとしています。人間にしかできない価値とは何か､今こそ問い直す…",
           "source": "toyokeizai"
         },
         {
-          "title": "2029年大河『三成のうた』に｢また戦国か｣の声も…なぜNHKは｢戦国と幕末｣ばかり描くのか､視聴率データが示す理由 | ライフ | 東洋経済オンライン",
-          "link": "https://toyokeizai.net/articles/-/966020?utm_source=rss&utm_medium=http&utm_campaign=link_back",
-          "date": "Fri, 27 Nov 2026 16:45:00 +0900",
-          "description": "大河ドラマがなぜ戦国時代や三英傑に偏るのか――2029年も石田三成を主人公に戦国が舞台と聞き､SNSでは｢またか｣とため息が広がっています。",
+          "title": "〈書評〉『知能爆発』『世界地図と地球の時間 グリニッジ標準時と本初子午線』『昭和史の道を往く』 | ライフ | 東洋経済オンライン",
+          "link": "https://toyokeizai.net/articles/-/965943?utm_source=rss&utm_medium=http&utm_campaign=link_back",
+          "date": "Sat, 28 Nov 2026 11:00:00 +0900",
+          "description": "経営者､ビジネスパーソンのための東洋経済書評。今回の3冊は『知能爆発 AIの次に来るAGIとは何か､そして人類に何が起きるのか』（bioshok 有路翔太 著）､『世界地図と地球の時間 グリニッジ標…",
           "source": "toyokeizai"
         },
         {
-          "title": "会社四季報×東洋経済オンラインイベントを12/18開催｢2027年経済･株式相場大予測!｣ | ライフ | 東洋経済オンライン",
-          "link": "https://toyokeizai.net/articles/-/966053?utm_source=rss&utm_medium=http&utm_campaign=link_back",
-          "date": "Fri, 27 Nov 2026 13:00:00 +0900",
-          "description": "東洋経済オンラインでは有料会員読者向けのリアルイベントを開催しています。東洋経済オンラインの人気連載執筆者やその連載テーマのキーパーソンの方などを招き､リアルな空間で､話題のテーマについて徹底的に掘…",
+          "title": "外食プロのテク応用！缶詰なのに凄いフレッシュ感､下ごしらえ不要でお店レベルに…｢至高のサバ缶パスタ｣超簡単レシピ | ライフ | 東洋経済オンライン",
+          "link": "https://toyokeizai.net/articles/-/965830?utm_source=rss&utm_medium=http&utm_campaign=link_back",
+          "date": "Sat, 28 Nov 2026 11:00:00 +0900",
+          "description": "年末に向かう忙しい時期､手間なく美味しい料理を作りたい方におすすめなのが｢サバ缶｣を使ったパスタです。缶詰の栄養と手軽さに､ある食材を組み合わせれば､驚くほど満足度の高い一皿に。外食のプロも実践する…",
           "source": "toyokeizai"
         },
         {
-          "title": "｢社会を変えてやろう｣というのは邪心？ ゆるスポーツ協会代表が語る､無邪気に働くということの意味 | キャリア・教育 | 東洋経済オンライン",
-          "link": "https://toyokeizai.net/articles/-/962873?utm_source=rss&utm_medium=http&utm_campaign=link_back",
-          "date": "Fri, 27 Nov 2026 12:00:00 +0900",
-          "description": "競争や適応が重視される現代社会で､｢正解｣に縛られて生きづらさを感じていませんか？\"ゆる\"の精神で活動する澤田智洋氏と窪田良氏が､画一性をほどく働き方や多様性の可能性について語ります。\"ゆる\"という…",
+          "title": "小田原北条家はなぜ滅亡したのか？島津や長宗我部は存続したのに…戦国大名の明暗が分かれた背景 | キャリア・教育 | 東洋経済オンライン",
+          "link": "https://toyokeizai.net/articles/-/963662?utm_source=rss&utm_medium=http&utm_campaign=link_back",
+          "date": "Sat, 28 Nov 2026 10:00:00 +0900",
+          "description": "秀吉と敵対しても長宗我部氏や島津氏は大名として存続した一方､小田原の北条氏は滅亡することになります。いったいなぜなのでしょうか。",
           "source": "toyokeizai"
         },
         {
-          "title": "〈紛糾するリゾート開発〉トランプ一族の炎上計画をブルーウェーブの米議会が追及へ…｢ヨーロッパの北朝鮮｣現地を歩く | 政治・経済・投資 | 東洋経済オンライン",
-          "link": "https://toyokeizai.net/articles/-/965593?utm_source=rss&utm_medium=http&utm_campaign=link_back",
-          "date": "Fri, 27 Nov 2026 11:30:00 +0900",
-          "description": "2027年､米民主党の調査が予告される中､トランプ一族のアルバニア高級リゾート開発計画が現地で大規模な暴動｢フラミンゴ革命｣を引き起こしています。自然保護区の破壊疑惑､資金洗浄､不透明な契約……この…",
+          "title": "編集部厳選､注目の経済ニュース！【11月28日】 今週のトピックス＆来週のスケジュール | ビジネス | 東洋経済オンライン",
+          "link": "https://toyokeizai.net/articles/-/966182?utm_source=rss&utm_medium=http&utm_campaign=link_back",
+          "date": "Sat, 28 Nov 2026 09:00:00 +0900",
+          "description": "東洋経済オンライン有料会員の皆様に､注目のスケジュールやトピックスをお届けします。",
           "source": "toyokeizai"
         },
         {
-          "title": "オリックス､高収益･高ROE･好財務の｢三兎｣を追う野望､｢持つ｣｢売る｣を経て｢持たざる経営｣へ | ビジネス | 東洋経済オンライン",
-          "link": "https://toyokeizai.net/articles/-/965462?utm_source=rss&utm_medium=http&utm_campaign=link_back",
-          "date": "Fri, 27 Nov 2026 11:30:00 +0900",
-          "description": "1964年7月、金沢市内のスーパーマーケットが4台のレジを導入した。ただし、スーパー側はレジを買うのではなく、代金200万円と金利11％を3年かけて支払う契約を結んだ。「リース業」が日本で幕を開けた…",
+          "title": "4割超が｢管理職やめたい｣…限界迎えるミドルの重荷を下ろす､日揮の\"部長職3人分担\"に三井住友海上の\"アシマネ\"制度 | キャリア・教育 | 東洋経済オンライン",
+          "link": "https://toyokeizai.net/articles/-/965730?utm_source=rss&utm_medium=http&utm_campaign=link_back",
+          "date": "Sat, 28 Nov 2026 09:00:00 +0900",
+          "description": "ビジネス環境が激変し､管理職の業務負担は今や限界に迫っています。プレイヤー業務に加え､部下の育成やハラスメント対応まで求められる中､心身の疲弊を訴える声が急増。管理職の燃え尽きと組織の機能不全を回避…",
           "source": "toyokeizai"
         },
         {
-          "title": "緻密な戦略と詳細な報告を求める経営幹部が現場の士気を下げ､聞きたくない言い訳を量産させてしまう根本理由 | ビジネス | 東洋経済オンライン",
-          "link": "https://toyokeizai.net/articles/-/965820?utm_source=rss&utm_medium=http&utm_campaign=link_back",
-          "date": "Fri, 27 Nov 2026 11:00:00 +0900",
-          "description": "ビジネス環境が絶えず変化する中､多くの組織はいまだに静的な構造やプロセスに依存しています。MITスローン･スクールの特別教授と､元ハーレーダビッドソンのバイスプレジデントがタッグを組んで編み出した方…",
+          "title": "｢地理選択ってダメなの？｣【偏差値35】から東大に合格した僕がそれでも言いたい\"地理の凄み \" | ライフ | 東洋経済オンライン",
+          "link": "https://toyokeizai.net/articles/-/965737?utm_source=rss&utm_medium=http&utm_campaign=link_back",
+          "date": "Sat, 28 Nov 2026 08:30:00 +0900",
+          "description": "高校生の選択科目｢地理｣を巡るSNS投稿が大きな話題に。希望を伝えた息子に､担任は再考を促した――。地理選択は本当に進学の幅を狭めるのか？東大生も勧める地理の隠れた魅力や､受験だけにとどまらない学び…",
           "source": "toyokeizai"
         },
         {
-          "title": "｢資本主義か社会主義か｣の対立はもう古い 米ロの拡張主義が限界を迎える今､世界を分かつ｢新たな対立軸｣とは | 政治・経済・投資 | 東洋経済オンライン",
-          "link": "https://toyokeizai.net/articles/-/965221?utm_source=rss&utm_medium=http&utm_campaign=link_back",
-          "date": "Fri, 27 Nov 2026 10:00:00 +0900",
-          "description": "ロシアの文化的ルーツをたどると､キリル文字やギリシャ正教､さらには東ローマ帝国に行き着きます。西ローマ由来のアメリカと対比しつつ､現代では｢環境･持続可能性｣を巡る新たな対立軸が浮上。日本はその中で…",
+          "title": "まるでラードを溶かしたように白濁することも《ベトベト･ギトギト･トゲトゲ》腎臓の大敵｢3つの血液｣の正体とは | ライフ | 東洋経済オンライン",
+          "link": "https://toyokeizai.net/articles/-/965298?utm_source=rss&utm_medium=http&utm_campaign=link_back",
+          "date": "Sat, 28 Nov 2026 08:15:00 +0900",
+          "description": "腎臓は健康寿命を大きく左右する臓器ですが､その大敵は｢汚れた血液｣です。糖や脂質､尿酸といった異物が血中に増えると､｢白血球の墓場｣と呼ばれるプラークが血管を塞ぎ､腎臓機能を脅かします。あなたの血液…",
           "source": "toyokeizai"
         },
         {
-          "title": "《愛嬌も社交性もいらない人間関係のコツ》｢で､結論は？｣と遮る\"嫌な上司\"も､AIを通したら｢話の通じる人｣に見えてきた | ライフ | 東洋経済オンライン",
-          "link": "https://toyokeizai.net/articles/-/965308?utm_source=rss&utm_medium=http&utm_campaign=link_back",
-          "date": "Fri, 27 Nov 2026 09:30:00 +0900",
-          "description": "苦手な取引先や上司との付き合い方に悩む人は多くいます。AIに｢相手の取扱説明書｣を作らせることで､円滑な人間関係が築ける新しい時代が到来しています。その具体的なやり方をお伝えします。",
+          "title": "台北市長選｢民主主義の祭り｣は市民生活の迷惑なのか､沈伯洋の異例の前夜祭中止で問われる台湾の熱狂的な選挙文化 | 政治・経済・投資 | 東洋経済オンライン",
+          "link": "https://toyokeizai.net/articles/-/966215?utm_source=rss&utm_medium=http&utm_campaign=link_back",
+          "date": "Sat, 28 Nov 2026 08:00:00 +0900",
+          "description": "台湾選挙の象徴｢前夜祭｣。2026年台北市長選で民進党候補･沈伯洋氏が突如その開催を中止した理由とは何だったのか。交通渋滞への批判､安全保障､そして変わりゆく選挙文化――その舞台裏に迫ります。台湾民…",
           "source": "toyokeizai"
         },
         {
-          "title": "｢センスがいい｣と言われる人が普段から\"必ずやっていること\"…選ぶのは｢奇抜さ｣でも｢無難さ｣でもダメなワケ | ライフ | 東洋経済オンライン",
-          "link": "https://toyokeizai.net/articles/-/965380?utm_source=rss&utm_medium=http&utm_campaign=link_back",
-          "date": "Fri, 27 Nov 2026 09:00:00 +0900",
-          "description": "｢センスがいい｣とは何か——それは王道を知りつつ､ほんの半歩だけ新しさを加えるバランス感覚にありました。無難すぎず奇抜すぎない絶妙な一歩が､人の心を動かします。どうすれば\"ちょっとだけ新しい\"を手に…",
+          "title": "5万件のAGA治療医が明かす\"薄毛の真犯人\"｢頭皮を柔らかくすれば生える｣は正しくない？激辛食やストレスは関係する？ | ライフ | 東洋経済オンライン",
+          "link": "https://toyokeizai.net/articles/-/965259?utm_source=rss&utm_medium=http&utm_campaign=link_back",
+          "date": "Sat, 28 Nov 2026 08:00:00 +0900",
+          "description": "多くの男性が悩む薄毛。その大半はAGA（男性型脱毛症）で､主な原因はDHTというホルモンですが､世の中には誤った情報や俗説も少なくありません。なぜ髪は抜けるのか？本当に有効な治療法とは？その真実に迫…",
           "source": "toyokeizai"
         },
         {
-          "title": "仕事中の｢机の片づけ｣実は大正解だった スマホ休憩は逆効果､米大学が解明した\"あえて流れを切る\"最強の集中リセット術 | ライフ | 東洋経済オンライン",
-          "link": "https://toyokeizai.net/articles/-/964281?utm_source=rss&utm_medium=http&utm_campaign=link_back",
-          "date": "Fri, 27 Nov 2026 08:30:00 +0900",
-          "description": "朝から小さな悩みに振り回されていませんか？SNSやメールで集中力が削られる現代､実は｢悩まない人｣には脳の使い方に秘密があります。世界中の研究が明らかにした､判断力や集中力を保つための意外な習慣とは？",
+          "title": "60歳で｢ビフィズス菌｣は100分の1に→便の臭いも変わる…｢最近疲れが抜けない｣人が見落とす腸の老化 | ライフ | 東洋経済オンライン",
+          "link": "https://toyokeizai.net/articles/-/965659?utm_source=rss&utm_medium=http&utm_campaign=link_back",
+          "date": "Sat, 28 Nov 2026 07:45:00 +0900",
+          "description": "｢最近､疲れやすくなった｣｢体力や集中力が落ちてきた｣と感じていませんか？その原因､実は腸の衰えかもしれません。腸内環境の悪化は老化や慢性疲労を加速させ､全身の不調を引き起こします。本当の健康と若々…",
           "source": "toyokeizai"
         },
         {
-          "title": "認知症には至っていないが､正常な脳の状態でもない…《認知症のグレーゾーン》の人に顕著に現れる\"4つの兆候\" | ライフ | 東洋経済オンライン",
-          "link": "https://toyokeizai.net/articles/-/965169?utm_source=rss&utm_medium=http&utm_campaign=link_back",
-          "date": "Fri, 27 Nov 2026 08:00:00 +0900",
-          "description": "｢あれ？ 何かおかしい｣と感じる瞬間､それは\"認知症未満\"――。MCI（軽度認知障害）というグレーゾーンの始まりかもしれません。記憶や感情､意欲の変化を見逃さないことが､認知症予防のカギとなります。…",
+          "title": "ピアスびっしり｢就活30社不採用｣の緑髪ギャルに批判の声…写真1枚で\"人間性\"までわかった気になる《現代人の怖さ》 | ライフ | 東洋経済オンライン",
+          "link": "https://toyokeizai.net/articles/-/966120?utm_source=rss&utm_medium=http&utm_campaign=link_back",
+          "date": "Sat, 28 Nov 2026 07:30:00 +0900",
+          "description": "顔中に約20個のピアス､鮮やかな緑髪——23歳のインフルエンサー･すしくわせろ碧さんが､その｢個性的な見た目｣によって約30社から不採用となったというエピソードが炎上。第一印象に左右される社会で､本…",
           "source": "toyokeizai"
         },
         {
-          "title": "保守にとっての伝統は｢原理主義｣ではない…《愛子天皇》の実現を阻む\"エセ保守\"に通底する甚だしい時代錯誤 | ライフ | 東洋経済オンライン",
-          "link": "https://toyokeizai.net/articles/-/964781?utm_source=rss&utm_medium=http&utm_campaign=link_back",
-          "date": "Fri, 27 Nov 2026 07:45:00 +0900",
-          "description": "皇室典範改正をめぐる議論で浮き彫りになった｢保守｣の本質とは何か。伝統を守るとは時代に逆行することではなく､変化と向き合い続けること――天皇や皇族の人間性を軽視するエセ保守批判とともに､真の｢保守｣…",
+          "title": "箱根駅伝なのに《コース上にない岡山》で撮影…大泉洋･山下智久出演ドラマ『俺たちの箱根駅伝』驚きのロケ地事情 | ライフ | 東洋経済オンライン",
+          "link": "https://toyokeizai.net/articles/-/965589?utm_source=rss&utm_medium=http&utm_campaign=link_back",
+          "date": "Sat, 28 Nov 2026 07:15:00 +0900",
+          "description": "『俺たちの箱根駅伝』のドラマ化にあたって最難関とされたのは､駅伝の出発･ゴール地点のロケ地選び。実は､ロケが刊行されたのは岡山市でした。舞台裏の工夫に迫ります。",
           "source": "toyokeizai"
         },
         {
-          "title": "｢久しぶりに､クリスマスコフレ｣今からでも間に合う､40代･50代が楽しみたい大人のホリデーコスメ10ブランド | ライフ | 東洋経済オンライン",
-          "link": "https://toyokeizai.net/articles/-/965991?utm_source=rss&utm_medium=http&utm_campaign=link_back",
-          "date": "Fri, 27 Nov 2026 07:30:00 +0900",
-          "description": "クリスマスシーズン限定の華やかなコフレやコスメは､多くの大人世代にも毎年の楽しみ。かつては｢限定品｣の言葉に心躍らせた人も､今はより実用性や自分の好みを重視するように。その変化を感じつつ､今年のホリ…",
+          "title": "｢ラッコ展示ゼロ｣の危機を救った｢海遊館｣の執念と快挙 \"かわいいだけじゃない\"ラッコの展示再開が示す､5つの意義 | ライフ | 東洋経済オンライン",
+          "link": "https://toyokeizai.net/articles/-/966190?utm_source=rss&utm_medium=http&utm_campaign=link_back",
+          "date": "Sat, 28 Nov 2026 07:00:00 +0900",
+          "description": "9年ぶりに大阪･海遊館でラッコの展示が再開されるというニュースが注目を集めています。絶滅危惧種で国内飼育が激減する中､アラスカから迎えた4頭は､単なる\"癒やし\"を超えた5つの意義を持つ存在になってい…",
           "source": "toyokeizai"
         },
         {
-          "title": "｢新幹線の迷惑客｣の話にモヤった時点で思うツボ… ドパガキ量産する｢怒らせ系投稿｣増殖に潜む\"アナタの知らない真実\" | ライフ | 東洋経済オンライン",
-          "link": "https://toyokeizai.net/articles/-/965872?utm_source=rss&utm_medium=http&utm_campaign=link_back",
-          "date": "Fri, 27 Nov 2026 07:00:00 +0900",
-          "description": "SNSで見かける\"怒りを誘うストーリー\"､それは本当に実話なのでしょうか。怒りをエサに反応を集める｢レイジベイト｣が横行しています。私たちの怒りは誰に操られているのか､一度立ち止まって考えてみません…",
+          "title": "筑波大､広島大､東京理科大､日大…学閥が物言う世界で校長12年の人物が福島大特任教授になるまで アカデミックシフト22 | キャリア・教育 | 東洋経済オンライン",
+          "link": "https://toyokeizai.net/articles/-/965623?utm_source=rss&utm_medium=http&utm_campaign=link_back",
+          "date": "Sat, 28 Nov 2026 07:00:00 +0900",
+          "description": "大学教員には華やかな経歴だけでなく､現場で培った実務経験や人脈が重要視される時代です。教育学の世界は学閥が物を言い､特定大学の出身者が有利とされます。その中で小中5校で校長を12年務めた元校長は､学…",
           "source": "toyokeizai"
         },
         {
-          "title": "元TOKIO松岡昌宏さん発症…耳､首､背中に広がる《毛嚢炎》とは？ 鼻の周りにできたら潰してはいけない理由【医師解説】 | ライフ | 東洋経済オンライン",
-          "link": "https://toyokeizai.net/articles/-/966038?utm_source=rss&utm_medium=http&utm_campaign=link_back",
-          "date": "Fri, 27 Nov 2026 06:45:00 +0900",
-          "description": "元TOKIOの松岡昌宏さんがラジオで明かした毛嚢炎。ひげ剃り負けから始まり､耳や首､背中に広がったそうです。誰にでも起こりうる皮膚病ですが､できる場所や菌の種類によっては油断できません。見過ごしては…",
+          "title": "｢月給35万円は安すぎ｣｢富豪なのに｣とSNS炎上…前澤社長アシスタント募集内容に批判殺到も\"ノーダメージ\"の必然 | ライフ | 東洋経済オンライン",
+          "link": "https://toyokeizai.net/articles/-/966161?utm_source=rss&utm_medium=http&utm_campaign=link_back",
+          "date": "Sat, 28 Nov 2026 06:45:00 +0900",
+          "description": "実業家･前澤友作氏のプライベートアシスタント求人が､意外な｢低賃金｣としてSNSで議論を呼んでいます。",
           "source": "toyokeizai"
         },
         {
-          "title": "｢おれは施設には住まねぇぞ！｣ 夫の\"無神経な一言\"で義父が激昂→介護疲れの嫁が放った\"まさかの言葉\" | ライフ | 東洋経済オンライン",
-          "link": "https://toyokeizai.net/articles/-/965804?utm_source=rss&utm_medium=http&utm_campaign=link_back",
-          "date": "Fri, 27 Nov 2026 06:30:00 +0900",
-          "description": "路地裏にひっそりと佇む、とあるBAR。 ここには、さまざまな事情を抱えた人がやってきます。今宵も介護で疲れ切った人が、重いため息と共にやってきました。全国で約690万人超──。これは、介護サービスの…",
+          "title": "スマホ使用は｢騎乗停止10日｣で､馬の死は｢たった4日｣…古川奈穂騎手\"謝罪\"でも消えない疑問､JRAが語らぬ｢量刑の物差し｣ | ライフ | 東洋経済オンライン",
+          "link": "https://toyokeizai.net/articles/-/966188?utm_source=rss&utm_medium=http&utm_campaign=link_back",
+          "date": "Sat, 28 Nov 2026 06:30:00 +0900",
+          "description": "福島競馬での2歳馬･ブレイズリーの悲劇的な転倒死。その原因となった斜行により､古川奈穂騎手はJRAから実質4日間の騎乗停止処分を受けました。ですが､この｢短さ｣にSNSでは批判が噴出しています。なぜ…",
           "source": "toyokeizai"
         },
         {
-          "title": "｢買うならトヨタ一択｣日本車好き40代男性が《中国のEV》を長時間ドライブ､運転後に口にした｢正直な感想｣ | ライフ | 東洋経済オンライン",
-          "link": "https://toyokeizai.net/articles/-/965805?utm_source=rss&utm_medium=http&utm_campaign=link_back",
-          "date": "Fri, 27 Nov 2026 06:01:00 +0900",
-          "description": "日頃から日本ブランドへの信頼が厚い夫と中国BYDのEV｢ラッコ｣に試乗した筆者。夫からの感想とは？",
+          "title": "アンソロピックの本当の価値は？たとえジェンスン･フアンがエヌビディアに復帰しても､もう戻ってこない｢4つのもの｣ | 政治・経済・投資 | 東洋経済オンライン",
+          "link": "https://toyokeizai.net/articles/-/966076?utm_source=rss&utm_medium=http&utm_campaign=link_back",
+          "date": "Sat, 28 Nov 2026 06:30:00 +0900",
+          "description": "AI･半導体業界を揺るがしたエヌビディアCEOの電撃復帰劇。しかし､筆者はかえってリスクを増幅しただけと言います。今後はどうなるのでしょうか。",
           "source": "toyokeizai"
         },
         {
-          "title": "エヌビディア騒動で米議会が対中半導体輸出実績を公表､申請数340万個に対し許可数はわずか88万個弱 | ビジネス | 東洋経済オンライン",
-          "link": "https://toyokeizai.net/articles/-/965952?utm_source=rss&utm_medium=http&utm_campaign=link_back",
-          "date": "Fri, 27 Nov 2026 06:00:00 +0900",
-          "description": "アメリカ半導体の巨人エヌビディアを巡るスキャンダルと､同国政府による厳格な中国企業への半導体輸出管理。その背後で､規制強化にもかかわらず依然として残る取引の疑惑。世界を揺るがす半導体供給と国家安全保…",
+          "title": "湯の街･別府の駅ちか《温泉銭湯めぐり10＋3選》昭和の空気が流れる\"ノスタルジックな温泉街\"の歩き方 | ライフ | 東洋経済オンライン",
+          "link": "https://toyokeizai.net/articles/-/965328?utm_source=rss&utm_medium=http&utm_campaign=link_back",
+          "date": "Sat, 28 Nov 2026 06:15:00 +0900",
+          "description": "温泉名所と知られる､大分の別府。昭和の雰囲気が味わえる街並みも魅力の1つです。10カ所の温泉･銭湯と､3カ所の手湯･足湯を巡りました。",
           "source": "toyokeizai"
         }
       ],
-      "fetchedAt": "2026-11-27T20:25:08.725Z",
+      "fetchedAt": "2026-11-28T05:19:49.613Z",
       "error": null
     },
     "reddit": {
@@ -1232,22 +1232,15 @@
         {
           "title": "Millions lose access to benefits and pensions services after 'cyber incident'",
           "link": "https://www.bbc.co.uk/news/articles/c8wy5p6pv2e2o?at_medium=RSS&at_campaign=rss",
-          "date": "Fri, 27 Nov 2026 19:15:30 GMT",
+          "date": "Fri, 27 Nov 2026 20:42:44 GMT",
           "description": "The Department for Work and Pensions says some of its services were taken offline as a precaution.",
           "source": "bbc"
         },
         {
-          "title": "Watch: What has happened to DWP online services?",
-          "link": "https://www.bbc.co.uk/news/videos/cqm251rv0vyyo?at_medium=RSS&at_campaign=rss",
-          "date": "Fri, 27 Nov 2026 17:17:11 GMT",
-          "description": "The work and pensions secretary has said an investigation is looking into a \"serious cyber incident\" affecting his government department.",
-          "source": "bbc"
-        },
-        {
-          "title": "Spanish PM and rivals rally supporters in final pitch for votes",
-          "link": "https://www.bbc.co.uk/news/articles/c8wy5p4gdnwvo?at_medium=RSS&at_campaign=rss",
-          "date": "Fri, 27 Nov 2026 20:09:09 GMT",
-          "description": "Prime Minister Pedro Sánchez wants to defy the polls, and his main rivals accuse him of not telling the truth and of \"betrayal\".",
+          "title": "Catherine's emotional cancer documentary strips away the stiff upper lip",
+          "link": "https://www.bbc.co.uk/news/articles/c6zxvy9j0wpjo?at_medium=RSS&at_campaign=rss",
+          "date": "Fri, 27 Nov 2026 22:03:22 GMT",
+          "description": "The Princess of Wales has made a documentary, Heal, describing her cancer experience in her own words.",
           "source": "bbc"
         },
         {
@@ -1255,6 +1248,27 @@
           "link": "https://www.bbc.co.uk/news/articles/c3pw4ypkldpzo?at_medium=RSS&at_campaign=rss",
           "date": "Fri, 27 Nov 2026 17:47:14 GMT",
           "description": "Beau-Jack Mensforth is jailed for preying on nine girls, the youngest aged 12, across the world.",
+          "source": "bbc"
+        },
+        {
+          "title": "Set time aside for children to read for pleasure, schools to be told",
+          "link": "https://www.bbc.co.uk/news/articles/c65y1vp4ndqjo?at_medium=RSS&at_campaign=rss",
+          "date": "Sat, 28 Nov 2026 02:20:49 GMT",
+          "description": "The government says its new cirriculum hopes to reverse declining literacy rates and combat \"mindless scrolling\".",
+          "source": "bbc"
+        },
+        {
+          "title": "Spanish PM and rivals rally supporters in final pitch for votes",
+          "link": "https://www.bbc.co.uk/news/articles/c8wy5p4gdnwvo?at_medium=RSS&at_campaign=rss",
+          "date": "Fri, 27 Nov 2026 21:55:53 GMT",
+          "description": "Prime Minister Pedro Sánchez wants to defy the polls, and his main rivals accuse him of not telling the truth and of \"betrayal\".",
+          "source": "bbc"
+        },
+        {
+          "title": "Charity founded in Captain Tom's name bids to be struck off",
+          "link": "https://www.bbc.co.uk/news/articles/c6jeqyqzy1y7o?at_medium=RSS&at_campaign=rss",
+          "date": "Fri, 27 Nov 2026 21:26:30 GMT",
+          "description": "The charity is now known as the 1189808 Foundation, having dropped the late fundraiser's name.",
           "source": "bbc"
         },
         {
@@ -1272,6 +1286,20 @@
           "source": "bbc"
         },
         {
+          "title": "'Poison seller' Kenneth Law apologises in court to the families of his victims",
+          "link": "https://www.bbc.co.uk/news/articles/cmx2898wq2qjo?at_medium=RSS&at_campaign=rss",
+          "date": "Sat, 28 Nov 2026 00:56:55 GMT",
+          "description": "The Canadian man, who pleaded guilty to 14 counts of aiding and abetting suicide earlier this year, said he was remorseful for his actions.",
+          "source": "bbc"
+        },
+        {
+          "title": "Turkish officials 'destroyed' pro-opposition TV channel, owner tells BBC",
+          "link": "https://www.bbc.co.uk/news/articles/cq36gk151xkdo?at_medium=RSS&at_campaign=rss",
+          "date": "Sat, 28 Nov 2026 04:13:45 GMT",
+          "description": "The headquarters of Halk TV were raided last month, the latest in a series of crackdowns on news sources deemed critical of the government.",
+          "source": "bbc"
+        },
+        {
           "title": "'We couldn't give up that easily': Marching bands scramble to cover costs after Thanksgiving parade rearranged",
           "link": "https://www.bbc.co.uk/news/articles/ckd71ypy9e8eo?at_medium=RSS&at_campaign=rss",
           "date": "Fri, 27 Nov 2026 20:06:31 GMT",
@@ -1279,17 +1307,66 @@
           "source": "bbc"
         },
         {
-          "title": "Zelensky criticises 'strange' Trump-Putin friendship in BBC interview",
-          "link": "https://www.bbc.co.uk/news/articles/c820q9wgrpyyo?at_medium=RSS&at_campaign=rss",
-          "date": "Fri, 27 Nov 2026 18:00:40 GMT",
-          "description": "Ukraine's president voices frustration with US and says it is not pushing Russia hard enough in peace talks to end the war.",
-          "source": "bbc"
-        },
-        {
           "title": "Dec Donnelly says I'm a Celebrity tension 'became much bigger deal than it should have'",
           "link": "https://www.bbc.co.uk/news/articles/c65y1k8qx7q4o?at_medium=RSS&at_campaign=rss",
           "date": "Fri, 27 Nov 2026 14:06:20 GMT",
           "description": "The co-hosts discussed tensions that flared between Mariella Frostrup and AJ Odudu on the show.",
+          "source": "bbc"
+        },
+        {
+          "title": "The Papers: 'Catherine on cancer fight' and 'Benefits and pensions chaos'",
+          "link": "https://www.bbc.co.uk/news/articles/ck792l9q07xro?at_medium=RSS&at_campaign=rss",
+          "date": "Sat, 28 Nov 2026 00:38:55 GMT",
+          "description": "The Princess of Wales opening up on her \"cancer battle\" and a cyber incident hitting the pensions department lead Saturday's papers.",
+          "source": "bbc"
+        },
+        {
+          "title": "Carly Rae Jepsen's viral hit proves what fans knew all along",
+          "link": "https://www.bbc.co.uk/news/articles/cq3dgp88p744o?at_medium=RSS&at_campaign=rss",
+          "date": "Sat, 28 Nov 2026 03:03:36 GMT",
+          "description": "The Call Me Maybe star returns to the UK Top 40 as her single Run Away With Me gets a GTA VI boost.",
+          "source": "bbc"
+        },
+        {
+          "title": "A clinic is reassessing people with ADHD and autism diagnoses - but critics fear it could deepen stigma",
+          "link": "https://www.bbc.co.uk/news/articles/cr9309nyg2vno?at_medium=RSS&at_campaign=rss",
+          "date": "Sat, 28 Nov 2026 00:05:17 GMT",
+          "description": "While many people find a diagnosis for ADHD or autism affirming, a government-funded clinic in Sweden is re-assessing people who feel it does not reflect them.",
+          "source": "bbc"
+        },
+        {
+          "title": "Should I get a flu vaccine now?",
+          "link": "https://www.bbc.co.uk/news/articles/cq8e018jyjngo?at_medium=RSS&at_campaign=rss",
+          "date": "Sat, 28 Nov 2026 01:03:11 GMT",
+          "description": "Amid a surge in influenza, health officials are urging people to get a vaccine - but what if you're young and healthy?",
+          "source": "bbc"
+        },
+        {
+          "title": "How gamers are using AI and leaked files to clone Grand Theft Auto 6",
+          "link": "https://www.bbc.co.uk/news/articles/c64gn8pe5eeqo?at_medium=RSS&at_campaign=rss",
+          "date": "Sat, 28 Nov 2026 01:30:50 GMT",
+          "description": "With an official PC version potentially still months away, fans are getting impatient.",
+          "source": "bbc"
+        },
+        {
+          "title": "'I don't know what I'd do without it': Why shoppers and staff fear losing Poundland",
+          "link": "https://www.bbc.co.uk/news/articles/c65y1l9j7j9ko?at_medium=RSS&at_campaign=rss",
+          "date": "Sat, 28 Nov 2026 01:12:28 GMT",
+          "description": "The discount retailer has collapsed into administration after its US owners failed to secure a rescue deal.",
+          "source": "bbc"
+        },
+        {
+          "title": "Chicken Shop Date: The perfect end or a disappointing send-off?",
+          "link": "https://www.bbc.co.uk/news/articles/ckz74123x2jvo?at_medium=RSS&at_campaign=rss",
+          "date": "Fri, 27 Nov 2026 18:02:25 GMT",
+          "description": "Amelia Dimoldenberg has called time on her hit YouTube series Chicken Shop Date after more than a decade.",
+          "source": "bbc"
+        },
+        {
+          "title": "Zelensky criticises 'strange' Trump-Putin friendship in BBC interview",
+          "link": "https://www.bbc.co.uk/news/articles/c820q9wgrpyyo?at_medium=RSS&at_campaign=rss",
+          "date": "Fri, 27 Nov 2026 18:00:40 GMT",
+          "description": "Ukraine's president voices frustration with US and says it is not pushing Russia hard enough in peace talks to end the war.",
           "source": "bbc"
         },
         {
@@ -1314,62 +1391,6 @@
           "source": "bbc"
         },
         {
-          "title": "Chicken Shop Date: The perfect end or a disappointing send-off?",
-          "link": "https://www.bbc.co.uk/news/articles/ckz74123x2jvo?at_medium=RSS&at_campaign=rss",
-          "date": "Fri, 27 Nov 2026 18:02:25 GMT",
-          "description": "Amelia Dimoldenberg has called time on her hit YouTube series Chicken Shop Date after more than a decade.",
-          "source": "bbc"
-        },
-        {
-          "title": "Is it a cold, flu or Covid? How to tell the difference",
-          "link": "https://www.bbc.co.uk/news/articles/cly1rryv2ryo?at_medium=RSS&at_campaign=rss",
-          "date": "Fri, 27 Nov 2026 09:43:38 GMT",
-          "description": "How to tell if you have cold, flu or Covid and how to look after yourself.",
-          "source": "bbc"
-        },
-        {
-          "title": "'I wouldn't be here today without you': Student's praise for man who stopped Huntingdon train attacker",
-          "link": "https://www.bbc.co.uk/news/articles/ck792lq4xrero?at_medium=RSS&at_campaign=rss",
-          "date": "Fri, 27 Nov 2026 07:53:24 GMT",
-          "description": "Astrid credits Stephen Crean with saving her life during the Huntingdon train attack last year.",
-          "source": "bbc"
-        },
-        {
-          "title": "GTA 6 crashes into top end of music chart after its record launch",
-          "link": "https://www.bbc.co.uk/news/articles/ckp80d8vz1ego?at_medium=RSS&at_campaign=rss",
-          "date": "Fri, 27 Nov 2026 17:39:11 GMT",
-          "description": "Several songs on the game's soundtrack have climbed the UK's singles chart.",
-          "source": "bbc"
-        },
-        {
-          "title": "Why snooker could be the most mentally challenging sport",
-          "link": "https://www.bbc.co.uk/sport/snooker/articles/cm174wqxk8lpo?at_medium=RSS&at_campaign=rss",
-          "date": "Fri, 27 Nov 2026 17:00:10 GMT",
-          "description": "With Mark Allen the latest snooker player to talk about his mental health struggles, BBC Sport looks at why the sport is so mentally challenging - and what is being done to help.",
-          "source": "bbc"
-        },
-        {
-          "title": "My self-care ritual is a meal at a fancy restaurant - on my own",
-          "link": "https://www.bbc.co.uk/news/articles/cw8dv11dp2yeo?at_medium=RSS&at_campaign=rss",
-          "date": "Fri, 27 Nov 2026 10:10:36 GMT",
-          "description": "Solo-dining is being embraced as a self-care trend and it's reshaping the restaurant industry.",
-          "source": "bbc"
-        },
-        {
-          "title": "Inside Saudi Arabia, Houthi attacks test kingdom's image of security",
-          "link": "https://www.bbc.co.uk/news/articles/c6ly7jgv7jzdo?at_medium=RSS&at_campaign=rss",
-          "date": "Fri, 27 Nov 2026 06:04:51 GMT",
-          "description": "Despite the strikes, markets and restaurants in Riyadh remain busy as residents express trust in the government to protect them.",
-          "source": "bbc"
-        },
-        {
-          "title": "Watch: Catherine joins cancer support group in new documentary",
-          "link": "https://www.bbc.co.uk/news/videos/c6879eqe01e0o?at_medium=RSS&at_campaign=rss",
-          "date": "Fri, 27 Nov 2026 12:11:22 GMT",
-          "description": "The documentary features her personal thoughts on her illness and recovery, following her cancer diagnosis.",
-          "source": "bbc"
-        },
-        {
           "title": "NHS Grampian publishes leaked report at centre of hospital scandal",
           "link": "https://www.bbc.co.uk/news/articles/cq36gjdkdn2xo?at_medium=RSS&at_campaign=rss",
           "date": "Fri, 27 Nov 2026 20:07:45 GMT",
@@ -1391,31 +1412,17 @@
           "source": "bbc"
         },
         {
-          "title": "Ex-media executive admits saying Australian child sex abuse survivor 'looking to be raped again'",
-          "link": "https://www.bbc.co.uk/news/articles/ckr5grlq78n9o?at_medium=RSS&at_campaign=rss",
-          "date": "Fri, 27 Nov 2026 11:44:40 GMT",
-          "description": "The former Murdoch media executive was overheard at an event referring to the way Grace Tame was dressed.",
-          "source": "bbc"
-        },
-        {
-          "title": "Fury cleared to fight Joshua after wife retracts schizophrenia claim",
-          "link": "https://www.bbc.co.uk/sport/boxing/articles/c539gd2x2ye1o?at_medium=RSS&at_campaign=rss",
-          "date": "Fri, 27 Nov 2026 12:13:15 GMT",
-          "description": "Tyson Fury is medically cleared to fight Anthony Joshua in December after the bout was put in jeopardy by claims of a schizophrenia diagnosis.",
-          "source": "bbc"
-        },
-        {
-          "title": "Five Gladiators will not return for new BBC series",
-          "link": "https://www.bbc.co.uk/news/articles/cm0jx92d07n5o?at_medium=RSS&at_campaign=rss",
-          "date": "Fri, 27 Nov 2026 12:36:06 GMT",
-          "description": "The programme is set to feature a host of new faces when it returns to screens next year.",
-          "source": "bbc"
-        },
-        {
           "title": "Download now",
           "link": "https://www.bbc.co.uk/news/10628994?at_medium=RSS&at_campaign=rss",
           "date": "Wed, 30 Apr 2025 14:04:28 GMT",
           "description": "Top stories, breaking news, live reporting, and follow news topics that match your interests",
+          "source": "bbc"
+        },
+        {
+          "title": "Five-try Ireland beat Australia in autumn finale",
+          "link": "https://www.bbc.co.uk/sport/rugby-union/articles/cw987l0ej11mo?at_medium=RSS&at_campaign=rss",
+          "date": "Fri, 27 Nov 2026 22:17:45 GMT",
+          "description": "Ireland secure a fifth-place finish in the inaugural Nations Championship thanks to a 38-14 victory over Australia in London.",
           "source": "bbc"
         },
         {
@@ -1426,18 +1433,39 @@
           "source": "bbc"
         },
         {
+          "title": "Gibbs-White stars, Fofana struggles - player ratings for Forest v Chelsea",
+          "link": "https://www.bbc.co.uk/sport/football/articles/cmwy85xxjgxvo?at_medium=RSS&at_campaign=rss",
+          "date": "Fri, 27 Nov 2026 21:59:48 GMT",
+          "description": "Morgan Gibbs-White scored twice as Nottingham Forest beat Chelsea 3-2 at the City Ground for the first time since 1997.",
+          "source": "bbc"
+        },
+        {
           "title": "Mercedes set pace in eventful Qatar second practice",
           "link": "https://www.bbc.co.uk/sport/formula1/articles/cqpv903y40jko?at_medium=RSS&at_campaign=rss",
           "date": "Fri, 27 Nov 2026 19:50:06 GMT",
           "description": "World champion Kimi Antonelli sets the pace ahead of Mercedes team-mate George Russell in a disrupted second practice at the Qatar Grand Prix.",
           "source": "bbc"
+        },
+        {
+          "title": "Cricket Australia may not like sandpaper forum findings - Vaughan",
+          "link": "https://www.bbc.co.uk/sport/cricket/articles/c5pv903jvy2po?at_medium=RSS&at_campaign=rss",
+          "date": "Fri, 27 Nov 2026 14:05:57 GMT",
+          "description": "Cricket Australia will not like what it finds from a forum into the sandpaper scandal, according to former England captain Michael Vaughan.",
+          "source": "bbc"
         }
       ],
-      "fetchedAt": "2026-11-27T20:25:09.292Z",
+      "fetchedAt": "2026-11-28T05:19:49.977Z",
       "error": null
     },
     "cisa": {
       "items": [
+        {
+          "title": "CISA Adds Three Known Exploited Vulnerabilities to Catalog",
+          "link": "https://www.cisa.gov/news-events/alerts/2026/11/27/cisa-adds-three-known-exploited-vulnerabilities-catalog",
+          "date": "Fri, 27 Nov 26 12:00:00 +0000",
+          "description": "CISA has added three new vulnerabilities to its Known Exploited Vulnerabilities (KEV) Catalog , based on evidence of active exploitation. CVE-2026-120705 OSGeo GeoServer XML Injection Vulnerability CV",
+          "source": "cisa"
+        },
         {
           "title": "CISA Adds 10 Known Exploited Vulnerabilities to Catalog",
           "link": "https://www.cisa.gov/news-events/alerts/2026/11/25/cisa-adds-10-known-exploited-vulnerabilities-catalog",
@@ -1488,6 +1516,13 @@
           "source": "cisa"
         },
         {
+          "title": "libumqtt",
+          "link": "https://www.cisa.gov/news-events/ics-advisories/icsa-26-323-03",
+          "date": "Thu, 19 Nov 26 12:00:00 +0000",
+          "description": "View CSAF Summary Successful exploitation of this vulnerability could allow a remote attacker to cause a denial of service, memory corruption, or information disclosure. The following versions of libu",
+          "source": "cisa"
+        },
+        {
           "title": "Elecbrakes EB2, VM1, ELBC2000",
           "link": "https://www.cisa.gov/news-events/ics-advisories/icsa-26-323-02",
           "date": "Thu, 19 Nov 26 12:00:00 +0000",
@@ -1502,80 +1537,10 @@
           "source": "cisa"
         },
         {
-          "title": "libumqtt",
-          "link": "https://www.cisa.gov/news-events/ics-advisories/icsa-26-323-03",
-          "date": "Thu, 19 Nov 26 12:00:00 +0000",
-          "description": "View CSAF Summary Successful exploitation of this vulnerability could allow a remote attacker to cause a denial of service, memory corruption, or information disclosure. The following versions of libu",
-          "source": "cisa"
-        },
-        {
           "title": "CISA Adds Four Known Exploited Vulnerabilities to Catalog",
           "link": "https://www.cisa.gov/news-events/alerts/2026/11/18/cisa-adds-four-known-exploited-vulnerabilities-catalog",
           "date": "Wed, 18 Nov 26 12:00:00 +0000",
           "description": "CISA has added four new vulnerabilities to its Known Exploited Vulnerabilities (KEV) Catalog , based on evidence of active exploitation.&nbsp; CVE-2024-10441 Synology DiskStation Manager (DSM) Imprope",
-          "source": "cisa"
-        },
-        {
-          "title": "Siemens Industrial Software Products",
-          "link": "https://www.cisa.gov/news-events/ics-advisories/icsa-26-321-04",
-          "date": "Tue, 17 Nov 26 12:00:00 +0000",
-          "description": "View CSAF Summary On October 21, 2026, the Node.js project released security updates addressing a critical vulnerability in the Brotli decoder bundled with Node.js, commonly referred to as \"Node2Shell",
-          "source": "cisa"
-        },
-        {
-          "title": "Dorsett Controls InfoScan",
-          "link": "https://www.cisa.gov/news-events/ics-advisories/icsa-26-321-01",
-          "date": "Tue, 17 Nov 26 12:00:00 +0000",
-          "description": "View CSAF Summary Successful exploitation of these vulnerabilities could allow an attacker to retrieve sensitive system information, access application data without authorization, recover stored crede",
-          "source": "cisa"
-        },
-        {
-          "title": "CISA Adds One Known Exploited Vulnerability to Catalog",
-          "link": "https://www.cisa.gov/news-events/alerts/2026/11/17/cisa-adds-one-known-exploited-vulnerability-catalog",
-          "date": "Tue, 17 Nov 26 12:00:00 +0000",
-          "description": "CISA has added one new vulnerability to its&nbsp; Known Exploited Vulnerabilities (KEV) Catalog , based on evidence of active exploitation. CVE-2026-115731 Perforce Puppet Enterprise Deserialization o",
-          "source": "cisa"
-        },
-        {
-          "title": "Siemens Mendix Studio Pro",
-          "link": "https://www.cisa.gov/news-events/ics-advisories/icsa-26-321-05",
-          "date": "Tue, 17 Nov 26 12:00:00 +0000",
-          "description": "View CSAF Summary Mendix Studio Pro contains multiple vulnerabilities in the MCP Server, that could allow an attacker with network access to interact with the server remotely or trick a user's browser",
-          "source": "cisa"
-        },
-        {
-          "title": "Siemens .NET Client Library for SIMATIC S7 Webserver API",
-          "link": "https://www.cisa.gov/news-events/ics-advisories/icsa-26-321-02",
-          "date": "Tue, 17 Nov 26 12:00:00 +0000",
-          "description": "View CSAF Summary .NET Client Library for SIMATIC S7 Webserver API contains multiple vulnerabilities that could allow an attacker to obtain sensitive information or write arbitrary files outside the i",
-          "source": "cisa"
-        },
-        {
-          "title": "Critical Java Vulnerability Requires Immediate Patching",
-          "link": "https://www.cisa.gov/news-events/alerts/2026/11/17/critical-java-vulnerability-requires-immediate-patching",
-          "date": "Tue, 17 Nov 26 12:00:00 +0000",
-          "description": "Purpose CISA strongly urges organizations to immediately patch the recently disclosed Oracle Java vulnerability CVE-2026-114938 . This critical memory-corruption vulnerability, known as “Java4Shell,” ",
-          "source": "cisa"
-        },
-        {
-          "title": "Siemens meta-iot2050",
-          "link": "https://www.cisa.gov/news-events/ics-advisories/icsa-26-321-11",
-          "date": "Tue, 17 Nov 26 12:00:00 +0000",
-          "description": "View CSAF Summary meta-iot2050 (https://github.com/siemens/meta-iot2050) from V01.03.01 contains a Command Injection vulnerability in the firmware update tool that could allow an attacker which is abl",
-          "source": "cisa"
-        },
-        {
-          "title": "Siemens Simcenter Femap",
-          "link": "https://www.cisa.gov/news-events/ics-advisories/icsa-26-321-10",
-          "date": "Tue, 17 Nov 26 12:00:00 +0000",
-          "description": "View CSAF Summary Simcenter Femap is affected by an out of bounds read vulnerability that could be triggered when the application reads files in X_T format. This could allow an attacker to crash the a",
-          "source": "cisa"
-        },
-        {
-          "title": "Siemens ROS#",
-          "link": "https://www.cisa.gov/news-events/ics-advisories/icsa-26-321-06",
-          "date": "Tue, 17 Nov 26 12:00:00 +0000",
-          "description": "View CSAF Summary ROS# before version 2.3.1 contains a code injection vulnerability that could allow an attacker that is able to pass a crafted message definition file to the user to inject arbitrary ",
           "source": "cisa"
         },
         {
@@ -1586,10 +1551,17 @@
           "source": "cisa"
         },
         {
-          "title": "Siemens Industrial Automation Software Products",
-          "link": "https://www.cisa.gov/news-events/ics-advisories/icsa-26-321-03",
+          "title": "Siemens ROS#",
+          "link": "https://www.cisa.gov/news-events/ics-advisories/icsa-26-321-06",
           "date": "Tue, 17 Nov 26 12:00:00 +0000",
-          "description": "View CSAF Summary On October 21, 2026, the Node.js project released security updates addressing a critical vulnerability in the Brotli decoder bundled with Node.js, commonly referred to as \"Node2Shell",
+          "description": "View CSAF Summary ROS# before version 2.3.1 contains a code injection vulnerability that could allow an attacker that is able to pass a crafted message definition file to the user to inject arbitrary ",
+          "source": "cisa"
+        },
+        {
+          "title": "Siemens Simcenter Femap",
+          "link": "https://www.cisa.gov/news-events/ics-advisories/icsa-26-321-10",
+          "date": "Tue, 17 Nov 26 12:00:00 +0000",
+          "description": "View CSAF Summary Simcenter Femap is affected by an out of bounds read vulnerability that could be triggered when the application reads files in X_T format. This could allow an attacker to crash the a",
           "source": "cisa"
         },
         {
@@ -1600,6 +1572,20 @@
           "source": "cisa"
         },
         {
+          "title": "Siemens meta-iot2050",
+          "link": "https://www.cisa.gov/news-events/ics-advisories/icsa-26-321-11",
+          "date": "Tue, 17 Nov 26 12:00:00 +0000",
+          "description": "View CSAF Summary meta-iot2050 (https://github.com/siemens/meta-iot2050) from V01.03.01 contains a Command Injection vulnerability in the firmware update tool that could allow an attacker which is abl",
+          "source": "cisa"
+        },
+        {
+          "title": "Siemens Industrial Software Products",
+          "link": "https://www.cisa.gov/news-events/ics-advisories/icsa-26-321-04",
+          "date": "Tue, 17 Nov 26 12:00:00 +0000",
+          "description": "View CSAF Summary On October 21, 2026, the Node.js project released security updates addressing a critical vulnerability in the Brotli decoder bundled with Node.js, commonly referred to as \"Node2Shell",
+          "source": "cisa"
+        },
+        {
           "title": "Siemens SIMATIC WinCC",
           "link": "https://www.cisa.gov/news-events/ics-advisories/icsa-26-321-09",
           "date": "Tue, 17 Nov 26 12:00:00 +0000",
@@ -1607,31 +1593,52 @@
           "source": "cisa"
         },
         {
+          "title": "Critical Java Vulnerability Requires Immediate Patching",
+          "link": "https://www.cisa.gov/news-events/alerts/2026/11/17/critical-java-vulnerability-requires-immediate-patching",
+          "date": "Tue, 17 Nov 26 12:00:00 +0000",
+          "description": "Purpose CISA strongly urges organizations to immediately patch the recently disclosed Oracle Java vulnerability CVE-2026-114938 . This critical memory-corruption vulnerability, known as “Java4Shell,” ",
+          "source": "cisa"
+        },
+        {
+          "title": "Siemens .NET Client Library for SIMATIC S7 Webserver API",
+          "link": "https://www.cisa.gov/news-events/ics-advisories/icsa-26-321-02",
+          "date": "Tue, 17 Nov 26 12:00:00 +0000",
+          "description": "View CSAF Summary .NET Client Library for SIMATIC S7 Webserver API contains multiple vulnerabilities that could allow an attacker to obtain sensitive information or write arbitrary files outside the i",
+          "source": "cisa"
+        },
+        {
+          "title": "Siemens Mendix Studio Pro",
+          "link": "https://www.cisa.gov/news-events/ics-advisories/icsa-26-321-05",
+          "date": "Tue, 17 Nov 26 12:00:00 +0000",
+          "description": "View CSAF Summary Mendix Studio Pro contains multiple vulnerabilities in the MCP Server, that could allow an attacker with network access to interact with the server remotely or trick a user's browser",
+          "source": "cisa"
+        },
+        {
+          "title": "CISA Adds One Known Exploited Vulnerability to Catalog",
+          "link": "https://www.cisa.gov/news-events/alerts/2026/11/17/cisa-adds-one-known-exploited-vulnerability-catalog",
+          "date": "Tue, 17 Nov 26 12:00:00 +0000",
+          "description": "CISA has added one new vulnerability to its&nbsp; Known Exploited Vulnerabilities (KEV) Catalog , based on evidence of active exploitation. CVE-2026-115731 Perforce Puppet Enterprise Deserialization o",
+          "source": "cisa"
+        },
+        {
+          "title": "Dorsett Controls InfoScan",
+          "link": "https://www.cisa.gov/news-events/ics-advisories/icsa-26-321-01",
+          "date": "Tue, 17 Nov 26 12:00:00 +0000",
+          "description": "View CSAF Summary Successful exploitation of these vulnerabilities could allow an attacker to retrieve sensitive system information, access application data without authorization, recover stored crede",
+          "source": "cisa"
+        },
+        {
+          "title": "Siemens Industrial Automation Software Products",
+          "link": "https://www.cisa.gov/news-events/ics-advisories/icsa-26-321-03",
+          "date": "Tue, 17 Nov 26 12:00:00 +0000",
+          "description": "View CSAF Summary On October 21, 2026, the Node.js project released security updates addressing a critical vulnerability in the Brotli decoder bundled with Node.js, commonly referred to as \"Node2Shell",
+          "source": "cisa"
+        },
+        {
           "title": "CISA Adds Two Known Exploited Vulnerabilities to Catalog",
           "link": "https://www.cisa.gov/news-events/alerts/2026/11/13/cisa-adds-two-known-exploited-vulnerabilities-catalog",
           "date": "Fri, 13 Nov 26 12:00:00 +0000",
           "description": "CISA has added two new vulnerabilities to its Known Exploited Vulnerabilities (KEV) Catalog , based on evidence of active exploitation. CVE-2026-114713 UnrealIRCd Improper Neutralization of Delimiters",
-          "source": "cisa"
-        },
-        {
-          "title": "Siemens Building Automation and Energy Products",
-          "link": "https://www.cisa.gov/news-events/ics-advisories/icsa-26-316-01",
-          "date": "Thu, 12 Nov 26 12:00:00 +0000",
-          "description": "View CSAF Summary On October 21, 2026, the PHP project and security researchers disclosed two critical, unauthenticated remote code execution vulnerabilities in the core PHP language runtime known as ",
-          "source": "cisa"
-        },
-        {
-          "title": "Siemens Industrial Edge Management",
-          "link": "https://www.cisa.gov/news-events/ics-advisories/icsa-26-316-03",
-          "date": "Thu, 12 Nov 26 12:00:00 +0000",
-          "description": "View CSAF Summary Siemens is currently assessing the impact of Node2Shell (CVE-2026-111497) on Industrial Edge. Please check your Industrial Edge Management (IEM) setup: - No Management Applications i",
-          "source": "cisa"
-        },
-        {
-          "title": "Siemens RUGGEDCOM APE1808",
-          "link": "https://www.cisa.gov/news-events/ics-advisories/icsa-26-316-04",
-          "date": "Thu, 12 Nov 26 12:00:00 +0000",
-          "description": "View CSAF Summary Palo Alto Networks has published information on a vulnerability in PAN-OS related to the Node2Shell vulnerability. This advisory lists the related Siemens Industrial products affecte",
           "source": "cisa"
         },
         {
@@ -1643,13 +1650,27 @@
         },
         {
           "title": "Siemens RUGGEDCOM APE1808",
+          "link": "https://www.cisa.gov/news-events/ics-advisories/icsa-26-316-04",
+          "date": "Thu, 12 Nov 26 12:00:00 +0000",
+          "description": "View CSAF Summary Palo Alto Networks has published information on a vulnerability in PAN-OS related to the Node2Shell vulnerability. This advisory lists the related Siemens Industrial products affecte",
+          "source": "cisa"
+        },
+        {
+          "title": "Siemens RUGGEDCOM APE1808",
           "link": "https://www.cisa.gov/news-events/ics-advisories/icsa-26-316-05",
           "date": "Thu, 12 Nov 26 12:00:00 +0000",
           "description": "View CSAF Summary Palo Alto Networks has published information on vulnerabilities in PAN-OS related to PHP2Shell vulnerabilities. This advisory lists the related Siemens Industrial products affected b",
           "source": "cisa"
+        },
+        {
+          "title": "Siemens Building Automation and Energy Products",
+          "link": "https://www.cisa.gov/news-events/ics-advisories/icsa-26-316-01",
+          "date": "Thu, 12 Nov 26 12:00:00 +0000",
+          "description": "View CSAF Summary On October 21, 2026, the PHP project and security researchers disclosed two critical, unauthenticated remote code execution vulnerabilities in the core PHP language runtime known as ",
+          "source": "cisa"
         }
       ],
-      "fetchedAt": "2026-11-27T20:25:09.386Z",
+      "fetchedAt": "2026-11-28T05:19:50.087Z",
       "error": null
     },
     "darkreading": {
@@ -2005,7 +2026,7 @@
           "source": "darkreading"
         }
       ],
-      "fetchedAt": "2026-11-27T20:25:10.022Z",
+      "fetchedAt": "2026-11-28T05:19:50.989Z",
       "error": null
     },
     "bleepingcomputer": {
@@ -2116,7 +2137,7 @@
           "source": "bleepingcomputer"
         }
       ],
-      "fetchedAt": "2026-11-27T20:25:10.210Z",
+      "fetchedAt": "2026-11-28T05:19:51.045Z",
       "error": null
     }
   }
